@@ -1,0 +1,88 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This is the debhelper compatability version to use.
+# NOTE: now set with debian/compat per recent usage.
+#export DH_COMPAT=1
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+
+	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
+	# Add here commands to compile the package.
+	ln -s `g++ -print-file-name=libstdc++.a`
+	$(MAKE) OPTIM='-static -L.'
+	mv doc/epm-book.html doc/epm-book.html.save
+	cd doc && $(MAKE)
+
+	$(MAKE) test
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp install-stamp
+
+	# Add here commands to clean up after the build process.
+	-cd doc && $(MAKE) clean
+	[ ! -f Makefile ] || $(MAKE) distclean
+	rm -f mkepmlist.o
+
+	# Remove the EPM-built portable and native packages.
+	rm -rf linux-2.6-*
+
+	# Some minor cleanup issues
+	-mv doc/epm-book.html.save doc/epm-book.html
+	rm -f doc/Makefile epm.list
+	rm -f macosx/setup.plist macosx/uninst.plist
+	rm -f libstdc++.a
+
+	dh_clean
+
+install: install-stamp
+install-stamp: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	# Add here commands to install the package into debian/tmp.
+	$(MAKE) install prefix=`pwd`/debian/epm/usr exec_prefix=`pwd`/debian/epm/usr libdir=`pwd`/debian/epm/usr/lib datadir=`pwd`/debian/epm/usr/share
+
+	# Remove catX dirs.
+	rm -rf debian/epm/usr/share/man/cat1
+	rm -rf debian/epm/usr/share/man/cat5
+
+	touch install-stamp
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installman
+	dh_installchangelogs 
+	dh_link
+	dh_strip
+	dh_compress -Xpdf
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

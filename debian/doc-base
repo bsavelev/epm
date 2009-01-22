@@ -1,0 +1,10 @@
+Document: epm
+Title: Debian EPM Manual
+Author: Michael Sweet <mike@easysw.com>
+Abstract: This manual describes EPM,
+ a cross-platform packaging tool.
+Section: Applications/Programming
+
+Format: HTML
+Index: /usr/share/doc/epm/epm.html
+Files: /usr/share/doc/epm/*.html

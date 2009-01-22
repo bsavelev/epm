@@ -1,0 +1,12 @@
+epm for Debian
+----------------------
+
+No guarantees are made that the Debian packages this program makes are 
+policy-compliant in any way (although if you run into a policy
+violation, please report it as a bug).  I'm planning eventually to
+give the Debian part of EPM a complete once-over to ensure that
+packages it makes meet current policy (as much as possible).  I'd like 
+to see EPM build good enough packages that they could be included in
+Debian proper without modification; we'll see if that's possible.
+
+ -- Jeff Licquia <licquia@debian.org>, Sun, 17 Mar 2003

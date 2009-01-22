@@ -1,0 +1,120 @@
+epm (4.1-2.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Backport to Etch.
+  * Statically linked.
+
+ -- Al Nikolov <al@clown.i.drweb.com>  Wed, 14 Jan 2009 20:28:46 +0300
+
+epm (4.1-2) unstable; urgency=low
+
+  * Add Homepage and Vcs-* fields to debian/control.
+  * Update Standards-Version.
+  * Miscellaneous lintian cleanups.
+  * Add a doc-base file for the EPM docs.  Closes: #451642.
+
+ -- Jeff Licquia <licquia@debian.org>  Sun, 20 Jan 2008 21:24:30 -0500
+
+epm (4.1-1) unstable; urgency=low
+
+  * New upstream version.
+  * Revert configure.in change, which used to be necessary for Debian to
+    select the proper autoconf version.  Instead, now just
+    Build-Conflict with autoconf2.13 (where the version-selection code
+    now resides).
+  * Remove the EPM-built native and portable packages built by "make
+    test".
+  * Fix documentation to include what we need, and only what we need.
+
+ -- Jeff Licquia <licquia@debian.org>  Sat, 25 Aug 2007 13:48:27 -0400
+
+epm (4.0-1) unstable; urgency=low
+
+  * New upstream version.
+  * Update Standards-Version.
+  * Build the docs instead of relying on the tarball versions;
+    we now have to do that anyway for the man pages.
+  * Run the test suite as a mandatory part of the build.
+  * Add image libraries to Build-Depends, since newer FLTK can
+    use image libraries, and our config asks for that.
+  * Add needed X libs to Build-Depends, since they don't all
+    magically come in with libfltk1.1-dev anymore.
+
+ -- Jeff Licquia <licquia@debian.org>  Sat, 19 Aug 2006 21:01:02 -0400
+
+epm (3.7-2) unstable; urgency=low
+
+  * Turn off .SILENT during the build, so build problems in build
+    logs aren't hidden.
+  * Don't always link against FLTK statically; this caused FTBFS
+    problems when unrelated static libs aren't available.
+    Closes: #357758, #359981.
+  * Build-Depend on rpm, so the configure script can probe it.
+    Closes: #337179, #321370.
+
+ -- Jeff Licquia <licquia@debian.org>  Thu, 30 Mar 2006 21:10:39 -0500
+
+epm (3.7-1) unstable; urgency=low
+
+  * Bless NMU.  Thanks, Rene!  Closes: #188348, #207252.
+  * Clean up packaging a bit.
+  * Fix PowerPC architecture flag.  Closes: #319880.
+
+ -- Jeff Licquia <licquia@debian.org>  Wed, 27 Jul 2005 22:57:37 -0500
+
+epm (3.7-0.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * New upstream release (closes: #188348, #207252) 
+
+ -- Rene Engelhard <rene@debian.org>  Wed, 23 Feb 2005 22:25:09 +0100
+
+epm (3.5.1-1) unstable; urgency=low
+
+  * New upstream version.  Closes: #181287.
+  * Updated Build-Depends to require libfltk1.1-dev.
+  * Upped to debhelper compatibility level 4.
+  * Added AC_PREREQ to configure.in so Debian's autoconf would do
+    the right thing.
+  * Updated to current Policy.
+
+ -- Jeff Licquia <licquia@debian.org>  Mon, 17 Mar 2003 22:37:24 -0500
+
+epm (3.0-4) unstable; urgency=low
+
+  * The rpm people changed the call convention for --target.
+    Backported the epm 3.3 configure test for the right semantics.
+    Closes: #140454.
+
+ -- Jeff Licquia <licquia@debian.org>  Sat,  6 Apr 2002 10:45:13 -0500
+
+epm (3.0-3) unstable; urgency=low
+
+  * Upstream forgot to install the epm.list.5 man page.
+
+ -- Jeff Licquia <licquia@debian.org>  Mon, 17 Dec 2001 01:07:06 -0500
+
+epm (3.0-2) unstable; urgency=low
+
+  * Don't set the C++ linker to $CC in configure.  Thanks to 
+    James Troup <james@nocrew.org>.  Closes: #120149.
+
+ -- Jeff Licquia <licquia@debian.org>  Mon, 19 Nov 2001 22:35:57 -0500
+
+epm (3.0-1) unstable; urgency=low
+
+  * New upstream version.  Closes: #105456.
+  * Built against new stdc++ libs.  Closes: #109863.
+  * Updated to latest Debian policy.
+
+ -- Jeff Licquia <licquia@debian.org>  Mon, 17 Sep 2001 22:02:59 -0500
+
+epm (2.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Jeff Licquia <licquia@debian.org>  Sun, 12 Mar 2000 00:59:21 -0600
+
+Local variables:
+mode: debian-changelog
+End:

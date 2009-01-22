@@ -16,8 +16,8 @@ build-stamp:
 	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
 	# Add here commands to compile the package.
 	ln -s `g++ -print-file-name=libstdc++.a`
-	$(MAKE) OPTIM='-static -L.'
-	mv doc/epm-book.html doc/epm-book.html.save
+	$(MAKE) OPTIM='-static-libgcc -L .'
+	-mv doc/epm-book.html doc/epm-book.html.save
 	cd doc && $(MAKE)
 
 	$(MAKE) test

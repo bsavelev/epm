@@ -1,3 +1,12 @@
+epm (4.1-2.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Move conffiles .N instead of copying while install.
+  * Statically linked libgcc.
+  * Do not fail when epm-book.html is already saved.
+
+ -- Al Nikolov <al@clown.i.drweb.com>  Thu, 22 Jan 2009 14:14:04 +0300
+
 epm (4.1-2.1) unstable; urgency=low
 
   * Non-maintainer upload.

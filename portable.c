@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: portable.c,v 1.2 2009/01/22 11:09:51 anikolov Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2096,7 +2096,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
     fputs("; do\n", scriptfile);
     fputs("	if test ! -f \"$file\"; then\n", scriptfile);
-    fputs("		cp \"$file.N\" \"$file\"\n", scriptfile);
+    fputs("		mv \"$file.N\" \"$file\"\n", scriptfile); // do not keep .N
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
   }
@@ -2960,5 +2960,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: portable.c,v 1.2 2009/01/22 11:09:51 anikolov Exp $".
  */

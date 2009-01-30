@@ -1,3 +1,10 @@
+epm (4.1-2.3) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Forced C locale for GUI setup.
+
+ -- Al Nikolov <a.nikolovl@drweb.com>  Fri, 30 Jan 2009 15:44:34 +0300
+
 epm (4.1-2.2) unstable; urgency=low
 
   * Non-maintainer upload.
@@ -5,7 +12,7 @@ epm (4.1-2.2) unstable; urgency=low
   * Statically linked libgcc.
   * Do not fail when epm-book.html is already saved.
 
- -- Al Nikolov <al@clown.i.drweb.com>  Thu, 22 Jan 2009 14:14:04 +0300
+ -- Al Nikolov <a.nikolovl@drweb.com>  Thu, 22 Jan 2009 14:14:04 +0300
 
 epm (4.1-2.1) unstable; urgency=low
 
@@ -13,7 +20,7 @@ epm (4.1-2.1) unstable; urgency=low
   * Backport to Etch.
   * Statically linked.
 
- -- Al Nikolov <al@clown.i.drweb.com>  Wed, 14 Jan 2009 20:28:46 +0300
+ -- Al Nikolov <a.nikolovl@drweb.com>  Wed, 14 Jan 2009 20:28:46 +0300
 
 epm (4.1-2) unstable; urgency=low
 

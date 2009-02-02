@@ -1,3 +1,10 @@
+epm (4.1-2.4) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Preserve PATH from environment.
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Mon,  2 Feb 2009 19:59:15 +0300
+
 epm (4.1-2.3) unstable; urgency=low
 
   * Non-maintainer upload.

@@ -1,5 +1,5 @@
 //
-// "$Id: gui-common.cxx,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+// "$Id: gui-common.cxx,v 1.2 2009/02/06 15:09:14 anikolov Exp $"
 //
 //   ESP Software Wizard common functions for the ESP Package Manager (EPM).
 //
@@ -203,47 +203,48 @@ gui_get_installed(void)
     free(files);
   }
 
-  // Get a list of RPM packages that are installed...
-  if (!access("/bin/rpm", 0) &&
-      (fp = popen("/bin/rpm -qa --qf "
-                  "'%{NAME}|%{VERSION}|%{SIZE}|%{SUMMARY}\\n'", "r")) != NULL)
-  {
-    char	*version,		// Version number
-		*size,			// Size of package
-		*description;		// Summary string
-
-
-    while (fgets(line, sizeof(line), fp))
-    {
-      // Drop the trailing newline...
-      line[strlen(line) - 1] = '\0';
-
-      // Grab the different fields...
-      if ((version = strchr(line, '|')) == NULL)
-        continue;
-      *version++ = '\0';
-
-      if ((size = strchr(version, '|')) == NULL)
-        continue;
-      *size++ = '\0';
-
-      if ((description = strchr(size, '|')) == NULL)
-        continue;
-      *description++ = '\0';
-
-      // Add a new distribution entry...
-      temp       = gui_add_dist(&NumInstalled, &Installed);
-      temp->type = PACKAGE_RPM;
-
-      strlcpy(temp->product, line, sizeof(temp->product));
-      strlcpy(temp->name, description, sizeof(temp->name));
-      strlcpy(temp->version, version, sizeof(temp->version));
-      temp->vernumber = get_vernumber(version);
-      temp->rootsize  = (int)(atof(size) / 1024.0 + 0.5);
-    }
-
-    pclose(fp);
-  }
+// Do not handle any .rpm
+//   // Get a list of RPM packages that are installed...
+//   if (!access("/bin/rpm", 0) &&
+//       (fp = popen("/bin/rpm -qa --qf "
+//                   "'%{NAME}|%{VERSION}|%{SIZE}|%{SUMMARY}\\n'", "r")) != NULL)
+//   {
+//     char	*version,		// Version number
+// 		*size,			// Size of package
+// 		*description;		// Summary string
+// 
+// 
+//     while (fgets(line, sizeof(line), fp))
+//     {
+//       // Drop the trailing newline...
+//       line[strlen(line) - 1] = '\0';
+// 
+//       // Grab the different fields...
+//       if ((version = strchr(line, '|')) == NULL)
+//         continue;
+//       *version++ = '\0';
+// 
+//       if ((size = strchr(version, '|')) == NULL)
+//         continue;
+//       *size++ = '\0';
+// 
+//       if ((description = strchr(size, '|')) == NULL)
+//         continue;
+//       *description++ = '\0';
+// 
+//       // Add a new distribution entry...
+//       temp       = gui_add_dist(&NumInstalled, &Installed);
+//       temp->type = PACKAGE_RPM;
+// 
+//       strlcpy(temp->product, line, sizeof(temp->product));
+//       strlcpy(temp->name, description, sizeof(temp->name));
+//       strlcpy(temp->version, version, sizeof(temp->version));
+//       temp->vernumber = get_vernumber(version);
+//       temp->rootsize  = (int)(atof(size) / 1024.0 + 0.5);
+//     }
+// 
+//     pclose(fp);
+//   }
 
   if (NumInstalled > 1)
     qsort(Installed, NumInstalled, sizeof(gui_dist_t),
@@ -344,5 +345,5 @@ gui_sort_dists(const gui_dist_t *d0,	// I - First distribution
 
 
 //
-// End of "$Id: gui-common.cxx,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+// End of "$Id: gui-common.cxx,v 1.2 2009/02/06 15:09:14 anikolov Exp $".
 //

@@ -6,8 +6,9 @@ epm (4.1-2.5) unstable; urgency=low
   * Rename .N in logrotate.d to .v before/after operations.
   * Statically linked setup/uninst against libgss/libstdc++.
   * Preserve ARGV ("now") parameter for install scripts.
+  * Do not handle any .rpm.
 
- -- Al Nikolov <a.nikolov@drweb.com>  Fri,  6 Feb 2009 14:22:59 +0300
+ -- Al Nikolov <a.nikolov@drweb.com>  Fri,  6 Feb 2009 18:08:06 +0300
 
 epm (4.1-2.4) unstable; urgency=low
 

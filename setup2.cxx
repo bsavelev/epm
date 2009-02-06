@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.4 2009/02/06 13:30:51 anikolov Exp $"
+// "$Id: setup2.cxx,v 1.5 2009/02/06 15:09:14 anikolov Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -322,60 +322,61 @@ get_dists(const char *d)	// I - Directory to look in
 
       fclose(fp);
     }
-    else if (!strcmp(ext, ".rpm"))
-    {
-      // Found an RPM package...
-      char	*version,		// Version number
-		*size,			// Size of package
-		*description;		// Summary string
-
-
-      // Get the package information...
-      snprintf(line, sizeof(line),
-               "rpm -qp --qf '%%{NAME}|%%{VERSION}|%%{SIZE}|%%{SUMMARY}\\n' %s",
-	       files[i]->d_name);
-
-      if ((fp = popen(line, "r")) == NULL)
-      {
-        free(files[i]);
-	continue;
-      }
-
-      if (!fgets(line, sizeof(line), fp))
-      {
-        free(files[i]);
-	continue;
-      }
-
-      // Drop the trailing newline...
-      line[strlen(line) - 1] = '\0';
-
-      // Grab the different fields...
-      if ((version = strchr(line, '|')) == NULL)
-        continue;
-      *version++ = '\0';
-
-      if ((size = strchr(version, '|')) == NULL)
-        continue;
-      *size++ = '\0';
-
-      if ((description = strchr(size, '|')) == NULL)
-        continue;
-      *description++ = '\0';
-
-      // Add a new distribution entry...
-      temp           = gui_add_dist(&NumDists, &Dists);
-      temp->type     = PACKAGE_RPM;
-      temp->filename = strdup(files[i]->d_name);
-
-      strlcpy(temp->product, line, sizeof(temp->product));
-      strlcpy(temp->name, description, sizeof(temp->name));
-      strlcpy(temp->version, version, sizeof(temp->version));
-      temp->vernumber = get_vernumber(version);
-      temp->rootsize  = (int)(atof(size) / 1024.0 + 0.5);
-
-      pclose(fp);
-    }
+// Do not handle any .rpm
+//     else if (!strcmp(ext, ".rpm"))
+//     {
+//       // Found an RPM package...
+//       char	*version,		// Version number
+// 		*size,			// Size of package
+// 		*description;		// Summary string
+// 
+// 
+//       // Get the package information...
+//       snprintf(line, sizeof(line),
+//                "rpm -qp --qf '%%{NAME}|%%{VERSION}|%%{SIZE}|%%{SUMMARY}\\n' %s",
+// 	       files[i]->d_name);
+// 
+//       if ((fp = popen(line, "r")) == NULL)
+//       {
+//         free(files[i]);
+// 	continue;
+//       }
+// 
+//       if (!fgets(line, sizeof(line), fp))
+//       {
+//         free(files[i]);
+// 	continue;
+//       }
+// 
+//       // Drop the trailing newline...
+//       line[strlen(line) - 1] = '\0';
+// 
+//       // Grab the different fields...
+//       if ((version = strchr(line, '|')) == NULL)
+//         continue;
+//       *version++ = '\0';
+// 
+//       if ((size = strchr(version, '|')) == NULL)
+//         continue;
+//       *size++ = '\0';
+// 
+//       if ((description = strchr(size, '|')) == NULL)
+//         continue;
+//       *description++ = '\0';
+// 
+//       // Add a new distribution entry...
+//       temp           = gui_add_dist(&NumDists, &Dists);
+//       temp->type     = PACKAGE_RPM;
+//       temp->filename = strdup(files[i]->d_name);
+// 
+//       strlcpy(temp->product, line, sizeof(temp->product));
+//       strlcpy(temp->name, description, sizeof(temp->name));
+//       strlcpy(temp->version, version, sizeof(temp->version));
+//       temp->vernumber = get_vernumber(version);
+//       temp->rootsize  = (int)(atof(size) / 1024.0 + 0.5);
+// 
+//       pclose(fp);
+//     }
 
     free(files[i]);
   }
@@ -1219,5 +1220,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.4 2009/02/06 13:30:51 anikolov Exp $".
+// End of "$Id: setup2.cxx,v 1.5 2009/02/06 15:09:14 anikolov Exp $".
 //

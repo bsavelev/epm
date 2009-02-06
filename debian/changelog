@@ -1,3 +1,14 @@
+epm (4.1-2.5) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Use own softwaredir.
+  * Remove init.d scripts.
+  * Rename .N in logrotate.d to .v before/after operations.
+  * Statically linked setup/uninst against libgss/libstdc++.
+  * Preserve ARGV ("now") parameter for install scripts.
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Fri,  6 Feb 2009 14:22:59 +0300
+
 epm (4.1-2.4) unstable; urgency=low
 
   * Non-maintainer upload.

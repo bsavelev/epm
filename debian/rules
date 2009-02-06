@@ -13,10 +13,10 @@ build: build-stamp
 build-stamp:
 	dh_testdir
 
-	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
+	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --with-softwaredir=/etc/drweb/software
 	# Add here commands to compile the package.
 	ln -s `g++ -print-file-name=libstdc++.a`
-	$(MAKE) OPTIM='-static-libgcc -L .'
+	$(MAKE) SETUP_LDFLAGS='-static-libgcc -L.'
 	-mv doc/epm-book.html doc/epm-book.html.save
 	cd doc && $(MAKE)
 

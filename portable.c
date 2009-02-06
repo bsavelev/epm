@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.2 2009/01/22 11:09:51 anikolov Exp $"
+ * "$Id: portable.c,v 1.3 2009/02/06 13:30:51 anikolov Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2096,7 +2096,11 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
     fputs("; do\n", scriptfile);
     fputs("	if test ! -f \"$file\"; then\n", scriptfile);
-    fputs("		mv \"$file.N\" \"$file\"\n", scriptfile); // do not keep .N
+    fputs("		cp \"$file.N\" \"$file\"\n", scriptfile);
+    fputs("	fi\n", scriptfile);
+    // Exception for logrotate.d
+    fputs("	if [[ `dirname \"$file\"` = /etc/logrotate.d ]] ; then\n", scriptfile);
+    fputs("		mv -f \"$file.N\" \"$file.v\"\n", scriptfile);
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
   }
@@ -2831,6 +2835,10 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       }
 
     fputs("; do\n", scriptfile);
+    // Exception for logrotate.d
+    fputs("	if [[ `dirname \"$file\"` = /etc/logrotate.d ]] ; then\n", scriptfile);
+    fputs("		mv -f \"$file.v\" \"$file.N\"\n", scriptfile);
+    fputs("	fi\n", scriptfile);
     fputs("	if cmp -s \"$file\" \"$file.N\"; then\n", scriptfile);
     fputs("		# Config file not changed\n", scriptfile);
     fputs("		rm -f \"$file\"\n", scriptfile);
@@ -2838,6 +2846,16 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("	rm -f \"$file.N\"\n", scriptfile);
     fputs("done\n", scriptfile);
   }
+
+    // Remove init.d scripts
+    fputs("	for file in", scriptfile);
+    for (; i > 0; i --, file ++)
+      if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+        qprintf(scriptfile, " %s", file->dst);
+    fputs("; do\n", scriptfile);
+    qprintf(scriptfile, "		rm -f %s/init.d/$file \n",
+            SoftwareDir);
+    fputs("	done\n", scriptfile);
 
   for (i = dist->num_files, file = dist->files + i - 1; i > 0; i --, file --)
     if (tolower(file->type) == 'd' && file->subpackage == subpackage)
@@ -2960,5 +2978,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.2 2009/01/22 11:09:51 anikolov Exp $".
+ * End of "$Id: portable.c,v 1.3 2009/02/06 13:30:51 anikolov Exp $".
  */

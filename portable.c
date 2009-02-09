@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.3 2009/02/06 13:30:51 anikolov Exp $"
+ * "$Id: portable.c,v 1.4 2009/02/09 12:02:07 anikolov Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2098,10 +2098,6 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("	if test ! -f \"$file\"; then\n", scriptfile);
     fputs("		cp \"$file.N\" \"$file\"\n", scriptfile);
     fputs("	fi\n", scriptfile);
-    // Exception for logrotate.d
-    fputs("	if [[ `dirname \"$file\"` = /etc/logrotate.d ]] ; then\n", scriptfile);
-    fputs("		mv -f \"$file.N\" \"$file.v\"\n", scriptfile);
-    fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
   }
 
@@ -2115,6 +2111,10 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	case 'c' :
 	    qprintf(scriptfile, "chown %s %s.N\n", file->user, file->dst);
 	    qprintf(scriptfile, "chgrp %s %s.N\n", file->group, file->dst);
+	    // Exception for logrotate.d
+	    qprintf(scriptfile, "	if [[ `dirname \"%s\"` = /etc/logrotate.d ]] ; then\n", file->dst);
+	    qprintf(scriptfile, "		mv -f \"%s.N\" \"%s.v\"\n", file->dst, file->dst);
+	    fputs("	fi\n", scriptfile);
 	case 'f' :
 	    qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
@@ -2978,5 +2978,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.3 2009/02/06 13:30:51 anikolov Exp $".
+ * End of "$Id: portable.c,v 1.4 2009/02/09 12:02:07 anikolov Exp $".
  */

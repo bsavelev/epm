@@ -2,8 +2,9 @@ epm (4.1-2.6) unstable; urgency=low
 
   * Non-maintainer upload.
   * Fixed logrotate behaviour.
+  * Fixed removing init.d scripts
 
- -- Al Nikolov <a.nikolov@drweb.com>  Mon,  9 Feb 2009 14:49:30 +0300
+ -- Al Nikolov <a.nikolov@drweb.com>  Mon,  9 Feb 2009 15:48:43 +0300
 
 epm (4.1-2.5) unstable; urgency=low
 

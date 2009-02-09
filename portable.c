@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.5 2009/02/09 12:45:58 anikolov Exp $"
+ * "$Id: portable.c,v 1.6 2009/02/09 15:32:36 anikolov Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2838,7 +2838,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       }
 
     fputs("; do\n", scriptfile);
-    fputs("	mv -f \"file.v\" \"$file.N\"\n", scriptfile);
+    fputs("	mv -f \"$file.v\" \"$file.N\"\n", scriptfile);
     fputs("done\n", scriptfile);
 
   }
@@ -2868,15 +2868,27 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("done\n", scriptfile);
   }
 
-    // Remove init.d scripts
-    fputs("	for file in", scriptfile);
+  // Remove init.d scripts
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
+    if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+      break;
+
+  if (i)
+  {
+    col = fputs("for file in", scriptfile);
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-        qprintf(scriptfile, " %s", file->dst);
+      {
+        if (col > 80)
+	  col = qprintf(scriptfile, " \\\n%s", file->dst) - 2;
+	else
+          col += qprintf(scriptfile, " %s", file->dst);
+      }
+
     fputs("; do\n", scriptfile);
-    qprintf(scriptfile, "		rm -f %s/init.d/$file \n",
-            SoftwareDir);
-    fputs("	done\n", scriptfile);
+    qprintf(scriptfile, "		rm -f %s/init.d/$file \n", SoftwareDir);
+    fputs("done\n", scriptfile);
+  }
 
   for (i = dist->num_files, file = dist->files + i - 1; i > 0; i --, file --)
     if (tolower(file->type) == 'd' && file->subpackage == subpackage)
@@ -2999,5 +3011,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.5 2009/02/09 12:45:58 anikolov Exp $".
+ * End of "$Id: portable.c,v 1.6 2009/02/09 15:32:36 anikolov Exp $".
  */

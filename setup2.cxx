@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.5 2009/02/06 15:09:14 anikolov Exp $"
+// "$Id: setup2.cxx,v 1.6 2009/02/09 17:06:40 anikolov Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -433,9 +433,7 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
   char		command[1024];		// Command string
   int		fds[2];			// Pipe FDs
   int		status;			// Exit status
-  char*		path = getenv("PATH");			// Preserve PATH
-  char*		argv = getenv("ARGV");			// Preserve ARGV
-  char* 	env[] = { argv, path, "LANG=C", (char *)0 };	// C locale for maintainer scripts
+  char* 	env[] = { getenv("PATH"), "LANG=C", (char *)0 }; // C locale for maintainer scripts
 #ifndef __APPLE__
   int		pid;			// Process ID
 #endif // !__APPLE__
@@ -1220,5 +1218,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.5 2009/02/06 15:09:14 anikolov Exp $".
+// End of "$Id: setup2.cxx,v 1.6 2009/02/09 17:06:40 anikolov Exp $".
 //

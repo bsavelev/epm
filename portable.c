@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.6 2009/02/09 15:32:36 anikolov Exp $"
+ * "$Id: portable.c,v 1.7 2009/02/09 17:06:40 anikolov Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -1091,7 +1091,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fprintf(fp, "#%%usrsize %d\n", usrsize);
   fputs("#\n", fp);
 
-  fputs("PATH=/usr/xpg4/bin:/bin:/usr/bin:/usr/ucb:${PATH}\n", fp);
+  fputs("PATH=/usr/xpg4/bin:/bin:/usr/bin:/usr/ucb:/sbin:/usr/sbin:${PATH}\n", fp);
   fputs("SHELL=/bin/sh\n", fp);
   fputs("case \"`uname`\" in\n", fp);
   fputs("\tDarwin*)\n", fp);
@@ -2111,16 +2111,35 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	case 'c' :
 	    qprintf(scriptfile, "chown %s %s.N\n", file->user, file->dst);
 	    qprintf(scriptfile, "chgrp %s %s.N\n", file->group, file->dst);
-	    // Exception for logrotate.d
-	    if (strncmp(file->dst, "/etc/logrotate.d", 16) == 0)
-	    {
-	      qprintf(scriptfile, "mv -f \"%s.N\" \"%s.v\"\n", file->dst, file->dst);
-	    }
 	case 'f' :
 	    qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
 	    break;
       }
+
+  //Exception for logrotate.d
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
+    if (tolower(file->type) == 'c' && file->subpackage == subpackage)
+      break;
+
+  if (i)
+  {
+    col = fputs("for file in", scriptfile);
+    for (; i > 0; i --, file ++)
+      if (tolower(file->type) == 'c' && file->subpackage == subpackage &&
+          strncmp(file->dst, "/etc/logrotate.d", 16) == 0)
+      {
+        if (col > 80)
+	  col = qprintf(scriptfile, " \\\n%s", file->dst) - 2;
+	else
+          col += qprintf(scriptfile, " %s", file->dst);
+      }
+
+    fputs("; do\n", scriptfile);
+    fputs("	mv -f \"$file.N\" \"$file.v\"\n", scriptfile);
+    fputs("done\n", scriptfile);
+
+  }
 
   fputs("if test -f /usr/.writetest; then\n", scriptfile);
   fputs("	rm -f /usr/.writetest\n", scriptfile);
@@ -3011,5 +3030,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.6 2009/02/09 15:32:36 anikolov Exp $".
+ * End of "$Id: portable.c,v 1.7 2009/02/09 17:06:40 anikolov Exp $".
  */

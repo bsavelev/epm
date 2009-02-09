@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.4 2009/02/09 12:02:07 anikolov Exp $"
+ * "$Id: portable.c,v 1.5 2009/02/09 12:45:58 anikolov Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2112,9 +2112,10 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	    qprintf(scriptfile, "chown %s %s.N\n", file->user, file->dst);
 	    qprintf(scriptfile, "chgrp %s %s.N\n", file->group, file->dst);
 	    // Exception for logrotate.d
-	    qprintf(scriptfile, "	if [[ `dirname \"%s\"` = /etc/logrotate.d ]] ; then\n", file->dst);
-	    qprintf(scriptfile, "		mv -f \"%s.N\" \"%s.v\"\n", file->dst, file->dst);
-	    fputs("	fi\n", scriptfile);
+	    if (strncmp(file->dst, "/etc/logrotate.d", 16) == 0)
+	    {
+	      qprintf(scriptfile, "mv -f \"%s.N\" \"%s.v\"\n", file->dst, file->dst);
+	    }
 	case 'f' :
 	    qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
@@ -2818,6 +2819,30 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 
   fputs("echo Checking configuration files...\n", scriptfile);
 
+  //Exception for logrotate.d
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
+    if (tolower(file->type) == 'c' && file->subpackage == subpackage)
+      break;
+
+  if (i)
+  {
+    col = fputs("for file in", scriptfile);
+    for (; i > 0; i --, file ++)
+      if (tolower(file->type) == 'c' && file->subpackage == subpackage &&
+          strncmp(file->dst, "/etc/logrotate.d", 16) == 0)
+      {
+        if (col > 80)
+	  col = qprintf(scriptfile, " \\\n%s", file->dst) - 2;
+	else
+          col += qprintf(scriptfile, " %s", file->dst);
+      }
+
+    fputs("; do\n", scriptfile);
+    fputs("	mv -f \"file.v\" \"$file.N\"\n", scriptfile);
+    fputs("done\n", scriptfile);
+
+  }
+
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'c' && file->subpackage == subpackage)
       break;
@@ -2835,10 +2860,6 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       }
 
     fputs("; do\n", scriptfile);
-    // Exception for logrotate.d
-    fputs("	if [[ `dirname \"$file\"` = /etc/logrotate.d ]] ; then\n", scriptfile);
-    fputs("		mv -f \"$file.v\" \"$file.N\"\n", scriptfile);
-    fputs("	fi\n", scriptfile);
     fputs("	if cmp -s \"$file\" \"$file.N\"; then\n", scriptfile);
     fputs("		# Config file not changed\n", scriptfile);
     fputs("		rm -f \"$file\"\n", scriptfile);
@@ -2978,5 +2999,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.4 2009/02/09 12:02:07 anikolov Exp $".
+ * End of "$Id: portable.c,v 1.5 2009/02/09 12:45:58 anikolov Exp $".
  */

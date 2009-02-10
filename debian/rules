@@ -13,7 +13,7 @@ build: build-stamp
 build-stamp:
 	dh_testdir
 
-	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --with-softwaredir=/etc/drweb/software
+	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --with-softwaredir=/etc/drweb
 	# Add here commands to compile the package.
 	ln -s `g++ -print-file-name=libstdc++.a`
 	$(MAKE) SETUP_LDFLAGS='-static-libgcc -L.'

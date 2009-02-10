@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.7 2009/02/09 17:06:40 anikolov Exp $"
+ * "$Id: portable.c,v 1.8 2009/02/10 11:04:16 anikolov Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -1492,7 +1492,8 @@ write_distfiles(const char *directory,	/* I - Directory */
 	    */
 
 	    if (tolower(file->type) == 'c')
-	      snprintf(filename, sizeof(filename), "%s.N", file->dst);
+	      snprintf(filename, sizeof(filename), "%s/conf/%s.N", SoftwareDir,
+	               file->dst);
 	    else if (tolower(file->type) == 'i')
 	      snprintf(filename, sizeof(filename), "%s/init.d/%s", SoftwareDir,
 	               file->dst);
@@ -1932,9 +1933,9 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("		esac\n", scriptfile);
   fputs("	done\n", scriptfile);
 
-  if (dist->license[0])
-  {
-    fprintf(scriptfile, "	more %s.license\n", prodfull);
+//  if (dist->license[0])
+//  {
+    fputs("	test -f LICENSE && more LICENSE\n", scriptfile);
     fputs("	echo \"\"\n", scriptfile);
     fputs("	while true ; do\n", scriptfile);
     fputs("		echo $ac_n \"Do you agree with the terms of this license? $ac_c\"\n", scriptfile);
@@ -1951,7 +1952,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("			;;\n", scriptfile);
     fputs("		esac\n", scriptfile);
     fputs("	done\n", scriptfile);
-  }
+//  }
 
   fputs("fi\n", scriptfile);
   fprintf(scriptfile, "if test -x %s/%s.remove; then\n", SoftwareDir, prodfull);
@@ -2096,7 +2097,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
     fputs("; do\n", scriptfile);
     fputs("	if test ! -f \"$file\"; then\n", scriptfile);
-    fputs("		cp \"$file.N\" \"$file\"\n", scriptfile);
+    qprintf(scriptfile, "		cp \"%s/conf/$file.N\" \"$file\"\n", SoftwareDir);
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
   }
@@ -2109,37 +2110,13 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       switch (tolower(file->type))
       {
 	case 'c' :
-	    qprintf(scriptfile, "chown %s %s.N\n", file->user, file->dst);
-	    qprintf(scriptfile, "chgrp %s %s.N\n", file->group, file->dst);
+	    qprintf(scriptfile, "chown %s %s/conf/%s.N\n", file->user, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "chgrp %s %s/conf/%s.N\n", file->group, SoftwareDir, file->dst);
 	case 'f' :
 	    qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
 	    break;
       }
-
-  //Exception for logrotate.d
-  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (tolower(file->type) == 'c' && file->subpackage == subpackage)
-      break;
-
-  if (i)
-  {
-    col = fputs("for file in", scriptfile);
-    for (; i > 0; i --, file ++)
-      if (tolower(file->type) == 'c' && file->subpackage == subpackage &&
-          strncmp(file->dst, "/etc/logrotate.d", 16) == 0)
-      {
-        if (col > 80)
-	  col = qprintf(scriptfile, " \\\n%s", file->dst) - 2;
-	else
-          col += qprintf(scriptfile, " %s", file->dst);
-      }
-
-    fputs("; do\n", scriptfile);
-    fputs("	mv -f \"$file.N\" \"$file.v\"\n", scriptfile);
-    fputs("done\n", scriptfile);
-
-  }
 
   fputs("if test -f /usr/.writetest; then\n", scriptfile);
   fputs("	rm -f /usr/.writetest\n", scriptfile);
@@ -2149,8 +2126,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       switch (tolower(file->type))
       {
 	case 'c' :
-	    qprintf(scriptfile, "	chown %s %s.N\n", file->user, file->dst);
-	    qprintf(scriptfile, "	chgrp %s %s.N\n", file->group, file->dst);
+	    qprintf(scriptfile, "	chown %s %s/conf/%s.N\n", file->user, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "	chgrp %s %s/conf/%s.N\n", file->group, SoftwareDir, file->dst);
 	case 'f' :
 	    qprintf(scriptfile, "	chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "	chgrp %s %s\n", file->group, file->dst);
@@ -2838,30 +2815,6 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 
   fputs("echo Checking configuration files...\n", scriptfile);
 
-  //Exception for logrotate.d
-  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (tolower(file->type) == 'c' && file->subpackage == subpackage)
-      break;
-
-  if (i)
-  {
-    col = fputs("for file in", scriptfile);
-    for (; i > 0; i --, file ++)
-      if (tolower(file->type) == 'c' && file->subpackage == subpackage &&
-          strncmp(file->dst, "/etc/logrotate.d", 16) == 0)
-      {
-        if (col > 80)
-	  col = qprintf(scriptfile, " \\\n%s", file->dst) - 2;
-	else
-          col += qprintf(scriptfile, " %s", file->dst);
-      }
-
-    fputs("; do\n", scriptfile);
-    fputs("	mv -f \"$file.v\" \"$file.N\"\n", scriptfile);
-    fputs("done\n", scriptfile);
-
-  }
-
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'c' && file->subpackage == subpackage)
       break;
@@ -2879,11 +2832,11 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       }
 
     fputs("; do\n", scriptfile);
-    fputs("	if cmp -s \"$file\" \"$file.N\"; then\n", scriptfile);
+    qprintf(scriptfile, "	if cmp -s \"$file\" \"%s/conf/$file.N\"; then\n", SoftwareDir);
     fputs("		# Config file not changed\n", scriptfile);
     fputs("		rm -f \"$file\"\n", scriptfile);
     fputs("	fi\n", scriptfile);
-    fputs("	rm -f \"$file.N\"\n", scriptfile);
+    qprintf(scriptfile, "	rm -f \"%s/conf/$file.N\"\n", SoftwareDir);
     fputs("done\n", scriptfile);
   }
 
@@ -2929,6 +2882,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   write_commands(dist, scriptfile, COMMAND_POST_REMOVE, subpackage);
 
   fprintf(scriptfile, "rm -f %s/%s.remove\n", SoftwareDir, prodfull);
+  fprintf(scriptfile, "find %s -type d -delete 2> /dev/null\n", SoftwareDir);
 
   fputs("echo Removal is complete.\n", scriptfile);
 
@@ -3030,5 +2984,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.7 2009/02/09 17:06:40 anikolov Exp $".
+ * End of "$Id: portable.c,v 1.8 2009/02/10 11:04:16 anikolov Exp $".
  */

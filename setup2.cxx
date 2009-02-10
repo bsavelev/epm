@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.6 2009/02/09 17:06:40 anikolov Exp $"
+// "$Id: setup2.cxx,v 1.7 2009/02/10 11:04:16 anikolov Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -552,7 +552,7 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
 //
 
 int					// O - 0 if accepted, 1 if not
-license_dist(const gui_dist_t *dist)	// I - Distribution to license
+license_dist()				// I - Distribution to license
 {
   char		licfile[1024];		// License filename
   struct stat	licinfo;		// License file info
@@ -561,14 +561,14 @@ license_dist(const gui_dist_t *dist)	// I - Distribution to license
 
 
   // See if we need to show the license file...
-  sprintf(licfile, "%s.license", dist->product);
+  sprintf(licfile, "LICENSE");
   if (!stat(licfile, &licinfo) && licinfo.st_size != liclength)
   {
     // Save this license's length...
     liclength = licinfo.st_size;
 
     // Set the title string...
-    snprintf(liclabel, sizeof(liclabel), "Software License for %s:", dist->name);
+    snprintf(liclabel, sizeof(liclabel), "Software License");
     LicenseFile->label(liclabel);
 
     // Load the license into the viewer...
@@ -600,8 +600,7 @@ license_dist(const gui_dist_t *dist)	// I - Distribution to license
 
 
       liclength = 0;
-      snprintf(message, sizeof(message), "License not accepted for %s!",
-               dist->name);
+      snprintf(message, sizeof(message), "License not accepted!");
       InstallLog->add(message);
       return (1);
     }
@@ -1015,8 +1014,7 @@ next_cb(Fl_Button *, void *)
     // Show the licenses for each of the selected software packages...
     installing = 1;
 
-    for (i = 0, progress = 0, error = 0; i < NumDists; i ++)
-      if (SoftwareList->checked(i + 1) && license_dist(Dists + i))
+      if ( license_dist() )
       {
         InstallPercent->label("Installation Canceled!");
 	Pane[PANE_INSTALL]->redraw();
@@ -1028,6 +1026,7 @@ next_cb(Fl_Button *, void *)
 	return;
       }
 
+    for (i = 0, progress = 0, error = 0; i < NumDists; i ++)
     // Then do the installs...
     NextButton->deactivate();
     CancelButton->deactivate();
@@ -1218,5 +1217,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.6 2009/02/09 17:06:40 anikolov Exp $".
+// End of "$Id: setup2.cxx,v 1.7 2009/02/10 11:04:16 anikolov Exp $".
 //

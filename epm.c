@@ -1,5 +1,5 @@
 /*
- * "$Id: epm.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: epm.c,v 1.2 2009/02/10 11:04:16 anikolov Exp $"
  *
  *   Main program source for the ESP Package Manager (EPM).
  *
@@ -477,7 +477,7 @@ main(int  argc,				/* I - Number of command-line args */
   if (!dist->product[0] ||
       !dist->copyright[0] ||
       !dist->vendor[0] ||
-      (!dist->license[0] && !dist->readme[0]) ||
+      /* (!dist->license[0] && !dist->readme[0]) || */
       !dist->version[0])
   {
     fputs("epm: Error - missing %product, %copyright, %vendor, %license,\n", stderr);
@@ -708,5 +708,5 @@ usage(void)
 
 
 /*
- * End of "$Id: epm.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: epm.c,v 1.2 2009/02/10 11:04:16 anikolov Exp $".
  */

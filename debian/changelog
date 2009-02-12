@@ -1,3 +1,10 @@
+epm (4.1-2.10) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Statically linked setup/uninst.
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Tue, 10 Feb 2009 19:17:27 +0300
+
 epm (4.1-2.9) unstable; urgency=low
 
   * Non-maintainer upload.

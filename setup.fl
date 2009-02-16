@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0108 
+version 1.0107 
 header_name {.h} 
 code_name {.cxx}
 Function {make_window()} {open
@@ -8,7 +8,7 @@ Function {make_window()} {open
     label Install
     callback {if (CancelButton->active())
   exit(0);} open
-    xywh {167 20 640 330} type Double
+    xywh {385 23 640 330} type Double
     code0 {\#include "gui-common.h"} visible
   } {
     Fl_Box {Title[0]} {
@@ -45,18 +45,18 @@ Function {make_window()} {open
           xywh {170 30 440 235}
         }
       }
-      Fl_Group {Pane[1]} {
+      Fl_Group {Pane[1]} {open
         xywh {150 10 480 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Box {} {
           label {Select the installation type:}
           xywh {170 30 440 25} align 148
         }
-        Fl_Group {} {
+        Fl_Group {} {open
           xywh {170 65 440 200}
         } {
           Fl_Round_Button {TypeButton[0]} {
-            callback type_cb
+            callback type_cb selected
             xywh {170 65 440 25} type Radio down_box ROUND_DOWN_BOX
           }
           Fl_Round_Button {TypeButton[1]} {
@@ -89,7 +89,7 @@ Function {make_window()} {open
           }
         }
       }
-      Fl_Group {Pane[2]} {
+      Fl_Group {Pane[2]} {open
         xywh {150 10 480 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Box {} {
@@ -134,7 +134,7 @@ list_cb(0,0);}
         xywh {150 10 480 275} labelfont 1 labelsize 18 labelcolor 4 align 21
       } {
         Fl_Help_View LicenseFile {
-          label {License Agreement:} selected
+          label {License Agreement:}
           xywh {170 48 440 192} labelfont 1 align 5 resizable
         }
         Fl_Group {} {open

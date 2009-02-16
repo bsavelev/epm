@@ -1,5 +1,5 @@
 //
-// "$Id: uninst2.cxx,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+// "$Id: uninst2.cxx,v 1.2 2009/02/16 11:18:07 anikolov Exp $"
 //
 //   ESP Software Removal Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -497,6 +497,7 @@ remove_dist(const gui_dist_t *dist)	// I - Distribution to remove
   char		command[1024];		// Command string
   int		fds[2];			// Pipe FDs
   int		status;			// Exit status
+  char* 	env[] = { getenv("PATH"), "LANG=C", (char *)0 }; // C locale for maintainer scripts
 #ifndef __APPLE__
   int		pid;			// Process ID
 #endif // !__APPLE__
@@ -543,7 +544,7 @@ remove_dist(const gui_dist_t *dist)	// I - Distribution to remove
 
     // Execute the command; if an error occurs, return it...
     if (dist->type == PACKAGE_PORTABLE)
-      execl(command, command, "now", (char *)0);
+      execle(command, command, "now", (char *)0, env);
     else
       execlp("rpm", "rpm", "-e", "--nodeps", dist->product, (char *)0);
 
@@ -737,5 +738,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: uninst2.cxx,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+// End of "$Id: uninst2.cxx,v 1.2 2009/02/16 11:18:07 anikolov Exp $".
 //

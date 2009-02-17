@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.7 2009/02/10 11:04:16 anikolov Exp $"
+// "$Id: setup2.cxx,v 1.8 2009/02/17 14:46:41 anikolov Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -896,6 +896,9 @@ load_types(void)
 
   for (; i < (int)(sizeof(TypeButton) / sizeof(TypeButton[0])); i ++)
     TypeButton[i]->hide();
+
+  TypeButton[0]->setonly();
+  TypeButton[0]->do_callback();
 }
 
 
@@ -1217,5 +1220,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.7 2009/02/10 11:04:16 anikolov Exp $".
+// End of "$Id: setup2.cxx,v 1.8 2009/02/17 14:46:41 anikolov Exp $".
 //

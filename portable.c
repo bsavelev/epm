@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.9 2009/02/10 13:59:06 anikolov Exp $"
+ * "$Id: portable.c,v 1.10 2009/03/04 14:36:24 anikolov Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2150,7 +2150,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("rcdir=\"\"\n", scriptfile);
     fputs("for dir in /sbin/rc.d /sbin /etc/rc.d /etc ; do\n", scriptfile);
     fputs("	if test -d $dir/rc2.d -o -h $dir/rc2.d -o "
-          "-d $dir/rc3.d -o -h $dir/rc3.d; then\n", scriptfile);
+          "-d $dir/rc3.d -o -h $dir/rc3.d -o -d $dir/runlevels; then\n", scriptfile);
     fputs("		rcdir=\"$dir\"\n", scriptfile);
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
@@ -2203,6 +2203,12 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 		  *runlevels == '0' ? 'K' : 'S', number, file->dst);
 	  fputs("	fi\n", scriptfile);
         }
+	// Gentoo runlevels
+        fputs("	if test -d $rcdir/runlevels/default; then\n", scriptfile);
+	qprintf(scriptfile, "		/bin/rm -f $rcdir/runlevels/default/%s\n", file->dst);
+	qprintf(scriptfile, "		/bin/ln -s %s/init.d/%s $rcdir/runlevels/default/%s\n",
+                  SoftwareDir, file->dst, file->dst);
+	fputs("	fi\n", scriptfile);
 
 #ifdef __sgi
         fputs("	if test -x /etc/chkconfig; then\n", scriptfile);
@@ -2702,7 +2708,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("rcdir=\"\"\n", scriptfile);
     fputs("for dir in /sbin/rc.d /sbin /etc/rc.d /etc ; do\n", scriptfile);
     fputs("	if test -d $dir/rc2.d -o -h $dir/rc2.d -o "
-          "-d $dir/rc3.d -o -h $dir/rc3.d; then\n", scriptfile);
+          "-d $dir/rc3.d -o -h $dir/rc3.d -o -d $dir/runlevels; then\n", scriptfile);
     fputs("		rcdir=\"$dir\"\n", scriptfile);
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
@@ -2722,7 +2728,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       {
-        qprintf(scriptfile, "	%s/init.d/%s stop\n", SoftwareDir, file->dst);
+        // qprintf(scriptfile, "	%s/init.d/%s stop\n", SoftwareDir, file->dst); // double job?
 
 	fputs("	if test -d $rcdir/init.d; then\n", scriptfile);
 	qprintf(scriptfile, "		/bin/rm -f $rcdir/init.d/%s\n", file->dst);
@@ -2746,6 +2752,10 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 	          *runlevels, *runlevels == '0' ? 'K' : 'S', number, file->dst);
 	  fputs("	fi\n", scriptfile);
         }
+	// Gentoo runlevels
+        fputs("	if test -d $rcdir/runlevels/default; then\n", scriptfile);
+	qprintf(scriptfile, "		/bin/rm -f $rcdir/runlevels/default/%s\n", file->dst);
+	fputs("	fi\n", scriptfile);
 
 #ifdef __sgi
         fputs("	if test -x /etc/chkconfig; then\n", scriptfile);
@@ -2984,5 +2994,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.9 2009/02/10 13:59:06 anikolov Exp $".
+ * End of "$Id: portable.c,v 1.10 2009/03/04 14:36:24 anikolov Exp $".
  */

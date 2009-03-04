@@ -38,4 +38,6 @@ extern void next_cb(Fl_Button*, void*);
 extern Fl_Button *NextButton;
 extern Fl_Button *CancelButton;
 Fl_Double_Window* make_window();
+extern void update_control(int from);
+extern void update_label();
 #endif

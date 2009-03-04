@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.8 2009/02/17 14:46:41 anikolov Exp $"
+// "$Id: setup2.cxx,v 1.9 2009/03/04 14:01:08 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -97,6 +97,11 @@ extern "C" {
 typedef int (*compare_func_t)(const void *, const void *);
 }
 
+//
+// Local var
+//
+
+int licaccept = 0;
 
 //
 // Local functions...
@@ -953,13 +958,7 @@ log_cb(int fd,			// I - Pipe to read from
 }
 
 
-//
-// 'next_cb()' - Show software selections or install software.
-//
-
-void
-next_cb(Fl_Button *, void *)
-{
+void update_control(int from) {
   int		i;			// Looping var
   int		progress;		// Progress so far...
   int		error;			// Errors?
@@ -967,71 +966,115 @@ next_cb(Fl_Button *, void *)
   static char	install_type[1024];	// EPM_INSTALL_TYPE env variable
   static int	installing = 0;		// Installing software?
 
-
-  Wizard->next();
-
-  PrevButton->deactivate();
-
-  if (Wizard->value() == Pane[PANE_TYPE])
-  {
-    if (NumInstTypes == 0)
+  if (Wizard->value() == Pane[PANE_WELCOME]) {
+    PrevButton->deactivate();
+    NextButton->activate();
+  }
+  if (Wizard->value() == Pane[PANE_TYPE]) {
+    // if no InstTypes skip
+    if (NumInstTypes == 0 && from == 1)
       Wizard->next();
-  }
-  else if (Wizard->value() == Pane[PANE_SELECT])
-  {
-    if (NumInstTypes)
-      PrevButton->activate();
 
-    // Figure out which type is chosen...
-    for (i = 0; i < (int)(sizeof(TypeButton) / sizeof(TypeButton[0])); i ++)
-      if (TypeButton[i]->value())
-        break;
-
-    if (i < (int)(sizeof(TypeButton) / sizeof(TypeButton[0])))
-    {
-      // Set the EPM_INSTALL_TYPE environment variable...
-      snprintf(install_type, sizeof(install_type), "EPM_INSTALL_TYPE=%s",
-               InstTypes[i].name);
-      putenv(install_type);
-
-      // Skip product selection if this type has a list already...
-      if (InstTypes[i].num_products > 0)
-        Wizard->next();
-    }
-  }
-
-  if (Wizard->value() == Pane[PANE_CONFIRM])
-  {
-    ConfirmList->clear();
     PrevButton->activate();
-
-    for (i = 0; i < NumDists; i ++)
-      if (SoftwareList->checked(i + 1))
-        ConfirmList->add(SoftwareList->text(i + 1));
+    NextButton->activate();
+    CancelButton->activate();
   }
-  else if (Wizard->value() == Pane[PANE_LICENSE])
-    Wizard->next();
-
-  if (Wizard->value() == Pane[PANE_INSTALL] && !installing)
-  {
-    // Show the licenses for each of the selected software packages...
-    installing = 1;
-
-      if ( license_dist() )
+  if (Wizard->value() == Pane[PANE_SELECT]) {
+      NextButton->activate();
+      CancelButton->activate();
+      if (SoftwareList->nchecked() == 0)
       {
-        InstallPercent->label("Installation Canceled!");
-	Pane[PANE_INSTALL]->redraw();
-
-        CancelButton->label("Close");
-	CancelButton->activate();
-
-	fl_beep();
-	return;
+        NextButton->deactivate();
+        update_label();
+        return;
       }
 
-    for (i = 0, progress = 0, error = 0; i < NumDists; i ++)
-    // Then do the installs...
+      if (NumInstTypes)
+        PrevButton->activate();
+    // Figure out which type is chosen...
+      for (i = 0; i < (int)(sizeof(TypeButton) / sizeof(TypeButton[0])); i ++)
+        if (TypeButton[i]->value())
+          break;
+
+      if (i < (int)(sizeof(TypeButton) / sizeof(TypeButton[0])))
+      {
+        // Set the EPM_INSTALL_TYPE environment variable...
+        snprintf(install_type, sizeof(install_type), "EPM_INSTALL_TYPE=%s", InstTypes[i].name);
+        putenv(install_type);
+
+      // Skip product selection if this type has a list already...
+        if (InstTypes[i].num_products > 0  && from == 1)
+          Wizard->next();
+      }
+  }
+  if (Wizard->value() == Pane[PANE_LICENSE]) {
+    //copy code from license_dist
+    char		licfile[1024];		// License filename
+    struct stat	licinfo;		// License file info
+    static int	liclength = 0;		// Size of license file
+    static char	liclabel[1024];		// Label for license pane
+    // See if we need to show the license file...
+    sprintf(licfile, "LICENSE");
+    licaccept = 0;
+    CancelButton->label("Cancel");
+    CancelButton->activate();
+    PrevButton->activate();
+    NextButton->activate();
+    if (!stat(licfile, &licinfo) && licinfo.st_size != liclength)
+    {
+      // Save this license's length...
+      liclength = licinfo.st_size;
+      // Set the title string...
+      snprintf(liclabel, sizeof(liclabel), "Software License");
+      LicenseFile->label(liclabel);
+      // Load the license into the viewer...
+      LicenseFile->textfont(FL_HELVETICA);
+      LicenseFile->textsize(14);
+      gui_load_file(LicenseFile, licfile);
+      // Show the license window and wait for the user...
+      Pane[PANE_LICENSE]->show();
+      Title[PANE_LICENSE]->activate();
+      LicenseAccept->set();
+      NextButton->activate();
+      LicenseDecline->clear();
+      CancelButton->activate();
+
+      while (Pane[PANE_LICENSE]->visible())
+        Fl::wait();
+      Title[PANE_INSTALL]->deactivate();
+      CancelButton->deactivate();
+      NextButton->deactivate();
+
+      if (LicenseDecline->value())
+      {
+        // Can't install without acceptance...
+        char	message[1024];		// Message for log
+        liclength = 0;
+        InstallLog->clear();
+        snprintf(message, sizeof(message), "License not accepted!");
+        InstallLog->add(message);
+        licaccept = 0;
+      } else if (LicenseAccept->value())
+        licaccept = 1;
+    }
+  }
+//install must be in own check
+  if (Wizard->value() == Pane[PANE_INSTALL]) {
+    // Show the licenses for each of the selected software packages...
+    if ( licaccept == 0 )
+    {
+      InstallPercent->label("Installation Canceled!");
+      Pane[PANE_INSTALL]->redraw();
+      CancelButton->label("Close");
+      CancelButton->activate();
+      NextButton->deactivate();
+      fl_beep();
+      update_label();
+      return;
+    }
+
     NextButton->deactivate();
+    PrevButton->deactivate();
     CancelButton->deactivate();
     CancelButton->label("Close");
 
@@ -1059,24 +1102,53 @@ next_cb(Fl_Button *, void *)
       InstallPercent->label("Installation Complete");
 
     Pane[PANE_INSTALL]->redraw();
-
+    NextButton->deactivate();
+    PrevButton->deactivate();
     CancelButton->activate();
 
     fl_beep();
 
-    installing = 0;
   }
-  else if (Wizard->value() == Pane[PANE_SELECT] &&
-           SoftwareList->nchecked() == 0)
-    NextButton->deactivate();
 
-  for (i = 0; i <= PANE_INSTALL; i ++)
+// else cannot be here. we maybe increase Wizard->value in prev check
+  if (Wizard->value() == Pane[PANE_CONFIRM]) {
+    ConfirmList->clear();
+    for (i = 0; i < NumDists; i ++)
+      if (SoftwareList->checked(i + 1))
+        ConfirmList->add(SoftwareList->text(i + 1));
+    CancelButton->label("Cancel");
+    CancelButton->activate();
+    PrevButton->activate();
+    NextButton->activate();
+  }
+
+
+
+  update_label();
+}
+
+void update_label() {
+int i;
+// update titles
+  for (i = 0; i < 6; i ++)
   {
     Title[i]->activate();
-
     if (Pane[i]->visible())
       break;
   }
+  for (i ++; i < 6; i ++)
+    Title[i]->deactivate();
+}
+
+//
+// 'next_cb()' - Show software selections or install software.
+//
+
+void
+next_cb(Fl_Button *, void *)
+{
+  Wizard->next();
+  update_control(1);
 }
 
 
@@ -1220,5 +1292,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.8 2009/02/17 14:46:41 anikolov Exp $".
+// End of "$Id: setup2.cxx,v 1.9 2009/03/04 14:01:08 bsavelev Exp $".
 //

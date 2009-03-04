@@ -325,19 +325,7 @@ Fl_Button *PrevButton=(Fl_Button *)0;
 
 static void cb_PrevButton(Fl_Button*, void*) {
   Wizard->prev();
-
-int i;
-
-for (i = 0; i < 6; i ++)
-{
-  Title[i]->activate();
-
-  if (Pane[i]->visible())
-    break;
-}
-
-for (i ++; i < 6; i ++)
-  Title[i]->deactivate();
+  update_control(0);
 }
 
 Fl_Button *NextButton=(Fl_Button *)0;

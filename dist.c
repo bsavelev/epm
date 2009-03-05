@@ -1,5 +1,5 @@
 /*
- * "$Id: dist.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: dist.c,v 1.2 2009/03/05 14:25:13 bsavelev Exp $"
  *
  *   Distribution functions for the ESP Package Manager (EPM).
  *
@@ -1224,15 +1224,16 @@ sort_dist_files(dist_t *dist)		/* I - Distribution to sort */
           !strcmp(file[0].src, file[1].src) &&
           !strcmp(file[0].user, file[1].user) &&
 	  !strcmp(file[0].group, file[1].group) &&
-	  !strcmp(file[0].options, file[1].options))
+	  !strcmp(file[0].options, file[1].options) &&
+	  !sort_subpackages(file[0].subpackage, file[1].subpackage))
       {
        /*
         * Ignore exact duplicates...
 	*/
 
-	memcpy(file, file + 1, i * sizeof(file_t));
-	dist->num_files --;
-	file --;
+ 	memcpy(file, file + 1, i * sizeof(file_t));
+ 	dist->num_files --;
+ 	file --;
       }
       else
         fprintf(stderr, "epm: Duplicate destination path \"%s\" with different info!\n"
@@ -2260,10 +2261,26 @@ static int				/* O - Result of comparison */
 sort_subpackages(char **a,		/* I - First subpackage */
                  char **b)		/* I - Second subpackage */
 {
-  return (strcmp(*a, *b));
+  size_t stLen1 = 0;
+
+//for main package where subpackage not defined
+   if (!a && !b )
+     return 0;
+
+  if (a)
+    stLen1 = strlen( a );
+
+  if (stLen1 && b) {
+     if (!strncasecmp(a, b, stLen1))
+       return 0;
+  }
+  return 1;
+
+//old variant
+//   return (strcmp(*a, *b));
 }
 
 
 /*
- * End of "$Id: dist.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: dist.c,v 1.2 2009/03/05 14:25:13 bsavelev Exp $".
  */

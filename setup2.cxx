@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.9 2009/03/04 14:01:08 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.10 2009/03/06 15:40:08 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -1061,6 +1061,7 @@ void update_control(int from) {
 //install must be in own check
   if (Wizard->value() == Pane[PANE_INSTALL]) {
     // Show the licenses for each of the selected software packages...
+    update_label();
     if ( licaccept == 0 )
     {
       InstallPercent->label("Installation Canceled!");
@@ -1069,7 +1070,6 @@ void update_control(int from) {
       CancelButton->activate();
       NextButton->deactivate();
       fl_beep();
-      update_label();
       return;
     }
 
@@ -1130,13 +1130,13 @@ void update_control(int from) {
 void update_label() {
 int i;
 // update titles
-  for (i = 0; i < 6; i ++)
+  for (i = 0; i < 7; i ++)
   {
     Title[i]->activate();
     if (Pane[i]->visible())
       break;
   }
-  for (i ++; i < 6; i ++)
+  for (i ++; i < 7; i ++)
     Title[i]->deactivate();
 }
 
@@ -1292,5 +1292,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.9 2009/03/04 14:01:08 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.10 2009/03/06 15:40:08 bsavelev Exp $".
 //

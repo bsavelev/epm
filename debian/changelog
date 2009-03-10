@@ -1,3 +1,11 @@
+epm (4.1-2.17) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fixed wizard buttons.
+  * Fixed steps highlighting.
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Tue, 10 Mar 2009 13:01:08 +0300
+
 epm (4.1-2.16) unstable; urgency=low
 
   * Non-maintainer upload.

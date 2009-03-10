@@ -8,7 +8,7 @@ Function {make_window()} {open
     label Uninstall
     callback {if (CancelButton->active())
   exit(0);} open selected
-    xywh {479 257 640 310} type Double resizable
+    xywh {479 257 640 310} type Double
     code0 {\#include "gui-common.h"}
     code1 {\#include "uninst2.h"} visible
   } {

@@ -8,7 +8,7 @@ Function {make_window()} {open
     label Install
     callback {if (CancelButton->active())
   exit(0);} open selected
-    xywh {491 361 640 330} type Double resizable
+    xywh {491 361 640 330} type Double
     code0 {\#include "gui-common.h"}
     code1 {\#include "setup2.h"} visible
   } {

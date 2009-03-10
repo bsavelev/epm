@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.10 2009/03/06 15:40:08 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.11 2009/03/10 09:30:47 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -1130,13 +1130,13 @@ void update_control(int from) {
 void update_label() {
 int i;
 // update titles
-  for (i = 0; i < 7; i ++)
+  for (i = 0; i < 6; i ++)
   {
     Title[i]->activate();
     if (Pane[i]->visible())
       break;
   }
-  for (i ++; i < 7; i ++)
+  for (i ++; i < 6; i ++)
     Title[i]->deactivate();
 }
 
@@ -1292,5 +1292,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.10 2009/03/06 15:40:08 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.11 2009/03/10 09:30:47 bsavelev Exp $".
 //

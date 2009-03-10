@@ -1,3 +1,11 @@
+epm (4.1-2.18) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Window enlarged.
+  * FLUID compile to C++.
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Tue, 10 Mar 2009 15:14:28 +0300
+
 epm (4.1-2.17) unstable; urgency=low
 
   * Non-maintainer upload.

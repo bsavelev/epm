@@ -1,5 +1,5 @@
 //
-// "$Id: uninst2.cxx,v 1.3 2009/03/04 14:02:01 bsavelev Exp $"
+// "$Id: uninst2.cxx,v 1.4 2009/03/10 09:25:29 bsavelev Exp $"
 //
 //   ESP Software Removal Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -413,39 +413,36 @@ log_cb(int fd,			// I - Pipe to read from
   RemoveLog->bottomline(RemoveLog->size());
 }
 
-
-//
-// 'next_cb()' - Show software selections or remove software.
-//
-
 void
-next_cb(Fl_Button *, void *)
+update_control(int from)
 {
   int		i;		// Looping var
   int		progress;	// Progress so far...
   int		error;		// Errors?
   static char	message[1024];	// Progress message...
-  static int	removing = 0;	// Removing software?
 
-
-  Wizard->next();
-
-  PrevButton->deactivate();
-
+  if (Wizard->value() == Pane[PANE_WELCOME])
+  {
+    PrevButton->deactivate();
+    NextButton->activate();
+  }
   if (Wizard->value() == Pane[PANE_CONFIRM])
   {
     ConfirmList->clear();
     PrevButton->activate();
+    CancelButton->activate();
+    CancelButton->label("Cancel");
 
     for (i = 0; i < NumInstalled; i ++)
       if (SoftwareList->checked(i + 1))
         ConfirmList->add(SoftwareList->text(i + 1));
   }
 
-  if (Wizard->value() == Pane[PANE_REMOVE] && !removing)
+  if (Wizard->value() == Pane[PANE_REMOVE])
   {
-    removing = 1;
+    update_label();
 
+    PrevButton->deactivate();
     NextButton->deactivate();
     CancelButton->deactivate();
     CancelButton->label("Close");
@@ -479,22 +476,26 @@ next_cb(Fl_Button *, void *)
 
     fl_beep();
 
-    removing = 0;
   }
   else if (Wizard->value() == Pane[PANE_SELECT] &&
-           SoftwareList->nchecked() == 0)
+           SoftwareList->nchecked() == 0) {
     NextButton->deactivate();
-
-// update titles
-  for (i = 0; i < 4; i ++)
-  {
-    Title[i]->activate();
-    if (Pane[i]->visible())
-      break;
+    PrevButton->activate();
   }
-  for (i ++; i < 4; i ++)
-    Title[i]->deactivate();
+// update titles
+  update_label();
 
+}
+
+//
+// 'next_cb()' - Show software selections or remove software.
+//
+
+void
+next_cb(Fl_Button *, void *)
+{
+  Wizard->next();
+  update_control(1);
 }
 
 
@@ -746,8 +747,17 @@ update_sizes(void)
   SoftwareSize->label(sizelabel);
   SoftwareSize->redraw();
 }
-
-
+void update_label() {
+int i;
+  for (i = 0; i < 4; i ++)
+  {
+    Title[i]->activate();
+    if (Pane[i]->visible())
+      break;
+  }
+  for (i ++; i < 4; i ++)
+    Title[i]->deactivate();
+}
 //
-// End of "$Id: uninst2.cxx,v 1.3 2009/03/04 14:02:01 bsavelev Exp $".
+// End of "$Id: uninst2.cxx,v 1.4 2009/03/10 09:25:29 bsavelev Exp $".
 //

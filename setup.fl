@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0107 
+version 1.0109 
 header_name {.h} 
 code_name {.cxx}
 Function {make_window()} {open
@@ -7,9 +7,10 @@ Function {make_window()} {open
   Fl_Window SetupWindow {
     label Install
     callback {if (CancelButton->active())
-  exit(0);} open
-    xywh {385 23 640 330} type Double
-    code0 {\#include "gui-common.h"} visible
+  exit(0);} open selected
+    xywh {491 361 640 330} type Double resizable
+    code0 {\#include "gui-common.h"}
+    code1 {\#include "setup2.h"} visible
   } {
     Fl_Box {Title[0]} {
       label Welcome
@@ -56,7 +57,7 @@ Function {make_window()} {open
           xywh {170 65 440 200}
         } {
           Fl_Round_Button {TypeButton[0]} {
-            callback type_cb selected
+            callback type_cb
             xywh {170 65 440 25} type Radio down_box ROUND_DOWN_BOX
           }
           Fl_Round_Button {TypeButton[1]} {
@@ -135,7 +136,7 @@ list_cb(0,0);}
       } {
         Fl_Help_View LicenseFile {
           label {License Agreement:}
-          xywh {170 48 440 192} labelfont 1 align 5 resizable
+          xywh {163 48 455 192} labelfont 1 align 5 resizable
         }
         Fl_Group {} {open
           xywh {170 240 400 35}
@@ -170,19 +171,7 @@ list_cb(0,0);}
     Fl_Button PrevButton {
       label {@-2< Back}
       callback {Wizard->prev();
-
-int i;
-
-for (i = 0; i < 6; i ++)
-{
-  Title[i]->activate();
-
-  if (Pane[i]->visible())
-    break;
-}
-
-for (i ++; i < 6; i ++)
-  Title[i]->deactivate();}
+update_control(0);}
       xywh {396 295 72 25}
     }
     Fl_Button NextButton {

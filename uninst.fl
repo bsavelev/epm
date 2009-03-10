@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0108 
+version 1.0109 
 header_name {.h} 
 code_name {.cxx}
 Function {make_window()} {open
@@ -8,8 +8,9 @@ Function {make_window()} {open
     label Uninstall
     callback {if (CancelButton->active())
   exit(0);} open selected
-    xywh {264 44 640 310} type Double
-    code0 {\#include "gui-common.h"} visible
+    xywh {479 257 640 310} type Double resizable
+    code0 {\#include "gui-common.h"}
+    code1 {\#include "uninst2.h"} visible
   } {
     Fl_Box {Title[0]} {
       label Welcome
@@ -96,17 +97,7 @@ list_cb(0,0);}
     Fl_Button PrevButton {
       label {@-2< Back}
       callback {Wizard->prev();
-int i;
-for (i = 0; i < 4; i ++)
-{
-  Title[i]->activate();
-
-  if (Pane[i]->visible())
-    break;
-}
-
-for (i ++; i < 4; i ++)
-  Title[i]->deactivate();}
+update_control(0);}
       xywh {396 275 72 25}
     }
     Fl_Button NextButton {

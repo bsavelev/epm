@@ -1,3 +1,11 @@
+epm (4.1-2.19) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fixed subpackage install banner.
+  * Fixed licence decline in setup.
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Fri, 13 Mar 2009 12:12:47 +0300
+
 epm (4.1-2.18) unstable; urgency=low
 
   * Non-maintainer upload.

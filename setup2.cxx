@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.12 2009/03/10 09:59:55 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.13 2009/03/13 08:15:08 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -1012,19 +1012,15 @@ void update_control(int from) {
     //copy code from license_dist
     char		licfile[1024];		// License filename
     struct stat	licinfo;		// License file info
-    static int	liclength = 0;		// Size of license file
     static char	liclabel[1024];		// Label for license pane
     // See if we need to show the license file...
     sprintf(licfile, "LICENSE");
-    licaccept = 0;
     CancelButton->label("Cancel");
     CancelButton->activate();
     PrevButton->activate();
     NextButton->activate();
-    if (!stat(licfile, &licinfo) && licinfo.st_size != liclength)
+    if (!stat(licfile, &licinfo))
     {
-      // Save this license's length...
-      liclength = licinfo.st_size;
       // Set the title string...
       snprintf(liclabel, sizeof(liclabel), "Software License");
       LicenseFile->label(liclabel);
@@ -1040,17 +1036,16 @@ void update_control(int from) {
       LicenseDecline->clear();
       CancelButton->activate();
 
-      while (Pane[PANE_LICENSE]->visible())
-        Fl::wait();
-      Title[PANE_INSTALL]->deactivate();
-      CancelButton->deactivate();
-      NextButton->deactivate();
+       while (Pane[PANE_LICENSE]->visible())
+         Fl::wait();
+       Title[PANE_INSTALL]->deactivate();
+       CancelButton->deactivate();
+       NextButton->deactivate();
 
       if (LicenseDecline->value())
       {
         // Can't install without acceptance...
         char	message[1024];		// Message for log
-        liclength = 0;
         InstallLog->clear();
         snprintf(message, sizeof(message), "License not accepted!");
         InstallLog->add(message);
@@ -1288,5 +1283,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.12 2009/03/10 09:59:55 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.13 2009/03/13 08:15:08 bsavelev Exp $".
 //

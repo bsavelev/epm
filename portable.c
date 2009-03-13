@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.10 2009/03/04 14:36:24 anikolov Exp $"
+ * "$Id: portable.c,v 1.11 2009/03/13 09:09:35 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -1912,8 +1912,32 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("	echo Software license silently accepted via command-line option.\n", scriptfile);
   fputs("else\n", scriptfile);
   fputs("	echo \"\"\n", scriptfile);
-  qprintf(scriptfile, "	echo This installation script will install the %s\n",
-          dist->product);
+
+//boris 2009-03-13
+  if (subpackage)
+  {
+    char	line[1024],			/* Line buffer */
+		*start,				/* Start of line */
+		*ptr;				/* Pointer into line */
+    for (i = 0; i < dist->num_descriptions; i ++)
+      if (dist->descriptions[i].subpackage == subpackage)
+	break;
+
+    if (i < dist->num_descriptions)
+    {
+      strlcpy(line, dist->descriptions[i].description, sizeof(line));
+      if ((ptr = strchr(line, '\n')) != NULL)
+        *ptr = '\0';
+      qprintf(scriptfile, "	echo This installation script will install the %s",
+           dist->product);
+      qprintf(scriptfile, " - %s\n",
+           line);
+    }
+  } else {
+   qprintf(scriptfile, "	echo This installation script will install the %s\n",
+           dist->product);
+  }
+//end boris
   qprintf(scriptfile, "	echo software version %s on your system.\n",
           dist->version);
   fputs("	echo \"\"\n", scriptfile);
@@ -2994,5 +3018,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.10 2009/03/04 14:36:24 anikolov Exp $".
+ * End of "$Id: portable.c,v 1.11 2009/03/13 09:09:35 bsavelev Exp $".
  */

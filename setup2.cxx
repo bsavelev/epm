@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.14 2009/03/19 14:49:51 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.15 2009/03/19 15:15:50 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -953,7 +953,7 @@ log_cb(int fd,			// I - Pipe to read from
 	fdfile = fopen("install.log", "a+");
 	if (fdfile)
 	{
-		stWr = fwrite( buffer, bufused, sizeof(char), fdfile );
+		stWr = fwrite( buffer, strlen(buffer), sizeof(char), fdfile );
 		if (!stWr)
 			perror("fwrite");
  		stWr = fwrite( "\n", strlen("\n"), 1, fdfile );
@@ -1305,5 +1305,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.14 2009/03/19 14:49:51 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.15 2009/03/19 15:15:50 bsavelev Exp $".
 //

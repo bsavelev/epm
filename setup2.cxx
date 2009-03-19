@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.13 2009/03/13 08:15:08 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.14 2009/03/19 14:49:51 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -945,9 +945,25 @@ log_cb(int fd,			// I - Pipe to read from
     bufused += bytes;
     buffer[bufused] = '\0';
 
+    FILE    *fdfile = NULL;
+    size_t  stWr = 0;
     while ((bufptr = strchr(buffer, '\n')) != NULL)
     {
       *bufptr++ = '\0';
+	fdfile = fopen("install.log", "a+");
+	if (fdfile)
+	{
+		stWr = fwrite( buffer, bufused, sizeof(char), fdfile );
+		if (!stWr)
+			perror("fwrite");
+ 		stWr = fwrite( "\n", strlen("\n"), 1, fdfile );
+		if (!stWr)
+			perror("fwrite");
+		fclose(fdfile);
+	}
+	else
+		perror("fopen");
+
       InstallLog->add(buffer);
       strcpy(buffer, bufptr);
       bufused -= bufptr - buffer;
@@ -1072,6 +1088,12 @@ void update_control(int from) {
     PrevButton->deactivate();
     CancelButton->deactivate();
     CancelButton->label("Close");
+    FILE    *fdfile = NULL;
+    fdfile = fopen("install.log", "w+");
+    if (fdfile)
+	fclose(fdfile);
+    else
+	perror("fopen");
 
     for (i = 0, progress = 0, error = 0; i < NumDists; i ++)
       if (SoftwareList->checked(i + 1))
@@ -1283,5 +1305,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.13 2009/03/13 08:15:08 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.14 2009/03/19 14:49:51 bsavelev Exp $".
 //

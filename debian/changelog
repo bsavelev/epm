@@ -1,3 +1,10 @@
+epm (4.1-2.20) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Write installation log to install.log for GUI
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Mon, 23 Mar 2009 12:44:56 +0300
+
 epm (4.1-2.19) unstable; urgency=low
 
   * Non-maintainer upload.

@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.1 2009/03/25 15:25:39 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.2 2009/03/25 15:46:50 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -1166,6 +1166,9 @@ write_confcheck(FILE *fp)		/* I - Script file */
   fputs("	ac_tar=\"tar -xpPf\"\n", fp);
   fputs("else if test \"`tar --help 2>&1 | grep GNU`\" = \"\"; then\n", fp);
   fputs("	ac_tar=\"tar -xpf\"\n", fp);
+  fputs("	if test -x `which gtar`; then\n", fp);
+  fputs("		ac_tar=\"gtar -xpPf\"\n", fp);
+  fputs("	fi\n", fp);
   fputs("else\n", fp);
   fputs("	ac_tar=\"tar -xpPf\"\n", fp);
   fputs("fi fi\n", fp);
@@ -1492,7 +1495,7 @@ write_distfiles(const char *directory,	/* I - Directory */
 	    */
 
 	    if (tolower(file->type) == 'c')
-	      snprintf(filename, sizeof(filename), "%s/conf%s.N", SoftwareDir,
+	      snprintf(filename, sizeof(filename), "%s/conf/%s.N", SoftwareDir,
 	               file->dst);
 	    else if (tolower(file->type) == 'i')
 	      snprintf(filename, sizeof(filename), "%s/init.d/%s", SoftwareDir,
@@ -2134,8 +2137,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       switch (tolower(file->type))
       {
 	case 'c' :
-	    qprintf(scriptfile, "chown %s %s/conf%s.N\n", file->user, SoftwareDir, file->dst);
-	    qprintf(scriptfile, "chgrp %s %s/conf%s.N\n", file->group, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "chown %s %s/conf/%s.N\n", file->user, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "chgrp %s %s/conf/%s.N\n", file->group, SoftwareDir, file->dst);
 	case 'f' :
 	    qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
@@ -2150,8 +2153,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       switch (tolower(file->type))
       {
 	case 'c' :
-	    qprintf(scriptfile, "	chown %s %s/conf%s.N\n", file->user, SoftwareDir, file->dst);
-	    qprintf(scriptfile, "	chgrp %s %s/conf%s.N\n", file->group, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "	chown %s %s/conf/%s.N\n", file->user, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "	chgrp %s %s/conf/%s.N\n", file->group, SoftwareDir, file->dst);
 	case 'f' :
 	    qprintf(scriptfile, "	chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "	chgrp %s %s\n", file->group, file->dst);
@@ -3018,5 +3021,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.1 2009/03/25 15:25:39 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.2 2009/03/25 15:46:50 bsavelev Exp $".
  */

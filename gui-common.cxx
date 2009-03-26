@@ -1,5 +1,5 @@
 //
-// "$Id: gui-common.cxx,v 1.2 2009/02/06 15:09:14 anikolov Exp $"
+// "$Id: gui-common.cxx,v 1.2.2.1 2009/03/26 14:01:44 bsavelev Exp $"
 //
 //   ESP Software Wizard common functions for the ESP Package Manager (EPM).
 //
@@ -142,8 +142,9 @@ gui_get_installed(void)
   const char	*ext;			// Extension
   gui_dist_t	*temp;			// Pointer to current distribution
   FILE		*fp;			// File to read from
-  char		line[1024];		// Line from file...
-
+  char		line[1024],		// Line from file...
+		product[64];		// Product name...
+  int		lowver, hiver;		// Version numbers for dependencies
 
   // See if there are any installed files...
   NumInstalled = 0;
@@ -192,6 +193,17 @@ gui_get_installed(void)
 	    temp->rootsize = atoi(line + 11);
 	  else if (!strncmp(line, "#%usrsize ", 10))
 	    temp->usrsize = atoi(line + 10);
+	  else if (strncmp(line, "#%incompat ", 11) == 0 ||
+	         strncmp(line, "#%requires ", 11) == 0)
+	  {
+	    lowver = 0;
+	    hiver  = 0;
+
+	    if (sscanf(line + 11, "%s%*s%d%*s%d", product, &lowver, &hiver) > 0)
+	      gui_add_depend(temp, (line[2] == 'i') ? DEPEND_INCOMPAT :
+	                                            DEPEND_REQUIRES,
+	        	   product, lowver, hiver);
+          }
 	}
 
 	fclose(fp);
@@ -345,5 +357,5 @@ gui_sort_dists(const gui_dist_t *d0,	// I - First distribution
 
 
 //
-// End of "$Id: gui-common.cxx,v 1.2 2009/02/06 15:09:14 anikolov Exp $".
+// End of "$Id: gui-common.cxx,v 1.2.2.1 2009/03/26 14:01:44 bsavelev Exp $".
 //

@@ -1,5 +1,5 @@
 //
-// "$Id: uninst2.cxx,v 1.4 2009/03/10 09:25:29 bsavelev Exp $"
+// "$Id: uninst2.cxx,v 1.4.2.1 2009/03/26 13:59:05 bsavelev Exp $"
 //
 //   ESP Software Removal Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -209,6 +209,7 @@ list_cb(Fl_Check_Browser *, void *)
 {
   int		i, j, k;
   gui_dist_t	*dist,
+		*dist_f,
 		*dist2;
   gui_depend_t	*depend;
 
@@ -224,68 +225,48 @@ list_cb(Fl_Check_Browser *, void *)
   for (i = 0, dist = Installed; i < NumInstalled; i ++, dist ++)
     if (SoftwareList->checked(i + 1))
     {
-      // Check for required/incompatible products...
-      for (j = 0, depend = dist->depends; j < dist->num_depends; j ++, depend ++)
-        switch (depend->type)
-	{
-	  case DEPEND_REQUIRES :
-	      if ((dist2 = gui_find_dist(depend->product, NumInstalled,
-	                                 Installed)) != NULL)
-	      {
-  		// Software is in the list, is it selected?
-	        k = dist2 - Installed;
-
-		if (SoftwareList->checked(k + 1))
-		  continue;
-
-        	// Nope, select it unless we're unchecked another selection...
-		if (SoftwareList->value() != (k + 1))
-		  SoftwareList->checked(k + 1, 1);
-		else
-		{
-		  SoftwareList->checked(i + 1, 0);
-		  break;
-		}
-	      }
-	      else if ((dist2 = gui_find_dist(depend->product, NumInstalled,
-	                                      Installed)) == NULL)
-	      {
-		// Required but not installed or available!
-		fl_alert("%s requires %s to be installed, but it is not available "
-	        	 "for installation.", dist->name, depend->product);
-		SoftwareList->checked(i + 1, 0);
-		break;
-	      }
+	for (j = 0, dist_f = Installed; j < NumInstalled; j ++, dist_f ++) {
+	  depend = dist_f->depends;
+	  if (depend != NULL) {
+            switch (depend->type)
+	    {
+	      case DEPEND_REQUIRES :
+		dist2 = gui_find_dist(depend->product, NumInstalled, Installed);
+		if ( dist2 == dist ) {
+		  SoftwareList->checked(j + 1, 1);
+	        }
 	      break;
 
-          case DEPEND_INCOMPAT :
-	      if ((dist2 = gui_find_dist(depend->product, NumInstalled,
-	                                 Installed)) != NULL)
-	      {
-		// Already installed!
-		fl_alert("%s is incompatible with %s. Please remove it before "
-	        	 "installing this software.", dist->name, dist2->name);
-		SoftwareList->checked(i + 1, 0);
-		break;
-	      }
-	      else if ((dist2 = gui_find_dist(depend->product, NumInstalled,
-	                                      Installed)) != NULL)
-	      {
-  		// Software is in the list, is it selected?
-	        k = dist2 - Installed;
-
-		// Software is in the list, is it selected?
-		if (!SoftwareList->checked(k + 1))
-		  continue;
-
-        	// Yes, tell the user...
-		fl_alert("%s is incompatible with %s. Please deselect it before "
-	        	 "installing this software.", dist->name, dist2->name);
-		SoftwareList->checked(i + 1, 0);
-		break;
-	      }
-	  default :
-	      break;
+	      case DEPEND_INCOMPAT :
+// 	        if ((dist2 = gui_find_dist(depend->product, NumInstalled,
+// 	                                 Installed)) != NULL)
+// 	      {
+// 		// Already installed!
+// 		fl_alert("%s is incompatible with %s. Please remove it before "
+// 	        	 "installing this software.", dist->name, dist2->name);
+// 		SoftwareList->checked(i + 1, 0);
+// 		break;
+// 	      }
+// 	      else if ((dist2 = gui_find_dist(depend->product, NumInstalled,
+// 	                                      Installed)) != NULL)
+// 	      {
+//   		// Software is in the list, is it selected?
+// 	        k = dist2 - Installed;
+// 
+// 		// Software is in the list, is it selected?
+// 		if (!SoftwareList->checked(k + 1))
+// 		  continue;
+// 
+//         	// Yes, tell the user...
+// 		fl_alert("%s is incompatible with %s. Please deselect it before "
+// 	        	 "installing this software.", dist->name, dist2->name);
+// 		SoftwareList->checked(i + 1, 0);
+ 		break;
+// 	      }
+	      default :
+	        break;
+	    }
+	  }
 	}
     }
 
@@ -759,5 +740,5 @@ int i;
     Title[i]->deactivate();
 }
 //
-// End of "$Id: uninst2.cxx,v 1.4 2009/03/10 09:25:29 bsavelev Exp $".
+// End of "$Id: uninst2.cxx,v 1.4.2.1 2009/03/26 13:59:05 bsavelev Exp $".
 //

@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.2 2009/03/25 15:46:50 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.3 2009/03/26 14:00:03 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2710,6 +2710,8 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   fputs("	done\n", scriptfile);
   fputs("fi\n", scriptfile);
 
+  write_depends(prodname, dist, scriptfile, subpackage);
+
  /*
   * Find any removal commands in the list file...
   */
@@ -3021,5 +3023,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.2 2009/03/25 15:46:50 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.3 2009/03/26 14:00:03 bsavelev Exp $".
  */

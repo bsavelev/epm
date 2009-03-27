@@ -1,3 +1,11 @@
+epm (4.1-2.21) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Write remove depends to remove file
+  * Fix depends check in GUI unistaller 
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Fri, 27 Mar 2009 13:20:12 +0300
+
 epm (4.1-2.20) unstable; urgency=low
 
   * Non-maintainer upload.

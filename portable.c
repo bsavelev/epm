@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.3 2009/03/26 14:00:03 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.4 2009/04/01 15:27:36 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -1379,6 +1379,42 @@ write_depends(const char *prodname,	/* I - Product name */
   return (0);
 }
 
+/*
+ * 'write_depends()' - Write dependencies.
+ */
+
+static int				/* O - 0 on success, - 1 on failure */
+write_remove_depends(const char *prodname,	/* I - Product name */
+              dist_t     *dist,		/* I - Distribution */
+              FILE       *fp,		/* I - File pointer */
+	      const char *subpackage)	/* I - Subpackage */
+{
+  int			i;		/* Looping var */
+  depend_t		*d;		/* Current dependency */
+  const char		*product;	/* Product/file to depend on */
+  static const char	*depends[] =	/* Dependency strings */
+			{
+			  "requires",
+			  "incompat",
+			  "replaces",
+			  "provides"
+			};
+
+
+  for (i = 0, d = dist->depends; i < dist->num_depends; i ++, d ++)
+    if (d->subpackage == subpackage)
+    {
+      if (!strcmp(d->product, "_self"))
+        product = prodname;
+      else
+        product = d->product;
+
+      fprintf(fp, "#%%%s %s %d %d\n", depends[(int)d->type], product,
+              d->vernumber[0], d->vernumber[1]);
+    }
+  return (0);
+}
+
 
 /*
  * 'write_distfiles()' - Write a software distribution...
@@ -2710,7 +2746,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   fputs("	done\n", scriptfile);
   fputs("fi\n", scriptfile);
 
-  write_depends(prodname, dist, scriptfile, subpackage);
+  write_remove_depends(prodname, dist, scriptfile, subpackage);
 
  /*
   * Find any removal commands in the list file...
@@ -3023,5 +3059,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.3 2009/03/26 14:00:03 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.4 2009/04/01 15:27:36 bsavelev Exp $".
  */

@@ -1,3 +1,11 @@
+epm (4.1-2.22) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Write to remove files only meta info about depends
+  * Dont output trash to console in GUI setup
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Wed, 1 Apr 2009 19:30:36 +0300
+
 epm (4.1-2.21) unstable; urgency=low
 
   * Non-maintainer upload.

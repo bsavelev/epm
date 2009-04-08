@@ -1,5 +1,5 @@
 //
-// "$Id: uninst2.cxx,v 1.4.2.1 2009/03/26 13:59:05 bsavelev Exp $"
+// "$Id: uninst2.cxx,v 1.4.2.2 2009/04/08 07:38:27 bsavelev Exp $"
 //
 //   ESP Software Removal Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -207,7 +207,7 @@ main(int  argc,			// I - Number of command-line arguments
 void
 list_cb(Fl_Check_Browser *, void *)
 {
-  int		i, j, k;
+  int		i, j, k, loop;
   gui_dist_t	*dist,
 		*dist_f,
 		*dist2;
@@ -221,8 +221,9 @@ list_cb(Fl_Check_Browser *, void *)
     NextButton->deactivate();
     return;
   }
+  loop=0;
+  for (i = 0, dist = Installed; i < NumInstalled; i ++, dist ++) {
 
-  for (i = 0, dist = Installed; i < NumInstalled; i ++, dist ++)
     if (SoftwareList->checked(i + 1))
     {
 	for (j = 0, dist_f = Installed; j < NumInstalled; j ++, dist_f ++) {
@@ -233,7 +234,13 @@ list_cb(Fl_Check_Browser *, void *)
 	      case DEPEND_REQUIRES :
 		dist2 = gui_find_dist(depend->product, NumInstalled, Installed);
 		if ( dist2 == dist ) {
+		 if (!SoftwareList->checked(j + 1)) {
 		  SoftwareList->checked(j + 1, 1);
+			if (loop!=5) {
+		  	  list_cb(0,0);
+			  loop++;
+			}
+		 }
 	        }
 	      break;
 
@@ -269,7 +276,7 @@ list_cb(Fl_Check_Browser *, void *)
 	  }
 	}
     }
-
+  }
   update_sizes();
 
   if (SoftwareList->nchecked())
@@ -740,5 +747,5 @@ int i;
     Title[i]->deactivate();
 }
 //
-// End of "$Id: uninst2.cxx,v 1.4.2.1 2009/03/26 13:59:05 bsavelev Exp $".
+// End of "$Id: uninst2.cxx,v 1.4.2.2 2009/04/08 07:38:27 bsavelev Exp $".
 //

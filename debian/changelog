@@ -1,3 +1,10 @@
+epm (4.1-2.23) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix depends check in GUI uninstaller
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Wed, 8 Apr 2009 11:41:10 +0300
+
 epm (4.1-2.22) unstable; urgency=low
 
   * Non-maintainer upload.

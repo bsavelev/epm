@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.9 2009/04/09 13:29:50 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.10 2009/04/09 13:42:42 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2990,7 +2990,7 @@ write_space_checks(const char *prodname,/* I - Distribution name */
   fputs("	;;\n\n", fp);
   fputs("	HP-UX)\n", fp);
   fputs("	dfroot=`df -k / | tr '\\n' ' '`\n", fp);
-  fputs("	dfusr=`df -k /us1 | tr '\\n' ' '`\n", fp);
+  fputs("	dfusr=`df -k /usr | tr '\\n' ' '`\n", fp);
   fputs("	fsroot=`echo $dfroot | awk '{print $1}'`\n", fp);
   fputs("	sproot=`echo $dfroot | awk '{print $9}'`\n", fp);
   fputs("	fsusr=`echo $dfusr | awk '{print $1}'`\n", fp);
@@ -2998,7 +2998,7 @@ write_space_checks(const char *prodname,/* I - Distribution name */
   fputs("	;;\n\n", fp);
   fputs("	IRIX*)\n", fp);
   fputs("	dfroot=`df -k / | tr '\\n' ' '`\n", fp);
-  fputs("	dfusr=`df -k /us1 | tr '\\n' ' '`\n", fp);
+  fputs("	dfusr=`df -k /usr | tr '\\n' ' '`\n", fp);
   fputs("	fsroot=`echo $dfroot | awk '{print $15}'`\n", fp);
   fputs("	sproot=`echo $dfroot | awk '{print $13}'`\n", fp);
   fputs("	fsusr=`echo $dfusr | awk '{print $15}'`\n", fp);
@@ -3006,7 +3006,7 @@ write_space_checks(const char *prodname,/* I - Distribution name */
   fputs("	;;\n\n", fp);
   fputs("	SCO*)\n", fp);
   fputs("	dfroot=`df -k -B / | tr '\\n' ' '`\n", fp);
-  fputs("	dfusr=`df -k -B /us1 | tr '\\n' ' '`\n", fp);
+  fputs("	dfusr=`df -k -B /usr | tr '\\n' ' '`\n", fp);
   fputs("	fsroot=`echo $dfroot | awk '{print $13}'`\n", fp);
   fputs("	sproot=`echo $dfroot | awk '{print $11}'`\n", fp);
   fputs("	fsusr=`echo $dfusr | awk '{print $13}'`\n", fp);
@@ -3014,7 +3014,7 @@ write_space_checks(const char *prodname,/* I - Distribution name */
   fputs("	;;\n\n", fp);
   fputs("	*)\n", fp);
   fputs("	dfroot=`df -k / | tr '\\n' ' '`\n", fp);
-  fputs("	dfusr=`df -k /us1 | tr '\\n' ' '`\n", fp);
+  fputs("	dfusr=`df -k /usr | tr '\\n' ' '`\n", fp);
   fputs("	fsroot=`echo $dfroot | awk '{print $13}'`\n", fp);
   fputs("	sproot=`echo $dfroot | awk '{print $11}'`\n", fp);
   fputs("	fsusr=`echo $dfusr | awk '{print $13}'`\n", fp);
@@ -3059,5 +3059,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.9 2009/04/09 13:29:50 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.10 2009/04/09 13:42:42 bsavelev Exp $".
  */

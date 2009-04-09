@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.7 2009/04/09 12:31:43 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.8 2009/04/09 13:03:33 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2982,7 +2982,7 @@ write_space_checks(const char *prodname,/* I - Distribution name */
   fputs("case `uname` in\n", fp);
   fputs("	AIX)\n", fp);
   fputs("	dfroot=`df -k / | tr '\\n' ' '`\n", fp);
-  fputs("	dfusr=`df -k /us1 | tr '\\n' ' '`\n", fp);
+  fputs("	dfusr=`df -k /usr | tr '\\n' ' '`\n", fp);
   fputs("	fsroot=`echo $dfroot | awk '{print $15}'`\n", fp);
   fputs("	sproot=`echo $dfroot | awk '{print $11}'`\n", fp);
   fputs("	fsusr=`echo $dfusr | awk '{print $15}'`\n", fp);
@@ -3059,5 +3059,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.7 2009/04/09 12:31:43 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.8 2009/04/09 13:03:33 bsavelev Exp $".
  */

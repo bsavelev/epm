@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.5 2009/04/09 12:05:50 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.6 2009/04/09 12:09:07 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -1531,10 +1531,10 @@ write_distfiles(const char *directory,	/* I - Directory */
 	    */
 
 	    if (tolower(file->type) == 'c')
-	      snprintf(filename, sizeof(filename), "%s/conf%s.N", SoftwareDir,
+	      snprintf(filename, sizeof(filename), "%s/conf/%s.N", SoftwareDir,
 	               file->dst);
 	    else if (tolower(file->type) == 'i')
-	      snprintf(filename, sizeof(filename), "%s/init.d%s", SoftwareDir,
+	      snprintf(filename, sizeof(filename), "%s/init.d/%s", SoftwareDir,
 	               file->dst);
 	    else
               strcpy(filename, file->dst);
@@ -3059,5 +3059,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.5 2009/04/09 12:05:50 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.6 2009/04/09 12:09:07 bsavelev Exp $".
  */

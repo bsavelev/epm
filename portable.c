@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.12 2009/04/13 10:50:09 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.13 2009/04/13 10:51:02 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -1170,7 +1170,7 @@ write_confcheck(FILE *fp)		/* I - Script file */
   fputs("	ac_tar=\"tar -xpf\"\n", fp);
   fputs("else\n", fp);
   fputs("	ac_tar=\"tar -xpPf\"\n", fp);
-  fputs("fi fi\n", fp);
+  fputs("fi fi fi\n", fp);
 
   return (0);
 }
@@ -3058,5 +3058,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.12 2009/04/13 10:50:09 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.13 2009/04/13 10:51:02 bsavelev Exp $".
  */

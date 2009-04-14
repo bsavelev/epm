@@ -1,3 +1,11 @@
+epm (4.1-2.25) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix PATH for script
+  * Fix rmdir with /bin/sh -e
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Tue, 14 Apr 2009 15:38:26 +0300
+
 epm (4.1-2.24) unstable; urgency=low
 
   * Non-maintainer upload.

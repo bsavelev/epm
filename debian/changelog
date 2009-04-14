@@ -1,3 +1,13 @@
+epm (4.1-2.24) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Add check build number for install
+  * Change directory before run install
+  * Run intall, remove with /bin/sh -e
+  * Some fixes for FreeBSD
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Tue, 14 Apr 2009 12:19:47 +0300
+
 epm (4.1-2.23) unstable; urgency=low
 
   * Non-maintainer upload.

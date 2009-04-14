@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.13 2009/04/13 10:51:02 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.14 2009/04/14 08:16:13 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -1016,7 +1016,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
   * Write the standard header...
   */
 
-  fputs("#!/bin/sh\n", fp);
+  fputs("#!/bin/sh -e\n", fp);
   fprintf(fp, "# %s script for %s version %s.\n", title,
           dist->product, dist->version);
   fputs("# Produced using " EPM_VERSION "; report problems to epm@easysw.com.\n",
@@ -1093,6 +1093,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
 
   fputs("PATH=/us1/xpg4/bin:/bin:/us1/bin:/us1/ucb:/sbin:/us1/sbin:${PATH}\n", fp);
   fputs("SHELL=/bin/sh\n", fp);
+  fprintf(fp,"PACKAGE_VERSION=\"%d\"\n",dist->vernumber);
   fputs("case \"`uname`\" in\n", fp);
   fputs("\tDarwin*)\n", fp);
   fputs("\tcase \"`id -un`\" in\n", fp);
@@ -1946,6 +1947,10 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     return (-1);
   }
 
+  fputs("if test \"`dirname \"$0\"`\" != \".\"; then\n", scriptfile);
+  fputs("\tcd \"`dirname \"$0\"`\"\n", scriptfile);
+  fputs("fi\n", scriptfile);
+
   fputs("if test \"$*\" = \"now\"; then\n", scriptfile);
   fputs("	echo Software license silently accepted via command-line option.\n", scriptfile);
   fputs("else\n", scriptfile);
@@ -2018,10 +2023,14 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   fputs("fi\n", scriptfile);
   fprintf(scriptfile, "if test -x %s/%s.remove; then\n", SoftwareDir, prodfull);
+  fprintf(scriptfile, "\tif [ \"`cat %s/%s.remove | grep \"%version\" | cut -d\" \" -f3`\" = \"$PACKAGE_VERSION\" ] ; then\n", SoftwareDir, prodfull);
+  fprintf(scriptfile,"\t\techo \"Package %s with version $PACKAGE_VERSION already installed\"\n",prodfull);
+  fputs("\t\texit 0\n",scriptfile);
+  fputs("\telse\n",scriptfile);
   fprintf(scriptfile, "	echo Removing old versions of %s software...\n",
           prodfull);
   fprintf(scriptfile, "	%s/%s.remove now\n", SoftwareDir, prodfull);
-  fputs("fi\n", scriptfile);
+  fputs("fi fi\n", scriptfile);
 
   write_space_checks(prodfull, scriptfile, rootsize ? "sw" : NULL,
                      usrsize ? "ss" : NULL, rootsize, usrsize);
@@ -2180,8 +2189,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	    break;
       }
 
-  fputs("if test -f /us1/.writetest; then\n", scriptfile);
-  fputs("	rm -f /us1/.writetest\n", scriptfile);
+  fputs("if test -f /usr/.writetest; then\n", scriptfile);
+  fputs("	rm -f /usr/.writetest\n", scriptfile);
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (strncmp(file->dst, "/us1", 4) == 0 &&
         strcmp(file->user, "root") != 0 && file->subpackage == subpackage)
@@ -2532,8 +2541,8 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
 	    break;
       }
 
-  fputs("if test -f /us1/.writetest; then\n", scriptfile);
-  fputs("	rm -f /us1/.writetest\n", scriptfile);
+  fputs("if test -f /usr/.writetest; then\n", scriptfile);
+  fputs("	rm -f /usr/.writetest\n", scriptfile);
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (strncmp(file->dst, "/us1", 4) == 0 &&
         strcmp(file->user, "root") != 0 && file->subpackage == subpackage)
@@ -2956,7 +2965,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   write_commands(dist, scriptfile, COMMAND_POST_REMOVE, subpackage);
 
   fprintf(scriptfile, "rm -f %s/%s.remove\n", SoftwareDir, prodfull);
-  fprintf(scriptfile, "find %s/../ -type d | sort -r | xargs rmdir -p 2> /dev/null\n", SoftwareDir);
+  fprintf(scriptfile, "( find %s/../ -type d | sort -r | xargs rmdir -p 2> /dev/null ) && true\n", SoftwareDir);
 
   fputs("echo Removal is complete.\n", scriptfile);
 
@@ -3058,5 +3067,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.13 2009/04/13 10:51:02 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.14 2009/04/14 08:16:13 bsavelev Exp $".
  */

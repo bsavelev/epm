@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.14 2009/04/14 08:16:13 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.15 2009/04/14 08:31:31 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -1091,7 +1091,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fprintf(fp, "#%%usrsize %d\n", usrsize);
   fputs("#\n", fp);
 
-  fputs("PATH=/us1/xpg4/bin:/bin:/us1/bin:/us1/ucb:/sbin:/us1/sbin:${PATH}\n", fp);
+  fputs("PATH=/usr/xpg4/bin:/bin:/usr/bin:/usr/ucb:/sbin:/usr/sbin:${PATH}\n", fp);
   fputs("SHELL=/bin/sh\n", fp);
   fprintf(fp,"PACKAGE_VERSION=\"%d\"\n",dist->vernumber);
   fputs("case \"`uname`\" in\n", fp);
@@ -3067,5 +3067,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.14 2009/04/14 08:16:13 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.15 2009/04/14 08:31:31 bsavelev Exp $".
  */

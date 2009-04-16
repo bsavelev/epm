@@ -1,3 +1,10 @@
+epm (4.1-2.26) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix check build number for install
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Thu, 16 Apr 2009 15:34:24 +0300
+
 epm (4.1-2.25) unstable; urgency=low
 
   * Non-maintainer upload.

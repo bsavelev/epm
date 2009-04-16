@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.15.2.2 2009/04/16 12:08:46 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.15.2.3 2009/04/16 13:22:51 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -484,7 +484,7 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
     // Execute the command; if an error occurs, return it...
     if (dist->type == PACKAGE_PORTABLE) {
       setenv("LANG","C",1);
-      execlp(dist->filename, dist->filename, "now", (char *)0);
+      execl(dist->filename, dist->filename, "now", (char *)0);
     } else {
       execlp("rpm", "rpm", "-U", "--nodeps", dist->filename, (char *)0);
     }
@@ -1305,5 +1305,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.15.2.2 2009/04/16 12:08:46 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.15.2.3 2009/04/16 13:22:51 bsavelev Exp $".
 //

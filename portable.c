@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.16 2009/04/14 11:37:19 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.17 2009/04/16 11:31:15 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2023,7 +2023,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   fputs("fi\n", scriptfile);
   fprintf(scriptfile, "if test -x %s/%s.remove; then\n", SoftwareDir, prodfull);
-  fprintf(scriptfile, "\tif [ \"`cat %s/%s.remove | grep \"%version\" | cut -d\" \" -f3`\" = \"$PACKAGE_VERSION\" ] ; then\n", SoftwareDir, prodfull);
+  fprintf(scriptfile, "\tif [ \"`grep \'^#%%version\' %s/%s.remove | awk \'{print $3}\'`\" = \"$PACKAGE_VERSION\" ] ; then\n", SoftwareDir, prodfull);
   fprintf(scriptfile,"\t\techo \"Package %s with version $PACKAGE_VERSION already installed\"\n",prodfull);
   fputs("\t\texit 0\n",scriptfile);
   fputs("\telse\n",scriptfile);
@@ -3067,5 +3067,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.16 2009/04/14 11:37:19 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.17 2009/04/16 11:31:15 bsavelev Exp $".
  */

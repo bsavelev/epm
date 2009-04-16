@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.15.2.1 2009/03/27 12:50:56 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.15.2.2 2009/04/16 12:08:46 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -438,7 +438,6 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
   char		command[1024];		// Command string
   int		fds[2];			// Pipe FDs
   int		status;			// Exit status
-  char* 	env[] = { getenv("PATH"), "LANG=C", (char *)0 }; // C locale for maintainer scripts
 #ifndef __APPLE__
   int		pid;			// Process ID
 #endif // !__APPLE__
@@ -483,11 +482,12 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
     close(fds[1]);
 
     // Execute the command; if an error occurs, return it...
-    if (dist->type == PACKAGE_PORTABLE)
-      execle(dist->filename, dist->filename, "now", (char *)0, env);
-    else
+    if (dist->type == PACKAGE_PORTABLE) {
+      setenv("LANG","C",1);
+      execlp(dist->filename, dist->filename, "now", (char *)0);
+    } else {
       execlp("rpm", "rpm", "-U", "--nodeps", dist->filename, (char *)0);
-
+    }
     exit(errno);
   }
   else if (pid < 0)
@@ -1305,5 +1305,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.15.2.1 2009/03/27 12:50:56 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.15.2.2 2009/04/16 12:08:46 bsavelev Exp $".
 //

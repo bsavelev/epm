@@ -1,5 +1,5 @@
 /*
- * "$Id: pkg.c,v 1.1.1.1.2.1 2009/05/07 15:32:46 bsavelev Exp $"
+ * "$Id: pkg.c,v 1.1.1.1.2.2 2009/05/07 15:49:02 bsavelev Exp $"
  *
  *   AT&T package gateway for the ESP Package Manager (EPM).
  *
@@ -515,8 +515,7 @@ make_pkg(const char     *prodname,	/* I - Product short name */
       unlink(preremove);
     if (postremove[0])
       unlink(postremove);
-    if (run_command(directory, "rm -rf %s/%s", directory, prodname))
-      return (1);
+    run_command(NULL, "/usr/bin/rm -rf %s/%s", directory, prodname);
   }
 
   return (0);
@@ -543,5 +542,5 @@ pkg_path(const char *filename,		/* I - Source filename */
 
 
 /*
- * End of "$Id: pkg.c,v 1.1.1.1.2.1 2009/05/07 15:32:46 bsavelev Exp $".
+ * End of "$Id: pkg.c,v 1.1.1.1.2.2 2009/05/07 15:49:02 bsavelev Exp $".
  */

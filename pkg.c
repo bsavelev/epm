@@ -1,5 +1,5 @@
 /*
- * "$Id: pkg.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: pkg.c,v 1.1.1.1.2.1 2009/05/07 15:32:46 bsavelev Exp $"
  *
  *   AT&T package gateway for the ESP Package Manager (EPM).
  *
@@ -396,6 +396,7 @@ make_pkg(const char     *prodname,	/* I - Product short name */
 
   if (dist->license[0])
     fprintf(fp, "i copyright=%s\n", pkg_path(dist->license, current));
+
   fprintf(fp, "i depend=%s/%s.depend\n", pkg_path(directory, current), prodname);
   fprintf(fp, "i pkginfo=%s/%s.pkginfo\n", pkg_path(directory, current),
           prodname);
@@ -408,6 +409,7 @@ make_pkg(const char     *prodname,	/* I - Product short name */
     fprintf(fp, "i preremove=%s\n", pkg_path(preremove, current));
   if (postremove[0])
     fprintf(fp, "i postremove=%s\n", pkg_path(postremove, current));
+
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     switch (tolower(file->type))
@@ -454,7 +456,7 @@ make_pkg(const char     *prodname,	/* I - Product short name */
   * Tar and compress the distribution...
   */
 
-  if (Verbosity)
+  /*if (Verbosity)
     puts("Creating .pkg.tgz file for distribution...");
 
   snprintf(filename, sizeof(filename), "%s/%s.pkg.tgz", directory, name);
@@ -471,7 +473,7 @@ make_pkg(const char     *prodname,	/* I - Product short name */
   }
 
   tar_close(tarfile);
-
+*/
  /*
   * Make a package stream file...
   */
@@ -513,6 +515,8 @@ make_pkg(const char     *prodname,	/* I - Product short name */
       unlink(preremove);
     if (postremove[0])
       unlink(postremove);
+    if (run_command(directory, "rm -rf %s/%s", directory, prodname))
+      return (1);
   }
 
   return (0);
@@ -539,5 +543,5 @@ pkg_path(const char *filename,		/* I - Source filename */
 
 
 /*
- * End of "$Id: pkg.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: pkg.c,v 1.1.1.1.2.1 2009/05/07 15:32:46 bsavelev Exp $".
  */

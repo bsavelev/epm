@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.19 2009/05/07 12:10:44 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.20 2009/05/13 10:00:23 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -1119,7 +1119,6 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fputs("\t;;\n", fp);
   fputs("esac\n", fp);
 
-  qprintf(fp, "echo Copyright %s\n", dist->copyright);
   fprintf(fp, "# Reset umask for %s...\n",
           title[0] == 'I' ? "install" : title[0] == 'R' ? "remove" : "patch");
   fputs("umask 002\n", fp);
@@ -1946,7 +1945,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
                     "     %s\n", filename, strerror(errno));
     return (-1);
   }
-
+  qprintf(scriptfile, "echo Copyright %s\n", dist->copyright);
   fputs("if test \"`dirname \"$0\"`\" != \".\"; then\n", scriptfile);
   fputs("\tcd \"`dirname \"$0\"`\"\n", scriptfile);
   fputs("fi\n", scriptfile);
@@ -2741,7 +2740,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   fputs("\texit 1\n", scriptfile);
   fputs("fi\n", scriptfile);
 
-
+  qprintf(scriptfile, "echo Copyright %s\n", dist->copyright);
   fputs("if test ! \"$*\" = \"now\"; then\n", scriptfile);
   fputs("	echo \"\"\n", scriptfile);
   qprintf(scriptfile, "	echo This removal script will remove the %s\n",
@@ -3079,5 +3078,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.19 2009/05/07 12:10:44 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.20 2009/05/13 10:00:23 bsavelev Exp $".
  */

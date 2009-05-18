@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.23 2009/05/15 10:09:51 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.24 2009/05/18 09:07:11 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2070,7 +2070,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   if (i)
   {
-    fputs("if test -w /us1 ; then\n", scriptfile);
+    fputs("if test -w /usr ; then\n", scriptfile);
     fputs("	echo Backing up old versions of shared files to be installed...\n", scriptfile);
 
     col = fputs("	for file in", scriptfile);
@@ -2886,7 +2886,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 
   if (i)
   {
-    fputs("if test -w /us1 ; then\n", scriptfile);
+    fputs("if test -w /usr ; then\n", scriptfile);
     col = fputs("	for file in", scriptfile);
     for (; i > 0; i --, file ++)
       if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
@@ -3066,7 +3066,7 @@ write_space_checks(const char *prodname,/* I - Distribution name */
   fprintf(fp, "		if test %d -gt $spusr; then\n", usrsize);
   fputs("			echo Not enough free disk space for "
         "software:\n", fp);
-  fprintf(fp, "			echo You need %d kbytes in /us1 but only have "
+  fprintf(fp, "			echo You need %d kbytes in /usr but only have "
               "$spusr kbytes available.\n", usrsize);
   fputs("			exit 1\n", fp);
   fputs("		fi\n", fp);
@@ -3078,5 +3078,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.23 2009/05/15 10:09:51 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.24 2009/05/18 09:07:11 bsavelev Exp $".
  */

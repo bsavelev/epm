@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.24 2009/05/18 09:07:11 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.25 2009/05/19 10:50:00 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -1166,11 +1166,13 @@ write_confcheck(FILE *fp)		/* I - Script file */
   fputs("	ac_tar=\"tar -xpPf\"\n", fp);
   fputs("else if test `uname` = FreeBSD; then\n", fp);
   fputs("	ac_tar=\"tar -xpPf\"\n", fp);
+  fputs("else if test \"`tar --help 2>/dev/null ; echo $\?`\" = \"1\"; then\n", fp);
+  fputs("	ac_tar=\"tar -xpPf\"\n", fp);
   fputs("else if test \"`tar --help 2>&1 | grep GNU`\" = \"\"; then\n", fp);
   fputs("	ac_tar=\"tar -xpf\"\n", fp);
   fputs("else\n", fp);
   fputs("	ac_tar=\"tar -xpPf\"\n", fp);
-  fputs("fi fi fi\n", fp);
+  fputs("fi fi fi fi\n", fp);
 
   return (0);
 }
@@ -3078,5 +3080,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.24 2009/05/18 09:07:11 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.25 2009/05/19 10:50:00 bsavelev Exp $".
  */

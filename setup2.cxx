@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.15.2.4 2009/05/21 12:04:29 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.15.2.5 2009/05/21 12:15:08 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -29,6 +29,7 @@
 //   next_cb()      - Show software selections or install software.
 //   type_cb()      - Handle selections in the type list.
 //   update_size()  - Update the total +/- sizes of the installations.
+//   update_control() - updates control on form
 //
 
 //#include <iostream>
@@ -1325,5 +1326,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.15.2.4 2009/05/21 12:04:29 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.15.2.5 2009/05/21 12:15:08 bsavelev Exp $".
 //

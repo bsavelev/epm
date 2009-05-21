@@ -1,5 +1,5 @@
 //
-// "$Id: uninst2.cxx,v 1.4.2.2 2009/04/08 07:38:27 bsavelev Exp $"
+// "$Id: uninst2.cxx,v 1.4.2.3 2009/05/21 12:04:30 bsavelev Exp $"
 //
 //   ESP Software Removal Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -227,7 +227,7 @@ list_cb(Fl_Check_Browser *, void *)
     if (SoftwareList->checked(i + 1))
     {
 	for (j = 0, dist_f = Installed; j < NumInstalled; j ++, dist_f ++) {
-	  depend = dist_f->depends;
+         for (k = 0, depend = dist_f->depends; k < dist_f->num_depends; k ++, depend ++) {
 	  if (depend != NULL) {
             switch (depend->type)
 	    {
@@ -274,6 +274,7 @@ list_cb(Fl_Check_Browser *, void *)
 	        break;
 	    }
 	  }
+         }
 	}
     }
   }
@@ -747,5 +748,5 @@ int i;
     Title[i]->deactivate();
 }
 //
-// End of "$Id: uninst2.cxx,v 1.4.2.2 2009/04/08 07:38:27 bsavelev Exp $".
+// End of "$Id: uninst2.cxx,v 1.4.2.3 2009/05/21 12:04:30 bsavelev Exp $".
 //

@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.15.2.3 2009/04/16 13:22:51 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.15.2.4 2009/05/21 12:04:29 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -31,6 +31,7 @@
 //   update_size()  - Update the total +/- sizes of the installations.
 //
 
+//#include <iostream>
 #define _DEFINE_GLOBALS_
 #include "setup.h"
 #include <FL/Fl_GIF_Image.H>
@@ -622,10 +623,13 @@ license_dist()				// I - Distribution to license
 void
 list_cb(Fl_Check_Browser *, void *)
 {
-  int		i, j, k;
+  int		i, j, k, m, l,n;
   gui_dist_t	*dist,
-		*dist2;
-  gui_depend_t	*depend;
+		*dist2,
+		*dist3,
+		*dist_tmp,
+		*dist_f;
+  gui_depend_t	*depend, *depend1;
 
 
   if (SoftwareList->nchecked() == 0)
@@ -640,7 +644,8 @@ list_cb(Fl_Check_Browser *, void *)
     if (SoftwareList->checked(i + 1))
     {
       // Check for required/incompatible products...
-      for (j = 0, depend = dist->depends; j < dist->num_depends; j ++, depend ++)
+      for (j = 0, depend = dist->depends; j < dist->num_depends; j ++, depend ++) {
+	//std::cout << "dist: " << dist->product << ". depend: " << depend->product << std::endl;
         switch (depend->type)
 	{
 	  case DEPEND_REQUIRES :
@@ -659,6 +664,20 @@ list_cb(Fl_Check_Browser *, void *)
 		else
 		{
 		  SoftwareList->checked(i + 1, 0);
+		  dist_tmp = dist;
+		  for (m=0; m<5; m ++) {
+			for (l=0, dist_f = Dists; l < NumDists; l ++, dist_f ++ ) {
+				for (n = 0, depend1 = dist_f->depends; n < dist_f->num_depends; n ++, depend1 ++) {
+					if (depend1 !=NULL) {
+						dist3 = gui_find_dist(depend1->product, NumDists, Dists);
+						if (dist_tmp == dist3) {
+							SoftwareList->checked(l + 1, 0);
+							dist_tmp = dist_f;
+						}
+					}
+				}
+			}
+		  }
 		  break;
 		}
 	      }
@@ -702,7 +721,8 @@ list_cb(Fl_Check_Browser *, void *)
 	  default :
 	      break;
 	}
-    }
+     }
+   }
 
   update_sizes();
 
@@ -1305,5 +1325,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.15.2.3 2009/04/16 13:22:51 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.15.2.4 2009/05/21 12:04:29 bsavelev Exp $".
 //

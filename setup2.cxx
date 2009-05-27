@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.15.2.5 2009/05/21 12:15:08 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.15.2.6 2009/05/27 08:18:19 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -996,11 +996,13 @@ log_cb(int fd,			// I - Pipe to read from
 
 
 void update_control(int from) {
-  int		i;			// Looping var
+  int		i,j,k;			// Looping var
   int		progress;		// Progress so far...
   int		error;			// Errors?
   static char	message[1024];		// Progress message...
   static char	install_type[1024];	// EPM_INSTALL_TYPE env variable
+  gui_dist_t	*dist;
+  gui_depend_t	*depend;
 
   update_label();
 
@@ -1018,6 +1020,12 @@ void update_control(int from) {
     CancelButton->activate();
   }
   if (Wizard->value() == Pane[PANE_SELECT]) {
+  for (j = 0, dist = Dists; j < NumDists; j ++, dist ++ )
+      for (k = 0, depend = dist->depends; k < dist->num_depends; k ++, depend ++ )
+        if ( depend != NULL)
+	  if (depend->type == DEPEND_INCOMPAT)
+	    InstallAllButton->deactivate();
+
       NextButton->activate();
       CancelButton->activate();
       if (SoftwareList->nchecked() == 0)
@@ -1326,5 +1334,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.15.2.5 2009/05/21 12:15:08 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.15.2.6 2009/05/27 08:18:19 bsavelev Exp $".
 //

@@ -1,5 +1,5 @@
 /*
- * "$Id: rpm.c,v 1.1.1.1.2.1 2009/05/27 06:31:29 bsavelev Exp $"
+ * "$Id: rpm.c,v 1.1.1.1.2.2 2009/05/27 06:38:41 bsavelev Exp $"
  *
  *   Red Hat package gateway for the ESP Package Manager (EPM).
  *
@@ -105,6 +105,8 @@ make_rpm(const char     *prodname,	/* I - Product short name */
   else
     strlcpy(release, "0", sizeof(release));
 
+//for Debian RPM skip perl req:
+  fputs("%undefine __perl_requires\n", fp);
   fprintf(fp, "Name: %s\n", prodname);
   fprintf(fp, "Version: %s\n", dist->version);
   if (dist->epoch)
@@ -114,8 +116,6 @@ make_rpm(const char     *prodname,	/* I - Product short name */
   fprintf(fp, "Packager: %s\n", dist->packager);
   fprintf(fp, "Vendor: %s\n", dist->vendor);
   fprintf(fp, "BuildRoot: %s/buildroot\n", absdir);
-//for Debian RPM skip perl req:
-  fprintf(fp, "%undefine __perl_requires\n");
 
  /*
   * Tell RPM to put the distributions in the output directory...
@@ -894,5 +894,5 @@ write_spec(const char *prodname,	/* I - Product name */
 
 
 /*
- * End of "$Id: rpm.c,v 1.1.1.1.2.1 2009/05/27 06:31:29 bsavelev Exp $".
+ * End of "$Id: rpm.c,v 1.1.1.1.2.2 2009/05/27 06:38:41 bsavelev Exp $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: rpm.c,v 1.1.1.1.2.2 2009/05/27 06:38:41 bsavelev Exp $"
+ * "$Id: rpm.c,v 1.1.1.1.2.3 2009/05/27 14:02:30 bsavelev Exp $"
  *
  *   Red Hat package gateway for the ESP Package Manager (EPM).
  *
@@ -638,8 +638,10 @@ write_spec(const char *prodname,	/* I - Product name */
       fprintf(fp, "Requires: %s", product);
     else if (d->type == DEPEND_PROVIDES)
       fprintf(fp, "Provides: %s", product);
-    else
+    else if (d->type == DEPEND_INCOMPAT)
       fprintf(fp, "Conflicts: %s", product);
+    else if (d->type == DEPEND_REPLACES)
+      fprintf(fp, "Obsoletes: %s", product);
 
     if (d->vernumber[0] == 0)
     {
@@ -894,5 +896,5 @@ write_spec(const char *prodname,	/* I - Product name */
 
 
 /*
- * End of "$Id: rpm.c,v 1.1.1.1.2.2 2009/05/27 06:38:41 bsavelev Exp $".
+ * End of "$Id: rpm.c,v 1.1.1.1.2.3 2009/05/27 14:02:30 bsavelev Exp $".
  */

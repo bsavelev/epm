@@ -1,5 +1,5 @@
 /*
- * "$Id: file.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: file.c,v 1.1.1.1.2.1 2009/05/28 13:27:40 bsavelev Exp $"
  *
  *   File functions for the ESP Package Manager (EPM).
  *
@@ -290,6 +290,37 @@ unlink_package(const char *ext,		/* I - Package filename extension */
   * Then the subdirectory name...
   */
 
+if (!strcmp(ext,"rpm")) {
+  if (dist->release[0])
+    snprintf(name, sizeof(name), "%s-%s-%s", prodfull, dist->version,
+             dist->release);
+  else
+    snprintf(name, sizeof(name), "%s-%s", prodfull, dist->version);
+
+  if (platname[0])
+  {
+    strlcat(name, ".", sizeof(name));
+    strlcat(name, platname, sizeof(name));
+  }
+
+  strlcat(name, ".", sizeof(name));
+  strlcat(name, ext, sizeof(name));
+} else if (!strcmp(ext,"deb")) {
+  if (dist->release[0])
+    snprintf(name, sizeof(name), "%s_%s-%s", prodfull, dist->version,
+             dist->release);
+  else
+    snprintf(name, sizeof(name), "%s_%s", prodfull, dist->version);
+
+  if (platname[0])
+  {
+    strlcat(name, "_", sizeof(name));
+    strlcat(name, platname, sizeof(name));
+  }
+
+  strlcat(name, ".", sizeof(name));
+  strlcat(name, ext, sizeof(name));
+} else {
   if (dist->release[0])
     snprintf(name, sizeof(name), "%s-%s-%s", prodfull, dist->version,
              dist->release);
@@ -304,6 +335,7 @@ unlink_package(const char *ext,		/* I - Package filename extension */
 
   strlcat(name, ".", sizeof(name));
   strlcat(name, ext, sizeof(name));
+}
 
  /*
   * Remove the package file...
@@ -323,5 +355,5 @@ unlink_package(const char *ext,		/* I - Package filename extension */
 
 
 /*
- * End of "$Id: file.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: file.c,v 1.1.1.1.2.1 2009/05/28 13:27:40 bsavelev Exp $".
  */

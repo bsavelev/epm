@@ -1,5 +1,5 @@
 /*
- * "$Id: rpm.c,v 1.1.1.1.2.3 2009/05/27 14:02:30 bsavelev Exp $"
+ * "$Id: rpm.c,v 1.1.1.1.2.4 2009/05/28 12:18:59 bsavelev Exp $"
  *
  *   Red Hat package gateway for the ESP Package Manager (EPM).
  *
@@ -528,7 +528,7 @@ move_rpms(const char     *prodname,	/* I - Product short name */
 
   if (platname[0])
   {
-    strlcat(rpmname, "-", sizeof(rpmname));
+    strlcat(rpmname, ".", sizeof(rpmname));
     strlcat(rpmname, platname, sizeof(rpmname));
   }
 
@@ -896,5 +896,5 @@ write_spec(const char *prodname,	/* I - Product name */
 
 
 /*
- * End of "$Id: rpm.c,v 1.1.1.1.2.3 2009/05/27 14:02:30 bsavelev Exp $".
+ * End of "$Id: rpm.c,v 1.1.1.1.2.4 2009/05/28 12:18:59 bsavelev Exp $".
  */

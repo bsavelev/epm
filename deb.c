@@ -1,5 +1,5 @@
 /*
- * "$Id: deb.c,v 1.1.1.1.2.6 2009/06/04 15:55:15 bsavelev Exp $"
+ * "$Id: deb.c,v 1.1.1.1.2.7 2009/06/04 16:43:27 bsavelev Exp $"
  *
  *   Debian package gateway for the ESP Package Manager (EPM).
  *
@@ -327,7 +327,8 @@ make_subpackage(const char     *prodname,
   */
 
   for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
-    if (c->type == COMMAND_POST_INSTALL && c->subpackage == subpackage)
+    if ((c->type == COMMAND_POST_INSTALL && c->subpackage == subpackage) || 
+	(c->type == COMMAND_POST_TRANS && c->subpackage == subpackage))
       break;
 
   if (!i)
@@ -598,5 +599,5 @@ make_subpackage(const char     *prodname,
 
 
 /*
- * End of "$Id: deb.c,v 1.1.1.1.2.6 2009/06/04 15:55:15 bsavelev Exp $".
+ * End of "$Id: deb.c,v 1.1.1.1.2.7 2009/06/04 16:43:27 bsavelev Exp $".
  */

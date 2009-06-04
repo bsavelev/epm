@@ -1,5 +1,5 @@
 /*
- * "$Id: rpm.c,v 1.1.1.1.2.5 2009/05/28 13:04:55 bsavelev Exp $"
+ * "$Id: rpm.c,v 1.1.1.1.2.6 2009/06/04 15:55:15 bsavelev Exp $"
  *
  *   Red Hat package gateway for the ESP Package Manager (EPM).
  *
@@ -908,5 +908,5 @@ write_spec(const char *prodname,	/* I - Product name */
 
 
 /*
- * End of "$Id: rpm.c,v 1.1.1.1.2.5 2009/05/28 13:04:55 bsavelev Exp $".
+ * End of "$Id: rpm.c,v 1.1.1.1.2.6 2009/06/04 15:55:15 bsavelev Exp $".
  */

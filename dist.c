@@ -1,5 +1,5 @@
 /*
- * "$Id: dist.c,v 1.2 2009/03/05 14:25:13 bsavelev Exp $"
+ * "$Id: dist.c,v 1.2.2.1 2009/06/04 15:55:15 bsavelev Exp $"
  *
  *   Distribution functions for the ESP Package Manager (EPM).
  *
@@ -2286,5 +2286,5 @@ sort_subpackages(char **a,		/* I - First subpackage */
 
 
 /*
- * End of "$Id: dist.c,v 1.2 2009/03/05 14:25:13 bsavelev Exp $".
+ * End of "$Id: dist.c,v 1.2.2.1 2009/06/04 15:55:15 bsavelev Exp $".
  */

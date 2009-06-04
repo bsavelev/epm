@@ -1,5 +1,5 @@
 /*
- * "$Id: deb.c,v 1.1.1.1.2.5 2009/06/04 10:28:01 bsavelev Exp $"
+ * "$Id: deb.c,v 1.1.1.1.2.6 2009/06/04 15:55:15 bsavelev Exp $"
  *
  *   Debian package gateway for the ESP Package Manager (EPM).
  *
@@ -598,5 +598,5 @@ make_subpackage(const char     *prodname,
 
 
 /*
- * End of "$Id: deb.c,v 1.1.1.1.2.5 2009/06/04 10:28:01 bsavelev Exp $".
+ * End of "$Id: deb.c,v 1.1.1.1.2.6 2009/06/04 15:55:15 bsavelev Exp $".
  */

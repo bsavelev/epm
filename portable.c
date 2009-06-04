@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.25 2009/05/19 10:50:00 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.26 2009/06/04 15:55:15 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -3082,5 +3082,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.25 2009/05/19 10:50:00 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.26 2009/06/04 15:55:15 bsavelev Exp $".
  */

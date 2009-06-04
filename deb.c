@@ -1,5 +1,5 @@
 /*
- * "$Id: deb.c,v 1.1.1.1.2.3 2009/05/29 13:28:14 bsavelev Exp $"
+ * "$Id: deb.c,v 1.1.1.1.2.4 2009/06/04 08:05:38 bsavelev Exp $"
  *
  *   Debian package gateway for the ESP Package Manager (EPM).
  *
@@ -269,7 +269,7 @@ make_subpackage(const char     *prodname,
             fprintf(fp, "%s %s", header, prodname);
 	  else
             fprintf(fp, "%s %s", header, d->product);
-
+	 if ( j != DEPEND_PROVIDES) {
 	  if (d->vernumber[0] == 0)
 	  {
 	    if (d->vernumber[1] < INT_MAX)
@@ -282,6 +282,7 @@ make_subpackage(const char     *prodname,
 	    else
 	      fprintf(fp, " (>= %s)", d->version[0]);
 	  }
+	 }
 	}
 
       putc('\n', fp);
@@ -596,5 +597,5 @@ make_subpackage(const char     *prodname,
 
 
 /*
- * End of "$Id: deb.c,v 1.1.1.1.2.3 2009/05/29 13:28:14 bsavelev Exp $".
+ * End of "$Id: deb.c,v 1.1.1.1.2.4 2009/06/04 08:05:38 bsavelev Exp $".
  */

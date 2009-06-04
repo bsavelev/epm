@@ -949,7 +949,8 @@ write_commands(dist_t     *dist,	/* I - Distribution */
 			  "pre-patch",
 			  "post-patch",
 			  "pre-remove",
-			  "post-remove"
+			  "post-remove",
+			  "post-trans"
 			};
 
 
@@ -2294,6 +2295,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   }
 
   write_commands(dist, scriptfile, COMMAND_POST_INSTALL, subpackage);
+  write_commands(dist, scriptfile, COMMAND_POST_TRANS, subpackage);
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)

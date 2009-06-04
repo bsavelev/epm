@@ -684,13 +684,25 @@ write_spec(const char *prodname,	/* I - Product name */
 
   if (i > 0)
   {
-    have_commands = 1;
 
     fprintf(fp, "%%post%s\n", name);
     for (; i > 0; i --, c ++)
       if (c->type == COMMAND_POST_INSTALL && c->subpackage == subpackage)
 	fprintf(fp, "%s\n", c->command);
+  }
 
+  for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
+    if (c->type == COMMAND_POST_TRANS && c->subpackage == subpackage)
+      break;
+
+  if (i > 0)
+  {
+    have_commands = 1;
+
+    fprintf(fp, "%%posttrans%s\n", name);
+    for (; i > 0; i --, c ++)
+      if (c->type == COMMAND_POST_TRANS && c->subpackage == subpackage)
+	fprintf(fp, "%s\n", c->command);
   }
   else
     have_commands = 0;
@@ -702,7 +714,7 @@ write_spec(const char *prodname,	/* I - Product name */
   if (i)
   {
     if (!have_commands)
-      fprintf(fp, "%%post%s\n", name);
+      fprintf(fp, "%%posttrans%s\n", name);
 
     fputs("if test \"x$1\" = x1; then\n", fp);
     fputs("	echo Setting up init scripts...\n", fp);

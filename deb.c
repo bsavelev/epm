@@ -358,6 +358,10 @@ make_subpackage(const char     *prodname,
       if (c->type == COMMAND_POST_INSTALL && c->subpackage == subpackage)
         fprintf(fp, "%s\n", c->command);
 
+    for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
+      if (c->type == COMMAND_POST_TRANS && c->subpackage == subpackage)
+        fprintf(fp, "%s\n", c->command);
+
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       {

@@ -875,6 +875,9 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	else if (strcmp(line, "%postremove") == 0)
           add_command(dist, listfiles[listlevel], COMMAND_POST_REMOVE, temp,
 	              subpkg);
+	else if (strcmp(line, "%posttrans") == 0)
+          add_command(dist, listfiles[listlevel], COMMAND_POST_TRANS, temp,
+	              subpkg);
 	else if (strcmp(line, "%prepatch") == 0)
           add_command(dist, listfiles[listlevel], COMMAND_PRE_PATCH, temp,
 	              subpkg);
@@ -1271,7 +1274,8 @@ write_dist(const char *listname,	/* I - File to write to */
 		  "%prepatch",
 		  "%postpatch",
 		  "%preremove",
-		  "%postremove"
+		  "%postremove",
+		  "%posttrans"
 		},
 		*depends[] =		/* Dependency strings */
 		{

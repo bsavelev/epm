@@ -1,5 +1,5 @@
 /*
- * "$Id: epm.h,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: epm.h,v 1.1.1.1 2009/01/22 10:46:58 anikolov Exp $"
  *
  *   Definitions for the ESP Package Manager (EPM).
  *
@@ -118,7 +118,8 @@ enum
   COMMAND_PRE_PATCH,			/* Command to run before patch */
   COMMAND_POST_PATCH,			/* Command to run after patch */
   COMMAND_PRE_REMOVE,			/* Command to run before remove */
-  COMMAND_POST_REMOVE			/* Command to run after remove */
+  COMMAND_POST_REMOVE,			/* Command to run after remove */
+  COMMAND_POST_TRANS			/* Command to run after all */
 };
 
 /*
@@ -338,5 +339,5 @@ extern int	write_dist(const char *listname, dist_t *dist);
 
 
 /*
- * End of "$Id: epm.h,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: epm.h,v 1.1.1.1 2009/01/22 10:46:58 anikolov Exp $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: rpm.c,v 1.1.1.1.2.7 2009/06/05 11:59:54 bsavelev Exp $"
+ * "$Id: rpm.c,v 1.1.1.1.2.8 2009/06/05 12:15:23 bsavelev Exp $"
  *
  *   Red Hat package gateway for the ESP Package Manager (EPM).
  *
@@ -973,5 +973,5 @@ basename(register char *s)
 	}
 
 /*
- * End of "$Id: rpm.c,v 1.1.1.1.2.7 2009/06/05 11:59:54 bsavelev Exp $".
+ * End of "$Id: rpm.c,v 1.1.1.1.2.8 2009/06/05 12:15:23 bsavelev Exp $".
  */

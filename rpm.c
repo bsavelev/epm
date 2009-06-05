@@ -203,8 +203,8 @@ make_rpm(const char     *prodname,	/* I - Product short name */
 	    return (1);
           break;
       case 'i' :
-          snprintf(filename, sizeof(filename), "%s/buildroot%s/init.d/%s",
-	           directory, SoftwareDir, file->dst);
+          snprintf(filename, sizeof(filename), "%s/buildroot/etc/init.d/%s",
+	           directory, basename(file->dst));
 
 	  if (Verbosity > 1)
 	    printf("%s -> %s...\n", file->src, filename);

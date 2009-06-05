@@ -672,9 +672,43 @@ write_spec(const char *prodname,	/* I - Product name */
 
   if (i > 0)
   {
+    have_commands = 1;
     fprintf(fp, "%%pre%s\n", name);
     for (; i > 0; i --, c ++)
       if (c->type == COMMAND_PRE_INSTALL && c->subpackage == subpackage)
+	fprintf(fp, "%s\n", c->command);
+  } else
+    have_commands = 0;
+
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
+    if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+      break;
+
+  if (i)
+  {
+   if (getenv("LINK_INIT") == NULL) {
+    if (!have_commands)
+      fprintf(fp, "%%pre%s\n", name);
+
+    fputs("if test \"x$1\" = x2; then\n", fp);
+    for (; i > 0; i --, file ++)
+      if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+      {
+	qprintf(fp, "\tservice %s stop || true \n", basename(file->dst));
+      }
+      fputs("fi\n", fp);
+   }
+  }
+
+  for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
+    if (c->type == COMMAND_POST_TRANS && c->subpackage == subpackage)
+      break;
+
+  if (i > 0)
+  {
+    fprintf(fp, "%%posttrans%s\n", name);
+    for (; i > 0; i --, c ++)
+      if (c->type == COMMAND_POST_TRANS && c->subpackage == subpackage)
 	fprintf(fp, "%s\n", c->command);
   }
 
@@ -684,27 +718,13 @@ write_spec(const char *prodname,	/* I - Product name */
 
   if (i > 0)
   {
+    have_commands = 1;
 
     fprintf(fp, "%%post%s\n", name);
     for (; i > 0; i --, c ++)
       if (c->type == COMMAND_POST_INSTALL && c->subpackage == subpackage)
 	fprintf(fp, "%s\n", c->command);
-  }
-
-  for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
-    if (c->type == COMMAND_POST_TRANS && c->subpackage == subpackage)
-      break;
-
-  if (i > 0)
-  {
-    have_commands = 1;
-
-    fprintf(fp, "%%posttrans%s\n", name);
-    for (; i > 0; i --, c ++)
-      if (c->type == COMMAND_POST_TRANS && c->subpackage == subpackage)
-	fprintf(fp, "%s\n", c->command);
-  }
-  else
+  } else
     have_commands = 0;
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
@@ -713,8 +733,9 @@ write_spec(const char *prodname,	/* I - Product name */
 
   if (i)
   {
+   if (getenv("LINK_INIT") != NULL) {
     if (!have_commands)
-      fprintf(fp, "%%posttrans%s\n", name);
+      fprintf(fp, "%%post%s\n", name);
 
     fputs("if test \"x$1\" = x1; then\n", fp);
     fputs("	echo Setting up init scripts...\n", fp);
@@ -771,6 +792,20 @@ write_spec(const char *prodname,	/* I - Product name */
 
     fputs("	fi\n", fp);
     fputs("fi\n", fp);
+   } else {
+    if (!have_commands)
+      fprintf(fp, "%%post%s\n", name);
+
+    fputs("if test \"x$1\" = x1; then\n", fp);
+    fputs("\techo Setting up init scripts...\n", fp);
+    for (; i > 0; i --, file ++)
+      if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+      {
+	qprintf(fp, "\tchkconfig --add %s\n", basename(file->dst));
+      }
+      fputs("fi\n", fp);
+      qprintf(fp, "service %s start || true\n", basename(file->dst));
+   }
   }
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
@@ -779,6 +814,7 @@ write_spec(const char *prodname,	/* I - Product name */
 
   if (i)
   {
+   if (getenv("LINK_INIT") != NULL) {
     have_commands = 1;
 
     fprintf(fp, "%%preun%s\n", name);
@@ -828,6 +864,20 @@ write_spec(const char *prodname,	/* I - Product name */
 
     fputs("	fi\n", fp);
     fputs("fi\n", fp);
+   } else {
+    have_commands = 1;
+
+    fprintf(fp, "%%preun%s\n", name);
+    fputs("if test \"x$1\" = x0; then\n", fp);
+    fputs("\techo Cleaning up init scripts...\n", fp);
+    for (; i > 0; i --, file ++)
+      if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+      {
+	qprintf(fp, "\tservice %s stop\n", basename(file->dst));
+	qprintf(fp, "\tchkconfig --del %s\n", basename(file->dst));
+      }
+    fputs("fi\n", fp);
+   }
   }
   else
     have_commands = 0;
@@ -898,14 +948,29 @@ write_spec(const char *prodname,	/* I - Product name */
 	            file->group, file->dst);
             break;
 	case 'i' :
-            fprintf(fp, "%%attr(0555,root,root) \"%s/init.d/%s\"\n", SoftwareDir,
+	    if (getenv("LINK_INIT") != NULL) {
+		fprintf(fp, "%%attr(0555,root,root) \"%s/init.d/%s\"\n", SoftwareDir,
 	            file->dst);
+	    } else {
+		fprintf(fp, "%%attr(0555,root,root) \"/etc/init.d/%s\"\n", basename(file->dst));
+	    }
             break;
       }
 
   return (0);
 }
 
+basename(register char *s)
+{
+	register char *rv = s;
+	if (rv) for(;;)
+		switch(*s++) {
+			case 0: return rv;
+			case '/':
+				rv = s;
+			}
+	return rv;
+	}
 
 /*
  * End of "$Id: rpm.c,v 1.1.1.1.2.6 2009/06/04 15:55:15 bsavelev Exp $".

@@ -379,7 +379,7 @@ make_subpackage(const char     *prodname,
           fprintf(fp, " . stop %02d 0", get_stop(file, 0));
 
         fputs(" . >/dev/null\n", fp);
-        fprintf(fp, "/etc/init.d/%s start\n", file->dst);
+        fprintf(fp, "/etc/init.d/%s start || true\n", file->dst);
       }
 
     fclose(fp);

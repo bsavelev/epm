@@ -694,7 +694,7 @@ write_spec(const char *prodname,	/* I - Product name */
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       {
-	qprintf(fp, "\tservice %s stop || true \n", basename(file->dst));
+	qprintf(fp, "\tservice %s stop || true\n", basename(file->dst));
       }
       fputs("fi\n", fp);
    }
@@ -796,15 +796,15 @@ write_spec(const char *prodname,	/* I - Product name */
     if (!have_commands)
       fprintf(fp, "%%post%s\n", name);
 
-    fputs("if test \"x$1\" = x1; then\n", fp);
-    fputs("\techo Setting up init scripts...\n", fp);
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       {
+	fputs("if test \"x$1\" = x1; then\n", fp);
+	fputs("\techo Setting up init scripts...\n", fp);
 	qprintf(fp, "\tchkconfig --add %s\n", basename(file->dst));
+	fputs("fi\n", fp);
+	qprintf(fp, "service %s start || true\n", basename(file->dst));
       }
-      fputs("fi\n", fp);
-      qprintf(fp, "service %s start || true\n", basename(file->dst));
    }
   }
 

@@ -2747,10 +2747,33 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   qprintf(scriptfile, "echo Copyright %s\n", dist->copyright);
   fputs("if test ! \"$*\" = \"now\"; then\n", scriptfile);
   fputs("	echo \"\"\n", scriptfile);
-  qprintf(scriptfile, "	echo This removal script will remove the %s\n",
-          dist->product);
-  qprintf(scriptfile, "	echo software version %s from your system.\n",
-          dist->version);
+//boris 2009-03-13
+  if (subpackage)
+  {
+    char	line[1024],			/* Line buffer */
+		*start,				/* Start of line */
+		*ptr;				/* Pointer into line */
+    for (i = 0; i < dist->num_descriptions; i ++)
+      if (dist->descriptions[i].subpackage == subpackage)
+	break;
+
+    if (i < dist->num_descriptions)
+    {
+      strlcpy(line, dist->descriptions[i].description, sizeof(line));
+      if ((ptr = strchr(line, '\n')) != NULL)
+        *ptr = '\0';
+      qprintf(scriptfile, "	echo This removal script will remove the %s",
+           dist->product);
+      qprintf(scriptfile, " - %s\n",
+           line);
+    }
+  } else {
+   qprintf(scriptfile, "	echo This removal script will remove the %s\n",
+           dist->product);
+  }
+//end boris
+   qprintf(scriptfile, "	echo software version %s from your system.\n",
+           dist->version);
   fputs("	echo \"\"\n", scriptfile);
   fputs("	while true ; do\n", scriptfile);
   fputs("		echo $ac_n \"Do you wish to continue? $ac_c\"\n", scriptfile);

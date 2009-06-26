@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile.in,v 1.3 2009/02/16 11:18:07 anikolov Exp $"
+# "$Id: Makefile.in,v 1.3.2.1 2009/06/26 15:46:33 anikolov Exp $"
 #
 #   Makefile for the ESP Package Manager (EPM).
 #
@@ -126,7 +126,7 @@ OBJS		=	epm.o \
 #
 
 all:	$(TARGETS) Makefile config.h
-
+	$(MAKE) -C doc
 
 #
 # Clean all object files...
@@ -405,5 +405,5 @@ $(OBJS):	Makefile config.h
 
 
 #
-# End of "$Id: Makefile.in,v 1.3 2009/02/16 11:18:07 anikolov Exp $".
+# End of "$Id: Makefile.in,v 1.3.2.1 2009/06/26 15:46:33 anikolov Exp $".
 #

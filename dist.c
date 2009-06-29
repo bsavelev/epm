@@ -889,10 +889,10 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	              subpkg, NULL);
 	else if (!strcmp(line, "%postremove"))
           add_command(dist, listfiles[listlevel], COMMAND_POST_REMOVE, temp,
-	              subpkg);
+	              subpkg, NULL);
 	else if (strcmp(line, "%posttrans") == 0)
           add_command(dist, listfiles[listlevel], COMMAND_POST_TRANS, temp,
-	              subpkg);
+	              subpkg, NULL);
 	else if (strcmp(line, "%prepatch") == 0)
           add_command(dist, listfiles[listlevel], COMMAND_PRE_PATCH, temp,
 	              subpkg, NULL);

@@ -3,7 +3,7 @@
  *
  *   Main program source for the ESP Package Manager (EPM).
  *
- *   Copyright 1999-2007 by Easy Software Products.
+ *   Copyright 1999-2008 by Easy Software Products.
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -160,31 +160,37 @@ main(int  argc,				/* I - Number of command-line args */
               temp = argv[i];
 	    }
 
-	    if (strcasecmp(temp, "portable") == 0)
+	    if (!strcasecmp(temp, "portable"))
 	      format = PACKAGE_PORTABLE;
-	    else if (strcasecmp(temp, "aix") == 0)
+	    else if (!strcasecmp(temp, "aix"))
 	      format = PACKAGE_AIX;
-	    else if (strcasecmp(temp, "bsd") == 0)
+	    else if (!strcasecmp(temp, "bsd"))
 	      format = PACKAGE_BSD;
-	    else if (strcasecmp(temp, "deb") == 0)
+	    else if (!strcasecmp(temp, "deb"))
 	      format = PACKAGE_DEB;
-	    else if (strcasecmp(temp, "inst") == 0 ||
-	             strcasecmp(temp, "tardist") == 0)
+	    else if (!strcasecmp(temp, "inst") ||
+	             !strcasecmp(temp, "tardist"))
 	      format = PACKAGE_INST;
-	    else if (strcasecmp(temp, "osx") == 0)
+	    else if (!strcasecmp(temp, "lsb"))
+	      format = PACKAGE_LSB;
+	    else if (!strcasecmp(temp, "lsb-signed"))
+	      format = PACKAGE_LSB_SIGNED;
+	    else if (!strcasecmp(temp, "osx"))
 	      format = PACKAGE_OSX;
-	    else if (strcasecmp(temp, "pkg") == 0)
+	    else if (!strcasecmp(temp, "pkg"))
 	      format = PACKAGE_PKG;
-	    else if (strcasecmp(temp, "rpm") == 0)
+	    else if (!strcasecmp(temp, "rpm"))
 	      format = PACKAGE_RPM;
-	    else if (strcasecmp(temp, "setld") == 0)
+	    else if (!strcasecmp(temp, "rpm-signed"))
+	      format = PACKAGE_RPM_SIGNED;
+	    else if (!strcasecmp(temp, "setld"))
 	      format = PACKAGE_SETLD;
-	    else if (strcasecmp(temp, "slackware") == 0)
+	    else if (!strcasecmp(temp, "slackware"))
 	      format = PACKAGE_SLACKWARE;
-	    else if (strcasecmp(temp, "swinstall") == 0 ||
-	             strcasecmp(temp, "depot") == 0)
+	    else if (!strcasecmp(temp, "swinstall") ||
+	             !strcasecmp(temp, "depot"))
 	      format = PACKAGE_SWINSTALL;
-	    else if (strcasecmp(temp, "native") == 0)
+	    else if (!strcasecmp(temp, "native"))
 #if defined(__linux)
             {
 	     /*
@@ -532,6 +538,12 @@ main(int  argc,				/* I - Number of command-line args */
   * Make the distribution in the correct format...
   */
 
+  if (access(SetupProgram, 0) && setup)
+  {
+    puts("epm: Setup program not installed, creating non-GUI package.");
+    setup = NULL;
+  }
+
   switch (format)
   {
     case PACKAGE_PORTABLE :
@@ -563,8 +575,11 @@ main(int  argc,				/* I - Number of command-line args */
     case PACKAGE_PKG :
         i = make_pkg(prodname, directory, platname, dist, &platform);
 	break;
+    case PACKAGE_LSB :
+    case PACKAGE_LSB_SIGNED :
     case PACKAGE_RPM :
-        i = make_rpm(prodname, directory, platname, dist, &platform,
+    case PACKAGE_RPM_SIGNED :
+        i = make_rpm(format, prodname, directory, platname, dist, &platform,
 	             setup, types);
 	break;
     case PACKAGE_SETLD :

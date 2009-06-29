@@ -3,7 +3,7 @@
  *
  *   Free/Net/OpenBSD package gateway for the ESP Package Manager (EPM).
  *
- *   Copyright 1999-2006 by Easy Software Products.
+ *   Copyright 1999-2007 by Easy Software Products.
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -68,15 +68,12 @@ make_bsd(const char     *prodname,	/* I - Product short name */
  */
 
 static int				/* O - 0 = success, 1 = fail */
-make_subpackage(const char     *prodname,
-					/* I - Product short name */
-        	const char     *directory,
-					/* I - Directory for distribution files */
-        	const char     *platname,
-					/* I - Platform name */
-		dist_t         *dist,	/* I - Distribution information */
-		const char     *subpackage)
-					/* I - Subpackage name */
+make_subpackage(
+    const char     *prodname,		/* I - Product short name */
+    const char     *directory,		/* I - Directory for distribution files */
+    const char     *platname,		/* I - Platform name */
+    dist_t         *dist,		/* I - Distribution information */
+    const char     *subpackage)		/* I - Subpackage name */
 {
   int		i;			/* Looping var */
   FILE		*fp;			/* Spec file */
@@ -226,15 +223,10 @@ make_subpackage(const char     *prodname,
 #else
       fprintf(fp, "@pkgcfl %s", d->product);
 #endif /* __FreeBSD__ */
-    if (d->vernumber[0] == 0)
-    {
-      if (d->vernumber[1] < INT_MAX)
-        fprintf(fp, " <= %s\n", d->version[1]);
-      else
-        putc('\n', fp);
-    }
+    if (d->vernumber[0] > 0)
+      fprintf(fp, "-%s\n", d->version[0]);
     else
-      fprintf(fp, " >= %s, <= %s\n", d->version[0], d->version[1]);
+      putc('\n', fp);
   }
 
   for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
@@ -265,10 +257,10 @@ make_subpackage(const char     *prodname,
       * avoid a bug in the FreeBSD pkg_delete command.
       */
 
-      fprintf(fp, "@exec /bin/mkdir -p %s\n", file->dst);
-      fprintf(fp, "@exec /bin/chown %s:%s %s\n", file->user, file->group,
+      fprintf(fp, "@exec mkdir -p %s\n", file->dst);
+      fprintf(fp, "@exec chown %s:%s %s\n", file->user, file->group,
               file->dst);
-      fprintf(fp, "@exec /bin/chmod %04o %s\n", file->mode, file->dst);
+      fprintf(fp, "@exec chmod %04o %s\n", file->mode, file->dst);
     }
 
   for (i = dist->num_files, file = dist->files, old_mode = 0, old_user = "",
@@ -296,7 +288,7 @@ make_subpackage(const char     *prodname,
     switch (tolower(file->type))
     {
       case 'i' :
-          qprintf(fp, "usr/local/etc/rc.d/%s.sh\n", file->dst);
+          qprintf(fp, "usr/local/etc/rc.d/%s\n", file->dst);
           break;
       case 'c' :
       case 'f' :
@@ -366,8 +358,9 @@ make_subpackage(const char     *prodname,
 	    return (1);
           break;
       case 'i' :
-          snprintf(filename, sizeof(filename), "%s/%s.buildroot/etc/rc.d/%s",
-	           directory, prodfull, file->dst);
+          snprintf(filename, sizeof(filename),
+                   "%s/%s.buildroot/usr/local/etc/rc.d/%s", directory,
+                   prodfull, file->dst);
 
 	  if (Verbosity > 1)
 	    printf("%s -> %s...\n", file->src, filename);
@@ -419,6 +412,17 @@ make_subpackage(const char     *prodname,
     return (1);
 
   if (run_command(NULL, "mv %s.tgz %s", name, directory))
+    return (1);
+#elif defined(__FreeBSD__)
+  if (run_command(NULL, "/usr/sbin/pkg_create -p / "
+                        "-c %s "
+			"-d %s "
+                        "-f %s "
+			"%s/%s.tbz",
+		  commentname,
+		  descrname,
+		  plistname,
+		  directory, name))
     return (1);
 #else
   if (run_command(NULL, "pkg_create -p / "

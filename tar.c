@@ -1,5 +1,5 @@
 /*
- * "$Id: tar.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: tar.c,v 1.1.1.1.2.2 2009/05/28 13:12:16 bsavelev Exp $"
  *
  *   TAR file functions for the ESP Package Manager (EPM).
  *
@@ -513,7 +513,37 @@ tar_package(tarf_t     *tar,		/* I - Tar file */
  /*
   * Then the subdirectory name...
   */
+if (!strcmp(ext,"rpm")) {
+  if (dist->release[0])
+    snprintf(name, sizeof(name), "%s-%s-%s", prodfull, dist->version,
+             dist->release);
+  else
+    snprintf(name, sizeof(name), "%s-%s", prodfull, dist->version);
 
+  if (platname[0])
+  {
+    strlcat(name, ".", sizeof(name));
+    strlcat(name, platname, sizeof(name));
+  }
+
+  strlcat(name, ".", sizeof(name));
+  strlcat(name, ext, sizeof(name));
+} else if (!strcmp(ext,"deb")) {
+  if (dist->release[0])
+    snprintf(name, sizeof(name), "%s_%s-%s", prodfull, dist->version,
+             dist->release);
+  else
+    snprintf(name, sizeof(name), "%s_%s", prodfull, dist->version);
+
+  if (platname[0])
+  {
+    strlcat(name, "_", sizeof(name));
+    strlcat(name, platname, sizeof(name));
+  }
+
+  strlcat(name, ".", sizeof(name));
+  strlcat(name, ext, sizeof(name));
+} else {
   if (dist->release[0])
     snprintf(name, sizeof(name), "%s-%s-%s", prodfull, dist->version,
              dist->release);
@@ -528,6 +558,9 @@ tar_package(tarf_t     *tar,		/* I - Tar file */
 
   strlcat(name, ".", sizeof(name));
   strlcat(name, ext, sizeof(name));
+}
+
+
 
  /*
   * Find out more about the package file...
@@ -554,5 +587,5 @@ tar_package(tarf_t     *tar,		/* I - Tar file */
 
 
 /*
- * End of "$Id: tar.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: tar.c,v 1.1.1.1.2.2 2009/05/28 13:12:16 bsavelev Exp $".
  */

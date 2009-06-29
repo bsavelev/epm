@@ -1,9 +1,9 @@
 /*
- * "$Id: rpm.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: rpm.c,v 1.1.1.1.2.9 2009/06/05 14:26:33 bsavelev Exp $"
  *
  *   Red Hat package gateway for the ESP Package Manager (EPM).
  *
- *   Copyright 1999-2006 by Easy Software Products.
+ *   Copyright 1999-2008 by Easy Software Products.
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -38,8 +38,8 @@ static int	move_rpms(const char *prodname, const char *directory,
 			  struct utsname *platform,
 			  const char *rpmdir, const char *subpackage,
 			  const char *release);
-static int	write_spec(const char *prodname, dist_t *dist, FILE *fp,
-		           const char *subpackage);
+static int	write_spec(int format, const char *prodname, dist_t *dist,
+		           FILE *fp, const char *subpackage);
 
 
 /*
@@ -47,7 +47,8 @@ static int	write_spec(const char *prodname, dist_t *dist, FILE *fp,
  */
 
 int					/* O - 0 = success, 1 = fail */
-make_rpm(const char     *prodname,	/* I - Product short name */
+make_rpm(int            format,		/* I - Subformat */
+         const char     *prodname,	/* I - Product short name */
          const char     *directory,	/* I - Directory for distribution files */
          const char     *platname,	/* I - Platform name */
          dist_t         *dist,		/* I - Distribution information */
@@ -67,6 +68,7 @@ make_rpm(const char     *prodname,	/* I - Product short name */
   char		absdir[1024];		/* Absolute directory */
   char		rpmdir[1024];		/* RPMDIR env var */
   char		release[256];		/* Release: number */
+  const char	*build_option;		/* Additional rpmbuild option */
 
 
   if (Verbosity)
@@ -105,6 +107,8 @@ make_rpm(const char     *prodname,	/* I - Product short name */
   else
     strlcpy(release, "0", sizeof(release));
 
+//for Debian RPM skip perl req:
+  fputs("%undefine __perl_requires\n", fp);
   fprintf(fp, "Name: %s\n", prodname);
   fprintf(fp, "Version: %s\n", dist->version);
   if (dist->epoch)
@@ -114,6 +118,9 @@ make_rpm(const char     *prodname,	/* I - Product short name */
   fprintf(fp, "Packager: %s\n", dist->packager);
   fprintf(fp, "Vendor: %s\n", dist->vendor);
   fprintf(fp, "BuildRoot: %s/buildroot\n", absdir);
+
+  if (format == PACKAGE_LSB || format == PACKAGE_LSB_SIGNED)
+    fputs("Requires: lsb >= 3.0\n", fp);
 
  /*
   * Tell RPM to put the distributions in the output directory...
@@ -154,9 +161,9 @@ make_rpm(const char     *prodname,	/* I - Product short name */
   * Now list all of the subpackages...
   */
 
-  write_spec(prodname, dist, fp, NULL);
+  write_spec(format, prodname, dist, fp, NULL);
   for (i = 0; i < dist->num_subpackages; i ++)
-    write_spec(prodname, dist, fp, dist->subpackages[i]);
+    write_spec(format, prodname, dist, fp, dist->subpackages[i]);
 
  /*
   * Close the spec file...
@@ -201,8 +208,12 @@ make_rpm(const char     *prodname,	/* I - Product short name */
 	    return (1);
           break;
       case 'i' :
-          snprintf(filename, sizeof(filename), "%s/buildroot%s/init.d/%s",
-	           directory, SoftwareDir, file->dst);
+          if (format == PACKAGE_LSB || format == PACKAGE_LSB_SIGNED || PACKAGE_LSB_INIT)
+	    snprintf(filename, sizeof(filename), "%s/buildroot/etc/init.d/%s",
+		     directory, file->dst);
+          else
+	    snprintf(filename, sizeof(filename), "%s/buildroot%s/init.d/%s",
+		     directory, SoftwareDir, file->dst);
 
 	  if (Verbosity > 1)
 	    printf("%s -> %s...\n", file->src, filename);
@@ -238,20 +249,25 @@ make_rpm(const char     *prodname,	/* I - Product short name */
   if (Verbosity)
     puts("Building RPM binary distribution...");
 
+  if (format == PACKAGE_LSB_SIGNED || format == PACKAGE_RPM_SIGNED)
+    build_option = "-signed ";
+  else
+    build_option = "";
+
   if (!strcmp(platform->machine, "intel"))
   {
-    if (run_command(NULL, EPM_RPMBUILD " -bb " EPM_RPMARCH "i386 %s",
-                    specname))
+    if (run_command(NULL, EPM_RPMBUILD " -bb " EPM_RPMARCH "i386 %s%s",
+                    build_option, specname))
       return (1);
   }
   else if (!strcmp(platform->machine, "ppc"))
   {
-    if (run_command(NULL, EPM_RPMBUILD " -bb " EPM_RPMARCH "powerpc %s",
-                    specname))
+    if (run_command(NULL, EPM_RPMBUILD " -bb " EPM_RPMARCH "powerpc %s%s",
+                    build_option, specname))
       return (1);
   }
-  else if (run_command(NULL, EPM_RPMBUILD " -bb " EPM_RPMARCH "%s %s",
-                       platform->machine, specname))
+  else if (run_command(NULL, EPM_RPMBUILD " -bb " EPM_RPMARCH "%s %s%s",
+                       platform->machine, build_option, specname))
     return (1);
 
  /*
@@ -284,7 +300,7 @@ make_rpm(const char     *prodname,	/* I - Product short name */
 
     if (platname[0])
     {
-      strlcat(name, "-", sizeof(name));
+      strlcat(name, ".", sizeof(name));
       strlcat(name, platname, sizeof(name));
     }
 
@@ -526,7 +542,7 @@ move_rpms(const char     *prodname,	/* I - Product short name */
 
   if (platname[0])
   {
-    strlcat(rpmname, "-", sizeof(rpmname));
+    strlcat(rpmname, ".", sizeof(rpmname));
     strlcat(rpmname, platname, sizeof(rpmname));
   }
 
@@ -561,7 +577,8 @@ move_rpms(const char     *prodname,	/* I - Product short name */
  */
 
 static int				/* O - 0 on success, -1 on error */
-write_spec(const char *prodname,	/* I - Product name */
+write_spec(int        format,		/* I - Subformat */
+           const char *prodname,	/* I - Product name */
 	   dist_t     *dist,		/* I - Distribution */
            FILE       *fp,		/* I - Spec file */
            const char *subpackage)	/* I - Subpackage name */
@@ -636,8 +653,10 @@ write_spec(const char *prodname,	/* I - Product name */
       fprintf(fp, "Requires: %s", product);
     else if (d->type == DEPEND_PROVIDES)
       fprintf(fp, "Provides: %s", product);
-    else
+    else if (d->type == DEPEND_INCOMPAT)
       fprintf(fp, "Conflicts: %s", product);
+    else if (d->type == DEPEND_REPLACES)
+      fprintf(fp, "Obsoletes: %s", product);
 
     if (d->vernumber[0] == 0)
     {
@@ -668,9 +687,41 @@ write_spec(const char *prodname,	/* I - Product name */
 
   if (i > 0)
   {
+    have_commands = 1;
     fprintf(fp, "%%pre%s\n", name);
     for (; i > 0; i --, c ++)
       if (c->type == COMMAND_PRE_INSTALL && c->subpackage == subpackage)
+	fprintf(fp, "%s\n", c->command);
+  } else
+    have_commands = 0;
+
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
+    if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+      break;
+
+  if (i)
+  {
+    if (!have_commands)
+      fprintf(fp, "%%pre%s\n", name);
+
+    fputs("if test \"x$1\" = x2; then\n", fp);
+    for (; i > 0; i --, file ++)
+      if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+      {
+	qprintf(fp, "\tservice %s stop || true\n", basename(file->dst));
+      }
+      fputs("fi\n", fp);
+  }
+
+  for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
+    if (c->type == COMMAND_POST_TRANS && c->subpackage == subpackage)
+      break;
+
+  if (i > 0)
+  {
+    fprintf(fp, "%%posttrans%s\n", name);
+    for (; i > 0; i --, c ++)
+      if (c->type == COMMAND_POST_TRANS && c->subpackage == subpackage)
 	fprintf(fp, "%s\n", c->command);
   }
 
@@ -686,10 +737,21 @@ write_spec(const char *prodname,	/* I - Product name */
     for (; i > 0; i --, c ++)
       if (c->type == COMMAND_POST_INSTALL && c->subpackage == subpackage)
 	fprintf(fp, "%s\n", c->command);
-
-  }
-  else
+  } else
     have_commands = 0;
+
+  for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
+    if (c->type == COMMAND_LITERAL && c->subpackage == subpackage &&
+        !strcmp(c->section, "spec"))
+      break;
+
+  if (i > 0)
+  {
+    for (; i > 0; i --, c ++)
+      if (c->type == COMMAND_LITERAL && c->subpackage == subpackage &&
+	  !strcmp(c->section, "spec"))
+	fprintf(fp, "%s\n", c->command);
+  }
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
@@ -700,61 +762,90 @@ write_spec(const char *prodname,	/* I - Product name */
     if (!have_commands)
       fprintf(fp, "%%post%s\n", name);
 
-    fputs("if test \"x$1\" = x1; then\n", fp);
-    fputs("	echo Setting up init scripts...\n", fp);
-
-   /*
-    * Find where the frigging init scripts go...
-    */
-
-    fputs("	rcdir=\"\"\n", fp);
-    fputs("	for dir in /sbin/rc.d /sbin /etc/rc.d /etc ; do\n", fp);
-    fputs("		if test -d $dir/rc3.d -o -h $dir/rc3.d; then\n", fp);
-    fputs("			rcdir=\"$dir\"\n", fp);
-    fputs("		fi\n", fp);
-    fputs("	done\n", fp);
-    fputs("	if test \"$rcdir\" = \"\" ; then\n", fp);
-    fputs("		echo Unable to determine location of startup scripts!\n", fp);
-    fputs("	else\n", fp);
+    if (format == PACKAGE_LSB)
+    {
+     /*
+      * Use LSB commands to install the init scripts...
+      */
+      fputs("if test \"x$1\" = x1; then\n", fp);
+      fputs("\techo Setting up init scripts...\n", fp);
+      for (; i > 0; i --, file ++)
+	if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+	{
+	  fprintf(fp, "	/usr/lib/lsb/install_initd /etc/init.d/%s\n", file->dst);
+	  fprintf(fp, "	/etc/init.d/%s start\n", file->dst);
+	}
+      fputs("fi\n", fp);
+    }
+    else if (format == PACKAGE_LSB_INIT)
+    {
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       {
-	fputs("		if test -d $rcdir/init.d; then\n", fp);
-	qprintf(fp, "			/bin/rm -f $rcdir/init.d/%s\n", file->dst);
-	qprintf(fp, "			/bin/ln -s %s/init.d/%s "
-                    "$rcdir/init.d/%s\n", SoftwareDir, file->dst, file->dst);
-	fputs("		else\n", fp);
-	fputs("			if test -d /etc/init.d; then\n", fp);
-	qprintf(fp, "				/bin/rm -f /etc/init.d/%s\n", file->dst);
-	qprintf(fp, "				/bin/ln -s %s/init.d/%s "
-                    "/etc/init.d/%s\n", SoftwareDir, file->dst, file->dst);
-	fputs("			fi\n", fp);
-	fputs("		fi\n", fp);
-
-	for (runlevels = get_runlevels(dist->files + i, "0123456");
-             isdigit(*runlevels & 255);
-	     runlevels ++)
-	{
-	  if (*runlevels == '0')
-            number = get_stop(file, 0);
-	  else
-	    number = get_start(file, 99);
-
-	  qprintf(fp, "		/bin/rm -f $rcdir/rc%c.d/%c%02d%s\n", *runlevels,
-	          (*runlevels == '0' || *runlevels == '1' ||
-		   *runlevels == '6') ? 'K' : 'S', number, file->dst);
-	  qprintf(fp, "		/bin/ln -s %s/init.d/%s "
-                      "$rcdir/rc%c.d/%c%02d%s\n", SoftwareDir, file->dst,
-		  *runlevels,
-		  (*runlevels == '0' || *runlevels == '1' ||
-		   *runlevels == '6') ? 'K' : 'S', number, file->dst);
-        }
-
-        qprintf(fp, "		%s/init.d/%s start\n", SoftwareDir, file->dst);
+	fputs("if test \"x$1\" = x1; then\n", fp);
+	fputs("\techo Setting up init scripts...\n", fp);
+	qprintf(fp, "\tchkconfig --add %s\n", basename(file->dst));
+	fputs("fi\n", fp);
+	qprintf(fp, "service %s start || true\n", basename(file->dst));
       }
+    }
+    else
+    {
+     /*
+      * Find where the frigging init scripts go...
+      */
+      fputs("if test \"x$1\" = x1; then\n", fp);
+      fputs("\techo Setting up init scripts...\n", fp);
 
-    fputs("	fi\n", fp);
-    fputs("fi\n", fp);
+      fputs("	rcdir=\"\"\n", fp);
+      fputs("	for dir in /sbin/rc.d /sbin /etc/rc.d /etc ; do\n", fp);
+      fputs("		if test -d $dir/rc3.d -o -h $dir/rc3.d; then\n", fp);
+      fputs("			rcdir=\"$dir\"\n", fp);
+      fputs("		fi\n", fp);
+      fputs("	done\n", fp);
+      fputs("	if test \"$rcdir\" = \"\" ; then\n", fp);
+      fputs("		echo Unable to determine location of startup scripts!\n", fp);
+      fputs("	else\n", fp);
+      for (; i > 0; i --, file ++)
+	if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+	{
+	  fputs("		if test -d $rcdir/init.d; then\n", fp);
+	  qprintf(fp, "			/bin/rm -f $rcdir/init.d/%s\n", file->dst);
+	  qprintf(fp, "			/bin/ln -s %s/init.d/%s "
+		      "$rcdir/init.d/%s\n", SoftwareDir, file->dst, file->dst);
+	  fputs("		else\n", fp);
+	  fputs("			if test -d /etc/init.d; then\n", fp);
+	  qprintf(fp, "				/bin/rm -f /etc/init.d/%s\n", file->dst);
+	  qprintf(fp, "				/bin/ln -s %s/init.d/%s "
+		      "/etc/init.d/%s\n", SoftwareDir, file->dst, file->dst);
+	  fputs("			fi\n", fp);
+	  fputs("		fi\n", fp);
+
+	  for (runlevels = get_runlevels(dist->files + i, "0123456");
+	       isdigit(*runlevels & 255);
+	       runlevels ++)
+	  {
+	    if (*runlevels == '0')
+	      number = get_stop(file, 0);
+	    else
+	      number = get_start(file, 99);
+
+	    qprintf(fp, "		/bin/rm -f $rcdir/rc%c.d/%c%02d%s\n", *runlevels,
+		    (*runlevels == '0' || *runlevels == '1' ||
+		     *runlevels == '6') ? 'K' : 'S', number, file->dst);
+	    qprintf(fp, "		/bin/ln -s %s/init.d/%s "
+			"$rcdir/rc%c.d/%c%02d%s\n", SoftwareDir, file->dst,
+		    *runlevels,
+		    (*runlevels == '0' || *runlevels == '1' ||
+		     *runlevels == '6') ? 'K' : 'S', number, file->dst);
+	  }
+
+	  qprintf(fp, "		%s/init.d/%s start\n", SoftwareDir, file->dst);
+	}
+
+      fputs("	fi\n", fp);
+      fputs("fi\n", fp);
+    }
   }
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
@@ -769,48 +860,73 @@ write_spec(const char *prodname,	/* I - Product name */
     fputs("if test \"x$1\" = x0; then\n", fp);
     fputs("	echo Cleaning up init scripts...\n", fp);
 
-   /*
-    * Find where the frigging init scripts go...
-    */
+    if (format == PACKAGE_LSB)
+    {
+     /*
+      * Use LSB commands to remove the init scripts...
+      */
 
-    fputs("	rcdir=\"\"\n", fp);
-    fputs("	for dir in /sbin/rc.d /sbin /etc/rc.d /etc ; do\n", fp);
-    fputs("		if test -d $dir/rc3.d -o -h $dir/rc3.d; then\n", fp);
-    fputs("			rcdir=\"$dir\"\n", fp);
-    fputs("		fi\n", fp);
-    fputs("	done\n", fp);
-    fputs("	if test \"$rcdir\" = \"\" ; then\n", fp);
-    fputs("		echo Unable to determine location of startup scripts!\n", fp);
-    fputs("	else\n", fp);
-    for (; i > 0; i --, file ++)
-      if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      {
-        qprintf(fp, "		%s/init.d/%s stop\n", SoftwareDir, file->dst);
-
-	fputs("		if test -d $rcdir/init.d; then\n", fp);
-	qprintf(fp, "			/bin/rm -f $rcdir/init.d/%s\n", file->dst);
-	fputs("		else\n", fp);
-	fputs("			if test -d /etc/init.d; then\n", fp);
-	qprintf(fp, "				/bin/rm -f /etc/init.d/%s\n", file->dst);
-	fputs("			fi\n", fp);
-	fputs("		fi\n", fp);
-
-	for (runlevels = get_runlevels(dist->files + i, "0123456");
-             isdigit(*runlevels & 255);
-	     runlevels ++)
+      for (; i > 0; i --, file ++)
+	if (tolower(file->type) == 'i' && file->subpackage == subpackage)
 	{
-	  if (*runlevels == '0')
-            number = get_stop(file, 0);
-	  else
-	    number = get_start(file, 99);
+	  fprintf(fp, "	/etc/init.d/%s stop\n", file->dst);
+	  fprintf(fp, "	/usr/lib/lsb/remove_initd /etc/init.d/%s\n", file->dst);
+	}
+    }
+    else if (format == PACKAGE_LSB_INIT)
+    {
+       for (; i > 0; i --, file ++)
+	 if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+         {
+	   qprintf(fp, "\tservice %s stop\n", basename(file->dst));
+	   qprintf(fp, "\tchkconfig --del %s\n", basename(file->dst));
+	 }
+   }
+   else
+   {
+     /*
+      * Find where the frigging init scripts go...
+      */
 
-	  qprintf(fp, "		/bin/rm -f $rcdir/rc%c.d/%c%02d%s\n", *runlevels,
-	          (*runlevels == '0' || *runlevels == '1' ||
-		   *runlevels == '6') ? 'K' : 'S', number, file->dst);
-        }
-      }
+      fputs("	rcdir=\"\"\n", fp);
+      fputs("	for dir in /sbin/rc.d /sbin /etc/rc.d /etc ; do\n", fp);
+      fputs("		if test -d $dir/rc3.d -o -h $dir/rc3.d; then\n", fp);
+      fputs("			rcdir=\"$dir\"\n", fp);
+      fputs("		fi\n", fp);
+      fputs("	done\n", fp);
+      fputs("	if test \"$rcdir\" = \"\" ; then\n", fp);
+      fputs("		echo Unable to determine location of startup scripts!\n", fp);
+      fputs("	else\n", fp);
+      for (; i > 0; i --, file ++)
+	if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+	{
+	  qprintf(fp, "		%s/init.d/%s stop\n", SoftwareDir, file->dst);
 
-    fputs("	fi\n", fp);
+	  fputs("		if test -d $rcdir/init.d; then\n", fp);
+	  qprintf(fp, "			/bin/rm -f $rcdir/init.d/%s\n", file->dst);
+	  fputs("		else\n", fp);
+	  fputs("			if test -d /etc/init.d; then\n", fp);
+	  qprintf(fp, "				/bin/rm -f /etc/init.d/%s\n", file->dst);
+	  fputs("			fi\n", fp);
+	  fputs("		fi\n", fp);
+
+	  for (runlevels = get_runlevels(dist->files + i, "0123456");
+	       isdigit(*runlevels & 255);
+	       runlevels ++)
+	  {
+	    if (*runlevels == '0')
+	      number = get_stop(file, 0);
+	    else
+	      number = get_start(file, 99);
+
+	    qprintf(fp, "		/bin/rm -f $rcdir/rc%c.d/%c%02d%s\n", *runlevels,
+		    (*runlevels == '0' || *runlevels == '1' ||
+		     *runlevels == '6') ? 'K' : 'S', number, file->dst);
+	  }
+	}
+
+      fputs("	fi\n", fp);
+    }
     fputs("fi\n", fp);
   }
   else
@@ -882,15 +998,33 @@ write_spec(const char *prodname,	/* I - Product name */
 	            file->group, file->dst);
             break;
 	case 'i' :
-            fprintf(fp, "%%attr(0555,root,root) \"%s/init.d/%s\"\n", SoftwareDir,
-	            file->dst);
+	    if (format == PACKAGE_LSB)
+	      fprintf(fp, "%%attr(0555,root,root) \"/etc/init.d/%s\"\n",
+		      file->dst);
+	    else if (format == PACKAGE_LSB_INIT)
+	      fprintf(fp, "%%attr(0555,root,root) \"/etc/init.d/%s\"\n",
+		      basename(file->dst));
+            else
+	      fprintf(fp, "%%attr(0555,root,root) \"%s/init.d/%s\"\n",
+	              SoftwareDir, file->dst);
             break;
       }
 
   return (0);
 }
 
+basename(register char *s)
+{
+	register char *rv = s;
+	if (rv) for(;;)
+		switch(*s++) {
+			case 0: return rv;
+			case '/':
+				rv = s;
+			}
+	return rv;
+	}
 
 /*
- * End of "$Id: rpm.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: rpm.c,v 1.1.1.1.2.9 2009/06/05 14:26:33 bsavelev Exp $".
  */

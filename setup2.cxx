@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.15 2009/03/19 15:15:50 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.15.2.6 2009/05/27 08:18:19 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -29,8 +29,10 @@
 //   next_cb()      - Show software selections or install software.
 //   type_cb()      - Handle selections in the type list.
 //   update_size()  - Update the total +/- sizes of the installations.
+//   update_control() - updates control on form
 //
 
+//#include <iostream>
 #define _DEFINE_GLOBALS_
 #include "setup.h"
 #include <FL/Fl_GIF_Image.H>
@@ -438,7 +440,6 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
   char		command[1024];		// Command string
   int		fds[2];			// Pipe FDs
   int		status;			// Exit status
-  char* 	env[] = { getenv("PATH"), "LANG=C", (char *)0 }; // C locale for maintainer scripts
 #ifndef __APPLE__
   int		pid;			// Process ID
 #endif // !__APPLE__
@@ -483,11 +484,12 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
     close(fds[1]);
 
     // Execute the command; if an error occurs, return it...
-    if (dist->type == PACKAGE_PORTABLE)
-      execle(dist->filename, dist->filename, "now", (char *)0, env);
-    else
+    if (dist->type == PACKAGE_PORTABLE) {
+      setenv("LANG","C",1);
+      execl(dist->filename, dist->filename, "now", (char *)0);
+    } else {
       execlp("rpm", "rpm", "-U", "--nodeps", dist->filename, (char *)0);
-
+    }
     exit(errno);
   }
   else if (pid < 0)
@@ -622,10 +624,13 @@ license_dist()				// I - Distribution to license
 void
 list_cb(Fl_Check_Browser *, void *)
 {
-  int		i, j, k;
+  int		i, j, k, m, l,n;
   gui_dist_t	*dist,
-		*dist2;
-  gui_depend_t	*depend;
+		*dist2,
+		*dist3,
+		*dist_tmp,
+		*dist_f;
+  gui_depend_t	*depend, *depend1;
 
 
   if (SoftwareList->nchecked() == 0)
@@ -640,7 +645,8 @@ list_cb(Fl_Check_Browser *, void *)
     if (SoftwareList->checked(i + 1))
     {
       // Check for required/incompatible products...
-      for (j = 0, depend = dist->depends; j < dist->num_depends; j ++, depend ++)
+      for (j = 0, depend = dist->depends; j < dist->num_depends; j ++, depend ++) {
+	//std::cout << "dist: " << dist->product << ". depend: " << depend->product << std::endl;
         switch (depend->type)
 	{
 	  case DEPEND_REQUIRES :
@@ -659,6 +665,20 @@ list_cb(Fl_Check_Browser *, void *)
 		else
 		{
 		  SoftwareList->checked(i + 1, 0);
+		  dist_tmp = dist;
+		  for (m=0; m<5; m ++) {
+			for (l=0, dist_f = Dists; l < NumDists; l ++, dist_f ++ ) {
+				for (n = 0, depend1 = dist_f->depends; n < dist_f->num_depends; n ++, depend1 ++) {
+					if (depend1 !=NULL) {
+						dist3 = gui_find_dist(depend1->product, NumDists, Dists);
+						if (dist_tmp == dist3) {
+							SoftwareList->checked(l + 1, 0);
+							dist_tmp = dist_f;
+						}
+					}
+				}
+			}
+		  }
 		  break;
 		}
 	      }
@@ -702,7 +722,8 @@ list_cb(Fl_Check_Browser *, void *)
 	  default :
 	      break;
 	}
-    }
+     }
+   }
 
   update_sizes();
 
@@ -954,11 +975,11 @@ log_cb(int fd,			// I - Pipe to read from
 	if (fdfile)
 	{
 		stWr = fwrite( buffer, strlen(buffer), sizeof(char), fdfile );
-		if (!stWr)
-			perror("fwrite");
+//		if (!stWr)
+//			perror("fwrite");
  		stWr = fwrite( "\n", strlen("\n"), 1, fdfile );
-		if (!stWr)
-			perror("fwrite");
+//		if (!stWr)
+//			perror("fwrite");
 		fclose(fdfile);
 	}
 	else
@@ -975,11 +996,13 @@ log_cb(int fd,			// I - Pipe to read from
 
 
 void update_control(int from) {
-  int		i;			// Looping var
+  int		i,j,k;			// Looping var
   int		progress;		// Progress so far...
   int		error;			// Errors?
   static char	message[1024];		// Progress message...
   static char	install_type[1024];	// EPM_INSTALL_TYPE env variable
+  gui_dist_t	*dist;
+  gui_depend_t	*depend;
 
   update_label();
 
@@ -997,6 +1020,12 @@ void update_control(int from) {
     CancelButton->activate();
   }
   if (Wizard->value() == Pane[PANE_SELECT]) {
+  for (j = 0, dist = Dists; j < NumDists; j ++, dist ++ )
+      for (k = 0, depend = dist->depends; k < dist->num_depends; k ++, depend ++ )
+        if ( depend != NULL)
+	  if (depend->type == DEPEND_INCOMPAT)
+	    InstallAllButton->deactivate();
+
       NextButton->activate();
       CancelButton->activate();
       if (SoftwareList->nchecked() == 0)
@@ -1305,5 +1334,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.15 2009/03/19 15:15:50 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.15.2.6 2009/05/27 08:18:19 bsavelev Exp $".
 //

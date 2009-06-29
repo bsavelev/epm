@@ -1,3 +1,51 @@
+epm (4.1-2.26) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix check build number for install
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Thu, 16 Apr 2009 15:34:24 +0300
+
+epm (4.1-2.25) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix PATH for script
+  * Fix rmdir with /bin/sh -e
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Tue, 14 Apr 2009 15:38:26 +0300
+
+epm (4.1-2.24) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Add check build number for install
+  * Change directory before run install
+  * Run intall, remove with /bin/sh -e
+  * Some fixes for FreeBSD
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Tue, 14 Apr 2009 12:19:47 +0300
+
+epm (4.1-2.23) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix depends check in GUI uninstaller
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Wed, 8 Apr 2009 11:41:10 +0300
+
+epm (4.1-2.22) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Write to remove files only meta info about depends
+  * Dont output trash to console in GUI setup
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Wed, 1 Apr 2009 19:30:36 +0300
+
+epm (4.1-2.21) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Write remove depends to remove file
+  * Fix depends check in GUI unistaller 
+
+ -- Al Nikolov <a.nikolov@drweb.com>  Fri, 27 Mar 2009 13:20:12 +0300
+
 epm (4.1-2.20) unstable; urgency=low
 
   * Non-maintainer upload.

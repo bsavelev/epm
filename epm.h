@@ -1,9 +1,9 @@
 /*
- * "$Id: epm.h,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: epm.h,v 1.1.1.1.2.1 2009/06/04 15:55:15 bsavelev Exp $"
  *
  *   Definitions for the ESP Package Manager (EPM).
  *
- *   Copyright 1999-2006 by Easy Software Products.
+ *   Copyright 1999-2008 by Easy Software Products.
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -99,9 +99,13 @@ enum
   PACKAGE_BSD,				/* BSD package format */
   PACKAGE_DEB,				/* Debian package format */
   PACKAGE_INST,				/* IRIX package format */
+  PACKAGE_LSB,				/* LSB (RPM) package format */
+  PACKAGE_LSB_SIGNED,			/* LSB (RPM) package format (signed) */
+  PACKAGE_LSB_INIT,			/* LSB (RPM) package format only for init-scripts */
   PACKAGE_OSX,				/* MacOS X package format */
   PACKAGE_PKG,				/* AT&T package format (AIX, Solaris) */
   PACKAGE_RPM,				/* RedHat package format */
+  PACKAGE_RPM_SIGNED,			/* RedHat package format (signed) */
   PACKAGE_SETLD,			/* Tru64 package format */
   PACKAGE_SLACKWARE,			/* Slackware package format */
   PACKAGE_SWINSTALL			/* HP-UX package format */
@@ -118,7 +122,9 @@ enum
   COMMAND_PRE_PATCH,			/* Command to run before patch */
   COMMAND_POST_PATCH,			/* Command to run after patch */
   COMMAND_PRE_REMOVE,			/* Command to run before remove */
-  COMMAND_POST_REMOVE			/* Command to run after remove */
+  COMMAND_POST_REMOVE,			/* Command to run after remove */
+  COMMAND_LITERAL,			/* Literal (format-specific) data */
+  COMMAND_POST_TRANS			/* Command to run after all */
 };
 
 /*
@@ -186,6 +192,7 @@ typedef struct				/**** Install/Patch/Remove Commands ****/
   int		type;			/* Command type */
   char		*command;		/* Command string */
   const char	*subpackage;		/* Sub-package name */
+  char		*section;		/* Literal section */
 } command_t;
 
 typedef struct				/**** Dependencies ****/
@@ -246,7 +253,8 @@ extern int		Verbosity;	/* Be verbose? */
  */
 
 extern void	add_command(dist_t *dist, FILE *fp, int type,
-		            const char *command, const char *subpkg);
+		            const char *command, const char *subpkg,
+                            const char *section);
 extern void	add_depend(dist_t *dist, int type, const char *line,
 		           const char *subpkg);
 extern void	add_description(dist_t *dist, FILE *fp, const char *description,
@@ -288,7 +296,7 @@ extern int	make_portable(const char *prodname, const char *directory,
 		              const char *platname, dist_t *dist,
 			      struct utsname *platform, const char *setup,
 			      const char *types);
-extern int	make_rpm(const char *prodname, const char *directory,
+extern int	make_rpm(int format, const char *prodname, const char *directory,
 		         const char *platname, dist_t *dist,
 			 struct utsname *platform, const char *setup,
 			 const char *types);
@@ -338,5 +346,5 @@ extern int	write_dist(const char *listname, dist_t *dist);
 
 
 /*
- * End of "$Id: epm.h,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: epm.h,v 1.1.1.1.2.1 2009/06/04 15:55:15 bsavelev Exp $".
  */

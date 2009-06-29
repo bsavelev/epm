@@ -1,9 +1,9 @@
 /*
- * "$Id: dist.c,v 1.2 2009/03/05 14:25:13 bsavelev Exp $"
+ * "$Id: dist.c,v 1.2.2.1 2009/06/04 15:55:15 bsavelev Exp $"
  *
  *   Distribution functions for the ESP Package Manager (EPM).
  *
- *   Copyright 1999-2006 by Easy Software Products.
+ *   Copyright 1999-2008 by Easy Software Products.
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ extern int	gethostname(char *, int);
  */
 
 static int	compare_files(const file_t *f0, const file_t *f1);
-static void	expand_name(char *buffer, char *name, size_t bufsize);
+static void	expand_name(char *buffer, char *name, size_t bufsize, int warn);
 static char	*get_file(const char *filename, char *buffer, size_t size);
 static char	*get_inline(const char *term, FILE *fp, char *buffer,
 		            size_t size);
@@ -98,13 +98,14 @@ add_command(dist_t     *dist,		/* I - Distribution */
             FILE       *fp,		/* I - Distribution file */
             int        type,		/* I - Command type */
 	    const char *command,	/* I - Command string */
-	    const char *subpkg)		/* I - Subpackage */
+	    const char *subpkg,		/* I - Subpackage */
+            const char *section)	/* I - Literal text section */
 {
   command_t	*temp;			/* New command */
   char		buf[16384];		/* File import buffer */
 
 
-  if (strncmp(command, "<<", 2) == 0)
+  if (!strncmp(command, "<<", 2))
   {
     for (command += 2; isspace(*command & 255); command ++);
 
@@ -117,7 +118,7 @@ add_command(dist_t     *dist,		/* I - Distribution */
     command = get_file(command, buf, sizeof(buf));
   }
 
-  if (command == NULL)
+  if (!command)
     return;
 
   if (dist->num_commands == 0)
@@ -125,7 +126,7 @@ add_command(dist_t     *dist,		/* I - Distribution */
   else
     temp = realloc(dist->commands, (dist->num_commands + 1) * sizeof(command_t));
 
-  if (temp == NULL)
+  if (!temp)
   {
     perror("epm: Out of memory allocating a command");
     return;
@@ -135,13 +136,24 @@ add_command(dist_t     *dist,		/* I - Distribution */
   temp             += dist->num_commands;
   temp->type       = type;
   temp->command    = strdup(command);
-  temp->subpackage = subpkg;
-
-  if (temp->command == NULL)
+  if (!temp->command)
   {
     perror("epm: Out of memory duplicating a command string");
     return;
   }
+  temp->subpackage = subpkg;
+  if (section && *section)
+  {
+    temp->section = strdup(section);
+    if (!temp->section)
+    {
+      perror("epm: Out of memory duplicating a literal section");
+      free(temp->command);
+      return;
+    }
+  }
+  else
+    temp->section = NULL;
 
   dist->num_commands ++;
 }
@@ -454,7 +466,11 @@ free_dist(dist_t *dist)			/* I - Distribution to free */
     free(dist->subpackages);
 
   for (i = 0; i < dist->num_commands; i ++)
+  {
     free(dist->commands[i].command);
+    if (dist->commands[i].section)
+      free(dist->commands[i].section);
+  }
 
   if (dist->num_commands)
     free(dist->commands);
@@ -829,7 +845,8 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
       */
 
       line[0] = buf[0]; /* Don't expand initial $ */
-      expand_name(line + 1, buf + 1, sizeof(line) - 1);
+      expand_name(line + 1, buf + 1, sizeof(line) - 1,
+                  strncmp(buf, "%if", 3) || strncmp(buf, "%elseif", 7));
 
      /*
       * Check line for config stuff...
@@ -848,7 +865,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
         * Process directive...
         */
 
-	if (strcmp(line, "%include") == 0)
+	if (!strcmp(line, "%include"))
 	{
 	  listlevel ++;
 
@@ -859,72 +876,90 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	    listlevel --;
 	  }
 	}
-	else if (strcmp(line, "%description") == 0)
+	else if (!strcmp(line, "%description"))
 	  add_description(dist, listfiles[listlevel], temp, subpkg);
-	else if (strcmp(line, "%preinstall") == 0)
+	else if (!strcmp(line, "%preinstall"))
           add_command(dist, listfiles[listlevel], COMMAND_PRE_INSTALL, temp,
-	              subpkg);
-	else if (strcmp(line, "%install") == 0 ||
-	         strcmp(line, "%postinstall") == 0)
+	              subpkg, NULL);
+	else if (!strcmp(line, "%install") || !strcmp(line, "%postinstall"))
           add_command(dist, listfiles[listlevel], COMMAND_POST_INSTALL, temp,
-	              subpkg);
-	else if (strcmp(line, "%remove") == 0 ||
-	         strcmp(line, "%preremove") == 0)
+	              subpkg, NULL);
+	else if (!strcmp(line, "%remove") || !strcmp(line, "%preremove"))
           add_command(dist, listfiles[listlevel], COMMAND_PRE_REMOVE, temp,
-	              subpkg);
-	else if (strcmp(line, "%postremove") == 0)
+	              subpkg, NULL);
+	else if (!strcmp(line, "%postremove"))
           add_command(dist, listfiles[listlevel], COMMAND_POST_REMOVE, temp,
-	              subpkg);
+	              subpkg, NULL);
+	else if (strcmp(line, "%posttrans") == 0)
+          add_command(dist, listfiles[listlevel], COMMAND_POST_TRANS, temp,
+	              subpkg, NULL);
 	else if (strcmp(line, "%prepatch") == 0)
           add_command(dist, listfiles[listlevel], COMMAND_PRE_PATCH, temp,
-	              subpkg);
-	else if (strcmp(line, "%patch") == 0 ||
-	         strcmp(line, "%postpatch") == 0)
+	              subpkg, NULL);
+	else if (!strcmp(line, "%patch") || !strcmp(line, "%postpatch"))
           add_command(dist, listfiles[listlevel], COMMAND_POST_PATCH, temp,
-	              subpkg);
-        else if (strcmp(line, "%product") == 0)
+	              subpkg, NULL);
+	else if (!strncmp(line, "%literal(", 9))
+        {
+          char	*ptr,			/* Pointer to parenthesis */
+		*section;		/* Section for literal text */
+
+
+	  section = line + 9;
+	  if ((ptr = strchr(section, ')')) != NULL)
+	  {
+	    *ptr = '\0';
+
+	    add_command(dist, listfiles[listlevel], COMMAND_LITERAL, temp,
+			subpkg, section);
+	  }
+	  else
+	    fputs("epm: Ignoring bad %literal(section) line in list file.\n",
+		  stderr);
+        }
+        else if (!strcmp(line, "%product"))
 	{
           if (!dist->product[0])
             strcpy(dist->product, temp);
 	  else
 	    fputs("epm: Ignoring %product line in list file.\n", stderr);
 	}
-	else if (strcmp(line, "%copyright") == 0)
+	else if (!strcmp(line, "%copyright"))
 	{
           if (!dist->copyright[0])
             strcpy(dist->copyright, temp);
 	  else
 	    fputs("epm: Ignoring %copyright line in list file.\n", stderr);
 	}
-	else if (strcmp(line, "%vendor") == 0)
+	else if (!strcmp(line, "%vendor"))
 	{
           if (!dist->vendor[0])
             strcpy(dist->vendor, temp);
 	  else
 	    fputs("epm: Ignoring %vendor line in list file.\n", stderr);
 	}
-	else if (strcmp(line, "%packager") == 0)
+	else if (!strcmp(line, "%packager"))
 	{
           if (!dist->packager[0])
             strcpy(dist->packager, temp);
 	  else
 	    fputs("epm: Ignoring %packager line in list file.\n", stderr);
 	}
-	else if (strcmp(line, "%license") == 0)
+	else if (!strcmp(line, "%license"))
 	{
           if (!dist->license[0])
             strcpy(dist->license, temp);
 	  else
 	    fputs("epm: Ignoring %license line in list file.\n", stderr);
 	}
-	else if (strcmp(line, "%readme") == 0)
+	else if (!strcmp(line, "%readme"))
 	{
           if (!dist->readme[0])
             strcpy(dist->readme, temp);
 	  else
 	    fputs("epm: Ignoring %readme line in list file.\n", stderr);
 	}
-	else if (strcmp(line, "%subpackage") == 0)
+	else if (!strcmp(line, "%subpackage"))
 	{
 	  subpkg = find_subpackage(dist, temp);
 	}
@@ -960,18 +995,18 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	    }
 	  }
 	}
-	else if (strcmp(line, "%release") == 0)
+	else if (!strcmp(line, "%release"))
 	{
 	  strlcpy(dist->release, temp, sizeof(dist->release));
 	  dist->vernumber += atoi(temp);
 	}
-	else if (strcmp(line, "%incompat") == 0)
+	else if (!strcmp(line, "%incompat"))
 	  add_depend(dist, DEPEND_INCOMPAT, temp, subpkg);
-	else if (strcmp(line, "%provides") == 0)
+	else if (!strcmp(line, "%provides"))
 	  add_depend(dist, DEPEND_PROVIDES, temp, subpkg);
-	else if (strcmp(line, "%replaces") == 0)
+	else if (!strcmp(line, "%replaces"))
 	  add_depend(dist, DEPEND_REPLACES, temp, subpkg);
-	else if (strcmp(line, "%requires") == 0)
+	else if (!strcmp(line, "%requires"))
 	  add_depend(dist, DEPEND_REQUIRES, temp, subpkg);
 	else
 	{
@@ -1271,7 +1306,8 @@ write_dist(const char *listname,	/* I - File to write to */
 		  "%prepatch",
 		  "%postpatch",
 		  "%preremove",
-		  "%postremove"
+		  "%postremove",
+		  "%posttrans"
 		},
 		*depends[] =		/* Dependency strings */
 		{
@@ -1440,10 +1476,12 @@ compare_files(const file_t *f0,		/* I - First file */
 static void
 expand_name(char   *buffer,		/* O - Output string */
             char   *name,		/* I - Input string */
-	    size_t bufsize)		/* I - Size of output string */
+	    size_t bufsize,		/* I - Size of output string */
+	    int    warn)		/* I - Warn when not set? */
 {
   char	var[255],			/* Environment variable name */
-	*varptr;			/* Current position in name */
+	*varptr,			/* Current position in name */
+	delim;				/* Delimiter character */
 
 
   bufsize --;
@@ -1462,16 +1500,19 @@ expand_name(char   *buffer,		/* O - Output string */
 	bufsize --;
 	continue;
       }
-      else if (*name == '{')
+      else if (*name == '{' || *name == '(')
       {
        /*
         * Bracketed variable name...
 	*/
 
-	for (varptr = var, name ++; *name != '}' && *name != '\0';)
-          *varptr++ = *name++;
+        delim = *name == '{' ? '}' : ')';
 
-        if (*name == '}')
+	for (varptr = var, name ++; *name != delim && *name; name ++)
+          if (varptr < (var + sizeof(var) - 1))
+	    *varptr++ = *name;
+
+        if (*name == delim)
 	  name ++;
       }
       else
@@ -1480,8 +1521,9 @@ expand_name(char   *buffer,		/* O - Output string */
         * Unbracketed variable name...
 	*/
 
-	for (varptr = var; strchr("/ \t\r\n-", *name) == NULL && *name != '\0';)
-          *varptr++ = *name++;
+	for (varptr = var; !strchr("/ \t\r\n-", *name) && *name; name ++)
+          if (varptr < (var + sizeof(var) - 1))
+	    *varptr++ = *name;
       }
 
       *varptr = '\0';
@@ -1492,9 +1534,14 @@ expand_name(char   *buffer,		/* O - Output string */
         bufsize -= strlen(buffer);
 	buffer  += strlen(buffer);
       }
+      else if (warn)
+        fprintf(stderr, "epm: Variable \"%s\" undefined!\n", var);
     }
     else
+    {
       *buffer++ = *name++;
+      bufsize --;
+    }
   }
 
   *buffer = '\0';
@@ -1560,7 +1607,7 @@ get_file(const char *filename,		/* I  - File to read from */
 
     expand = strdup(buffer);
 
-    expand_name(buffer, expand, size);
+    expand_name(buffer, expand, size, 1);
 
     free(expand);
   }
@@ -1626,7 +1673,7 @@ get_inline(const char *term,		/* I  - Termination string */
 
       expand = strdup(buffer);
 
-      expand_name(buffer, expand, size);
+      expand_name(buffer, expand, size, 1);
 
       free(expand);
     }
@@ -2282,5 +2329,5 @@ sort_subpackages(char **a,		/* I - First subpackage */
 
 
 /*
- * End of "$Id: dist.c,v 1.2 2009/03/05 14:25:13 bsavelev Exp $".
+ * End of "$Id: dist.c,v 1.2.2.1 2009/06/04 15:55:15 bsavelev Exp $".
  */

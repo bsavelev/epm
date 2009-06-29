@@ -1,5 +1,5 @@
 /*
- * "$Id: deb.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: deb.c,v 1.1.1.1.2.8 2009/06/05 11:59:54 bsavelev Exp $"
  *
  *   Debian package gateway for the ESP Package Manager (EPM).
  *
@@ -54,7 +54,6 @@ make_deb(const char     *prodname,	/* I - Product short name */
   char		name[1024],		/* Full product name */
 		filename[1024];		/* File to archive */
 
-
   if (make_subpackage(prodname, directory, platname, dist, platform, NULL))
     return (1);
 
@@ -74,14 +73,14 @@ make_deb(const char     *prodname,	/* I - Product short name */
     */
 
     if (dist->release[0])
-      snprintf(name, sizeof(name), "%s-%s-%s", prodname, dist->version,
+      snprintf(name, sizeof(name), "%s_%s-%s", prodname, dist->version,
                dist->release);
     else
-      snprintf(name, sizeof(name), "%s-%s", prodname, dist->version);
+      snprintf(name, sizeof(name), "%s_%s", prodname, dist->version);
 
     if (platname[0])
     {
-      strlcat(name, "-", sizeof(name));
+      strlcat(name, "_", sizeof(name));
       strlcat(name, platname, sizeof(name));
     }
 
@@ -194,14 +193,14 @@ make_subpackage(const char     *prodname,
   */
 
   if (dist->release[0])
-    snprintf(name, sizeof(name), "%s-%s-%s", prodfull, dist->version,
+    snprintf(name, sizeof(name), "%s_%s-%s", prodfull, dist->version,
              dist->release);
   else
-    snprintf(name, sizeof(name), "%s-%s", prodfull, dist->version);
+    snprintf(name, sizeof(name), "%s_%s", prodfull, dist->version);
 
   if (platname[0])
   {
-    strlcat(name, "-", sizeof(name));
+    strlcat(name, "_", sizeof(name));
     strlcat(name, platname, sizeof(name));
   }
 
@@ -270,19 +269,17 @@ make_subpackage(const char     *prodname,
             fprintf(fp, "%s %s", header, prodname);
 	  else
             fprintf(fp, "%s %s", header, d->product);
-
-	  if (d->vernumber[0] == 0)
-	  {
+	 if ( j != DEPEND_PROVIDES) {
+	  if (d->vernumber[0] == 0) {
 	    if (d->vernumber[1] < INT_MAX)
               fprintf(fp, " (<= %s)", d->version[1]);
-	  }
-	  else
-	  {
+	  } else {
 	    if (d->vernumber[1] < INT_MAX)
 	      fprintf(fp, " (>= %s, <= %s)", d->version[0], d->version[1]);
 	    else
 	      fprintf(fp, " (>= %s)", d->version[0]);
 	  }
+	 }
 	}
 
       putc('\n', fp);
@@ -330,7 +327,8 @@ make_subpackage(const char     *prodname,
   */
 
   for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
-    if (c->type == COMMAND_POST_INSTALL && c->subpackage == subpackage)
+    if ((c->type == COMMAND_POST_INSTALL && c->subpackage == subpackage) || 
+	(c->type == COMMAND_POST_TRANS && c->subpackage == subpackage))
       break;
 
   if (!i)
@@ -361,6 +359,10 @@ make_subpackage(const char     *prodname,
       if (c->type == COMMAND_POST_INSTALL && c->subpackage == subpackage)
         fprintf(fp, "%s\n", c->command);
 
+    for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
+      if (c->type == COMMAND_POST_TRANS && c->subpackage == subpackage)
+        fprintf(fp, "%s\n", c->command);
+
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       {
@@ -377,7 +379,7 @@ make_subpackage(const char     *prodname,
           fprintf(fp, " . stop %02d 0", get_stop(file, 0));
 
         fputs(" . >/dev/null\n", fp);
-        fprintf(fp, "/etc/init.d/%s start\n", file->dst);
+        fprintf(fp, "/etc/init.d/%s start || true\n", file->dst);
       }
 
     fclose(fp);
@@ -597,5 +599,5 @@ make_subpackage(const char     *prodname,
 
 
 /*
- * End of "$Id: deb.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: deb.c,v 1.1.1.1.2.8 2009/06/05 11:59:54 bsavelev Exp $".
  */

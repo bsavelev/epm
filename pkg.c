@@ -1,9 +1,9 @@
 /*
- * "$Id: pkg.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: pkg.c,v 1.1.1.1.2.2 2009/05/07 15:49:02 bsavelev Exp $"
  *
  *   AT&T package gateway for the ESP Package Manager (EPM).
  *
- *   Copyright 1999-2007 by Easy Software Products.
+ *   Copyright 1999-2008 by Easy Software Products.
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -53,7 +53,8 @@ make_pkg(const char     *prodname,	/* I - Product short name */
 		preinstall[1024],	/* Pre install script */
 		postinstall[1024],	/* Post install script */
 		preremove[1024],	/* Pre remove script */
-		postremove[1024];	/* Post remove script */
+		postremove[1024],	/* Post remove script */
+		request[1024];		/* Request script */
   char		current[1024];		/* Current directory */
   file_t	*file;			/* Current distribution file */
   command_t	*c;			/* Current command */
@@ -333,6 +334,47 @@ make_pkg(const char     *prodname,	/* I - Product short name */
     postremove[0] = '\0';
 
  /*
+  * Write the request file for pkgmk...
+  */
+
+  for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
+    if (c->type == COMMAND_LITERAL && !strcmp(c->section, "request"))
+      break;
+
+  if (i)
+  {
+   /*
+    * Write the request file for pkgmk...
+    */
+
+    if (Verbosity)
+      puts("Creating request script...");
+
+    snprintf(request, sizeof(request), "%s/%s.request", directory,
+             prodname);
+
+    if ((fp = fopen(request, "w")) == NULL)
+    {
+      fprintf(stderr, "epm: Unable to create script file \"%s\" - %s\n",
+              request, strerror(errno));
+      return (1);
+    }
+
+    fchmod(fileno(fp), 0755);
+
+    fputs("#!/bin/sh\n", fp);
+    fputs("# " EPM_VERSION "\n", fp);
+
+    for (; i > 0; i --, c ++)
+      if (c->type == COMMAND_LITERAL && !strcmp(c->section, "request"))
+        fprintf(fp, "%s\n", c->command);
+
+    fclose(fp);
+  }
+  else
+    request[0] = '\0';
+
+ /*
   * Add symlinks for init scripts...
   */
 
@@ -396,6 +438,7 @@ make_pkg(const char     *prodname,	/* I - Product short name */
 
   if (dist->license[0])
     fprintf(fp, "i copyright=%s\n", pkg_path(dist->license, current));
+
   fprintf(fp, "i depend=%s/%s.depend\n", pkg_path(directory, current), prodname);
   fprintf(fp, "i pkginfo=%s/%s.pkginfo\n", pkg_path(directory, current),
           prodname);
@@ -408,6 +451,9 @@ make_pkg(const char     *prodname,	/* I - Product short name */
     fprintf(fp, "i preremove=%s\n", pkg_path(preremove, current));
   if (postremove[0])
     fprintf(fp, "i postremove=%s\n", pkg_path(postremove, current));
+  if (request[0])
+    fprintf(fp, "i request=%s\n", pkg_path(request, current));
+
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     switch (tolower(file->type))
@@ -454,7 +500,7 @@ make_pkg(const char     *prodname,	/* I - Product short name */
   * Tar and compress the distribution...
   */
 
-  if (Verbosity)
+  /*if (Verbosity)
     puts("Creating .pkg.tgz file for distribution...");
 
   snprintf(filename, sizeof(filename), "%s/%s.pkg.tgz", directory, name);
@@ -471,7 +517,7 @@ make_pkg(const char     *prodname,	/* I - Product short name */
   }
 
   tar_close(tarfile);
-
+*/
  /*
   * Make a package stream file...
   */
@@ -486,6 +532,9 @@ make_pkg(const char     *prodname,	/* I - Product short name */
  /*
   * Compress the package stream file...
   */
+
+  snprintf(filename, sizeof(filename), "%s.pkg.gz", name);
+  unlink(filename);
 
   if (run_command(directory, EPM_GZIP " -v9 %s.pkg", name))
     return (1);
@@ -513,6 +562,8 @@ make_pkg(const char     *prodname,	/* I - Product short name */
       unlink(preremove);
     if (postremove[0])
       unlink(postremove);
+    if (request[0])
+      unlink(request);
   }
 
   return (0);
@@ -539,5 +590,5 @@ pkg_path(const char *filename,		/* I - Source filename */
 
 
 /*
- * End of "$Id: pkg.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: pkg.c,v 1.1.1.1.2.2 2009/05/07 15:49:02 bsavelev Exp $".
  */

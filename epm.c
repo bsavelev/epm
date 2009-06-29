@@ -175,6 +175,8 @@ main(int  argc,				/* I - Number of command-line args */
 	      format = PACKAGE_LSB;
 	    else if (!strcasecmp(temp, "lsb-signed"))
 	      format = PACKAGE_LSB_SIGNED;
+	    else if (!strcasecmp(temp, "lsb-init"))
+	      format = PACKAGE_LSB_INIT;
 	    else if (!strcasecmp(temp, "osx"))
 	      format = PACKAGE_OSX;
 	    else if (!strcasecmp(temp, "pkg"))
@@ -577,6 +579,7 @@ main(int  argc,				/* I - Number of command-line args */
 	break;
     case PACKAGE_LSB :
     case PACKAGE_LSB_SIGNED :
+    case PACKAGE_LSB_INIT :
     case PACKAGE_RPM :
     case PACKAGE_RPM_SIGNED :
         i = make_rpm(format, prodname, directory, platname, dist, &platform,
@@ -673,7 +676,7 @@ usage(void)
   puts("    Use the named architecture instead of the local one.");
   puts("-g");
   puts("    Don't strip executables in distributions.");
-  puts("-f {aix,bsd,deb,depot,inst,native,pkg,portable,rpm,setld,slackware,swinstall,tardist}");
+  puts("-f {aix,bsd,deb,depot,inst,native,pkg,portable,rpm,lsb,lsb-signed,lsb-init,setld,slackware,swinstall,tardist}");
   puts("    Set distribution format.");
   puts("-k");
   puts("    Keep intermediate files (spec files, etc.)");

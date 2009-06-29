@@ -208,7 +208,7 @@ make_rpm(int            format,		/* I - Subformat */
 	    return (1);
           break;
       case 'i' :
-          if (format == PACKAGE_LSB || format == PACKAGE_LSB_SIGNED)
+          if (format == PACKAGE_LSB || format == PACKAGE_LSB_SIGNED || PACKAGE_LSB_INIT)
 	    snprintf(filename, sizeof(filename), "%s/buildroot/etc/init.d/%s",
 		     directory, file->dst);
           else
@@ -701,7 +701,6 @@ write_spec(int        format,		/* I - Subformat */
 
   if (i)
   {
-   if (getenv("LINK_INIT") == NULL) {
     if (!have_commands)
       fprintf(fp, "%%pre%s\n", name);
 
@@ -712,7 +711,6 @@ write_spec(int        format,		/* I - Subformat */
 	qprintf(fp, "\tservice %s stop || true\n", basename(file->dst));
       }
       fputs("fi\n", fp);
-   }
   }
 
   for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
@@ -761,31 +759,43 @@ write_spec(int        format,		/* I - Subformat */
 
   if (i)
   {
-   if (getenv("LINK_INIT") != NULL) {
     if (!have_commands)
       fprintf(fp, "%%post%s\n", name);
-
-    fputs("if test \"x$1\" = x1; then\n", fp);
-    fputs("	echo Setting up init scripts...\n", fp);
 
     if (format == PACKAGE_LSB)
     {
      /*
       * Use LSB commands to install the init scripts...
       */
-
+      fputs("if test \"x$1\" = x1; then\n", fp);
+      fputs("\techo Setting up init scripts...\n", fp);
       for (; i > 0; i --, file ++)
 	if (tolower(file->type) == 'i' && file->subpackage == subpackage)
 	{
 	  fprintf(fp, "	/usr/lib/lsb/install_initd /etc/init.d/%s\n", file->dst);
 	  fprintf(fp, "	/etc/init.d/%s start\n", file->dst);
 	}
+      fputs("fi\n", fp);
+    }
+    else if (format == PACKAGE_LSB_INIT)
+    {
+    for (; i > 0; i --, file ++)
+      if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+      {
+	fputs("if test \"x$1\" = x1; then\n", fp);
+	fputs("\techo Setting up init scripts...\n", fp);
+	qprintf(fp, "\tchkconfig --add %s\n", basename(file->dst));
+	fputs("fi\n", fp);
+	qprintf(fp, "service %s start || true\n", basename(file->dst));
+      }
     }
     else
     {
      /*
       * Find where the frigging init scripts go...
       */
+      fputs("if test \"x$1\" = x1; then\n", fp);
+      fputs("\techo Setting up init scripts...\n", fp);
 
       fputs("	rcdir=\"\"\n", fp);
       fputs("	for dir in /sbin/rc.d /sbin /etc/rc.d /etc ; do\n", fp);
@@ -834,23 +844,8 @@ write_spec(int        format,		/* I - Subformat */
 	}
 
       fputs("	fi\n", fp);
+      fputs("fi\n", fp);
     }
-
-    fputs("fi\n", fp);
-   } else {
-    if (!have_commands)
-      fprintf(fp, "%%post%s\n", name);
-
-    for (; i > 0; i --, file ++)
-      if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      {
-	fputs("if test \"x$1\" = x1; then\n", fp);
-	fputs("\techo Setting up init scripts...\n", fp);
-	qprintf(fp, "\tchkconfig --add %s\n", basename(file->dst));
-	fputs("fi\n", fp);
-	qprintf(fp, "service %s start || true\n", basename(file->dst));
-      }
-   }
   }
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
@@ -859,7 +854,6 @@ write_spec(int        format,		/* I - Subformat */
 
   if (i)
   {
-   if (getenv("LINK_INIT") != NULL) {
     have_commands = 1;
 
     fprintf(fp, "%%preun%s\n", name);
@@ -879,8 +873,17 @@ write_spec(int        format,		/* I - Subformat */
 	  fprintf(fp, "	/usr/lib/lsb/remove_initd /etc/init.d/%s\n", file->dst);
 	}
     }
-    else
+    else if (format == PACKAGE_LSB_INIT)
     {
+       for (; i > 0; i --, file ++)
+	 if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+         {
+	   qprintf(fp, "\tservice %s stop\n", basename(file->dst));
+	   qprintf(fp, "\tchkconfig --del %s\n", basename(file->dst));
+	 }
+   }
+   else
+   {
      /*
       * Find where the frigging init scripts go...
       */
@@ -924,22 +927,7 @@ write_spec(int        format,		/* I - Subformat */
 
       fputs("	fi\n", fp);
     }
-
     fputs("fi\n", fp);
-   } else {
-    have_commands = 1;
-
-    fprintf(fp, "%%preun%s\n", name);
-    fputs("if test \"x$1\" = x0; then\n", fp);
-    fputs("\techo Cleaning up init scripts...\n", fp);
-    for (; i > 0; i --, file ++)
-      if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      {
-	qprintf(fp, "\tservice %s stop\n", basename(file->dst));
-	qprintf(fp, "\tchkconfig --del %s\n", basename(file->dst));
-      }
-    fputs("fi\n", fp);
-   }
   }
   else
     have_commands = 0;
@@ -1013,6 +1001,9 @@ write_spec(int        format,		/* I - Subformat */
 	    if (format == PACKAGE_LSB)
 	      fprintf(fp, "%%attr(0555,root,root) \"/etc/init.d/%s\"\n",
 		      file->dst);
+	    else if (format == PACKAGE_LSB_INIT)
+	      fprintf(fp, "%%attr(0555,root,root) \"/etc/init.d/%s\"\n",
+		      basename(file->dst));
             else
 	      fprintf(fp, "%%attr(0555,root,root) \"%s/init.d/%s\"\n",
 	              SoftwareDir, file->dst);

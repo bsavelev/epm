@@ -708,7 +708,7 @@ write_spec(int        format,		/* I - Subformat */
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       {
-	qprintf(fp, "\tservice %s stop || true\n", basename(file->dst));
+	qprintf(fp, "\t/etc/init.d/%s stop || true\n", basename(file->dst));
       }
       fputs("fi\n", fp);
   }
@@ -786,7 +786,7 @@ write_spec(int        format,		/* I - Subformat */
 	fputs("\techo Setting up init scripts...\n", fp);
 	qprintf(fp, "\tchkconfig --add %s\n", basename(file->dst));
 	fputs("fi\n", fp);
-	qprintf(fp, "service %s start || true\n", basename(file->dst));
+	qprintf(fp, "/etc/init.d/%s start || true\n", basename(file->dst));
       }
     }
     else
@@ -878,7 +878,7 @@ write_spec(int        format,		/* I - Subformat */
        for (; i > 0; i --, file ++)
 	 if (tolower(file->type) == 'i' && file->subpackage == subpackage)
          {
-	   qprintf(fp, "\tservice %s stop\n", basename(file->dst));
+	   qprintf(fp, "\t/etc/init.d/%s stop\n", basename(file->dst));
 	   qprintf(fp, "\tchkconfig --del %s\n", basename(file->dst));
 	 }
    }

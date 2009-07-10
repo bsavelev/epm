@@ -646,7 +646,8 @@ list_cb(Fl_Check_Browser *, void *)
     {
       // Check for required/incompatible products...
       for (j = 0, depend = dist->depends; j < dist->num_depends; j ++, depend ++) {
-	//std::cout << "dist: " << dist->product << ". depend: " << depend->product << std::endl;
+//	std::cout << "dist: " << dist->product << ". depend: " << depend->product << std::endl;
+//	std::cout << "depend type: " << depend->type << std::endl;
         switch (depend->type)
 	{
 	  case DEPEND_REQUIRES :
@@ -994,14 +995,35 @@ log_cb(int fd,			// I - Pipe to read from
   InstallLog->bottomline(InstallLog->size());
 }
 
+void lockInstallAll() {
+int		j,k,m;
+gui_dist_t	*dist,*dist1;
+gui_depend_t	*depend;
+
+  InstallAllButton->deactivate();
+  for (j = 0, dist = Dists; j < NumDists; j ++, dist ++ )
+      for (k = 0, depend = dist->depends; k < dist->num_depends; k ++, depend ++ )
+        if ( depend != NULL)
+	  if (depend->type == DEPEND_INCOMPAT)
+	    for (m = 0, dist1 = Dists; m < NumDists; m ++, dist1 ++ )
+	    {
+	      if (strcmp(dist1->product,depend->product)) {
+//not equal
+		InstallAllButton->activate();
+	      } else {
+		InstallAllButton->deactivate();
+		return;
+	      }
+            }
+}
 
 void update_control(int from) {
-  int		i,j,k;			// Looping var
+  int		i,j,k,m;		// Looping var
   int		progress;		// Progress so far...
   int		error;			// Errors?
   static char	message[1024];		// Progress message...
   static char	install_type[1024];	// EPM_INSTALL_TYPE env variable
-  gui_dist_t	*dist;
+  gui_dist_t	*dist,*dist1;
   gui_depend_t	*depend;
 
   update_label();
@@ -1020,12 +1042,7 @@ void update_control(int from) {
     CancelButton->activate();
   }
   if (Wizard->value() == Pane[PANE_SELECT]) {
-  for (j = 0, dist = Dists; j < NumDists; j ++, dist ++ )
-      for (k = 0, depend = dist->depends; k < dist->num_depends; k ++, depend ++ )
-        if ( depend != NULL)
-	  if (depend->type == DEPEND_INCOMPAT)
-	    InstallAllButton->deactivate();
-
+      lockInstallAll();
       NextButton->activate();
       CancelButton->activate();
       if (SoftwareList->nchecked() == 0)

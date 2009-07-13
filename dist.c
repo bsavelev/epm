@@ -1733,8 +1733,10 @@ get_line(char           *buffer,	/* I - Buffer to read into */
       {
 	namelen = strlen(platform->sysname);
         bufptr  = buffer + 8;
-	snprintf(namever, sizeof(namever), "%s-%s", platform->sysname,
-	         platform->release);
+	//snprintf(namever, sizeof(namever), "%s-%s", platform->sysname,
+	         //platform->release);
+	snprintf(namever, sizeof(namever), "%s-%s-%s", platform->sysname,
+	         platform->release,platform->machine);
 
 	while (isspace(*bufptr & 255))
 	  bufptr ++;

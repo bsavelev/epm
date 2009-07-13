@@ -1988,10 +1988,10 @@ write_install(dist_t     *dist,		/* I - Software distribution */
           dist->version);
   fputs("	echo \"\"\n", scriptfile);
   fputs("	while true ; do\n", scriptfile);
-  fputs("		echo $ac_n \"Do you wish to continue? $ac_c\"\n", scriptfile);
+  fputs("		echo $ac_n \"Do you wish to continue? [Default=Yes] $ac_c\"\n", scriptfile);
   fputs("		read yesno\n", scriptfile);
   fputs("		case \"$yesno\" in\n", scriptfile);
-  fputs("			y | yes | Y | Yes | YES)\n", scriptfile);
+  fputs("			y | yes | Y | Yes | YES | "")\n", scriptfile);
   fputs("			break\n", scriptfile);
   fputs("			;;\n", scriptfile);
   fputs("			n | no | N | No | NO)\n", scriptfile);

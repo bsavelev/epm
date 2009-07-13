@@ -1018,14 +1018,12 @@ gui_depend_t	*depend;
 }
 
 void update_control(int from) {
-  int		i,j,k,m;		// Looping var
+  int		i;		// Looping var
   int		progress;		// Progress so far...
   int		error;			// Errors?
   static char	message[1024];		// Progress message...
   static char	install_type[1024];	// EPM_INSTALL_TYPE env variable
-  gui_dist_t	*dist,*dist1;
-  gui_depend_t	*depend;
-
+	
   update_label();
 
   if (Wizard->value() == Pane[PANE_WELCOME]) {
@@ -1093,9 +1091,9 @@ void update_control(int from) {
       // Show the license window and wait for the user...
       Pane[PANE_LICENSE]->show();
       Title[PANE_LICENSE]->activate();
-      LicenseAccept->set();
       NextButton->activate();
-      LicenseDecline->clear();
+      LicenseDecline->set();
+      LicenseAccept->clear();
       CancelButton->activate();
 
        while (Pane[PANE_LICENSE]->visible())

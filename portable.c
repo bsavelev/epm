@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.27 2009/06/17 09:56:58 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.29 2009/07/13 08:15:49 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -1534,7 +1534,7 @@ write_distfiles(const char *directory,	/* I - Directory */
 	    */
 
 	    if (tolower(file->type) == 'c')
-	      snprintf(filename, sizeof(filename), "%s/conf%s.N", SoftwareDir,
+	      snprintf(filename, sizeof(filename), "%s/conf/%s.N", SoftwareDir,
 	               file->dst);
 	    else if (tolower(file->type) == 'i')
 	      snprintf(filename, sizeof(filename), "%s/init.d/%s", SoftwareDir,
@@ -2184,8 +2184,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       switch (tolower(file->type))
       {
 	case 'c' :
-	    qprintf(scriptfile, "chown %s %s/conf%s.N\n", file->user, SoftwareDir, file->dst);
-	    qprintf(scriptfile, "chgrp %s %s/conf%s.N\n", file->group, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "chown %s %s/conf/%s.N\n", file->user, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "chgrp %s %s/conf/%s.N\n", file->group, SoftwareDir, file->dst);
 	case 'f' :
 	    qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
@@ -2200,8 +2200,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       switch (tolower(file->type))
       {
 	case 'c' :
-	    qprintf(scriptfile, "	chown %s %s/conf%s.N\n", file->user, SoftwareDir, file->dst);
-	    qprintf(scriptfile, "	chgrp %s %s/conf%s.N\n", file->group, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "	chown %s %s/conf/%s.N\n", file->user, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "	chgrp %s %s/conf/%s.N\n", file->group, SoftwareDir, file->dst);
 	case 'f' :
 	    qprintf(scriptfile, "	chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "	chgrp %s %s\n", file->group, file->dst);
@@ -3106,5 +3106,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.27 2009/06/17 09:56:58 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.29 2009/07/13 08:15:49 bsavelev Exp $".
  */

@@ -75,6 +75,7 @@ static char	*get_line(char *buffer, int size, FILE *fp,
 static char	*get_string(char **src, char *dst, size_t dstsize);
 static int	patmatch(const char *, const char *);
 static int	sort_subpackages(char **a, char **b);
+static int	subpackage_cmp(char *a, char *b);
 
 
 /*
@@ -1260,7 +1261,7 @@ sort_dist_files(dist_t *dist)		/* I - Distribution to sort */
           !strcmp(file[0].user, file[1].user) &&
 	  !strcmp(file[0].group, file[1].group) &&
 	  !strcmp(file[0].options, file[1].options) &&
-	  !sort_subpackages(file[0].subpackage, file[1].subpackage))
+	  !subpackage_cmp(file[0].subpackage, file[1].subpackage))
       {
        /*
         * Ignore exact duplicates...
@@ -2310,6 +2311,13 @@ static int				/* O - Result of comparison */
 sort_subpackages(char **a,		/* I - First subpackage */
                  char **b)		/* I - Second subpackage */
 {
+  return (strcmp(*a, *b));
+}
+
+static int				/* O - Result of comparison */
+subpackage_cmp(	char *a,		/* I - First subpackage */
+			char *b)		/* I - Second subpackage */
+{
   size_t stLen1 = 0;
 
 //for main package where subpackage not defined
@@ -2318,14 +2326,13 @@ sort_subpackages(char **a,		/* I - First subpackage */
 
   if (a)
     stLen1 = strlen( a );
+	
 
   if (stLen1 && b) {
-	return(strncmp(*a, *b, stLen1));
+    if(strncmp(a, b, stLen1));
+       return 0;
   }
   return 1;
-
-//old variant
-//   return (strcmp(*a, *b));
 }
 
 

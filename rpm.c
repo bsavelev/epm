@@ -534,15 +534,15 @@ move_rpms(const char     *prodname,	/* I - Product short name */
     strlcpy(prodfull, prodname, sizeof(prodfull));
 
   if (dist->release[0])
-    snprintf(rpmname, sizeof(rpmname), "%s/%s-%s-%s", directory, prodfull,
+    snprintf(rpmname, sizeof(rpmname), "%s/%s_%s-%s", directory, prodfull,
              dist->version, dist->release);
   else
-    snprintf(rpmname, sizeof(rpmname), "%s/%s-%s", directory, prodfull,
+    snprintf(rpmname, sizeof(rpmname), "%s/%s_%s", directory, prodfull,
              dist->version);
 
   if (platname[0])
   {
-    strlcat(rpmname, ".", sizeof(rpmname));
+    strlcat(rpmname, "_", sizeof(rpmname));
     strlcat(rpmname, platname, sizeof(rpmname));
   }
 

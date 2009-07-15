@@ -277,10 +277,10 @@ write_combined(const char *title,	/* I - Title */
   */
 
   if (dist->release[0])
-    snprintf(tarfilename, sizeof(tarfilename), "%s/%s-%s-%s", directory,
+    snprintf(tarfilename, sizeof(tarfilename), "%s/%s_%s-%s", directory,
              prodname, dist->version, dist->release);
   else
-    snprintf(tarfilename, sizeof(tarfilename), "%s/%s-%s", directory, prodname,
+    snprintf(tarfilename, sizeof(tarfilename), "%s/%s_%s", directory, prodname,
              dist->version);
 
   if (!strcmp(title, "patch"))
@@ -288,7 +288,7 @@ write_combined(const char *title,	/* I - Title */
 
   if (platname[0])
   {
-    strlcat(tarfilename, "-", sizeof(tarfilename));
+    strlcat(tarfilename, "_", sizeof(tarfilename));
     strlcat(tarfilename, platname, sizeof(tarfilename));
   }
 

@@ -2320,8 +2320,7 @@ sort_subpackages(char **a,		/* I - First subpackage */
     stLen1 = strlen( a );
 
   if (stLen1 && b) {
-     if (!strncasecmp(a, b, stLen1))
-       return 0;
+	return(strncmp(*a, *b, stLen1));
   }
   return 1;
 

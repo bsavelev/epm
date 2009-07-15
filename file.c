@@ -255,7 +255,39 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
       * Strip executables...
       */
 
+#if defined(__linux)
+      if (DebugPackage)
+      {
+	char appendix[255]=".debug";
+	char debug_dst[512] = "\0";
+	strcat(debug_dst,file->src);
+	strcat(debug_dst,appendix);
+	run_command(NULL, "objcopy --only-keep-debug %s %s", file->src, debug_dst);
+	run_command(NULL, EPM_STRIP " %s", file->src);
+	run_command(NULL, "objcopy --add-gnu-debuglink=%s %s ", debug_dst, file->src);
+	//subpackage
+	const char *subpkg = "debug";
+	char *subpkg_name;
+	char dst[1024] = "\0";
+	strcat(dst,file->dst);
+	strcat(dst,appendix);
+	subpkg_name=find_subpackage(dist, subpkg);
+	file_t *new_file = add_file(dist, subpkg_name);
+	new_file->type = file->type;
+	new_file->mode = file->mode;
+	strcpy(new_file->src, debug_dst);
+	strcpy(new_file->dst, dst);
+	strcpy(new_file->user, file->user);
+	strcpy(new_file->group, file->group);
+	strcpy(new_file->options, file->options);
+      }
+      else
+      {
+	run_command(NULL, EPM_STRIP " %s", file->src);
+      }
+#else
       run_command(NULL, EPM_STRIP " %s", file->src);
+#endif
     }
 }
 

@@ -2321,8 +2321,8 @@ subpackage_cmp(	char *a,		/* I - First subpackage */
   size_t stLen1 = 0;
 
 //for main package where subpackage not defined
-   if (!a && !b )
-     return 0;
+   if (a || b)
+     return 1;
 
   if (a)
     stLen1 = strlen( a );

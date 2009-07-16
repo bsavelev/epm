@@ -209,7 +209,7 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
   */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (tolower(file->type) == 'f' && (file->mode & 0111) &&
+    if (tolower(file->type) == 'f' &&
         strstr(file->options, "nostrip()") == NULL)
     {
      /*
@@ -260,9 +260,11 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
       {
 	char appendix[255]=".debug";
 	char debug_dst[512] = "\0";
+	int res;
 	strcat(debug_dst,file->src);
 	strcat(debug_dst,appendix);
-	run_command(NULL, "objcopy --only-keep-debug %s %s", file->src, debug_dst);
+	res = run_command(NULL, "objcopy --only-keep-debug %s %s", file->src, debug_dst);
+       if (!res) {
 	run_command(NULL, EPM_STRIP " %s", file->src);
 	run_command(NULL, "objcopy --add-gnu-debuglink=%s %s ", debug_dst, file->src);
 	//subpackage
@@ -280,6 +282,7 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
 	strcpy(new_file->user, file->user);
 	strcpy(new_file->group, file->group);
 	strcpy(new_file->options, file->options);
+       }
       }
       else
       {

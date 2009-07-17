@@ -255,12 +255,17 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
       * Strip executables...
       */
 
+     int res=0;
+     res = run_command(NULL, "/bin/sh -c '/usr/bin/file %s | egrep \"ELF.*not stripped\"'", file->src);
+     if (!res)
+     {
 #if defined(__linux)
+      if (Verbosity > 1)
+       fprintf(stdout, "Stripping %s\n",file->src);
       if (DebugPackage)
       {
 	char appendix[255]=".debug";
 	char debug_dst[512] = "\0";
-	int res;
 	strcat(debug_dst,file->src);
 	strcat(debug_dst,appendix);
 	res = run_command(NULL, "objcopy --only-keep-debug %s %s", file->src, debug_dst);
@@ -291,6 +296,7 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
 #else
       run_command(NULL, EPM_STRIP " %s", file->src);
 #endif
+     }
     }
 }
 

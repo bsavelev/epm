@@ -82,6 +82,8 @@ static int	write_space_checks(const char *prodname, FILE *fp,
 		                   const char *sw, const char *ss,
 				   int rootsize, int usrsize);
 
+#define STATIC_LIC "LICENSE"
+int		isLic = 0;		/* Flag for lic already exist*/
 
 /*
  * 'make_portable()' - Make a portable software distribution package.
@@ -219,8 +221,14 @@ clean_distfiles(const char *directory,	/* I - Directory */
   snprintf(filename, sizeof(filename), "%s/%s.install", directory, prodfull);
   unlink(filename);
 
-  snprintf(filename, sizeof(filename), "%s/%s.license", directory, prodfull);
-  unlink(filename);
+  if (CustomLic)
+  {
+    snprintf(filename, sizeof(filename), "%s/%s", directory, STATIC_LIC);
+    unlink(filename);
+  } else {
+    snprintf(filename, sizeof(filename), "%s/%s.license", directory, prodfull);
+    unlink(filename);
+  }
 
   snprintf(filename, sizeof(filename), "%s/%s.patch", directory, prodfull);
   unlink(filename);
@@ -1474,7 +1482,12 @@ write_distfiles(const char *directory,	/* I - Directory */
 
   if (dist->license[0])
   {
-    snprintf(filename, sizeof(filename), "%s/%s.license", directory, prodfull);
+    if (CustomLic)
+    {
+      snprintf(filename, sizeof(filename), "%s/%s", directory, STATIC_LIC);
+    } else {
+      snprintf(filename, sizeof(filename), "%s/%s.license", directory, prodfull);
+    }
     if (copy_file(filename, dist->license, 0444, getuid(), getgid()))
       return (1);
   }
@@ -2005,7 +2018,12 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
 //  if (dist->license[0])
 //  {
-    fputs("	test -f LICENSE && more LICENSE\n", scriptfile);
+    if (CustomLic)
+    {
+      fprintf(scriptfile,"	test -f %s && more %s\n", STATIC_LIC, STATIC_LIC);
+    } else {
+      fprintf(scriptfile,"	test -f %s.license && more %s.license\n", prodfull, prodfull);
+    }
     fputs("	echo \"\"\n", scriptfile);
     fputs("	while true ; do\n", scriptfile);
     fputs("		echo $ac_n \"Do you agree with the terms of this license? $ac_c\"\n", scriptfile);
@@ -2337,9 +2355,16 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
 
   for (i = 0; files[i] != NULL; i ++)
   {
-    snprintf(srcname, sizeof(srcname), "%s/%s.%s", directory, prodfull, files[i]);
-    snprintf(dstname, sizeof(dstname), "%s%s.%s", destdir, prodfull, files[i]);
 
+    if ((CustomLic) && (i==1) && (!isLic))
+    {
+      snprintf(srcname, sizeof(srcname), "%s/%s", directory, STATIC_LIC);
+      snprintf(dstname, sizeof(dstname), "%s%s", destdir, STATIC_LIC);
+      isLic = 1;
+    } else {
+      snprintf(srcname, sizeof(srcname), "%s/%s.%s", directory, prodfull, files[i]);
+      snprintf(dstname, sizeof(dstname), "%s%s.%s", destdir, prodfull, files[i]);
+    }
     if (stat(srcname, &srcstat))
     {
       if (!i)
@@ -2368,8 +2393,14 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
     }
 
     if (Verbosity)
-      printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,
+      if ((CustomLic) && (i==1))
+      {
+        printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0,
+	     STATIC_LIC);
+      } else {
+        printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,
 	     prodfull, files[i]);
+      }
   }
 
   return (0);

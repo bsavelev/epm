@@ -42,6 +42,7 @@ const char	*SoftwareDir = EPM_SOFTWARE;
 const char	*UninstProgram = EPM_LIBDIR "/uninst";
 int		Verbosity = 0;
 int		DebugPackage = 0;		/* 1 if we should create debug package */
+int		CustomLic = 0;
 
 
 /*
@@ -289,6 +290,9 @@ main(int  argc,				/* I - Number of command-line args */
 	case 'd' : /* debug package */
 	    if (strip =! 0)
 	      DebugPackage = 1;
+            break;
+	case 'l' : /* CustomLic */
+	    CustomLic = 1;
             break;
         case 'z' : /* Compress output */
 	    CompressFiles = 1;
@@ -682,8 +686,10 @@ usage(void)
   puts("-g");
   puts("    Don't strip executables in distributions.");
   puts("-d");
-  puts("    Create debug subpackage for executables with debug symbols.");
+  puts("    Create debug subpackage for executables with debug symbols. Only for portable.");
   puts("    Overrides by \"-g\".");
+  puts("-l");
+  puts("    Create portable with unified (one name for all subpackage) license file.");
   puts("-f {aix,bsd,deb,depot,inst,native,pkg,portable,rpm,lsb,lsb-signed,lsb-init,setld,slackware,swinstall,tardist}");
   puts("    Set distribution format.");
   puts("-k");

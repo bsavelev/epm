@@ -489,14 +489,14 @@ Fl_Double_Window* make_window() {
           LicenseFile->align(FL_ALIGN_TOP_LEFT);
           Fl_Group::current()->resizable(LicenseFile);
         } // Fl_Help_View* LicenseFile
-        { Fl_Group* o = new Fl_Group(170, 240, 400, 35);
-          { LicenseAccept = new Fl_Round_Button(210, 250, 210, 25, "Accept agreement and install");
+        { Fl_Group* o = new Fl_Group(165, 240, 450, 35);
+          { LicenseAccept = new Fl_Round_Button(181, 250, 230, 25, "Accept agreement and install");
             LicenseAccept->type(102);
             LicenseAccept->down_box(FL_ROUND_DOWN_BOX);
             LicenseAccept->callback((Fl_Callback*)cb_LicenseAccept);
             LicenseAccept->align(132|FL_ALIGN_INSIDE);
           } // Fl_Round_Button* LicenseAccept
-          { LicenseDecline = new Fl_Round_Button(430, 250, 140, 25, "Cancel installation");
+          { LicenseDecline = new Fl_Round_Button(415, 250, 185, 25, "Cancel installation");
             LicenseDecline->type(102);
             LicenseDecline->down_box(FL_ROUND_DOWN_BOX);
             LicenseDecline->callback((Fl_Callback*)cb_LicenseDecline);

@@ -7,8 +7,8 @@ Function {make_window()} {open
   Fl_Window SetupWindow {
     label Install
     callback {if (CancelButton->active())
-  exit(0);} open selected
-    xywh {491 361 640 330} type Double resizable
+  exit(0);} open
+    xywh {241 398 640 330} type Double resizable
     code0 {\#include "gui-common.h"}
     code1 {\#include "setup2.h"} visible
   } {
@@ -139,17 +139,17 @@ list_cb(0,0);}
           xywh {163 48 455 192} labelfont 1 align 5 resizable
         }
         Fl_Group {} {open
-          xywh {170 240 400 35}
+          xywh {165 240 450 35}
         } {
           Fl_Round_Button LicenseAccept {
             label {Accept agreement and install}
-            callback {NextButton->activate();}
-            xywh {210 250 210 25} type Radio down_box ROUND_DOWN_BOX align 148
+            callback {NextButton->activate();} selected
+            xywh {181 250 230 25} type Radio down_box ROUND_DOWN_BOX align 148
           }
           Fl_Round_Button LicenseDecline {
             label {Cancel installation}
             callback {NextButton->activate();}
-            xywh {430 250 140 25} type Radio down_box ROUND_DOWN_BOX
+            xywh {415 250 185 25} type Radio down_box ROUND_DOWN_BOX
           }
         }
       }

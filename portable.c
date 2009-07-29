@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.31 2009/07/15 15:54:42 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.33 2009/07/29 10:33:07 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2001,7 +2001,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
           dist->version);
   fputs("	echo \"\"\n", scriptfile);
   fputs("	while true ; do\n", scriptfile);
-  fputs("		echo $ac_n \"Do you wish to continue? [Default=Yes] $ac_c\"\n", scriptfile);
+  fputs("		echo $ac_n \"Do you wish to continue? [Yes] $ac_c\"\n", scriptfile);
   fputs("		read yesno\n", scriptfile);
   fputs("		case \"$yesno\" in\n", scriptfile);
   fputs("			y | yes | Y | Yes | YES | \"\")\n", scriptfile);
@@ -3137,5 +3137,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.31 2009/07/15 15:54:42 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.33 2009/07/29 10:33:07 bsavelev Exp $".
  */

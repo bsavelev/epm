@@ -1,5 +1,5 @@
 //
-// "$Id: uninst2.cxx,v 1.4.2.3 2009/05/21 12:04:30 bsavelev Exp $"
+// "$Id: uninst2.cxx,v 1.4.2.4 2009/08/04 09:43:59 bsavelev Exp $"
 //
 //   ESP Software Removal Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -765,5 +765,5 @@ int i;
     Title[i]->deactivate();
 }
 //
-// End of "$Id: uninst2.cxx,v 1.4.2.3 2009/05/21 12:04:30 bsavelev Exp $".
+// End of "$Id: uninst2.cxx,v 1.4.2.4 2009/08/04 09:43:59 bsavelev Exp $".
 //

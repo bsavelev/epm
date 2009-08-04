@@ -118,6 +118,8 @@ void	load_types(void);
 void	log_cb(int fd, int *fdptr);
 void	update_sizes(void);
 
+//local var
+FILE    *fdfile = NULL;
 
 //
 // 'main()' - Main entry for software wizard...
@@ -445,8 +447,14 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
 #endif // !__APPLE__
 
 
+  fdfile = fopen("install.log", "a+");
   sprintf(command, "**** %s ****", dist->name);
   InstallLog->add(command);
+  if (fdfile)
+  {
+    fwrite( command, strlen(command), sizeof(char), fdfile );
+    fwrite( "\n", strlen("\n"), 1, fdfile );
+  }
 
 #ifdef __APPLE__
   // Run the install script using Apple's authorization API...
@@ -549,6 +557,8 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
   // Show the user that we're ready...
   SetupWindow->cursor(FL_CURSOR_DEFAULT);
 
+  if (fdfile)
+    fclose(fdfile);
   // Return...
   return (status);
 }
@@ -967,24 +977,14 @@ log_cb(int fd,			// I - Pipe to read from
     bufused += bytes;
     buffer[bufused] = '\0';
 
-    FILE    *fdfile = NULL;
-    size_t  stWr = 0;
     while ((bufptr = strchr(buffer, '\n')) != NULL)
     {
       *bufptr++ = '\0';
-	fdfile = fopen("install.log", "a+");
 	if (fdfile)
 	{
-		stWr = fwrite( buffer, strlen(buffer), sizeof(char), fdfile );
-//		if (!stWr)
-//			perror("fwrite");
- 		stWr = fwrite( "\n", strlen("\n"), 1, fdfile );
-//		if (!stWr)
-//			perror("fwrite");
-		fclose(fdfile);
+		fwrite( buffer, strlen(buffer), sizeof(char), fdfile );
+ 		fwrite( "\n", strlen("\n"), 1, fdfile );
 	}
-	else
-		perror("fopen");
 
       InstallLog->add(buffer);
       strcpy(buffer, bufptr);
@@ -1026,6 +1026,11 @@ void update_control(int from) {
 	
   update_label();
 
+//open log
+  if (!fdfile) {
+    fdfile = fopen("install.log", "w+");
+    fclose(fdfile);
+  }
   if (Wizard->value() == Pane[PANE_WELCOME]) {
     PrevButton->deactivate();
     NextButton->activate();

@@ -95,6 +95,8 @@ int	remove_dist(const gui_dist_t *dist);
 void	show_installed(void);
 void	update_sizes(void);
 
+// local var
+FILE    *fdfile = NULL;
 
 //
 // 'main()' - Main entry for software wizard...
@@ -390,25 +392,14 @@ log_cb(int fd,			// I - Pipe to read from
     bufused += bytes;
     buffer[bufused] = '\0';
 
-    FILE    *fdfile = NULL;
-    size_t  stWr = 0;
-
     while ((bufptr = strchr(buffer, '\n')) != NULL)
     {
       *bufptr++ = '\0';
-	fdfile = fopen("uninstall.log", "a+");
 	if (fdfile)
 	{
-		stWr = fwrite( buffer, strlen(buffer), sizeof(char), fdfile );
-//		if (!stWr)
-//			perror("fwrite");
- 		stWr = fwrite( "\n", strlen("\n"), 1, fdfile );
-//		if (!stWr)
-//			perror("fwrite");
-		fclose(fdfile);
+		fwrite( buffer, strlen(buffer), sizeof(char), fdfile );
+ 		fwrite( "\n", strlen("\n"), 1, fdfile );
 	}
-	else
-		perror("fopen");
 
       RemoveLog->add(buffer);
       strcpy(buffer, bufptr);
@@ -427,6 +418,11 @@ update_control(int from)
   int		error;		// Errors?
   static char	message[1024];	// Progress message...
 
+//open log
+  if (!fdfile) {
+    fdfile = fopen("uninstall.log", "w+");
+    fclose(fdfile);
+  }
   if (Wizard->value() == Pane[PANE_WELCOME])
   {
     PrevButton->deactivate();
@@ -520,8 +516,15 @@ remove_dist(const gui_dist_t *dist)	// I - Distribution to remove
   int		pid;			// Process ID
 #endif // !__APPLE__
 
+
+  fdfile = fopen("uninstall.log", "a+");
   snprintf(command, sizeof(command), "**** %s ****", dist->name);
   RemoveLog->add(command);
+  if (fdfile)
+  {
+    fwrite( command, strlen(command), sizeof(char), fdfile );
+    fwrite( "\n", strlen("\n"), 1, fdfile );
+  }
 
   if (dist->type == PACKAGE_PORTABLE)
     snprintf(command, sizeof(command), EPM_SOFTWARE "/%s.remove",
@@ -625,6 +628,8 @@ remove_dist(const gui_dist_t *dist)	// I - Distribution to remove
   // Show the user that we're ready...
   UninstallWindow->cursor(FL_CURSOR_DEFAULT);
 
+  if (fdfile)
+    fclose(fdfile);
   // Return...
   return (status);
 }

@@ -390,9 +390,26 @@ log_cb(int fd,			// I - Pipe to read from
     bufused += bytes;
     buffer[bufused] = '\0';
 
+    FILE    *fdfile = NULL;
+    size_t  stWr = 0;
+
     while ((bufptr = strchr(buffer, '\n')) != NULL)
     {
       *bufptr++ = '\0';
+	fdfile = fopen("uninstall.log", "a+");
+	if (fdfile)
+	{
+		stWr = fwrite( buffer, strlen(buffer), sizeof(char), fdfile );
+//		if (!stWr)
+//			perror("fwrite");
+ 		stWr = fwrite( "\n", strlen("\n"), 1, fdfile );
+//		if (!stWr)
+//			perror("fwrite");
+		fclose(fdfile);
+	}
+	else
+		perror("fopen");
+
       RemoveLog->add(buffer);
       strcpy(buffer, bufptr);
       bufused -= bufptr - buffer;

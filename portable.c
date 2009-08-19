@@ -2318,7 +2318,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      qprintf(scriptfile, "%s/init.d/%s start\n", SoftwareDir, file->dst);
+      qprintf(scriptfile, "%s/init.d/%s start ||: true\n", SoftwareDir, file->dst);
 
   fputs("echo Installation is complete.\n", scriptfile);
 

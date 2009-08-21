@@ -337,7 +337,7 @@ static void cb_CancelButton(Fl_Button*, void*) {
 }
 
 Fl_Double_Window* make_window() {
-  { SetupWindow = new Fl_Double_Window(640, 330, "Install");
+  { SetupWindow = new Fl_Double_Window(675, 330, "Install");
     SetupWindow->callback((Fl_Callback*)cb_SetupWindow);
     { Title[0] = new Fl_Box(10, 10, 130, 25, "Welcome");
       Title[0]->labelfont(1);
@@ -368,20 +368,20 @@ Fl_Double_Window* make_window() {
       Title[5]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
       Title[5]->deactivate();
     } // Fl_Box* Title[5]
-    { Wizard = new Fl_Wizard(150, 10, 480, 275);
+    { Wizard = new Fl_Wizard(140, 10, 525, 275);
       Wizard->box(FL_THIN_DOWN_BOX);
       Wizard->color((Fl_Color)48);
-      { Pane[0] = new Fl_Group(150, 10, 480, 275);
+      { Pane[0] = new Fl_Group(145, 10, 515, 275);
         Pane[0]->labelfont(1);
         Pane[0]->labelsize(18);
         Pane[0]->labelcolor((Fl_Color)4);
         Pane[0]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         Pane[0]->hide();
-        { ReadmeFile = new Fl_Help_View(170, 30, 440, 235);
+        { ReadmeFile = new Fl_Help_View(145, 30, 515, 235);
         } // Fl_Help_View* ReadmeFile
         Pane[0]->end();
       } // Fl_Group* Pane[0]
-      { Pane[1] = new Fl_Group(150, 10, 480, 275);
+      { Pane[1] = new Fl_Group(150, 10, 510, 275);
         Pane[1]->labelfont(1);
         Pane[1]->labelsize(18);
         Pane[1]->labelcolor((Fl_Color)4);
@@ -435,7 +435,7 @@ Fl_Double_Window* make_window() {
         } // Fl_Group* o
         Pane[1]->end();
       } // Fl_Group* Pane[1]
-      { Pane[2] = new Fl_Group(150, 10, 480, 275);
+      { Pane[2] = new Fl_Group(150, 10, 510, 275);
         Pane[2]->labelfont(1);
         Pane[2]->labelsize(18);
         Pane[2]->labelcolor((Fl_Color)4);
@@ -444,7 +444,7 @@ Fl_Double_Window* make_window() {
         { Fl_Box* o = new Fl_Box(170, 30, 440, 25, "Select the software you want to install:");
           o->align(132|FL_ALIGN_INSIDE);
         } // Fl_Box* o
-        { SoftwareList = new Fl_Check_Browser(170, 85, 440, 145, " Available Software:");
+        { SoftwareList = new Fl_Check_Browser(155, 85, 505, 145, " Available Software:");
           SoftwareList->type(3);
           SoftwareList->box(FL_DOWN_BOX);
           SoftwareList->selection_color(FL_BACKGROUND2_COLOR);
@@ -464,7 +464,7 @@ Fl_Double_Window* make_window() {
         } // Fl_Button* InstallNoneButton
         Pane[2]->end();
       } // Fl_Group* Pane[2]
-      { Pane[3] = new Fl_Group(150, 10, 480, 275);
+      { Pane[3] = new Fl_Group(150, 10, 510, 275);
         Pane[3]->labelfont(1);
         Pane[3]->labelsize(18);
         Pane[3]->labelcolor((Fl_Color)4);
@@ -473,18 +473,18 @@ Fl_Double_Window* make_window() {
         { Fl_Box* o = new Fl_Box(170, 30, 440, 25, "Confirm your software selections below:");
           o->align(132|FL_ALIGN_INSIDE);
         } // Fl_Box* o
-        { ConfirmList = new Fl_Browser(170, 85, 440, 180, "Selected Software:");
+        { ConfirmList = new Fl_Browser(150, 85, 510, 180, "Selected Software:");
           ConfirmList->labelfont(1);
           ConfirmList->align(FL_ALIGN_TOP_LEFT);
         } // Fl_Browser* ConfirmList
         Pane[3]->end();
       } // Fl_Group* Pane[3]
-      { Pane[4] = new Fl_Group(150, 10, 480, 275);
+      { Pane[4] = new Fl_Group(140, 10, 525, 275);
         Pane[4]->labelfont(1);
         Pane[4]->labelsize(18);
         Pane[4]->labelcolor((Fl_Color)4);
         Pane[4]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
-        { LicenseFile = new Fl_Help_View(163, 48, 455, 192, "License Agreement:");
+        { LicenseFile = new Fl_Help_View(145, 48, 515, 194, "License Agreement:");
           LicenseFile->labelfont(1);
           LicenseFile->align(FL_ALIGN_TOP_LEFT);
           Fl_Group::current()->resizable(LicenseFile);
@@ -505,7 +505,7 @@ Fl_Double_Window* make_window() {
         } // Fl_Group* o
         Pane[4]->end();
       } // Fl_Group* Pane[4]
-      { Pane[5] = new Fl_Group(150, 10, 480, 275);
+      { Pane[5] = new Fl_Group(150, 10, 510, 275);
         Pane[5]->labelfont(1);
         Pane[5]->labelsize(18);
         Pane[5]->labelcolor((Fl_Color)4);
@@ -516,7 +516,7 @@ Fl_Double_Window* make_window() {
           InstallPercent->selection_color((Fl_Color)221);
           InstallPercent->align(FL_ALIGN_TOP_LEFT);
         } // Fl_Progress* InstallPercent
-        { InstallLog = new Fl_Browser(170, 74, 440, 191);
+        { InstallLog = new Fl_Browser(150, 74, 510, 191);
         } // Fl_Browser* InstallLog
         Pane[5]->end();
       } // Fl_Group* Pane[5]

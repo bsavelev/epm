@@ -36,8 +36,12 @@ Function {make_window()} {open
       label Installing
       xywh {10 135 130 25} labelfont 1 align 20 deactivate
     }
+    Fl_Box {Title[6]} {
+      label Finish
+      xywh {10 160 130 25} labelfont 1 align 20 deactivate
+    }
     Fl_Wizard Wizard {open
-      xywh {140 10 525 275} box THIN_DOWN_BOX color 48
+      xywh {140 10 530 285} box THIN_DOWN_BOX color 48
     } {
       Fl_Group {Pane[0]} {open
         xywh {145 10 515 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
@@ -136,7 +140,7 @@ list_cb(0,0);}
       } {
         Fl_Help_View LicenseFile {
           label {License Agreement:}
-          xywh {145 48 515 194} labelfont 1 align 5 resizable
+          xywh {145 48 515 194} labelfont 1 align 133 resizable
         }
         Fl_Group {} {open
           xywh {165 240 450 35}
@@ -148,7 +152,7 @@ list_cb(0,0);}
           }
           Fl_Round_Button LicenseDecline {
             label {Cancel installation}
-            callback {NextButton->activate();}
+            callback {NextButton->activate();} selected
             xywh {415 250 185 25} type Radio down_box ROUND_DOWN_BOX
           }
         }
@@ -164,8 +168,16 @@ list_cb(0,0);}
           xywh {150 74 510 191}
         }
       }
+      Fl_Group {Pane[6]} {open
+        xywh {147 20 523 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+      } {
+        Fl_Help_View PostinFile {
+          label {Congratulation:}
+          xywh {145 48 515 194} align 133 resizable
+        }
+      }
     }
-    Fl_Box WelcomeImage {selected
+    Fl_Box WelcomeImage {
       image {default.xpm} xywh {10 190 130 130} align 22
     }
     Fl_Button PrevButton {

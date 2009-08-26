@@ -9,7 +9,7 @@ static void cb_SetupWindow(Fl_Double_Window*, void*) {
   exit(0);
 }
 
-Fl_Box *Title[6]={(Fl_Box *)0};
+Fl_Box *Title[7]={(Fl_Box *)0};
 
 Fl_Wizard *Wizard=(Fl_Wizard *)0;
 
@@ -51,11 +51,13 @@ static void cb_LicenseDecline(Fl_Round_Button*, void*) {
   NextButton->activate();
 }
 
-Fl_Group *Pane[6]={(Fl_Group *)0};
-
 Fl_Progress *InstallPercent=(Fl_Progress *)0;
 
 Fl_Browser *InstallLog=(Fl_Browser *)0;
+
+Fl_Group *Pane[7]={(Fl_Group *)0};
+
+Fl_Help_View *PostinFile=(Fl_Help_View *)0;
 
 Fl_Box *WelcomeImage=(Fl_Box *)0;
 
@@ -368,7 +370,12 @@ Fl_Double_Window* make_window() {
       Title[5]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
       Title[5]->deactivate();
     } // Fl_Box* Title[5]
-    { Wizard = new Fl_Wizard(140, 10, 525, 275);
+    { Title[6] = new Fl_Box(10, 160, 130, 25, "Finish");
+      Title[6]->labelfont(1);
+      Title[6]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
+      Title[6]->deactivate();
+    } // Fl_Box* Title[6]
+    { Wizard = new Fl_Wizard(140, 10, 530, 285);
       Wizard->box(FL_THIN_DOWN_BOX);
       Wizard->color((Fl_Color)48);
       { Pane[0] = new Fl_Group(145, 10, 515, 275);
@@ -486,7 +493,7 @@ Fl_Double_Window* make_window() {
         Pane[4]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         { LicenseFile = new Fl_Help_View(145, 48, 515, 194, "License Agreement:");
           LicenseFile->labelfont(1);
-          LicenseFile->align(FL_ALIGN_TOP_LEFT);
+          LicenseFile->align(133);
           Fl_Group::current()->resizable(LicenseFile);
         } // Fl_Help_View* LicenseFile
         { Fl_Group* o = new Fl_Group(165, 240, 450, 35);
@@ -520,6 +527,18 @@ Fl_Double_Window* make_window() {
         } // Fl_Browser* InstallLog
         Pane[5]->end();
       } // Fl_Group* Pane[5]
+      { Pane[6] = new Fl_Group(147, 20, 523, 275);
+        Pane[6]->labelfont(1);
+        Pane[6]->labelsize(18);
+        Pane[6]->labelcolor((Fl_Color)4);
+        Pane[6]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
+        Pane[6]->hide();
+        { PostinFile = new Fl_Help_View(145, 48, 515, 194, "Congratulation:");
+          PostinFile->align(133);
+          Fl_Group::current()->resizable(PostinFile);
+        } // Fl_Help_View* PostinFile
+        Pane[6]->end();
+      } // Fl_Group* Pane[6]
       Wizard->end();
     } // Fl_Wizard* Wizard
     { WelcomeImage = new Fl_Box(10, 190, 130, 130);

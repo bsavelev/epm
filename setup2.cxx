@@ -89,6 +89,7 @@ AuthorizationRef SetupAuthorizationRef;
 #define PANE_CONFIRM	3
 #define PANE_LICENSE	4
 #define PANE_INSTALL	5
+#define PANE_POSTIN	6
 
 
 //
@@ -913,6 +914,7 @@ load_types(void)
     Title[PANE_CONFIRM]->position(10, 60);
     Title[PANE_LICENSE]->position(10, 85);
     Title[PANE_INSTALL]->position(10, 110);
+    Title[PANE_POSTIN]->position(10, 135);
   }
 
   for (i = 0, dt = InstTypes; i < NumInstTypes; i ++, dt ++)
@@ -1133,10 +1135,10 @@ void update_control(int from) {
       fl_beep();
       return;
     }
-    NextButton->deactivate();
+    NextButton->activate();
     PrevButton->deactivate();
     CancelButton->deactivate();
-    CancelButton->label("Close");
+    CancelButton->label("Cancel");
     FILE    *fdfile = NULL;
     fdfile = fopen("install.log", "w+");
     if (fdfile)
@@ -1174,6 +1176,26 @@ void update_control(int from) {
 
   }
 
+  if (Wizard->value() == Pane[PANE_POSTIN]) {
+    // Show the licenses for each of the selected software packages...
+    char		postin[1024];		// postin message filename
+    struct stat	postin_info;		// postin message file info
+    update_label();
+    NextButton->deactivate();
+    PrevButton->deactivate();
+    CancelButton->activate();
+    CancelButton->label("Close");
+    sprintf(postin, "POSTIN-MSG");
+    if (!stat(postin, &postin_info))
+    {
+      // Load the license into the viewer...
+      gui_load_file(PostinFile, postin);
+      PostinFile->textfont(FL_HELVETICA);
+      PostinFile->textsize(14);
+    }
+
+  }
+
 // else cannot be here. we maybe increase Wizard->value in prev check
   if (Wizard->value() == Pane[PANE_CONFIRM]) {
     ConfirmList->clear();
@@ -1192,13 +1214,13 @@ void update_control(int from) {
 void update_label() {
 int i;
 // update titles
-  for (i = 0; i < 6; i ++)
+  for (i = 0; i < 7; i ++)
   {
     Title[i]->activate();
     if (Pane[i]->visible())
       break;
   }
-  for (i ++; i < 6; i ++)
+  for (i ++; i < 7; i ++)
     Title[i]->deactivate();
 }
 

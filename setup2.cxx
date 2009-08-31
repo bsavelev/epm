@@ -1135,7 +1135,8 @@ void update_control(int from) {
       fl_beep();
       return;
     }
-    NextButton->activate();
+//deactivate buttons due install progress
+    NextButton->deactivate();
     PrevButton->deactivate();
     CancelButton->deactivate();
     CancelButton->label("Cancel");
@@ -1163,11 +1164,14 @@ void update_control(int from) {
 
     InstallPercent->value(100.0);
 
-    if (error)
+    if (error) {
       InstallPercent->label("Installation Failed!");
-    else
+      CancelButton->label("Close");
+      NextButton->deactivate();
+    } else {
       InstallPercent->label("Installation Complete");
-
+      NextButton->activate();
+    }
     Pane[PANE_INSTALL]->redraw();
 
     CancelButton->activate();

@@ -1448,8 +1448,8 @@ write_distfiles(const char *directory,	/* I - Directory */
 		filename[1024];		/* Name of temporary file */
   struct stat	srcstat;		/* Source file information */
   file_t	*file;			/* Software file */
-  int		rootsize,		/* Size of files in root partition */
-		usrsize;		/* Size of files in /usr partition */
+  int		rootsize=0,		/* Size of files in root partition */
+		usrsize=0;		/* Size of files in /usr partition */
   int		prootsize,		/* Size of patch files in root partition */
 		pusrsize;		/* Size of patch files in /usr partition */
 

@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.37 2009/09/02 07:56:58 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.38 2009/09/02 07:57:52 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2897,15 +2897,17 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 	  else
 	    number = get_start(file, 99);
 
-          fprintf(scriptfile, "	if test -d $rcdir/rc%c.d; then\n", *runlevels);
-	  qprintf(scriptfile, "		/bin/rm -f $rcdir/rc%c.d/%c%02d%s\n",
+          fprintf(scriptfile, "		if test -d $rcdir/rc%c.d; then\n", *runlevels);
+	  qprintf(scriptfile, "			/bin/rm -f $rcdir/rc%c.d/%c%02d%s\n",
 	          *runlevels, *runlevels == '0' ? 'K' : 'S', number, file->dst);
-	  fputs("	fi\n", scriptfile);
+	  fputs("		fi\n", scriptfile);
         }
 	// Gentoo runlevels
+	fputs("	fi\n", scriptfile);
         fputs("	if test -d $rcdir/runlevels/default; then\n", scriptfile);
 	qprintf(scriptfile, "		/bin/rm -f $rcdir/runlevels/default/%s\n", file->dst);
 	fputs("	fi\n", scriptfile);
+	
 
 #ifdef __sgi
         fputs("	if test -x /etc/chkconfig; then\n", scriptfile);
@@ -2914,7 +2916,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 #endif /* __sgi */
       }
 
-    fputs("fi fi\n", scriptfile);
+    fputs("fi\n", scriptfile);
   }
 
   fputs("echo Removing/restoring installed files...\n", scriptfile);
@@ -3144,5 +3146,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.37 2009/09/02 07:56:58 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.38 2009/09/02 07:57:52 bsavelev Exp $".
  */

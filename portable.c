@@ -2878,13 +2878,6 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       {
         // qprintf(scriptfile, "	%s/init.d/%s stop\n", SoftwareDir, file->dst); // double job?
 
-	fputs("	if test -d $rcdir/init.d; then\n", scriptfile);
-	qprintf(scriptfile, "		/bin/rm -f $rcdir/init.d/%s\n", file->dst);
-	fputs("	else\n", scriptfile);
-	fputs("		if test -d /etc/init.d; then\n", scriptfile);
-	qprintf(scriptfile, "			/bin/rm -f /etc/init.d/%s\n", file->dst);
-	fputs("		fi\n", scriptfile);
-	fputs("	fi\n", scriptfile);
 	fputs("	if test -x /sbin/chkconfig; then\n", scriptfile);
 	qprintf(scriptfile, "		/sbin/chkconfig --del %s\n", file->dst);
 	fputs("	else\n", scriptfile);
@@ -2902,6 +2895,13 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 	          *runlevels, *runlevels == '0' ? 'K' : 'S', number, file->dst);
 	  fputs("		fi\n", scriptfile);
         }
+	fputs("	if test -d $rcdir/init.d; then\n", scriptfile);
+	qprintf(scriptfile, "		/bin/rm -f $rcdir/init.d/%s\n", file->dst);
+	fputs("	else\n", scriptfile);
+	fputs("		if test -d /etc/init.d; then\n", scriptfile);
+	qprintf(scriptfile, "			/bin/rm -f /etc/init.d/%s\n", file->dst);
+	fputs("		fi\n", scriptfile);
+	fputs("	fi\n", scriptfile);
 	// Gentoo runlevels
 	fputs("	fi\n", scriptfile);
         fputs("	if test -d $rcdir/runlevels/default; then\n", scriptfile);

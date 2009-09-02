@@ -2512,7 +2512,7 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      qprintf(scriptfile, "%s/init.d/%s stop\n", SoftwareDir, file->dst);
+      qprintf(scriptfile, "%s/init.d/%s stop ||: true\n", SoftwareDir, file->dst);
 
   write_commands(dist, scriptfile, COMMAND_PRE_PATCH, subpackage);
 
@@ -2837,7 +2837,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      qprintf(scriptfile, "%s/init.d/%s stop\n", SoftwareDir, file->dst);
+      qprintf(scriptfile, "%s/init.d/%s stop ||: true\n", SoftwareDir, file->dst);
 
   write_commands(dist, scriptfile, COMMAND_PRE_REMOVE, subpackage);
 
@@ -2885,7 +2885,9 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 	qprintf(scriptfile, "			/bin/rm -f /etc/init.d/%s\n", file->dst);
 	fputs("		fi\n", scriptfile);
 	fputs("	fi\n", scriptfile);
-
+	fputs("	if test -x /sbin/chkconfig; then\n", scriptfile);
+	qprintf(scriptfile, "		/sbin/chkconfig --del %s\n", file->dst);
+	fputs("	else\n", scriptfile);
 	for (runlevels = get_runlevels(dist->files + i, "0235");
              isdigit(*runlevels & 255);
 	     runlevels ++)
@@ -2912,7 +2914,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 #endif /* __sgi */
       }
 
-    fputs("fi\n", scriptfile);
+    fputs("fi fi\n", scriptfile);
   }
 
   fputs("echo Removing/restoring installed files...\n", scriptfile);

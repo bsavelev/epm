@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.15.2.11 2009/08/31 13:29:09 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.15.2.12 2009/09/04 10:44:18 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -1322,5 +1322,5 @@ update_sizes(void)
 
 
 //
-// End of "$Id: setup2.cxx,v 1.15.2.11 2009/08/31 13:29:09 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.15.2.12 2009/09/04 10:44:18 bsavelev Exp $".
 //

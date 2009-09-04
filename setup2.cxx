@@ -20,7 +20,6 @@
 //   main()         - Main entry for software wizard...
 //   get_dists()    - Get a list of available software products.
 //   install_dist() - Install a distribution...
-//   license_dist() - Show the license for a distribution...
 //   list_cb()      - Handle selections in the software list.
 //   load_image()   - Load the setup image file (setup.gif/xpm)...
 //   load_readme()  - Load the readme file...
@@ -566,69 +565,6 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
 
 
 //
-// 'license_dist()' - Show the license for a distribution...
-//
-
-int					// O - 0 if accepted, 1 if not
-license_dist()				// I - Distribution to license
-{
-  char		licfile[1024];		// License filename
-  struct stat	licinfo;		// License file info
-  static int	liclength = 0;		// Size of license file
-  static char	liclabel[1024];		// Label for license pane
-
-
-  // See if we need to show the license file...
-  sprintf(licfile, "LICENSE");
-  if (!stat(licfile, &licinfo) && licinfo.st_size != liclength)
-  {
-    // Save this license's length...
-    liclength = licinfo.st_size;
-
-    // Set the title string...
-    snprintf(liclabel, sizeof(liclabel), "Software License");
-    LicenseFile->label(liclabel);
-
-    // Load the license into the viewer...
-    LicenseFile->textfont(FL_HELVETICA);
-    LicenseFile->textsize(14);
-
-    gui_load_file(LicenseFile, licfile);
-
-    // Show the license window and wait for the user...
-    Pane[PANE_LICENSE]->show();
-    Title[PANE_LICENSE]->activate();
-    LicenseAccept->clear();
-    LicenseDecline->clear();
-    NextButton->deactivate();
-    CancelButton->activate();
-
-    while (Pane[PANE_LICENSE]->visible())
-      Fl::wait();
-
-    Title[PANE_INSTALL]->deactivate();
-
-    CancelButton->deactivate();
-    NextButton->deactivate();
-
-    if (LicenseDecline->value())
-    {
-      // Can't install without acceptance...
-      char	message[1024];		// Message for log
-
-
-      liclength = 0;
-      snprintf(message, sizeof(message), "License not accepted!");
-      InstallLog->add(message);
-      return (1);
-    }
-  }
-
-  return (0);
-}
-
-
-//
 // 'list_cb()' - Handle selections in the software list.
 //
 
@@ -1086,6 +1022,8 @@ void update_control(int from) {
     CancelButton->activate();
     PrevButton->activate();
     NextButton->activate();
+//hack
+    licaccept = 0;
     if (!stat(licfile, &licinfo))
     {
       // Set the title string...
@@ -1099,15 +1037,20 @@ void update_control(int from) {
       Pane[PANE_LICENSE]->show();
       Title[PANE_LICENSE]->activate();
       NextButton->activate();
-      LicenseDecline->set();
-      LicenseAccept->clear();
       CancelButton->activate();
+      if ( licaccept == 0 ) {
+        LicenseDecline->set();
+        LicenseAccept->clear();
+      } else {
+        LicenseDecline->clear();
+        LicenseAccept->set();
+      }
 
-       while (Pane[PANE_LICENSE]->visible())
-         Fl::wait();
-       Title[PANE_INSTALL]->deactivate();
-       CancelButton->deactivate();
-       NextButton->deactivate();
+      while (Pane[PANE_LICENSE]->visible())
+        Fl::wait();
+      Title[PANE_INSTALL]->deactivate();
+      CancelButton->deactivate();
+      NextButton->deactivate();
 
       if (LicenseDecline->value())
       {
@@ -1140,7 +1083,6 @@ void update_control(int from) {
     PrevButton->deactivate();
     CancelButton->deactivate();
     CancelButton->label("Cancel");
-    FILE    *fdfile = NULL;
     fdfile = fopen("install.log", "w+");
     if (fdfile)
 	fclose(fdfile);

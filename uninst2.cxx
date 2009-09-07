@@ -29,6 +29,7 @@
 //
 
 #define _DEFINE_GLOBALS_
+//#include <iostream>
 #include "uninst.h"
 #include <FL/x.H>
 #include <FL/filename.H>
@@ -209,9 +210,8 @@ main(int  argc,			// I - Number of command-line arguments
 void
 list_cb(Fl_Check_Browser *, void *)
 {
-  int		i, j, k, loop;
+  int		i, j, k;
   gui_dist_t	*dist,
-		*dist_f,
 		*dist2;
   gui_depend_t	*depend;
 
@@ -223,63 +223,42 @@ list_cb(Fl_Check_Browser *, void *)
     NextButton->deactivate();
     return;
   }
-  loop=0;
-  for (i = 0, dist = Installed; i < NumInstalled; i ++, dist ++) {
-
-    if (SoftwareList->checked(i + 1))
-    {
-	for (j = 0, dist_f = Installed; j < NumInstalled; j ++, dist_f ++) {
-         for (k = 0, depend = dist_f->depends; k < dist_f->num_depends; k ++, depend ++) {
-	  if (depend != NULL) {
-            switch (depend->type)
-	    {
-	      case DEPEND_REQUIRES :
-		dist2 = gui_find_dist(depend->product, NumInstalled, Installed);
-		if ( dist2 == dist ) {
-		 if (!SoftwareList->checked(j + 1)) {
-		  SoftwareList->checked(j + 1, 1);
-			if (loop!=5) {
-		  	  list_cb(0,0);
-			  loop++;
-			}
-		 }
-	        }
+  int LoopExitFlag = 0;
+  while (LoopExitFlag != SoftwareList->nchecked())
+  {
+    LoopExitFlag = SoftwareList->nchecked();
+    for (i = 0, dist = Installed; i < NumInstalled; i ++, dist ++)
+      if ( ! SoftwareList->checked(i + 1))
+        for (j = 0, depend = dist->depends; j < dist->num_depends; j ++, depend ++)
+        {
+          switch (depend->type)
+          {
+            case DEPEND_REQUIRES :
+	      if ((dist2 = gui_find_dist(depend->product, NumInstalled,
+	                                 Installed)) != NULL)
+	      {
+  		// Software is in the list, is it selected?
+		k = dist2 - Installed;
+		// if item checked
+		if (SoftwareList->checked(SoftwareList->value())) {
+//  		  std::cout << "checked! " << std::endl;
+		  if (SoftwareList->checked(k + 1))
+		    SoftwareList->checked(i + 1, 1);
+		} else {
+		  // uncheck item
+//  		  std::cout << "unchecked!" << std::endl;
+ 		  if (SoftwareList->checked(k + 1))
+ 		    SoftwareList->checked(k + 1, 0);
+		}
+	      }
 	      break;
 
-	      case DEPEND_INCOMPAT :
-// 	        if ((dist2 = gui_find_dist(depend->product, NumInstalled,
-// 	                                 Installed)) != NULL)
-// 	      {
-// 		// Already installed!
-// 		fl_alert("%s is incompatible with %s. Please remove it before "
-// 	        	 "installing this software.", dist->name, dist2->name);
-// 		SoftwareList->checked(i + 1, 0);
-// 		break;
-// 	      }
-// 	      else if ((dist2 = gui_find_dist(depend->product, NumInstalled,
-// 	                                      Installed)) != NULL)
-// 	      {
-//   		// Software is in the list, is it selected?
-// 	        k = dist2 - Installed;
-// 
-// 		// Software is in the list, is it selected?
-// 		if (!SoftwareList->checked(k + 1))
-// 		  continue;
-// 
-//         	// Yes, tell the user...
-// 		fl_alert("%s is incompatible with %s. Please deselect it before "
-// 	        	 "installing this software.", dist->name, dist2->name);
-// 		SoftwareList->checked(i + 1, 0);
- 		break;
-// 	      }
-	      default :
-	        break;
-	    }
-	  }
-         }
-	}
-    }
+            default :
+	      break;
+          }
+        }
   }
+
   update_sizes();
 
   if (SoftwareList->nchecked())

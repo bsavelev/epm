@@ -104,6 +104,7 @@ typedef int (*compare_func_t)(const void *, const void *);
 //
 
 int licaccept = 0;
+FILE    *fdfile = NULL;
 
 //
 // Local functions...
@@ -117,9 +118,6 @@ void	load_readme(void);
 void	load_types(void);
 void	log_cb(int fd, int *fdptr);
 void	update_sizes(void);
-
-//local var
-FILE    *fdfile = NULL;
 
 //
 // 'main()' - Main entry for software wizard...
@@ -571,13 +569,10 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
 void
 list_cb(Fl_Check_Browser *, void *)
 {
-  int		i, j, k, m, l,n;
+  int		i, j, k;
   gui_dist_t	*dist,
-		*dist2,
-		*dist3,
-		*dist_tmp,
-		*dist_f;
-  gui_depend_t	*depend, *depend1;
+		*dist2;
+  gui_depend_t	*depend;
 
 
   if (SoftwareList->nchecked() == 0)
@@ -588,46 +583,34 @@ list_cb(Fl_Check_Browser *, void *)
     return;
   }
 
-  for (i = 0, dist = Dists; i < NumDists; i ++, dist ++)
-    if (SoftwareList->checked(i + 1))
-    {
-      // Check for required/incompatible products...
-      for (j = 0, depend = dist->depends; j < dist->num_depends; j ++, depend ++) {
-//	std::cout << "dist: " << dist->product << ". depend: " << depend->product << std::endl;
-//	std::cout << "depend type: " << depend->type << std::endl;
-        switch (depend->type)
-	{
-	  case DEPEND_REQUIRES :
+  int LoopExitFlag = 0;
+
+  while (LoopExitFlag != SoftwareList->nchecked())
+  {
+    LoopExitFlag = SoftwareList->nchecked();
+    for (i = 0, dist = Dists; i < NumDists; i ++, dist ++)
+      if (SoftwareList->checked(i + 1))
+        for (j = 0, depend = dist->depends; j < dist->num_depends; j ++, depend ++)
+        {
+          switch (depend->type)
+          {
+            case DEPEND_REQUIRES :
 	      if ((dist2 = gui_find_dist(depend->product, NumDists,
 	                                 Dists)) != NULL)
 	      {
   		// Software is in the list, is it selected?
-	        k = dist2 - Dists;
-
-		if (SoftwareList->checked(k + 1))
-		  continue;
-
-        	// Nope, select it unless we're unchecked another selection...
-		if (SoftwareList->value() != (k + 1))
+		k = dist2 - Dists;
+		// if item checked
+		if (SoftwareList->checked(SoftwareList->value())) {
+// 		  std::cout << "checked!" << std::endl;
+		  if (SoftwareList->checked(k + 1))
+		    continue;
 		  SoftwareList->checked(k + 1, 1);
-		else
-		{
-		  SoftwareList->checked(i + 1, 0);
-		  dist_tmp = dist;
-		  for (m=0; m<5; m ++) {
-			for (l=0, dist_f = Dists; l < NumDists; l ++, dist_f ++ ) {
-				for (n = 0, depend1 = dist_f->depends; n < dist_f->num_depends; n ++, depend1 ++) {
-					if (depend1 !=NULL) {
-						dist3 = gui_find_dist(depend1->product, NumDists, Dists);
-						if (dist_tmp == dist3) {
-							SoftwareList->checked(l + 1, 0);
-							dist_tmp = dist_f;
-						}
-					}
-				}
-			}
-		  }
-		  break;
+		} else {
+		  // uncheck item
+// 		  std::cout << "unchecked!" << std::endl;
+		  if ( ! SoftwareList->checked(k + 1))
+		    SoftwareList->checked(i + 1, 0);
 		}
 	      }
 	      else if ((dist2 = gui_find_dist(depend->product, NumInstalled,
@@ -641,7 +624,7 @@ list_cb(Fl_Check_Browser *, void *)
 	      }
 	      break;
 
-          case DEPEND_INCOMPAT :
+            case DEPEND_INCOMPAT :
 	      if ((dist2 = gui_find_dist(depend->product, NumInstalled,
 	                                 Installed)) != NULL)
 	      {
@@ -667,11 +650,11 @@ list_cb(Fl_Check_Browser *, void *)
 		SoftwareList->checked(i + 1, 0);
 		break;
 	      }
-	  default :
+            default :
 	      break;
-	}
-     }
-   }
+          }
+        }
+  }
 
   update_sizes();
 
@@ -1019,7 +1002,7 @@ void update_control(int from) {
     // See if we need to show the license file...
     sprintf(licfile, "LICENSE");
     CancelButton->label("Cancel");
-    CancelButton->activate();
+    CancelButton->deactivate();
     PrevButton->activate();
     NextButton->activate();
 //hack

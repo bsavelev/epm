@@ -1099,7 +1099,7 @@ void update_control(int from) {
     }
     Pane[PANE_INSTALL]->redraw();
 
-    CancelButton->activate();
+    CancelButton->deactivate();
 
     fl_beep();
 

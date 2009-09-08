@@ -2129,6 +2129,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	qprintf(scriptfile, "if test ! -d %s -a ! -f %s -a ! -h %s; then\n",
         	file->dst, file->dst, file->dst);
 	qprintf(scriptfile, "	mkdir -p %s\n", file->dst);
+//placeholder
+	qprintf(scriptfile, "	echo \"Placeholder. Do not remove.\" > %s/.%s\n", file->dst, prodfull);
 	fputs("else\n", scriptfile);
 	qprintf(scriptfile, "	if test -f %s; then\n", file->dst);
 	qprintf(scriptfile, "		echo Error: %s already exists as a regular file!\n",
@@ -2190,6 +2192,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
     fputs("; do\n", scriptfile);
     fputs("	if test ! -f \"$file\"; then\n", scriptfile);
+//create dir for conf file
+    fputs("		mkdir -p `dirname \"$file\"` >/dev/null 2>&1 && true\n", scriptfile);
     qprintf(scriptfile, "		cp \"%s/conf/$file.N\" \"$file\"\n", SoftwareDir);
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
@@ -3037,6 +3041,8 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       {
 	qprintf(scriptfile, "if test -d %s; then\n", file->dst);
 	qprintf(scriptfile, "	rmdir %s >/dev/null 2>&1 && true\n", file->dst);
+//placeholder
+	qprintf(scriptfile, "	rm -f \"%s/.%s\" >/dev/null 2>&1 && true\n", file->dst, prodfull);
 	fputs("fi\n", scriptfile);
       }
   }

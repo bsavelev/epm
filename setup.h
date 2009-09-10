@@ -29,6 +29,9 @@ extern Fl_Browser *ConfirmList;
 extern Fl_Help_View *LicenseFile;
 extern Fl_Round_Button *LicenseAccept;
 extern Fl_Round_Button *LicenseDecline;
+#include <FL/Fl_Choice.H>
+extern void change_lang(Fl_Choice*, void*);
+extern Fl_Choice *Language;
 #include <FL/Fl_Progress.H>
 extern Fl_Progress *InstallPercent;
 extern Fl_Browser *InstallLog;

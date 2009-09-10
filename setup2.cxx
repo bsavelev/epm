@@ -91,6 +91,10 @@ AuthorizationRef SetupAuthorizationRef;
 #define PANE_POSTIN	6
 
 
+//LANG
+#define LANG_EN	0
+#define LANG_RU	1
+
 //
 // Define a C API function type for comparisons...
 //
@@ -105,6 +109,9 @@ typedef int (*compare_func_t)(const void *, const void *);
 
 int licaccept = 0;
 FILE    *fdfile = NULL;
+
+#define LIC_EN "LICENSE"
+#define LIC_RU "LICENSE.ru"
 
 //
 // Local functions...
@@ -996,26 +1003,44 @@ void update_control(int from) {
   }
   if (Wizard->value() == Pane[PANE_LICENSE]) {
     //copy code from license_dist
-    char		licfile[1024];		// License filename
-    struct stat	licinfo;		// License file info
-    static char	liclabel[1024];		// Label for license pane
+    char		licfile_en[1024];		// License filename
+    char		licfile_ru[1024];		// License filename
+    struct stat		licinfo;		// License file info
+    static char		liclabel[1024];		// Label for license pane
+    int			has_licfile = 0;
     // See if we need to show the license file...
-    sprintf(licfile, "LICENSE");
+    sprintf(licfile_en, LIC_EN);
+    sprintf(licfile_ru, LIC_RU);
+    snprintf(liclabel, sizeof(liclabel), "Software License");
     CancelButton->label("Cancel");
     CancelButton->deactivate();
     PrevButton->activate();
     NextButton->activate();
 //hack
     licaccept = 0;
-    if (!stat(licfile, &licinfo))
-    {
       // Set the title string...
-      snprintf(liclabel, sizeof(liclabel), "Software License");
       LicenseFile->label(liclabel);
       // Load the license into the viewer...
       LicenseFile->textfont(FL_HELVETICA);
       LicenseFile->textsize(14);
-      gui_load_file(LicenseFile, licfile);
+    if (!stat(licfile_en, &licinfo))
+    {
+      //Lang control
+      Language->add("English");
+      Language->value(LANG_EN);
+      gui_load_file(LicenseFile, licfile_en);
+      has_licfile = 1;
+    }
+    if (!stat(licfile_ru, &licinfo))
+    {
+      //Lang control
+      Language->add("Russian");
+      if (!has_licfile)
+        gui_load_file(LicenseFile, licfile_ru);
+      has_licfile = 1;
+    }
+    if (has_licfile)
+    {
       // Show the license window and wait for the user...
       Pane[PANE_LICENSE]->show();
       Title[PANE_LICENSE]->activate();
@@ -1303,6 +1328,25 @@ update_sizes(void)
   SoftwareSize->redraw();
 }
 
+void
+change_lang(Fl_Choice*, void*)
+{
+   //copy code from license_dist
+    char		licfile_en[1024];		// License filename
+    char		licfile_ru[1024];		// License filename
+    // See if we need to show the license file...
+    sprintf(licfile_en, LIC_EN);
+    sprintf(licfile_ru, LIC_RU);
+    switch (Language->value())
+    {
+	case LANG_EN:
+		gui_load_file(LicenseFile, licfile_en);
+		break;
+	case LANG_RU:
+		gui_load_file(LicenseFile, licfile_ru);
+		break;
+    }
+}
 
 //
 // End of "$Id: setup2.cxx,v 1.15.2.13 2009/09/07 14:50:49 bsavelev Exp $".

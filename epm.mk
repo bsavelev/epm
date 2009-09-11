@@ -1,4 +1,3 @@
-EPM_COMMAND = ./epm/epm -v build=$(BUILDNUMBER)
 EPM_LINUX_LDFLAGS=-Wl,-rpath,/opt/drweb/lib
 EPM_BSD_LDFLAGS=-Wl,-rpath,/usr/local/drweb/lib
 EPM_SUN_LDFLAGS=-Wl,-R,/opt/drweb/lib

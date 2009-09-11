@@ -1,4 +1,4 @@
-EPM_COMMAND = ./epm/epm -v
+EPM_COMMAND = ./epm/epm -v build=$(BUILDNUMBER)
 EPM_LINUX_LDFLAGS=-Wl,-rpath,/opt/drweb/lib
 EPM_BSD_LDFLAGS=-Wl,-rpath,/usr/local/drweb/lib
 EPM_SUN_LDFLAGS=-Wl,-R,/opt/drweb/lib
@@ -7,15 +7,17 @@ DEFAULT_CXX=g++
 BSD_CC=gcc42
 BSD_CXX=g++42
 
-BUILD_EPM_CONF_STRING_COMMON = LDFLAGS=-Wl,-rpath,lib --enable-gui --with-softwaredir=/etc/drweb/software
-BUILD_EPM_CONF_STRING_DEFAULT = $(BUILD_EPM_CONF_STRING_COMMON)
-BUILD_EPM_CONF_STRING_BSD = $(BUILD_EPM_CONF_STRING_COMMON)
+BUILD_EPM_CONF_STRING_COMMON = LDFLAGS=-Wl,-rpath,lib --enable-gui
+BUILD_EPM_CONF_STRING_DEFAULT = $(BUILD_EPM_CONF_STRING_COMMON) --with-softwaredir=/etc/drweb/software
+BUILD_EPM_CONF_STRING_BSD = $(BUILD_EPM_CONF_STRING_COMMON) --with-softwaredir=/usr/local/etc/drweb/software
 
 build-epm-bsd:
 	cd epm && ( ./configure CC=$(BSD_CC) CXX=$(BSD_CXX) $(BUILD_EPM_CONF_STRING_BSD) ; $(MAKE) )
 
 build-epm-default:
 	cd epm && ( ./configure $(BUILD_EPM_CONF_STRING_DEFAULT) ; $(MAKE) )
+
+.PHONY: result
 
 result:
 	rm -rf result

@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.44 2009/09/15 12:28:33 anikolov Exp $"
+ * "$Id: portable.c,v 1.11.2.45 2009/09/15 13:36:33 anikolov Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2021,12 +2021,12 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 //  {
     if (CustomLic)
     {
-      fprintf(scriptfile,"	test -f %s && more %s\n", STATIC_LIC, STATIC_LIC);
+      fprintf(scriptfile,"	test -f %s && more %s && USER_MUST_AGREE=1\n", STATIC_LIC, STATIC_LIC);
     } else {
-      fprintf(scriptfile,"	test -f %s.license && more %s.license\n", prodfull, prodfull);
+      fprintf(scriptfile,"	test -f %s.license && more %s.license && USER_MUST_AGREE=1\n", prodfull, prodfull);
     }
     fputs("	echo \"\"\n", scriptfile);
-    fputs("	while true ; do\n", scriptfile);
+    fputs("	while $USER_MUST_AGREE ; do\n", scriptfile);
     fputs("		echo $ac_n \"Do you agree with the terms of this license? $ac_c\"\n", scriptfile);
     fputs("		read yesno\n", scriptfile);
     fputs("		case \"$yesno\" in\n", scriptfile);
@@ -3161,5 +3161,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.44 2009/09/15 12:28:33 anikolov Exp $".
+ * End of "$Id: portable.c,v 1.11.2.45 2009/09/15 13:36:33 anikolov Exp $".
  */

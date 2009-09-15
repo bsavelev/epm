@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.43 2009/09/09 07:03:01 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.44 2009/09/15 12:28:33 anikolov Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2336,7 +2336,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      qprintf(scriptfile, "%s/init.d/%s start ||: true\n", SoftwareDir, file->dst);
+      qprintf(scriptfile, "%s/init.d/%s start || true\n", SoftwareDir, file->dst);
 
   fputs("echo Installation is complete.\n", scriptfile);
 
@@ -2525,7 +2525,7 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      qprintf(scriptfile, "%s/init.d/%s stop ||: true\n", SoftwareDir, file->dst);
+      qprintf(scriptfile, "%s/init.d/%s stop || true\n", SoftwareDir, file->dst);
 
   write_commands(dist, scriptfile, COMMAND_PRE_PATCH, subpackage);
 
@@ -2850,7 +2850,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      qprintf(scriptfile, "%s/init.d/%s stop ||: true\n", SoftwareDir, file->dst);
+      qprintf(scriptfile, "%s/init.d/%s stop || true\n", SoftwareDir, file->dst);
 
   write_commands(dist, scriptfile, COMMAND_PRE_REMOVE, subpackage);
 
@@ -3050,8 +3050,8 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       {
 	qprintf(scriptfile, "if test -d %s; then\n", file->dst);
 //placeholder
-	qprintf(scriptfile, "	rm -f \"%s/.%s\" >/dev/null 2>&1 && true\n", file->dst, prodfull);
-	qprintf(scriptfile, "	rmdir %s >/dev/null 2>&1 && true\n", file->dst);
+	qprintf(scriptfile, "	rm -f \"%s/.%s\"\n", file->dst, prodfull);
+	qprintf(scriptfile, "	rmdir %s 2>/dev/null || true\n", file->dst);
 	fputs("fi\n", scriptfile);
       }
   }
@@ -3059,7 +3059,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   write_commands(dist, scriptfile, COMMAND_POST_REMOVE, subpackage);
 
   fprintf(scriptfile, "rm -f %s/%s.remove\n", SoftwareDir, prodfull);
-  fprintf(scriptfile, "( find %s/../ -type d | sort -r | xargs rmdir -p 2> /dev/null ) && true\n", SoftwareDir);
+  fprintf(scriptfile, "( find %s/../ -type d | sort -r | xargs rmdir -p 2> /dev/null ) || true\n", SoftwareDir);
 
   fputs("echo Removal is complete.\n", scriptfile);
 
@@ -3161,5 +3161,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.43 2009/09/09 07:03:01 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.44 2009/09/15 12:28:33 anikolov Exp $".
  */

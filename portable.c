@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.47 2009/09/16 10:01:18 anikolov Exp $"
+ * "$Id: portable.c,v 1.11.2.48 2009/09/28 10:33:25 anikolov Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2138,7 +2138,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	fputs("fi\n", scriptfile);
 //placeholder
 	qprintf(scriptfile, "if test -d %s; then\n", file->dst);
-	qprintf(scriptfile, "	echo \"Placeholder. Do not remove.\" > %s/.%s\n", file->dst, prodfull);
+	qprintf(scriptfile, "	mkdir -p %s/possessed/%s\n", SoftwareDir, file->dst);
+	qprintf(scriptfile, "	echo \"Placeholder. Do not remove.\" > %s/possessed/%s/%s.placeholder\n", SoftwareDir, file->dst, prodfull);
 	fputs("fi\n", scriptfile);
 	qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
 	qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
@@ -3050,8 +3051,8 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       {
 	qprintf(scriptfile, "if test -d %s; then\n", file->dst);
 //placeholder
-	qprintf(scriptfile, "	rm -f \"%s/.%s\"\n", file->dst, prodfull);
-	qprintf(scriptfile, "	rmdir %s 2>/dev/null || true\n", file->dst);
+	qprintf(scriptfile, "	rm -f \"%s/possessed/%s/%s.placeholder\"\n", SoftwareDir, file->dst, prodfull);
+	qprintf(scriptfile, "	rmdir %s/possessed/%s 2>/dev/null && rmdir %s 2>/dev/null || true\n", SoftwareDir, file->dst, file->dst);
 	fputs("fi\n", scriptfile);
       }
   }
@@ -3161,5 +3162,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.47 2009/09/16 10:01:18 anikolov Exp $".
+ * End of "$Id: portable.c,v 1.11.2.48 2009/09/28 10:33:25 anikolov Exp $".
  */

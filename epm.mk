@@ -11,10 +11,10 @@ BUILD_EPM_CONF_STRING_DEFAULT = $(BUILD_EPM_CONF_STRING_COMMON) --with-softwared
 BUILD_EPM_CONF_STRING_BSD = $(BUILD_EPM_CONF_STRING_COMMON) --with-softwaredir=/usr/local/etc/drweb/software
 
 build-epm-bsd:
-	cd epm && ( ./configure CC=$(BSD_CC) CXX=$(BSD_CXX) $(BUILD_EPM_CONF_STRING_BSD) ; $(MAKE) )
+	cd epm && ( [ -f Makefile ] || ./configure CC=$(BSD_CC) CXX=$(BSD_CXX) $(BUILD_EPM_CONF_STRING_BSD) ; $(MAKE) )
 
 build-epm-default:
-	cd epm && ( ./configure $(BUILD_EPM_CONF_STRING_DEFAULT) ; $(MAKE) )
+	cd epm && ( [ -f Makefile ] || ./configure $(BUILD_EPM_CONF_STRING_DEFAULT) ; $(MAKE) )
 
 .PHONY: result
 
@@ -26,13 +26,13 @@ BUILD_FLTK_CONF_STRING_COMMON = --prefix=$(CURDIR)/epm/fltk-install --enable-loc
 BUILD_EPM_FLTK_ADD_STRING = FLTKCONFIG=$(CURDIR)/epm/fltk-install/bin/fltk-config --enable-gui
 
 build-fltk-bsd:
-	cd epm/fltk && ( ./configure CC=$(BSD_CC) CXX=$(BSD_CXX) $(BUILD_FLTK_CONF_STRING_COMMON) ; $(MAKE) install )
+	cd epm/fltk && ( [ -f Makefile ] || ./configure CC=$(BSD_CC) CXX=$(BSD_CXX) $(BUILD_FLTK_CONF_STRING_COMMON) ; $(MAKE) install )
 
 build-fltk-default:
-	cd epm/fltk && ( ./configure $(BUILD_FLTK_CONF_STRING_COMMON) ; $(MAKE) install )
+	cd epm/fltk && ( [ -f Makefile ] || ./configure $(BUILD_FLTK_CONF_STRING_COMMON) ; $(MAKE) install )
 
 build-epm-gui-bsd: build-fltk-bsd
-	cd epm && ( ./configure CC=$(BSD_CC) CXX=$(BSD_CXX) $(BUILD_EPM_CONF_STRING_BSD) $(BUILD_EPM_FLTK_ADD_STRING) ; $(MAKE) )
+	cd epm && ( [ -f Makefile ] || ./configure CC=$(BSD_CC) CXX=$(BSD_CXX) $(BUILD_EPM_CONF_STRING_BSD) $(BUILD_EPM_FLTK_ADD_STRING) ; $(MAKE) )
 
 build-epm-gui-default: build-fltk-default
-	cd epm && ( ./configure $(BUILD_EPM_CONF_STRING_DEFAULT) $(BUILD_EPM_FLTK_ADD_STRING) ; $(MAKE) )
+	cd epm && ( [ -f Makefile ] || ./configure $(BUILD_EPM_CONF_STRING_DEFAULT) $(BUILD_EPM_FLTK_ADD_STRING) ; $(MAKE) )

@@ -1,5 +1,5 @@
 /*
- * "$Id: dist.c,v 1.2.2.7 2009/09/30 12:59:34 bsavelev Exp $"
+ * "$Id: dist.c,v 1.2.2.6 2009/07/16 11:28:13 bsavelev Exp $"
  *
  *   Distribution functions for the ESP Package Manager (EPM).
  *
@@ -1000,7 +1000,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	else if (!strcmp(line, "%release"))
 	{
 	  strlcpy(dist->release, temp, sizeof(dist->release));
- 	  sprintf(dist->fulver,"%s-%s", strdup(format_vernumber(dist->version)),dist->release);
+	  sprintf(dist->fulver,"%s-%s", strdup(format_vernumber(dist->version)),dist->release);
 	  dist->vernumber += atoi(temp);
 	}
 	else if (!strcmp(line, "%incompat"))
@@ -2339,5 +2339,5 @@ subpackage_cmp(	char *a,		/* I - First subpackage */
 
 
 /*
- * End of "$Id: dist.c,v 1.2.2.7 2009/09/30 12:59:34 bsavelev Exp $".
+ * End of "$Id: dist.c,v 1.2.2.6 2009/07/16 11:28:13 bsavelev Exp $".
  */

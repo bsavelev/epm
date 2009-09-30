@@ -998,7 +998,9 @@ void update_control(int from) {
 
       // Skip product selection if this type has a list already...
         if (InstTypes[i].num_products > 0  && from == 1)
-          Wizard->next();
+	//dont skip! may be conflicts. check depends with list_cb
+	  list_cb(0,0);
+          //Wizard->next();
       }
   }
   if (Wizard->value() == Pane[PANE_LICENSE]) {

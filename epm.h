@@ -1,5 +1,5 @@
 /*
- * "$Id: epm.h,v 1.1.1.1.2.4 2009/07/29 10:33:07 bsavelev Exp $"
+ * "$Id: epm.h,v 1.1.1.1.2.5 2009/09/30 12:59:35 bsavelev Exp $"
  *
  *   Definitions for the ESP Package Manager (EPM).
  *
@@ -350,5 +350,5 @@ extern int	write_dist(const char *listname, dist_t *dist);
 
 
 /*
- * End of "$Id: epm.h,v 1.1.1.1.2.4 2009/07/29 10:33:07 bsavelev Exp $".
+ * End of "$Id: epm.h,v 1.1.1.1.2.5 2009/09/30 12:59:35 bsavelev Exp $".
  */

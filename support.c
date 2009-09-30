@@ -1,5 +1,5 @@
 /*
- * "$Id: support.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: support.c,v 1.1.1.1.2.2 2009/09/30 12:59:35 bsavelev Exp $"
  *
  *   Support functions for the ESP Package Manager (EPM).
  *
@@ -178,5 +178,5 @@ format_vernumber(const char *version)	/* I - Version string */
 }
 
 /*
- * End of "$Id: support.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: support.c,v 1.1.1.1.2.2 2009/09/30 12:59:35 bsavelev Exp $".
  */

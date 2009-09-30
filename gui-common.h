@@ -45,6 +45,7 @@ struct gui_dist_t			//// Distributions
   char		name[256];		// Product long name
   char		version[32];		// Product version
   int		vernumber;		// Version number
+  char		fulver[256];		// Full version
   int		num_depends;		// Number of dependencies
   gui_depend_t	*depends;		// Dependencies
   int		rootsize,		// Size of root partition files in kbytes

@@ -105,6 +105,78 @@ get_vernumber(const char *version)	/* I - Version string */
 }
 
 
+char*					/* O - Version number */
+format_vernumber(const char *version)	/* I - Version string */
+{
+  int		numbers[4],		/* Raw version numbers */
+		nnumbers,		/* Number of numbers in version */
+		temp,			/* Temporary version number */
+		offset;			/* Offset for last version number */
+  const char	*ptr;			/* Pointer into string */
+  char        tmp[256];
+
+ /*
+  * Loop through the version number string and construct a version number.
+  */
+
+  memset(numbers, 0, sizeof(numbers));
+
+  for (ptr = version; *ptr && !isdigit(*ptr & 255); ptr ++);
+    /* Skip leading letters, periods, etc. */
+
+  for (offset = 0, temp = 0, nnumbers = 0; *ptr && !isspace(*ptr & 255); ptr ++)
+    if (isdigit(*ptr & 255))
+      temp = temp * 10 + *ptr - '0';
+    else
+    {
+     /*
+      * Add each mini version number (m.n.p) and patch/pre stuff...
+      */
+
+      if (nnumbers < 4)
+      {
+        numbers[nnumbers] = temp;
+	nnumbers ++;
+      }
+
+      temp = 0;
+
+      if (*ptr == '.')
+	offset = 0;
+      else if (*ptr == 'p' || *ptr == '-')
+      {
+	if (strncmp(ptr, "pre", 3) == 0)
+	{
+	  ptr += 2;
+	  offset = -20;
+	}
+	else
+	  offset = 0;
+
+        nnumbers = 3;
+      }
+      else if (*ptr == 'b')
+      {
+	offset   = -50;
+        nnumbers = 3;
+      }
+      else /* if (*ptr == 'a') */
+      {
+	offset   = -100;
+        nnumbers = 3;
+      }
+    }
+
+  if (nnumbers < 4)
+    numbers[nnumbers] = temp;
+
+ /*
+  * Compute the version number as MMmmPPpp + offset
+  */
+  sprintf(tmp,"%03d.%03d.%03d", numbers[0], numbers[1],numbers[2]);
+  return tmp;
+}
+
 /*
  * End of "$Id: support.c,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
  */

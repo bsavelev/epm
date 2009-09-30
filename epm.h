@@ -220,6 +220,7 @@ typedef struct				/**** Distribution Structure ****/
 		packager[256],		/* Packager name */
 		license[256],		/* License file to copy */
 		readme[256];		/* README file to copy */
+  char		fulver[256];		/* Full version */
   int		num_subpackages;	/* Number of subpackages */
   char		**subpackages;		/* Subpackage names */
   int		num_descriptions;	/* Number of description strings */
@@ -273,6 +274,7 @@ extern const char *get_runlevels(file_t *file, const char *deflevels);
 extern int	get_start(file_t *file, int defstart);
 extern int	get_stop(file_t *file, int defstop);
 extern int	get_vernumber(const char *version);
+extern char*	format_vernumber(const char *version);
 extern int	make_aix(const char *prodname, const char *directory,
 		         const char *platname, dist_t *dist,
 			 struct utsname *platform);

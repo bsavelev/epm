@@ -1050,7 +1050,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fputs("\n", fp);
   fprintf(fp, "#%%vendor %s\n", dist->vendor);
   fprintf(fp, "#%%copyright %s\n", dist->copyright);
-  fprintf(fp, "#%%version %s %d\n", dist->version, dist->vernumber);
+  fprintf(fp, "#%%version %s %s\n", dist->version, dist->fulver);
 
   for (i = 0; i < dist->num_descriptions; i ++)
     if (dist->descriptions[i].subpackage == subpackage)
@@ -1103,7 +1103,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
 
   fputs("PATH=/usr/xpg4/bin:/bin:/usr/bin:/usr/ucb:/sbin:/usr/sbin:${PATH}\n", fp);
   fputs("SHELL=/bin/sh\n", fp);
-  fprintf(fp,"PACKAGE_VERSION=\"%d\"\n",dist->vernumber);
+  fprintf(fp,"PACKAGE_VERSION=\"%s\"\n",dist->fulver);
   fputs("case \"`uname`\" in\n", fp);
   fputs("\tDarwin*)\n", fp);
   fputs("\tcase \"`id -un`\" in\n", fp);

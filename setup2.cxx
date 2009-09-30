@@ -316,7 +316,7 @@ get_dists(const char *d)	// I - Directory to look in
 	if (strncmp(line, "#%product ", 10) == 0)
 	  strncpy(temp->name, line + 10, sizeof(temp->name) - 1);
 	else if (strncmp(line, "#%version ", 10) == 0)
-	  sscanf(line + 10, "%31s%d", temp->version, &(temp->vernumber));
+	  sscanf(line + 10, "%31s%s", temp->version, &(temp->fulver));
 	else if (strncmp(line, "#%rootsize ", 11) == 0)
 	  temp->rootsize = atoi(line + 11);
 	else if (strncmp(line, "#%usrsize ", 10) == 0)
@@ -416,12 +416,12 @@ get_dists(const char *d)	// I - Directory to look in
       strcat(line, " (new)");
       SoftwareList->add(line, 0);
     }
-    else if (installed->vernumber > temp->vernumber)
+    else if (strcmp(installed->fulver,temp->fulver) > 0)
     {
       strcat(line, " (downgrade)");
       SoftwareList->add(line, 0);
     }
-    else if (installed->vernumber == temp->vernumber)
+    else if (strcmp(installed->fulver,temp->fulver) == 0)
     {
       strcat(line, " (installed)");
       SoftwareList->add(line, 0);
@@ -1225,7 +1225,7 @@ type_cb(Fl_Round_Button *w, void *)	// I - Radio button widget
   {
     if ((installed = gui_find_dist(temp->product, NumInstalled,
                                    Installed)) != NULL &&
-        installed->vernumber < temp->vernumber)
+        (strcmp(installed->fulver,temp->fulver) < 0))
       SoftwareList->checked(i + 1, 1);
   }
 

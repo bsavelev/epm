@@ -261,7 +261,7 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
      res = run_command(NULL, "/bin/sh -c '/usr/bin/file %s | egrep \"ELF.*not stripped\"'", file->src);
      if (!res)
      {
-// #if defined(__linux) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
+#if defined(__linux)
       if (Verbosity > 1)
        fprintf(stdout, "Stripping %s\n",file->src);
       if (DebugPackage)
@@ -283,9 +283,7 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
 	res = run_command(NULL, "objcopy --only-keep-debug %s %s", file->src, debug_dst);
        if (!res) {
 	run_command(NULL, EPM_STRIP " %s", file->src);
-#if defined(__linux)
 	run_command(NULL, "objcopy --add-gnu-debuglink=%s %s ", debug_dst, file->src);
-#endif
 	//subpackage
 	const char *subpkg = "debug";
 	char *subpkg_name;
@@ -311,6 +309,9 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
       {
 	run_command(NULL, EPM_STRIP " %s", file->src);
       }
+#else
+	run_command(NULL, EPM_STRIP " %s", file->src);
+#endif
      }
     }
 }

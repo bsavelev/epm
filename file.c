@@ -259,7 +259,7 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
      res = run_command(NULL, "/bin/sh -c '/usr/bin/file %s | egrep \"ELF.*not stripped\"'", file->src);
      if (!res)
      {
-#if defined(__linux)
+// #if defined(__linux) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
       if (Verbosity > 1)
        fprintf(stdout, "Stripping %s\n",file->src);
       if (DebugPackage)
@@ -293,9 +293,9 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
       {
 	run_command(NULL, EPM_STRIP " %s", file->src);
       }
-#else
-      run_command(NULL, EPM_STRIP " %s", file->src);
-#endif
+// #else
+//       run_command(NULL, EPM_STRIP " %s", file->src);
+// #endif
      }
     }
 }

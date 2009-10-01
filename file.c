@@ -205,6 +205,7 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
 		*file_name;
   dist_t	*dist_tmp;
   const char	*subpkg = "debug";
+  const char delim[32] = "/\0";
   char *subpkg_name;
 
 
@@ -268,19 +269,23 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
      if (!res)
      {
       if (Verbosity > 1)
+       fprintf(stdout, "Copying %s\n",file->src);
+
+       //copy file before strip
+      char debug_src[512] = "\0";
+      strcat(debug_src,TempDir);
+      strcat(debug_src,delim);
+      strcat(debug_src,file->src);
+      dir_name = strdup(debug_src);
+      run_command(NULL, "mkdir -p %s", dirname(dir_name));
+      run_command(NULL, "cp %s %s", file->src,debug_src);
+      strcpy(file->src,debug_src);
+
+      if (Verbosity > 1)
        fprintf(stdout, "Stripping %s\n",file->src);
+
       if (DebugPackage)
       {
-	//copy file
-	char delim[32] = "/\0";
-	char debug_src[512] = "\0";
-	strcat(debug_src,TempDir);
-	strcat(debug_src,delim);
-	strcat(debug_src,file->src);
-	dir_name = strdup(debug_src);
-	run_command(NULL, "mkdir -p %s", dirname(dir_name));
-	run_command(NULL, "cp %s %s", file->src,debug_src);
-	strcpy(file->src,debug_src);
 	char appendix[255]=".debug";
 	char debug_dst[512] = "\0";
 	strcat(debug_dst,file->src);

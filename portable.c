@@ -251,7 +251,7 @@ clean_distfiles(const char *directory,	/* I - Directory */
   snprintf(filename, sizeof(filename), "%s/%s.sw", directory, prodfull);
   unlink(filename);
 
-  if (DebugPackage && !KeepFiles)
+  if (!KeepFiles)
     run_command(NULL, "/bin/rm -rf %s", TempDir);
 
 }

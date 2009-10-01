@@ -1,5 +1,5 @@
 /*
- * "$Id: file.c,v 1.1.1.1.2.11 2009/10/01 15:02:40 bsavelev Exp $"
+ * "$Id: file.c,v 1.1.1.1.2.12 2009/10/01 15:22:05 bsavelev Exp $"
  *
  *   File functions for the ESP Package Manager (EPM).
  *
@@ -430,5 +430,5 @@ if (!strcmp(ext,"rpm")) {
 
 
 /*
- * End of "$Id: file.c,v 1.1.1.1.2.11 2009/10/01 15:02:40 bsavelev Exp $".
+ * End of "$Id: file.c,v 1.1.1.1.2.12 2009/10/01 15:22:05 bsavelev Exp $".
  */

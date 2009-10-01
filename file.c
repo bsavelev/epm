@@ -203,8 +203,14 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
   char		header[4];		/* File header... */
   char		*dir_name,
 		*file_name;
+  dist_t	*dist_tmp;
+  const char	*subpkg = "debug";
+  char *subpkg_name;
 
 
+//create temp dist for debug package files
+  if (DebugPackage)
+    dist_tmp=new_dist();
  /*
   * Loop through the distribution files and strip any executable
   * files.
@@ -261,7 +267,6 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
      res = run_command(NULL, "/bin/sh -c '/usr/bin/file %s | egrep \"ELF.*not stripped\"'", file->src);
      if (!res)
      {
-#if defined(__linux)
       if (Verbosity > 1)
        fprintf(stdout, "Stripping %s\n",file->src);
       if (DebugPackage)
@@ -285,8 +290,6 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
 	run_command(NULL, EPM_STRIP " %s", file->src);
 	run_command(NULL, "objcopy --add-gnu-debuglink=%s %s ", debug_dst, file->src);
 	//subpackage
-	const char *subpkg = "debug";
-	char *subpkg_name;
 	char dst[1024] = "\0";
 	dir_name = strdup(file->dst);
 	strcat(dst,dirname(dir_name));
@@ -294,8 +297,8 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
 	file_name = strdup(file->src);
 	strcat(dst,strdup(basename(file_name)));
 	strcat(dst,appendix);
-	subpkg_name=find_subpackage(dist, subpkg);
-	file_t *new_file = add_file(dist, subpkg_name);
+	subpkg_name=find_subpackage(dist_tmp, subpkg);
+	file_t *new_file = add_file(dist_tmp, subpkg_name);
 	new_file->type = file->type;
 	new_file->mode = file->mode;
 	strcpy(new_file->src, debug_dst);
@@ -309,11 +312,19 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
       {
 	run_command(NULL, EPM_STRIP " %s", file->src);
       }
-#else
-	run_command(NULL, EPM_STRIP " %s", file->src);
-#endif
      }
     }
+  for (i = dist_tmp->num_files, file = dist_tmp->files; i > 0; i --, file ++) {
+	subpkg_name=find_subpackage(dist, subpkg);
+	file_t *new_file = add_file(dist, subpkg_name);
+	new_file->type = file->type;
+	new_file->mode = file->mode;
+	strcpy(new_file->src, file->src);
+	strcpy(new_file->dst, file->dst);
+	strcpy(new_file->user, file->user);
+	strcpy(new_file->group, file->group);
+	strcpy(new_file->options, file->options);	
+  }
 }
 
 

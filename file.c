@@ -283,7 +283,9 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
 	res = run_command(NULL, "objcopy --only-keep-debug %s %s", file->src, debug_dst);
        if (!res) {
 	run_command(NULL, EPM_STRIP " %s", file->src);
+#if defined(__linux)
 	run_command(NULL, "objcopy --add-gnu-debuglink=%s %s ", debug_dst, file->src);
+#endif
 	//subpackage
 	const char *subpkg = "debug";
 	char *subpkg_name;

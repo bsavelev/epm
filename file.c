@@ -314,7 +314,9 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
       }
      }
     }
-  for (i = dist_tmp->num_files, file = dist_tmp->files; i > 0; i --, file ++) {
+  if (DebugPackage)
+    for (i = dist_tmp->num_files, file = dist_tmp->files; i > 0; i --, file ++)
+    {
 	subpkg_name=find_subpackage(dist, subpkg);
 	file_t *new_file = add_file(dist, subpkg_name);
 	new_file->type = file->type;
@@ -324,7 +326,7 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
 	strcpy(new_file->user, file->user);
 	strcpy(new_file->group, file->group);
 	strcpy(new_file->options, file->options);	
-  }
+    }
 }
 
 

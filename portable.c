@@ -250,6 +250,10 @@ clean_distfiles(const char *directory,	/* I - Directory */
 
   snprintf(filename, sizeof(filename), "%s/%s.sw", directory, prodfull);
   unlink(filename);
+
+  if (DebugPackage && !KeepFiles)
+    run_command(NULL, "/bin/rm -rf ./epm-portable-install-tmp");
+
 }
 
 

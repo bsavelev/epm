@@ -708,7 +708,7 @@ write_spec(int        format,		/* I - Subformat */
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       {
-	qprintf(fp, "\t/etc/init.d/%s stop || true\n", basename(file->dst));
+	qprintf(fp, "\t/etc/init.d/%s stop || true\n", epm_basename(file->dst));
       }
       fputs("fi\n", fp);
   }
@@ -784,9 +784,9 @@ write_spec(int        format,		/* I - Subformat */
       {
 	fputs("if test \"x$1\" = x1; then\n", fp);
 	fputs("\techo Setting up init scripts...\n", fp);
-	qprintf(fp, "\tchkconfig --add %s\n", basename(file->dst));
+	qprintf(fp, "\tchkconfig --add %s\n", epm_basename(file->dst));
 	fputs("fi\n", fp);
-	qprintf(fp, "/etc/init.d/%s start || true\n", basename(file->dst));
+	qprintf(fp, "/etc/init.d/%s start || true\n", epm_basename(file->dst));
       }
     }
     else
@@ -878,8 +878,8 @@ write_spec(int        format,		/* I - Subformat */
        for (; i > 0; i --, file ++)
 	 if (tolower(file->type) == 'i' && file->subpackage == subpackage)
          {
-	   qprintf(fp, "\t/etc/init.d/%s stop\n", basename(file->dst));
-	   qprintf(fp, "\tchkconfig --del %s\n", basename(file->dst));
+	   qprintf(fp, "\t/etc/init.d/%s stop\n", epm_basename(file->dst));
+	   qprintf(fp, "\tchkconfig --del %s\n", epm_basename(file->dst));
 	 }
    }
    else
@@ -1003,7 +1003,7 @@ write_spec(int        format,		/* I - Subformat */
 		      file->dst);
 	    else if (format == PACKAGE_LSB_INIT)
 	      fprintf(fp, "%%attr(0555,root,root) \"/etc/init.d/%s\"\n",
-		      basename(file->dst));
+		      epm_basename(file->dst));
             else
 	      fprintf(fp, "%%attr(0555,root,root) \"%s/init.d/%s\"\n",
 	              SoftwareDir, file->dst);
@@ -1013,7 +1013,7 @@ write_spec(int        format,		/* I - Subformat */
   return (0);
 }
 
-basename(register char *s)
+epm_basename(register char *s)
 {
 	register char *rv = s;
 	if (rv) for(;;)

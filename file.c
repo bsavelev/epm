@@ -201,6 +201,8 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
   file_t	*file;			/* Software file */
   FILE		*fp;			/* File pointer */
   char		header[4];		/* File header... */
+  char		*dir_name,
+		*file_name;
 
 
  /*
@@ -264,6 +266,16 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
        fprintf(stdout, "Stripping %s\n",file->src);
       if (DebugPackage)
       {
+	//copy file
+	char delim[32] = "/\0";
+	char debug_src[512] = "\0";
+	strcat(debug_src,"./epm-portable-install-tmp");
+	strcat(debug_src,delim);
+	strcat(debug_src,file->src);
+	dir_name = strdup(debug_src);
+	run_command(NULL, "mkdir -p %s", dirname(dir_name));
+	run_command(NULL, "cp %s %s", file->src,debug_src);
+	strcpy(file->src,debug_src);
 	char appendix[255]=".debug";
 	char debug_dst[512] = "\0";
 	strcat(debug_dst,file->src);
@@ -276,7 +288,11 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
 	const char *subpkg = "debug";
 	char *subpkg_name;
 	char dst[1024] = "\0";
-	strcat(dst,file->dst);
+	dir_name = strdup(file->dst);
+	strcat(dst,dirname(dir_name));
+	strcat(dst,delim);
+	file_name = strdup(file->src);
+	strcat(dst,strdup(basename(file_name)));
 	strcat(dst,appendix);
 	subpkg_name=find_subpackage(dist, subpkg);
 	file_t *new_file = add_file(dist, subpkg_name);
@@ -293,9 +309,6 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
       {
 	run_command(NULL, EPM_STRIP " %s", file->src);
       }
-// #else
-//       run_command(NULL, EPM_STRIP " %s", file->src);
-// #endif
      }
     }
 }

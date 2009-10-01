@@ -249,6 +249,7 @@ extern const char	*UninstProgram;	/* Uninstall program */
 extern int		Verbosity;	/* Be verbose? */
 extern int		DebugPackage;	/* 1 if we should create debug package */
 extern int		CustomLic;	/* 1 if we should use unified lic */
+char			*TempDir;
 
 
 /*

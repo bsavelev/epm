@@ -120,6 +120,10 @@ main(int  argc,				/* I - Number of command-line args */
   directory[0] = '\0';
   show_depend  = 0;
 
+char dir[] = "/tmp/empXXXXXX";
+char *pdir = dir;
+TempDir = mkdtemp(pdir);
+
   for (i = 1; i < argc; i ++)
     if (argv[i][0] == '-')
     {

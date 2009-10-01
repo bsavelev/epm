@@ -269,7 +269,7 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
 	//copy file
 	char delim[32] = "/\0";
 	char debug_src[512] = "\0";
-	strcat(debug_src,"./epm-portable-install-tmp");
+	strcat(debug_src,TempDir);
 	strcat(debug_src,delim);
 	strcat(debug_src,file->src);
 	dir_name = strdup(debug_src);

@@ -252,7 +252,7 @@ clean_distfiles(const char *directory,	/* I - Directory */
   unlink(filename);
 
   if (DebugPackage && !KeepFiles)
-    run_command(NULL, "/bin/rm -rf ./epm-portable-install-tmp");
+    run_command(NULL, "/bin/rm -rf %s", TempDir);
 
 }
 

@@ -43,6 +43,7 @@ const char	*UninstProgram = EPM_LIBDIR "/uninst";
 int		Verbosity = 0;
 int		DebugPackage = 0;		/* 1 if we should create debug package */
 int		CustomLic = 0;
+char		*TempDir = "\0";
 
 
 /*

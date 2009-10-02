@@ -1,5 +1,5 @@
 /*
- * "$Id: epm.c,v 1.2.2.4 2009/10/01 12:40:27 bsavelev Exp $"
+ * "$Id: epm.c,v 1.2.2.5 2009/10/02 07:45:38 bsavelev Exp $"
  *
  *   Main program source for the ESP Package Manager (EPM).
  *
@@ -745,5 +745,5 @@ usage(void)
 
 
 /*
- * End of "$Id: epm.c,v 1.2.2.4 2009/10/01 12:40:27 bsavelev Exp $".
+ * End of "$Id: epm.c,v 1.2.2.5 2009/10/02 07:45:38 bsavelev Exp $".
  */

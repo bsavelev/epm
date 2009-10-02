@@ -981,7 +981,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	    }
 
             strlcpy(dist->version, temp, sizeof(dist->version));
-            sprintf(dist->fulver,"%s",strdup(format_vernumber(dist->version)));
+            sprintf(dist->fulver,"%s",format_vernumber(dist->version));
 	    if ((temp = strchr(dist->version, ' ')) != NULL)
 	    {
 	      *temp++ = '\0';
@@ -1000,7 +1000,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	else if (!strcmp(line, "%release"))
 	{
 	  strlcpy(dist->release, temp, sizeof(dist->release));
- 	  sprintf(dist->fulver,"%s-%s", strdup(format_vernumber(dist->version)),dist->release);
+ 	  sprintf(dist->fulver,"%s-%s", format_vernumber(dist->version),dist->release);
 	  dist->vernumber += atoi(temp);
 	}
 	else if (!strcmp(line, "%incompat"))

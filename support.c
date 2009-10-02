@@ -113,7 +113,7 @@ format_vernumber(const char *version)	/* I - Version string */
 		temp,			/* Temporary version number */
 		offset;			/* Offset for last version number */
   const char	*ptr;			/* Pointer into string */
-  char        tmp[256];
+  static char        tmp[256];
 
  /*
   * Loop through the version number string and construct a version number.

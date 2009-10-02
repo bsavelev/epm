@@ -109,6 +109,7 @@ typedef int (*compare_func_t)(const void *, const void *);
 
 int licaccept = 0;
 FILE    *fdfile = NULL;
+int skip_pane_select = 1;
 
 #define LIC_EN "LICENSE"
 #define LIC_RU "LICENSE.ru"
@@ -627,6 +628,7 @@ list_cb(Fl_Check_Browser *, void *)
 		fl_alert("%s requires %s to be installed, but it is not available "
 	        	 "for installation.", dist->name, depend->product);
 		SoftwareList->checked(i + 1, 0);
+		skip_pane_select = 0;
 		break;
 	      }
 	      break;
@@ -639,6 +641,7 @@ list_cb(Fl_Check_Browser *, void *)
 		fl_alert("%s is incompatible with %s. Please remove it before "
 	        	 "installing this software.", dist->name, dist2->name);
 		SoftwareList->checked(i + 1, 0);
+		skip_pane_select = 0;
 		break;
 	      }
 	      else if ((dist2 = gui_find_dist(depend->product, NumDists,
@@ -655,6 +658,7 @@ list_cb(Fl_Check_Browser *, void *)
 		fl_alert("%s is incompatible with %s. Please deselect it before "
 	        	 "installing this software.", dist->name, dist2->name);
 		SoftwareList->checked(i + 1, 0);
+		skip_pane_select = 0;
 		break;
 	      }
             default :
@@ -998,9 +1002,13 @@ void update_control(int from) {
 
       // Skip product selection if this type has a list already...
         if (InstTypes[i].num_products > 0  && from == 1)
+	{
 	//dont skip! may be conflicts. check depends with list_cb
+	  skip_pane_select = 1;
 	  list_cb(0,0);
-          //Wizard->next();
+	  if ( skip_pane_select )
+            Wizard->next();
+	}
       }
   }
   if (Wizard->value() == Pane[PANE_LICENSE]) {

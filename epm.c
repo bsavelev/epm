@@ -1,5 +1,5 @@
 /*
- * "$Id: epm.c,v 1.2.2.5 2009/10/02 07:45:38 bsavelev Exp $"
+ * "$Id: epm.c,v 1.2.2.6 2009/10/05 16:38:46 bsavelev Exp $"
  *
  *   Main program source for the ESP Package Manager (EPM).
  *
@@ -123,7 +123,11 @@ main(int  argc,				/* I - Number of command-line args */
 
 char dir[] = "/tmp/empXXXXXX";
 char *pdir = dir;
-TempDir = mkdtemp(pdir);
+#ifdef __sun
+  TempDir = "./epm-tmp";
+#else
+  TempDir = mkdtemp(pdir);
+#endif
 
   for (i = 1; i < argc; i ++)
     if (argv[i][0] == '-')
@@ -745,5 +749,5 @@ usage(void)
 
 
 /*
- * End of "$Id: epm.c,v 1.2.2.5 2009/10/02 07:45:38 bsavelev Exp $".
+ * End of "$Id: epm.c,v 1.2.2.6 2009/10/05 16:38:46 bsavelev Exp $".
  */

@@ -6,7 +6,7 @@ DEFAULT_CXX=g++
 BSD_CC=gcc
 BSD_CXX=g++
 
-BUILD_EPM_CONF_STRING_COMMON = LDFLAGS=-Wl,-rpath,lib
+BUILD_EPM_CONF_STRING_COMMON = LDFLAGS=-Wl,-R,lib
 BUILD_EPM_CONF_STRING_DEFAULT = $(BUILD_EPM_CONF_STRING_COMMON) --with-softwaredir=/etc/drweb/software
 BUILD_EPM_CONF_STRING_BSD = $(BUILD_EPM_CONF_STRING_COMMON) --with-softwaredir=/usr/local/etc/drweb/software
 

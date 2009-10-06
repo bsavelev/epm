@@ -1,5 +1,5 @@
 /*
- * "$Id: rpm.c,v 1.1.1.1.2.12 2009/10/01 10:40:56 bsavelev Exp $"
+ * "$Id: rpm.c,v 1.1.1.1.2.13 2009/10/06 07:54:31 bsavelev Exp $"
  *
  *   Red Hat package gateway for the ESP Package Manager (EPM).
  *
@@ -208,7 +208,7 @@ make_rpm(int            format,		/* I - Subformat */
 	    return (1);
           break;
       case 'i' :
-          if (format == PACKAGE_LSB || format == PACKAGE_LSB_SIGNED || PACKAGE_LSB_INIT)
+          if (format == PACKAGE_LSB || format == PACKAGE_LSB_SIGNED || format == PACKAGE_LSB_INIT)
 	    snprintf(filename, sizeof(filename), "%s/buildroot/etc/init.d/%s",
 		     directory, file->dst);
           else
@@ -1026,5 +1026,5 @@ epm_basename(register char *s)
 	}
 
 /*
- * End of "$Id: rpm.c,v 1.1.1.1.2.12 2009/10/01 10:40:56 bsavelev Exp $".
+ * End of "$Id: rpm.c,v 1.1.1.1.2.13 2009/10/06 07:54:31 bsavelev Exp $".
  */

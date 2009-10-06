@@ -16,6 +16,7 @@ configure-epm-bsd: Makefile
 
 configure-epm-default: Makefile
 	cd epm && ./configure $(BUILD_EPM_CONF_STRING_DEFAULT)
+	touch $@
 
 build-epm: configure-epm-default
 	$(MAKE) -C epm

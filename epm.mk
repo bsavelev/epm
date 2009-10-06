@@ -10,13 +10,18 @@ BUILD_EPM_CONF_STRING_COMMON = LDFLAGS=-Wl,-R,lib
 BUILD_EPM_CONF_STRING_DEFAULT = $(BUILD_EPM_CONF_STRING_COMMON) --with-softwaredir=/etc/drweb/software
 BUILD_EPM_CONF_STRING_BSD = $(BUILD_EPM_CONF_STRING_COMMON) --with-softwaredir=/usr/local/etc/drweb/software
 
-build-epm-bsd:
-	cd epm && ./configure CC=$(BSD_CC) CXX=$(BSD_CXX) $(BUILD_EPM_CONF_STRING_BSD) ; $(MAKE)
+configure-epm-bsd: Makefile
+	cd epm && ./configure CC=$(BSD_CC) CXX=$(BSD_CXX) $(BUILD_EPM_CONF_STRING_BSD)
 	touch $@
 
-build-epm-default:
-	cd epm && ./configure $(BUILD_EPM_CONF_STRING_DEFAULT) ; $(MAKE)
-	touch $@
+configure-epm-default: Makefile
+	cd epm && ./configure $(BUILD_EPM_CONF_STRING_DEFAULT)
+
+build-epm: configure-epm-default
+	$(MAKE) -C epm
+
+build-epm-default: build-epm
+build-epm-bsd: build-epm
 
 .PHONY: result
 

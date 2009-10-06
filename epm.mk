@@ -12,9 +12,11 @@ BUILD_EPM_CONF_STRING_BSD = $(BUILD_EPM_CONF_STRING_COMMON) --with-softwaredir=/
 
 build-epm-bsd:
 	cd epm && ./configure CC=$(BSD_CC) CXX=$(BSD_CXX) $(BUILD_EPM_CONF_STRING_BSD) ; $(MAKE)
+	touch $@
 
 build-epm-default:
 	cd epm && ./configure $(BUILD_EPM_CONF_STRING_DEFAULT) ; $(MAKE)
+	touch $@
 
 .PHONY: result
 

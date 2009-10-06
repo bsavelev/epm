@@ -1,5 +1,5 @@
 /*
- * "$Id: tar.c,v 1.1.1.1.2.2 2009/05/28 13:12:16 bsavelev Exp $"
+ * "$Id: tar.c,v 1.1.1.1.2.3 2009/10/06 09:42:25 bsavelev Exp $"
  *
  *   TAR file functions for the ESP Package Manager (EPM).
  *
@@ -522,7 +522,7 @@ if (!strcmp(ext,"rpm")) {
 
   if (platname[0])
   {
-    strlcat(name, ".", sizeof(name));
+    strlcat(name, "_", sizeof(name));
     strlcat(name, platname, sizeof(name));
   }
 
@@ -587,5 +587,5 @@ if (!strcmp(ext,"rpm")) {
 
 
 /*
- * End of "$Id: tar.c,v 1.1.1.1.2.2 2009/05/28 13:12:16 bsavelev Exp $".
+ * End of "$Id: tar.c,v 1.1.1.1.2.3 2009/10/06 09:42:25 bsavelev Exp $".
  */

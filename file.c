@@ -1,5 +1,5 @@
 /*
- * "$Id: file.c,v 1.1.1.1.2.12 2009/10/01 15:22:05 bsavelev Exp $"
+ * "$Id: file.c,v 1.1.1.1.2.13 2009/10/06 09:53:56 bsavelev Exp $"
  *
  *   File functions for the ESP Package Manager (EPM).
  *
@@ -367,10 +367,10 @@ unlink_package(const char *ext,		/* I - Package filename extension */
 
 if (!strcmp(ext,"rpm")) {
   if (dist->release[0])
-    snprintf(name, sizeof(name), "%s-%s-%s", prodfull, dist->version,
+    snprintf(name, sizeof(name), "%s_%s-%s", prodfull, dist->version,
              dist->release);
   else
-    snprintf(name, sizeof(name), "%s-%s", prodfull, dist->version);
+    snprintf(name, sizeof(name), "%s_%s", prodfull, dist->version);
 
   if (platname[0])
   {
@@ -430,5 +430,5 @@ if (!strcmp(ext,"rpm")) {
 
 
 /*
- * End of "$Id: file.c,v 1.1.1.1.2.12 2009/10/01 15:22:05 bsavelev Exp $".
+ * End of "$Id: file.c,v 1.1.1.1.2.13 2009/10/06 09:53:56 bsavelev Exp $".
  */

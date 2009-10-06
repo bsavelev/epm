@@ -1,5 +1,5 @@
 /*
- * "$Id: rpm.c,v 1.1.1.1.2.14 2009/10/06 09:47:22 bsavelev Exp $"
+ * "$Id: rpm.c,v 1.1.1.1.2.15 2009/10/06 09:52:21 bsavelev Exp $"
  *
  *   Red Hat package gateway for the ESP Package Manager (EPM).
  *
@@ -293,10 +293,10 @@ make_rpm(int            format,		/* I - Subformat */
     */
 
     if (dist->release[0])
-      snprintf(name, sizeof(name), "%s-%s-%s", prodname, dist->version,
+      snprintf(name, sizeof(name), "%s_%s-%s", prodname, dist->version,
                dist->release);
     else
-      snprintf(name, sizeof(name), "%s-%s", prodname, dist->version);
+      snprintf(name, sizeof(name), "%s_%s", prodname, dist->version);
 
     if (platname[0])
     {
@@ -1026,5 +1026,5 @@ epm_basename(register char *s)
 	}
 
 /*
- * End of "$Id: rpm.c,v 1.1.1.1.2.14 2009/10/06 09:47:22 bsavelev Exp $".
+ * End of "$Id: rpm.c,v 1.1.1.1.2.15 2009/10/06 09:52:21 bsavelev Exp $".
  */

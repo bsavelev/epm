@@ -14,11 +14,11 @@ configure-epm-default: Makefile
 	cd epm && ./configure $(BUILD_EPM_CONF_STRING_DEFAULT)
 	touch $@
 
-build-epm: configure-epm-default
+build-epm-default: configure-epm-default
 	$(MAKE) -C epm
-
-build-epm-default: build-epm
-build-epm-bsd: build-epm
+	
+build-epm-bsd: configure-epm-bsd
+	$(MAKE) -C epm
 
 .PHONY: result
 

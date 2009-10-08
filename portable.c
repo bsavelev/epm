@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.53 2009/10/08 08:07:11 anikolov Exp $"
+ * "$Id: portable.c,v 1.11.2.54 2009/10/08 08:53:20 anikolov Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -2223,11 +2223,11 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	case 'c' :
 	    qprintf(scriptfile, "chown %s %s/conf/%s.N\n", file->user, SoftwareDir, file->dst);
 	    qprintf(scriptfile, "chgrp %s %s/conf/%s.N\n", file->group, SoftwareDir, file->dst);
-	    qprintf(scriptfile, "chmod %s %s/conf/%s.N\n", file->mode, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "chmod %o %s/conf/%s.N\n", file->mode, SoftwareDir, file->dst);
 	case 'f' :
 	    qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
-	    qprintf(scriptfile, "chmod %s %s\n", file->mode, file->dst);
+	    qprintf(scriptfile, "chmod %o %s\n", file->mode, file->dst);
 	    break;
       }
 
@@ -2241,11 +2241,11 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	case 'c' :
 	    qprintf(scriptfile, "	chown %s %s/conf/%s.N\n", file->user, SoftwareDir, file->dst);
 	    qprintf(scriptfile, "	chgrp %s %s/conf/%s.N\n", file->group, SoftwareDir, file->dst);
-	    qprintf(scriptfile, "	chmod %s %s/conf/%s.N\n", file->mode, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "	chmod %o %s/conf/%s.N\n", file->mode, SoftwareDir, file->dst);
 	case 'f' :
 	    qprintf(scriptfile, "	chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "	chgrp %s %s\n", file->group, file->dst);
-	    qprintf(scriptfile, "	chmod %s %s\n", file->mode, file->dst);
+	    qprintf(scriptfile, "	chmod %o %s\n", file->mode, file->dst);
 	    break;
       }
   fputs("fi\n", scriptfile);
@@ -3170,5 +3170,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.53 2009/10/08 08:07:11 anikolov Exp $".
+ * End of "$Id: portable.c,v 1.11.2.54 2009/10/08 08:53:20 anikolov Exp $".
  */

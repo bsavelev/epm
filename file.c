@@ -274,11 +274,14 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
        //copy file before strip
       char debug_src[512] = "\0";
       strcat(debug_src,TempDir);
+      file_name = strdup(file->src);
+      dir_name = strdup(file->dst);
+      strcat(debug_src,dirname(dir_name));
       strcat(debug_src,delim);
-      strcat(debug_src,file->src);
+      strcat(debug_src,basename(file_name));
       dir_name = strdup(debug_src);
       run_command(NULL, "mkdir -p %s", dirname(dir_name));
-      run_command(NULL, "cp %s %s", file->src,debug_src);
+      copy_file(debug_src,file->src,file->mode,file->user,file->group);
       strcpy(file->src,debug_src);
 
       if (Verbosity > 1)

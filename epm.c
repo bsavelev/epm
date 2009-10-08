@@ -121,10 +121,10 @@ main(int  argc,				/* I - Number of command-line args */
   directory[0] = '\0';
   show_depend  = 0;
 
-char dir[] = "/tmp/empXXXXXX";
+char dir[] = "./empXXXXXX";
 char *pdir = dir;
 #ifdef __sun
-  TempDir = "./epm-tmp";
+  TempDir = "./epm-tmp/install";
 #else
   TempDir = mkdtemp(pdir);
 #endif

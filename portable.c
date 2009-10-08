@@ -926,8 +926,10 @@ write_combined(const char *title,	/* I - Title */
       return (1);
     }
 
-    if (!KeepFiles)
+    if (!KeepFiles) {
       run_command(NULL, "/bin/rm -rf %s", filename);
+      run_command(NULL, "/bin/rm -rf %s", TempDir);
+    }
 
     if (Verbosity)
     {

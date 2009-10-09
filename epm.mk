@@ -33,14 +33,22 @@ BUILD_FLTK_CONF_STRING_COMMON = --prefix=$(CURDIR)/epm/fltk-install \
 				--disable-threads --disable-gl
 BUILD_EPM_FLTK_ADD_STRING = FLTKCONFIG=$(CURDIR)/epm/fltk-install/bin/fltk-config --enable-gui
 
-build-fltk-bsd:
+build-fltk: Makefile
 	cd epm/fltk && ( ./configure $(BUILD_FLTK_CONF_STRING_COMMON) ; $(MAKE) install )
+	touch $@
 
-build-fltk-default:
-	cd epm/fltk && ( ./configure $(BUILD_FLTK_CONF_STRING_COMMON) ; $(MAKE) install )
+$(CURDIR)/epm/fltk-install/bin/fltk-config: build-fltk
 
-build-epm-gui-bsd: build-fltk-bsd
-	cd epm && ( [ -f Makefile ] || ./configure $(BUILD_EPM_CONF_STRING_BSD) $(BUILD_EPM_FLTK_ADD_STRING) ; $(MAKE) )
+configure-epm-gui-bsd: build-fltk $(CURDIR)/epm/fltk-install/bin/fltk-config
+	cd epm && ./configure $(BUILD_EPM_CONF_STRING_BSD) $(BUILD_EPM_FLTK_ADD_STRING)
+	touch $@
 
-build-epm-gui-default: build-fltk-default
-	cd epm && ( [ -f Makefile ] || ./configure $(BUILD_EPM_CONF_STRING_DEFAULT) $(BUILD_EPM_FLTK_ADD_STRING) ; $(MAKE) )
+build-epm-gui-bsd: configure-epm-gui-bsd
+	$(MAKE) -C epm
+
+configure-epm-gui-default: build-fltk $(CURDIR)/epm/fltk-install/bin/fltk-config
+	cd epm && ./configure $(BUILD_EPM_CONF_STRING_DEFAULT) $(BUILD_EPM_FLTK_ADD_STRING)
+	touch $@
+
+build-epm-gui-default: configure-epm-gui-default
+	$(MAKE) -C epm

@@ -1,5 +1,5 @@
 /*
- * "$Id: config.h.in,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+ * "$Id: config.h.in,v 1.1.1.1.2.1 2009/06/30 07:56:19 bsavelev Exp $"
  *
  *   Configuration file for the ESP Package Manager (EPM).
  *
@@ -44,6 +44,13 @@
  */
 
 #define EPM_STRIP	"/bin/strip"
+
+
+/*
+ * What options does the objcopy command take?
+ */
+
+#define EPM_OBJCOPY	"/usr/bin/objcopy"
 
 
 /*
@@ -136,5 +143,5 @@
 
 
 /*
- * End of "$Id: config.h.in,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+ * End of "$Id: config.h.in,v 1.1.1.1.2.1 2009/06/30 07:56:19 bsavelev Exp $".
  */

@@ -293,10 +293,10 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
 	char debug_dst[512] = "\0";
 	strcat(debug_dst,file->src);
 	strcat(debug_dst,appendix);
-	res = run_command(NULL, "objcopy --only-keep-debug %s %s", file->src, debug_dst);
+	res = run_command(NULL, "%s --only-keep-debug %s %s", EPM_OBJCOPY, file->src, debug_dst);
        if (!res) {
 	run_command(NULL, EPM_STRIP " %s", file->src);
-	run_command(NULL, "objcopy --add-gnu-debuglink=%s %s ", debug_dst, file->src);
+	run_command(NULL, "%s --add-gnu-debuglink=%s %s ", EPM_OBJCOPY, debug_dst, file->src);
 	//subpackage
 	char dst[1024] = "\0";
 	dir_name = strdup(file->dst);

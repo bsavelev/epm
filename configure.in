@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: configure.in,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+dnl "$Id: configure.in,v 1.1.1.1.2.1 2009/06/30 07:56:19 bsavelev Exp $"
 dnl
 dnl   Configuration script for the ESP Package Manager (EPM).
 dnl
@@ -102,6 +102,7 @@ AC_PATH_PROG(RM,rm)
 AC_PATH_PROG(RPM,rpm)
 AC_PATH_PROG(RPMBUILD,rpmbuild)
 AC_PATH_PROG(STRIP,strip)
+AC_PATH_PROGS(OBJCOPY,objcopy gobjcopy)
 
 dnl Architecture checks...
 AC_C_CONST
@@ -349,6 +350,9 @@ AC_SUBST(EPM_GZIP)
 AC_DEFINE_UNQUOTED(EPM_STRIP, "$STRIP")
 AC_SUBST(EPM_STRIP)
 
+AC_DEFINE_UNQUOTED(EPM_OBJCOPY, "$OBJCOPY")
+AC_SUBST(EPM_OBJCOPY)
+
 AC_DEFINE_UNQUOTED(EPM_BINDIR, "$exec_prefix/bin")
 AC_SUBST(EPM_BINDIR)
 
@@ -389,5 +393,5 @@ dnl Output the makefile, list file, and config header...
 AC_OUTPUT(Makefile epm.list doc/Makefile)
 
 dnl
-dnl End of "$Id: configure.in,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+dnl End of "$Id: configure.in,v 1.1.1.1.2.1 2009/06/30 07:56:19 bsavelev Exp $".
 dnl

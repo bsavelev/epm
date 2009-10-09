@@ -1,5 +1,5 @@
 /*
- * "$Id: config.h.in,v 1.1.1.1.2.1 2009/06/30 07:56:19 bsavelev Exp $"
+ * "$Id: config.h.in,v 1.1.1.1.2.2 2009/10/09 16:01:14 bsavelev Exp $"
  *
  *   Configuration file for the ESP Package Manager (EPM).
  *
@@ -143,5 +143,5 @@
 
 
 /*
- * End of "$Id: config.h.in,v 1.1.1.1.2.1 2009/06/30 07:56:19 bsavelev Exp $".
+ * End of "$Id: config.h.in,v 1.1.1.1.2.2 2009/10/09 16:01:14 bsavelev Exp $".
  */

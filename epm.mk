@@ -29,7 +29,7 @@ result:
 BUILD_FLTK_CONF_STRING_COMMON = --prefix=$(CURDIR)/epm/fltk-install \
 				--enable-localjpeg --enable-localpng \
 				--enable-localzlib --disable-xinerama \
-				--disable-xft --disable-xdbe \
+				--disable-xdbe \
 				--disable-threads --disable-gl
 BUILD_EPM_FLTK_ADD_STRING = FLTKCONFIG=$(CURDIR)/epm/fltk-install/bin/fltk-config --enable-gui
 

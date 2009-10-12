@@ -24,7 +24,6 @@ build-epm-bsd: configure-epm-bsd
 
 result:
 	rm -rf result
-	[ -L ../result ] || ln -s packages/result ../result
 
 BUILD_FLTK_CONF_STRING_COMMON = --prefix=$(CURDIR)/epm/fltk-install \
 				--enable-localjpeg --enable-localpng \
@@ -40,7 +39,7 @@ build-fltk: Makefile
 $(CURDIR)/epm/fltk-install/bin/fltk-config: build-fltk
 
 configure-epm-gui-bsd: build-fltk $(CURDIR)/epm/fltk-install/bin/fltk-config
-	cd epm && ./configure $(BUILD_EPM_CONF_STRING_BSD) $(BUILD_EPM_FLTK_ADD_STRING) CC=$(CC) CXX=$(CXX)
+	cd epm && ./configure $(BUILD_EPM_CONF_STRING_BSD) $(BUILD_EPM_FLTK_ADD_STRING)
 	touch $@
 
 build-epm-gui-bsd: configure-epm-gui-bsd

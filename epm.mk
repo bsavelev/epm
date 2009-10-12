@@ -40,7 +40,7 @@ build-fltk: Makefile
 $(CURDIR)/epm/fltk-install/bin/fltk-config: build-fltk
 
 configure-epm-gui-bsd: build-fltk $(CURDIR)/epm/fltk-install/bin/fltk-config
-	cd epm && ./configure $(BUILD_EPM_CONF_STRING_BSD) $(BUILD_EPM_FLTK_ADD_STRING)
+	cd epm && ./configure $(BUILD_EPM_CONF_STRING_BSD) $(BUILD_EPM_FLTK_ADD_STRING) CC=$(CC) CXX=$(CXX)
 	touch $@
 
 build-epm-gui-bsd: configure-epm-gui-bsd

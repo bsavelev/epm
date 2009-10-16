@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.15.2.18 2009/10/02 10:34:58 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.15.2.19 2009/10/16 12:24:14 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -1307,31 +1307,31 @@ update_sizes(void)
 
     if (rootsize >= 1024)
       snprintf(sizelabel, sizeof(sizelabel),
-               "%+.1fm required, %dm available.", rootsize / 1024.0,
+               "%+.1fm required, %dMb available.", rootsize / 1024.0,
                rootfree);
     else
       snprintf(sizelabel, sizeof(sizelabel),
-               "%+dk required, %dm available.", rootsize, rootfree);
+               "%+dk required, %dMb available.", rootsize, rootfree);
   }
   else if (rootsize >= 1024 && usrsize >= 1024)
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+.1fm required on /, %dm available,\n"
-             "%+.1fm required on /usr, %dm available.",
+             "%+.1fm required on /, %dMb available,\n"
+             "%+.1fm required on /usr, %dMb available.",
              rootsize / 1024.0, rootfree, usrsize / 1024.0, usrfree);
   else if (rootsize >= 1024)
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+.1fm required on /, %dm available,\n"
-             "%+dk required on /usr, %dm available.",
+             "%+.1fm required on /, %dMb available,\n"
+             "%+dk required on /usr, %dMb available.",
              rootsize / 1024.0, rootfree, usrsize, usrfree);
   else if (usrsize >= 1024)
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+dk required on /, %dm available,\n"
-             "%+.1fm required on /usr, %dm available.",
+             "%+dk required on /, %dMb available,\n"
+             "%+.1fm required on /usr, %dMb available.",
              rootsize, rootfree, usrsize / 1024.0, usrfree);
   else
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+dk required on /, %dm available,\n"
-             "%+dk required on /usr, %dm available.",
+             "%+dk required on /, %dMb available,\n"
+             "%+dk required on /usr, %dMb available.",
              rootsize, rootfree, usrsize, usrfree);
 
   SoftwareSize->label(sizelabel);
@@ -1359,5 +1359,5 @@ change_lang(Fl_Choice*, void*)
 }
 
 //
-// End of "$Id: setup2.cxx,v 1.15.2.18 2009/10/02 10:34:58 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.15.2.19 2009/10/16 12:24:14 bsavelev Exp $".
 //

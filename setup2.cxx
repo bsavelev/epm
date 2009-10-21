@@ -111,8 +111,6 @@ int licaccept = 0;
 FILE    *fdfile = NULL;
 int skip_pane_select = 1;
 
-#define LIC_EN "LICENSE"
-#define LIC_RU "LICENSE.ru"
 
 //
 // Local functions...

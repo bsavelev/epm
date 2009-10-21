@@ -121,7 +121,7 @@ main(int  argc,				/* I - Number of command-line args */
   directory[0] = '\0';
   show_depend  = 0;
 
-char dir[] = "./empXXXXXX";
+char dir[] = "./epmXXXXXX";
 char *pdir = dir;
 #ifdef __sun
   TempDir = "./epm-tmp/install";

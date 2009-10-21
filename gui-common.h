@@ -104,5 +104,12 @@ int		gui_sort_dists(const gui_dist_t *d0, const gui_dist_t *d1);
 
 
 //
+// License names
+//
+
+#define LIC_EN "LICENSE"
+#define LIC_RU "LICENSE.ru"
+
+//
 // End of "$Id: gui-common.h,v 1.1.1.1.2.2 2009/09/30 12:59:35 bsavelev Exp $".
 //

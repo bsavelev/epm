@@ -483,6 +483,7 @@ make_rpm(int            format,		/* I - Subformat */
     run_command(NULL, "/bin/rm -rf %s/RPMS", directory);
     run_command(NULL, "/bin/rm -f %s/rpms", directory);
     run_command(NULL, "/bin/rm -rf %s/buildroot", directory);
+    run_command(NULL, "/bin/rm -rf %s", TempDir);
 
     unlink(specname);
 

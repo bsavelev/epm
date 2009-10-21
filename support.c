@@ -173,7 +173,7 @@ format_vernumber(const char *version)	/* I - Version string */
  /*
   * Compute the version number as MMmmPPpp + offset
   */
-  sprintf(tmp,"%03d.%03d.%03d", numbers[0], numbers[1],numbers[2]);
+  sprintf(tmp,"%03d.%03d.%03d.%03d", numbers[0], numbers[1],numbers[2],numbers[3]);
   return tmp;
 }
 

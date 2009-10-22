@@ -2144,8 +2144,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	fputs("fi\n", scriptfile);
 //placeholder
 	qprintf(scriptfile, "if test -d %s; then\n", file->dst);
-	qprintf(scriptfile, "	mkdir -p %s/possessed/%s\n", SoftwareDir, file->dst);
-	qprintf(scriptfile, "	echo \"Placeholder. Do not remove.\" > %s/possessed/%s/%s.placeholder\n", SoftwareDir, file->dst, prodfull);
+	qprintf(scriptfile, "	mkdir -p %s/possessed%s\n", SoftwareDir, file->dst);
+	qprintf(scriptfile, "	echo \"Placeholder. Do not remove.\" > %s/possessed%s/%s.placeholder\n", SoftwareDir, file->dst, prodfull);
 	fputs("fi\n", scriptfile);
 	qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
 	qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
@@ -3061,8 +3061,8 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       {
 	qprintf(scriptfile, "if test -d %s; then\n", file->dst);
 //placeholder
-	qprintf(scriptfile, "	rm -f \"%s/possessed/%s/%s.placeholder\"\n", SoftwareDir, file->dst, prodfull);
-	qprintf(scriptfile, "	rmdir %s/possessed/%s 2>/dev/null && rmdir %s 2>/dev/null || true\n", SoftwareDir, file->dst, file->dst);
+	qprintf(scriptfile, "	rm -f \"%s/possessed%s%s.placeholder\"\n", SoftwareDir, file->dst, prodfull);
+	qprintf(scriptfile, "	rmdir %s/possessed%s 2>/dev/null && rmdir %s 2>/dev/null || true\n", SoftwareDir, file->dst, file->dst);
 	fputs("fi\n", scriptfile);
       }
   }

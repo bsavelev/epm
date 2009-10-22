@@ -46,6 +46,7 @@ CXXFLAGS	=	$(ARCHFLAGS) @CXXFLAGS@ $(OPTIM)
 GUILIBS		=	@GUILIBS@
 LDFLAGS		=	$(ARCHFLAGS) @LDFLAGS@ $(OPTIM)
 LIBS		=	@LIBS@
+NEWT_LIBS	=	@NEWT_LIBS@
 OPTIM		=	@OPTIM@
 
 
@@ -89,7 +90,7 @@ TARGETS		=	libepm.a \
 			epm \
 			epminstall \
 			mkepmlist \
-			@GUIS@
+			@GUIS@ @CLIGUIS@
 EPM_OBJS	=	aix.o \
 			bsd.o \
 			deb.o \
@@ -114,6 +115,8 @@ SETUP_OBJS	=	setup.o \
 			gui-common.o
 UNINST_OBJS	=	uninst.o \
 			uninst2.o \
+			gui-common.o
+SETUP_CLI_OBJS	=	setup_cli.o \
 			gui-common.o
 OBJS		=	epm.o \
 			$(EPM_OBJS) \
@@ -407,6 +410,15 @@ uninst.o:	uninst.h epmstring.h gui-common.h
 uninst2.o:	uninst.h epmstring.h gui-common.h
 gui-common.o:	gui-common.h
 
+#
+# setup_cli
+#
+
+setup_cli:	$(SETUP_CLI_OBJS) libepm.a
+	echo Linking setup_cli...
+	$(CXX) $(LDFLAGS) -o $@ $(SETUP_CLI_OBJS) libepm.a $(GUILIBS) $(LIBS) $(GUILIBS2) $(NEWT_LIBS)
+
+setup_cli.o:	epmstring.h gui-common.h
 
 #
 # Common dependencies...

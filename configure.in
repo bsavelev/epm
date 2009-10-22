@@ -63,6 +63,7 @@ else
 fi)
 
 AC_ARG_ENABLE(gui, [  --enable-gui            turn on GUI utilities [[default=auto]]])
+AC_ARG_ENABLE(gui_cli, [  --enable-gui_cli        turn on CLI GUI utilities [[default=auto]]])
 
 AC_ARG_WITH(docdir, [  --with-docdir=/dir      set directory for documentation
                           [[default=${datadir}/doc/epm]]],
@@ -159,10 +160,26 @@ else
 	fi
 fi
 
+
+if test "x$enable_gui_cli" != xno; then
+	AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+	if test "x$PKG_CONFIG" = "xno"; then
+    	    AC_MSG_WARN([You need to install pkg-config])
+	    NEWT_LIBS=-lnewt
+	else
+	    PKG_CHECK_MODULES(NEWT, libnewt)
+	fi
+	CLIGUIS="setup_cli"
+else
+	CLIGUIS=""
+fi
+
+AC_SUBST(NEWT_LIBS)
 AC_SUBST(INSTALL_GUIS)
 AC_SUBST(INSTALL_OSX)
 AC_SUBST(GUIS)
 AC_SUBST(GUILIBS)
+AC_SUBST(CLIGUIS)
 
 dnl Set the default compression value...
 case "$uname" in

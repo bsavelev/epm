@@ -253,10 +253,12 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
         * File could not be opened; error out...
 	*/
 
-        fprintf(stderr, "epm: Unable to open file \"%s\" for destination "
+	fprintf(stderr, "epm: Unable to open file \"%s\" for destination "
 	                "\"%s\" -\n     %s\n",
 	        file->src, file->dst, strerror(errno));
 
+	if (!KeepFiles)
+	  run_command(NULL, "/bin/rm -rf %s", TempDir);
         exit(1);
       }
 

@@ -89,6 +89,7 @@ static int	subpackage_cmp(char *a, char *b);
 #define SKIP_IFSAT	16		/* Set if an #if statement has been satisfied */
 #define SKIP_MASK	7		/* Bits to look at */
 
+char		*CustomPlatform = NULL;
 
 /*
  * 'add_command()' - Add a command to the distribution...
@@ -1734,13 +1735,24 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 
       if (strcmp(buffer + 8, "all\n") != 0)
       {
-	namelen = strlen(platform->sysname);
-        bufptr  = buffer + 8;
-	//snprintf(namever, sizeof(namever), "%s-%s", platform->sysname,
+	if (CustomPlatform)
+	{
+	  ptr = CustomPlatform;
+	  bufptr = malloc(strlen(ptr) * sizeof(char));
+	  while( *ptr && *ptr++ != '-') *bufptr++ = *ptr;
+	  if (bufptr)
+	    namelen = strlen(bufptr);
+	  else
+	    namelen = strlen(CustomPlatform);
+	  snprintf(namever, sizeof(namever), "%s",CustomPlatform);
+	} else {
+	  namelen = strlen(platform->sysname);
+	  //snprintf(namever, sizeof(namever), "%s-%s", platform->sysname,
 	         //platform->release);
-	snprintf(namever, sizeof(namever), "%s-%s-%s", platform->sysname,
+	  snprintf(namever, sizeof(namever), "%s-%s-%s", platform->sysname,
 	         platform->release,platform->machine);
-
+	}
+        bufptr  = buffer + 8;
 	while (isspace(*bufptr & 255))
 	  bufptr ++;
 

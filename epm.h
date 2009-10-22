@@ -250,6 +250,7 @@ extern int		Verbosity;	/* Be verbose? */
 extern int		DebugPackage;	/* 1 if we should create debug package */
 extern int		CustomLic;	/* 1 if we should use unified lic */
 extern char		*TempDir;
+extern char		*CustomPlatform;
 
 
 /*

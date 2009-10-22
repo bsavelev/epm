@@ -121,13 +121,7 @@ main(int  argc,				/* I - Number of command-line args */
   directory[0] = '\0';
   show_depend  = 0;
 
-char dir[] = "./epmXXXXXX";
-char *pdir = dir;
-#ifdef __sun
-  TempDir = "./epm-tmp/install";
-#else
-  TempDir = mkdtemp(pdir);
-#endif
+  TempDir = "./epm-install";
 
   for (i = 1; i < argc; i ++)
     if (argv[i][0] == '-')
@@ -393,6 +387,17 @@ char *pdir = dir;
 	    {
 	      info();
 	      return (0);
+	    }
+	    else if (!strcmp(argv[i], "--sysname"))
+	    {
+	      i ++;
+	      if (i < argc)
+	        CustomPlatform = argv[i];
+	      else
+	      {
+		puts("epm: Expected platform sysname.");
+		usage();
+	      }
 	    }
 	    else
             {
@@ -741,6 +746,8 @@ usage(void)
   puts("    Include the named setup.types file with the distribution.");
   puts("--uninstalll-program /foo/bar/uninst");
   puts("    Use the named uninstall program instead of " EPM_LIBDIR "/uninst.");
+  puts("--sysname linux-2.6");
+  puts("    Use platform sysname instead of output uname");
   puts("--version");
   puts("    Show EPM version.");
 

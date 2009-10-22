@@ -1456,8 +1456,8 @@ write_distfiles(const char *directory,	/* I - Directory */
   file_t	*file;			/* Software file */
   int		rootsize=0,		/* Size of files in root partition */
 		usrsize=0;		/* Size of files in /usr partition */
-  int		prootsize,		/* Size of patch files in root partition */
-		pusrsize;		/* Size of patch files in /usr partition */
+  int		prootsize=0,		/* Size of patch files in root partition */
+		pusrsize=0;		/* Size of patch files in /usr partition */
 
 
  /*
@@ -1983,7 +1983,6 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   if (subpackage)
   {
     char	line[1024],			/* Line buffer */
-		*start,				/* Start of line */
 		*ptr;				/* Pointer into line */
     for (i = 0; i < dist->num_descriptions; i ++)
       if (dist->descriptions[i].subpackage == subpackage)
@@ -2421,7 +2420,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
       return (-1);
     }
 
-    if (Verbosity)
+    if (Verbosity) {
       if ((CustomLic) && (i==1))
       {
         printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0,
@@ -2430,6 +2429,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
         printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,
 	     prodfull, files[i]);
       }
+    }
   }
 
   return (0);
@@ -2812,7 +2812,6 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   if (subpackage)
   {
     char	line[1024],			/* Line buffer */
-		*start,				/* Start of line */
 		*ptr;				/* Pointer into line */
     for (i = 0; i < dist->num_descriptions; i ++)
       if (dist->descriptions[i].subpackage == subpackage)

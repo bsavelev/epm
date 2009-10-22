@@ -40,6 +40,7 @@ static int	move_rpms(const char *prodname, const char *directory,
 			  const char *release);
 static int	write_spec(int format, const char *prodname, dist_t *dist,
 		           FILE *fp, const char *subpackage);
+char*		epm_basename(register char *s);
 
 
 /*
@@ -1014,7 +1015,7 @@ write_spec(int        format,		/* I - Subformat */
   return (0);
 }
 
-epm_basename(register char *s)
+char* epm_basename(register char *s)
 {
 	register char *rv = s;
 	if (rv) for(;;)

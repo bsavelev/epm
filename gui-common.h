@@ -1,5 +1,5 @@
 //
-// "$Id: gui-common.h,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+// "$Id: gui-common.h,v 1.1.1.1.2.2 2009/09/30 12:59:35 bsavelev Exp $"
 //
 //   ESP Software Wizard common header file for the ESP Package Manager (EPM).
 //
@@ -45,6 +45,7 @@ struct gui_dist_t			//// Distributions
   char		name[256];		// Product long name
   char		version[32];		// Product version
   int		vernumber;		// Version number
+  char		fulver[256];		// Full version
   int		num_depends;		// Number of dependencies
   gui_depend_t	*depends;		// Dependencies
   int		rootsize,		// Size of root partition files in kbytes
@@ -103,5 +104,12 @@ int		gui_sort_dists(const gui_dist_t *d0, const gui_dist_t *d1);
 
 
 //
-// End of "$Id: gui-common.h,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+// License names
+//
+
+#define LIC_EN "LICENSE"
+#define LIC_RU "LICENSE.ru"
+
+//
+// End of "$Id: gui-common.h,v 1.1.1.1.2.2 2009/09/30 12:59:35 bsavelev Exp $".
 //

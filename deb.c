@@ -136,6 +136,9 @@ make_deb(const char     *prodname,	/* I - Product short name */
                      dist->subpackages[i]);
   }
 
+  if (!KeepFiles)
+    run_command(NULL, "/bin/rm -rf %s", TempDir);
+
   return (0);
 }
 

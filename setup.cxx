@@ -9,7 +9,7 @@ static void cb_SetupWindow(Fl_Double_Window*, void*) {
   exit(0);
 }
 
-Fl_Box *Title[6]={(Fl_Box *)0};
+Fl_Box *Title[7]={(Fl_Box *)0};
 
 Fl_Wizard *Wizard=(Fl_Wizard *)0;
 
@@ -51,11 +51,15 @@ static void cb_LicenseDecline(Fl_Round_Button*, void*) {
   NextButton->activate();
 }
 
-Fl_Group *Pane[6]={(Fl_Group *)0};
+Fl_Choice *Language=(Fl_Choice *)0;
 
 Fl_Progress *InstallPercent=(Fl_Progress *)0;
 
 Fl_Browser *InstallLog=(Fl_Browser *)0;
+
+Fl_Group *Pane[7]={(Fl_Group *)0};
+
+Fl_Help_View *PostinFile=(Fl_Help_View *)0;
 
 Fl_Box *WelcomeImage=(Fl_Box *)0;
 
@@ -337,7 +341,7 @@ static void cb_CancelButton(Fl_Button*, void*) {
 }
 
 Fl_Double_Window* make_window() {
-  { SetupWindow = new Fl_Double_Window(640, 330, "Install");
+  { SetupWindow = new Fl_Double_Window(675, 330, "Install");
     SetupWindow->callback((Fl_Callback*)cb_SetupWindow);
     { Title[0] = new Fl_Box(10, 10, 130, 25, "Welcome");
       Title[0]->labelfont(1);
@@ -368,20 +372,25 @@ Fl_Double_Window* make_window() {
       Title[5]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
       Title[5]->deactivate();
     } // Fl_Box* Title[5]
-    { Wizard = new Fl_Wizard(150, 10, 480, 275);
+    { Title[6] = new Fl_Box(10, 160, 130, 25, "Finish");
+      Title[6]->labelfont(1);
+      Title[6]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
+      Title[6]->deactivate();
+    } // Fl_Box* Title[6]
+    { Wizard = new Fl_Wizard(140, 10, 530, 285);
       Wizard->box(FL_THIN_DOWN_BOX);
       Wizard->color((Fl_Color)48);
-      { Pane[0] = new Fl_Group(150, 10, 480, 275);
+      { Pane[0] = new Fl_Group(145, 10, 515, 275);
         Pane[0]->labelfont(1);
         Pane[0]->labelsize(18);
         Pane[0]->labelcolor((Fl_Color)4);
         Pane[0]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         Pane[0]->hide();
-        { ReadmeFile = new Fl_Help_View(170, 30, 440, 235);
+        { ReadmeFile = new Fl_Help_View(145, 30, 515, 235);
         } // Fl_Help_View* ReadmeFile
         Pane[0]->end();
       } // Fl_Group* Pane[0]
-      { Pane[1] = new Fl_Group(150, 10, 480, 275);
+      { Pane[1] = new Fl_Group(150, 10, 510, 275);
         Pane[1]->labelfont(1);
         Pane[1]->labelsize(18);
         Pane[1]->labelcolor((Fl_Color)4);
@@ -435,7 +444,7 @@ Fl_Double_Window* make_window() {
         } // Fl_Group* o
         Pane[1]->end();
       } // Fl_Group* Pane[1]
-      { Pane[2] = new Fl_Group(150, 10, 480, 275);
+      { Pane[2] = new Fl_Group(150, 10, 510, 275);
         Pane[2]->labelfont(1);
         Pane[2]->labelsize(18);
         Pane[2]->labelcolor((Fl_Color)4);
@@ -444,7 +453,7 @@ Fl_Double_Window* make_window() {
         { Fl_Box* o = new Fl_Box(170, 30, 440, 25, "Select the software you want to install:");
           o->align(132|FL_ALIGN_INSIDE);
         } // Fl_Box* o
-        { SoftwareList = new Fl_Check_Browser(170, 85, 440, 145, " Available Software:");
+        { SoftwareList = new Fl_Check_Browser(155, 85, 505, 145, " Available Software:");
           SoftwareList->type(3);
           SoftwareList->box(FL_DOWN_BOX);
           SoftwareList->selection_color(FL_BACKGROUND2_COLOR);
@@ -464,7 +473,7 @@ Fl_Double_Window* make_window() {
         } // Fl_Button* InstallNoneButton
         Pane[2]->end();
       } // Fl_Group* Pane[2]
-      { Pane[3] = new Fl_Group(150, 10, 480, 275);
+      { Pane[3] = new Fl_Group(150, 10, 510, 275);
         Pane[3]->labelfont(1);
         Pane[3]->labelsize(18);
         Pane[3]->labelcolor((Fl_Color)4);
@@ -473,39 +482,43 @@ Fl_Double_Window* make_window() {
         { Fl_Box* o = new Fl_Box(170, 30, 440, 25, "Confirm your software selections below:");
           o->align(132|FL_ALIGN_INSIDE);
         } // Fl_Box* o
-        { ConfirmList = new Fl_Browser(170, 85, 440, 180, "Selected Software:");
+        { ConfirmList = new Fl_Browser(150, 85, 510, 180, "Selected Software:");
           ConfirmList->labelfont(1);
           ConfirmList->align(FL_ALIGN_TOP_LEFT);
         } // Fl_Browser* ConfirmList
         Pane[3]->end();
       } // Fl_Group* Pane[3]
-      { Pane[4] = new Fl_Group(150, 10, 480, 275);
+      { Pane[4] = new Fl_Group(140, 10, 528, 273);
         Pane[4]->labelfont(1);
         Pane[4]->labelsize(18);
         Pane[4]->labelcolor((Fl_Color)4);
         Pane[4]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
-        { LicenseFile = new Fl_Help_View(163, 48, 455, 192, "License Agreement:");
+        { LicenseFile = new Fl_Help_View(145, 48, 515, 194, "License Agreement:");
           LicenseFile->labelfont(1);
-          LicenseFile->align(FL_ALIGN_TOP_LEFT);
+          LicenseFile->align(133);
           Fl_Group::current()->resizable(LicenseFile);
         } // Fl_Help_View* LicenseFile
-        { Fl_Group* o = new Fl_Group(170, 240, 400, 35);
-          { LicenseAccept = new Fl_Round_Button(210, 250, 210, 25, "Accept agreement and install");
+        { Fl_Group* o = new Fl_Group(145, 240, 481, 35);
+          { LicenseAccept = new Fl_Round_Button(160, 245, 149, 25, "Accept and install");
             LicenseAccept->type(102);
             LicenseAccept->down_box(FL_ROUND_DOWN_BOX);
             LicenseAccept->callback((Fl_Callback*)cb_LicenseAccept);
             LicenseAccept->align(132|FL_ALIGN_INSIDE);
           } // Fl_Round_Button* LicenseAccept
-          { LicenseDecline = new Fl_Round_Button(430, 250, 140, 25, "Cancel installation");
+          { LicenseDecline = new Fl_Round_Button(311, 245, 149, 25, "Cancel installation");
             LicenseDecline->type(102);
             LicenseDecline->down_box(FL_ROUND_DOWN_BOX);
             LicenseDecline->callback((Fl_Callback*)cb_LicenseDecline);
           } // Fl_Round_Button* LicenseDecline
           o->end();
         } // Fl_Group* o
+        { Language = new Fl_Choice(570, 246, 89, 20, "Language:");
+          Language->down_box(FL_BORDER_BOX);
+          Language->callback((Fl_Callback*)change_lang);
+        } // Fl_Choice* Language
         Pane[4]->end();
       } // Fl_Group* Pane[4]
-      { Pane[5] = new Fl_Group(150, 10, 480, 275);
+      { Pane[5] = new Fl_Group(150, 10, 510, 275);
         Pane[5]->labelfont(1);
         Pane[5]->labelsize(18);
         Pane[5]->labelcolor((Fl_Color)4);
@@ -516,10 +529,22 @@ Fl_Double_Window* make_window() {
           InstallPercent->selection_color((Fl_Color)221);
           InstallPercent->align(FL_ALIGN_TOP_LEFT);
         } // Fl_Progress* InstallPercent
-        { InstallLog = new Fl_Browser(170, 74, 440, 191);
+        { InstallLog = new Fl_Browser(150, 74, 510, 191);
         } // Fl_Browser* InstallLog
         Pane[5]->end();
       } // Fl_Group* Pane[5]
+      { Pane[6] = new Fl_Group(145, 20, 525, 275);
+        Pane[6]->labelfont(1);
+        Pane[6]->labelsize(18);
+        Pane[6]->labelcolor((Fl_Color)4);
+        Pane[6]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
+        Pane[6]->hide();
+        { PostinFile = new Fl_Help_View(145, 48, 515, 194, "Congratulation:");
+          PostinFile->align(133);
+          Fl_Group::current()->resizable(PostinFile);
+        } // Fl_Help_View* PostinFile
+        Pane[6]->end();
+      } // Fl_Group* Pane[6]
       Wizard->end();
     } // Fl_Wizard* Wizard
     { WelcomeImage = new Fl_Box(10, 190, 130, 130);

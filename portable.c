@@ -1,5 +1,5 @@
 /*
- * "$Id: portable.c,v 1.11.2.27 2009/06/17 09:56:58 bsavelev Exp $"
+ * "$Id: portable.c,v 1.11.2.55 2009/10/08 12:34:47 bsavelev Exp $"
  *
  *   Portable package gateway for the ESP Package Manager (EPM).
  *
@@ -82,6 +82,8 @@ static int	write_space_checks(const char *prodname, FILE *fp,
 		                   const char *sw, const char *ss,
 				   int rootsize, int usrsize);
 
+#define STATIC_LIC "LICENSE"
+int		isLic = 0;		/* Flag for lic already exist*/
 
 /*
  * 'make_portable()' - Make a portable software distribution package.
@@ -219,8 +221,14 @@ clean_distfiles(const char *directory,	/* I - Directory */
   snprintf(filename, sizeof(filename), "%s/%s.install", directory, prodfull);
   unlink(filename);
 
-  snprintf(filename, sizeof(filename), "%s/%s.license", directory, prodfull);
-  unlink(filename);
+  if (CustomLic)
+  {
+    snprintf(filename, sizeof(filename), "%s/%s", directory, STATIC_LIC);
+    unlink(filename);
+  } else {
+    snprintf(filename, sizeof(filename), "%s/%s.license", directory, prodfull);
+    unlink(filename);
+  }
 
   snprintf(filename, sizeof(filename), "%s/%s.patch", directory, prodfull);
   unlink(filename);
@@ -242,6 +250,10 @@ clean_distfiles(const char *directory,	/* I - Directory */
 
   snprintf(filename, sizeof(filename), "%s/%s.sw", directory, prodfull);
   unlink(filename);
+
+  if (!KeepFiles)
+    run_command(NULL, "/bin/rm -rf %s", TempDir);
+
 }
 
 
@@ -277,10 +289,10 @@ write_combined(const char *title,	/* I - Title */
   */
 
   if (dist->release[0])
-    snprintf(tarfilename, sizeof(tarfilename), "%s/%s-%s-%s", directory,
+    snprintf(tarfilename, sizeof(tarfilename), "%s/%s_%s-%s", directory,
              prodname, dist->version, dist->release);
   else
-    snprintf(tarfilename, sizeof(tarfilename), "%s/%s-%s", directory, prodname,
+    snprintf(tarfilename, sizeof(tarfilename), "%s/%s_%s", directory, prodname,
              dist->version);
 
   if (!strcmp(title, "patch"))
@@ -288,7 +300,7 @@ write_combined(const char *title,	/* I - Title */
 
   if (platname[0])
   {
-    strlcat(tarfilename, "-", sizeof(tarfilename));
+    strlcat(tarfilename, "_", sizeof(tarfilename));
     strlcat(tarfilename, platname, sizeof(tarfilename));
   }
 
@@ -914,8 +926,10 @@ write_combined(const char *title,	/* I - Title */
       return (1);
     }
 
-    if (!KeepFiles)
+    if (!KeepFiles) {
       run_command(NULL, "/bin/rm -rf %s", filename);
+      run_command(NULL, "/bin/rm -rf %s", TempDir);
+    }
 
     if (Verbosity)
     {
@@ -984,7 +998,7 @@ static FILE *				/* O - File pointer */
 write_common(dist_t     *dist,		/* I - Distribution */
              const char *title,		/* I - "Installation", etc... */
              int        rootsize,	/* I - Size of root files in kbytes */
-	     int        usrsize,	/* I - Size of /us1 files in kbytes */
+	     int        usrsize,	/* I - Size of /usr files in kbytes */
              const char *filename,	/* I - Script to create */
 	     const char *subpackage)	/* I - Subpackage name */
 {
@@ -1042,7 +1056,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fputs("\n", fp);
   fprintf(fp, "#%%vendor %s\n", dist->vendor);
   fprintf(fp, "#%%copyright %s\n", dist->copyright);
-  fprintf(fp, "#%%version %s %d\n", dist->version, dist->vernumber);
+  fprintf(fp, "#%%version %s %s\n", dist->version, dist->fulver);
 
   for (i = 0; i < dist->num_descriptions; i ++)
     if (dist->descriptions[i].subpackage == subpackage)
@@ -1095,7 +1109,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
 
   fputs("PATH=/usr/xpg4/bin:/bin:/usr/bin:/usr/ucb:/sbin:/usr/sbin:${PATH}\n", fp);
   fputs("SHELL=/bin/sh\n", fp);
-  fprintf(fp,"PACKAGE_VERSION=\"%d\"\n",dist->vernumber);
+  fprintf(fp,"PACKAGE_VERSION=\"%s\"\n",dist->fulver);
   fputs("case \"`uname`\" in\n", fp);
   fputs("\tDarwin*)\n", fp);
   fputs("\tcase \"`id -un`\" in\n", fp);
@@ -1440,10 +1454,10 @@ write_distfiles(const char *directory,	/* I - Directory */
 		filename[1024];		/* Name of temporary file */
   struct stat	srcstat;		/* Source file information */
   file_t	*file;			/* Software file */
-  int		rootsize,		/* Size of files in root partition */
-		usrsize;		/* Size of files in /us1 partition */
-  int		prootsize,		/* Size of patch files in root partition */
-		pusrsize;		/* Size of patch files in /us1 partition */
+  int		rootsize=0,		/* Size of files in root partition */
+		usrsize=0;		/* Size of files in /usr partition */
+  int		prootsize=0,		/* Size of patch files in root partition */
+		pusrsize=0;		/* Size of patch files in /usr partition */
 
 
  /*
@@ -1474,7 +1488,12 @@ write_distfiles(const char *directory,	/* I - Directory */
 
   if (dist->license[0])
   {
-    snprintf(filename, sizeof(filename), "%s/%s.license", directory, prodfull);
+    if (CustomLic)
+    {
+      snprintf(filename, sizeof(filename), "%s/%s", directory, STATIC_LIC);
+    } else {
+      snprintf(filename, sizeof(filename), "%s/%s.license", directory, prodfull);
+    }
     if (copy_file(filename, dist->license, 0444, getuid(), getgid()))
       return (1);
   }
@@ -1507,7 +1526,8 @@ write_distfiles(const char *directory,	/* I - Directory */
   for (i = dist->num_files, file = dist->files, rootsize = 0, prootsize = 0;
        i > 0;
        i --, file ++)
-    if (strncmp(file->dst, "/us1", 4) != 0 && file->subpackage == subpackage)
+//    if (strncmp(file->dst, "/usr", 4) != 0 && file->subpackage == subpackage)
+    if (file->subpackage == subpackage)
       switch (tolower(file->type))
       {
 	case 'f' : /* Regular file */
@@ -1534,7 +1554,7 @@ write_distfiles(const char *directory,	/* I - Directory */
 	    */
 
 	    if (tolower(file->type) == 'c')
-	      snprintf(filename, sizeof(filename), "%s/conf%s.N", SoftwareDir,
+	      snprintf(filename, sizeof(filename), "%s/conf/%s.N", SoftwareDir,
 	               file->dst);
 	    else if (tolower(file->type) == 'i')
 	      snprintf(filename, sizeof(filename), "%s/init.d/%s", SoftwareDir,
@@ -1600,7 +1620,7 @@ write_distfiles(const char *directory,	/* I - Directory */
   * Create the shared software distribution file...
   */
 
-  if (Verbosity)
+/*  if (Verbosity)
     puts("Creating shared software distribution file...");
 
   snprintf(swname, sizeof(swname), "%s.ss", prodfull);
@@ -1617,13 +1637,13 @@ write_distfiles(const char *directory,	/* I - Directory */
   for (i = dist->num_files, file = dist->files, usrsize = 0, pusrsize = 0;
        i > 0;
        i --, file ++)
-    if (strncmp(file->dst, "/us1", 4) == 0 && file->subpackage == subpackage)
+    if (strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
       switch (tolower(file->type))
       {
-	case 'f' : /* Regular file */
-	case 'c' : /* Config file */
-	case 'i' : /* Init script */
-            if (stat(file->src, &srcstat))
+//	case 'f' : /* Regular file */
+//	case 'c' : /* Config file */
+//	case 'i' : /* Init script */
+/*            if (stat(file->src, &srcstat))
 	    {
 	      fprintf(stderr, "epm: Cannot stat %s - %s\n", file->src,
 	              strerror(errno));
@@ -1643,7 +1663,7 @@ write_distfiles(const char *directory,	/* I - Directory */
 	    * file location...
 	    */
 
-	    if (tolower(file->type) == 'c')
+/*	    if (tolower(file->type) == 'c')
 	      snprintf(filename, sizeof(filename), "%s.N", file->dst);
 	    else if (tolower(file->type) == 'i')
 	      snprintf(filename, sizeof(filename), "%s/init.d/%s", SoftwareDir,
@@ -1673,8 +1693,8 @@ write_distfiles(const char *directory,	/* I - Directory */
 	    }
 	    break;
 
-	case 'd' : /* Create directory */
-            if (Verbosity > 1)
+//	case 'd' : /* Create directory */
+/*            if (Verbosity > 1)
 	      printf("%s...\n", file->dst);
 
 	    usrsize ++;
@@ -1683,8 +1703,8 @@ write_distfiles(const char *directory,	/* I - Directory */
               pusrsize ++;
 	    break;
 
-	case 'l' : /* Link file */
-            if (Verbosity > 1)
+//	case 'l' : /* Link file */
+/*            if (Verbosity > 1)
 	      printf("%s -> %s...\n", file->src, file->dst);
 
 	    if (tar_header(tarfile, TAR_SYMLINK, file->mode, 0, deftime,
@@ -1704,7 +1724,7 @@ write_distfiles(const char *directory,	/* I - Directory */
       }
 
   tar_close(tarfile);
-
+*/
  /*
   * Create the patch distribution files...
   */
@@ -1726,7 +1746,7 @@ write_distfiles(const char *directory,	/* I - Directory */
     }
 
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-      if (strncmp(file->dst, "/us1", 4) != 0 && file->subpackage == subpackage)
+      if (strncmp(file->dst, "/usr", 4) != 0 && file->subpackage == subpackage)
 	switch (file->type)
 	{
 	  case 'C' : /* Config file */
@@ -1814,7 +1834,7 @@ write_distfiles(const char *directory,	/* I - Directory */
     }
 
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-      if (strncmp(file->dst, "/us1", 4) == 0 && file->subpackage == subpackage)
+      if (strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
 	switch (file->type)
 	{
 	  case 'C' : /* Config file */
@@ -1918,7 +1938,7 @@ static int				/* O - -1 on error, 0 on success */
 write_install(dist_t     *dist,		/* I - Software distribution */
               const char *prodname,	/* I - Product name */
               int        rootsize,	/* I - Size of root files in kbytes */
-	      int        usrsize,	/* I - Size of /us1 files in kbytes */
+	      int        usrsize,	/* I - Size of /usr files in kbytes */
 	      const char *directory,	/* I - Directory */
 	      const char *subpackage)	/* I - Subpackage */
 {
@@ -1963,7 +1983,6 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   if (subpackage)
   {
     char	line[1024],			/* Line buffer */
-		*start,				/* Start of line */
 		*ptr;				/* Pointer into line */
     for (i = 0; i < dist->num_descriptions; i ++)
       if (dist->descriptions[i].subpackage == subpackage)
@@ -1988,10 +2007,10 @@ write_install(dist_t     *dist,		/* I - Software distribution */
           dist->version);
   fputs("	echo \"\"\n", scriptfile);
   fputs("	while true ; do\n", scriptfile);
-  fputs("		echo $ac_n \"Do you wish to continue? $ac_c\"\n", scriptfile);
+  fputs("		echo $ac_n \"Do you wish to continue? [Yes] $ac_c\"\n", scriptfile);
   fputs("		read yesno\n", scriptfile);
   fputs("		case \"$yesno\" in\n", scriptfile);
-  fputs("			y | yes | Y | Yes | YES)\n", scriptfile);
+  fputs("			y | yes | Y | Yes | YES | \"\")\n", scriptfile);
   fputs("			break\n", scriptfile);
   fputs("			;;\n", scriptfile);
   fputs("			n | no | N | No | NO)\n", scriptfile);
@@ -2005,9 +2024,14 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
 //  if (dist->license[0])
 //  {
-    fputs("	test -f LICENSE && more LICENSE\n", scriptfile);
+    if (CustomLic)
+    {
+      fprintf(scriptfile,"	test -f %s && more %s && USER_MUST_AGREE=1\n", STATIC_LIC, STATIC_LIC);
+    } else {
+      fprintf(scriptfile,"	test -f %s.license && more %s.license && USER_MUST_AGREE=1\n", prodfull, prodfull);
+    }
     fputs("	echo \"\"\n", scriptfile);
-    fputs("	while true ; do\n", scriptfile);
+    fputs("	while test $USER_MUST_AGREE; do\n", scriptfile);
     fputs("		echo $ac_n \"Do you agree with the terms of this license? $ac_c\"\n", scriptfile);
     fputs("		read yesno\n", scriptfile);
     fputs("		case \"$yesno\" in\n", scriptfile);
@@ -2042,7 +2066,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
-        strncmp(file->dst, "/us1", 4) != 0 && file->subpackage == subpackage)
+        strncmp(file->dst, "/usr", 4) != 0 && file->subpackage == subpackage)
       break;
 
   if (i)
@@ -2052,7 +2076,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     col = fputs("for file in", scriptfile);
     for (; i > 0; i --, file ++)
       if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
-          strncmp(file->dst, "/us1", 4) != 0 && file->subpackage == subpackage)
+          strncmp(file->dst, "/usr", 4) != 0 && file->subpackage == subpackage)
       {
         if (col > 80)
 	  col = qprintf(scriptfile, " \\\n%s", file->dst) - 2;
@@ -2069,7 +2093,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
-        strncmp(file->dst, "/us1", 4) == 0 && file->subpackage == subpackage)
+        strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
       break;
 
   if (i)
@@ -2080,7 +2104,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     col = fputs("	for file in", scriptfile);
     for (; i > 0; i --, file ++)
       if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
-          strncmp(file->dst, "/us1", 4) == 0 && file->subpackage == subpackage)
+          strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
       {
         if (col > 80)
 	  col = qprintf(scriptfile, " \\\n%s", file->dst) - 2;
@@ -2117,6 +2141,11 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	fputs("		exit 1\n", scriptfile);
 	fputs("	fi\n", scriptfile);
 	fputs("fi\n", scriptfile);
+//placeholder
+	qprintf(scriptfile, "if test -d %s; then\n", file->dst);
+	qprintf(scriptfile, "	mkdir -p %s/possessed%s\n", SoftwareDir, file->dst);
+	qprintf(scriptfile, "	echo \"Placeholder. Do not remove.\" > %s/possessed%s/%s.placeholder\n", SoftwareDir, file->dst, prodfull);
+	fputs("fi\n", scriptfile);
 	qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
 	qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
 	qprintf(scriptfile, "chmod %o %s\n", file->mode, file->dst);
@@ -2135,7 +2164,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   if (usrsize)
   {
-    fputs("if echo Write Test >/us1/.writetest 2>/dev/null; then\n", scriptfile);
+    fputs("if echo Write Test >/usr/.writetest 2>/dev/null; then\n", scriptfile);
     if (CompressFiles)
       fprintf(scriptfile, "	gzip -dc %s.ss | $ac_tar -\n", prodfull);
     else
@@ -2171,40 +2200,53 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
     fputs("; do\n", scriptfile);
     fputs("	if test ! -f \"$file\"; then\n", scriptfile);
-    qprintf(scriptfile, "		cp \"%s/conf/$file.N\" \"$file\"\n", SoftwareDir);
-    fputs("	fi\n", scriptfile);
+//create dir for conf file
+    fputs("\t\tif test ! -d `dirname \"$file\"` -a ! -f `dirname \"$file\"` -a ! -h `dirname \"$file\"`; then\n", scriptfile);
+    fputs("\t\t\tmkdir -p `dirname \"$file\"`\n", scriptfile);
+    fputs("\t\telse\n", scriptfile);
+    fputs("\t\t\tif test -f `dirname \"$file\"`; then\n", scriptfile);
+    fputs("\t\t\t\techo Error: `dirname \"$file\"` already exists as a regular file!\n", scriptfile);
+    fputs("\t\t\t\texit 1\n", scriptfile);
+    fputs("\t\t\tfi\n", scriptfile);
+    fputs("\t\tfi\n", scriptfile);
+    qprintf(scriptfile, "\t\tcp \"%s/conf/$file.N\" \"$file\"\n", SoftwareDir);
+    fputs("\tfi\n", scriptfile);
     fputs("done\n", scriptfile);
   }
 
   fputs("echo Updating file permissions...\n", scriptfile);
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (strncmp(file->dst, "/us1", 4) != 0 &&
+    if (strncmp(file->dst, "/usr", 4) != 0 &&
         strcmp(file->user, "root") != 0 && file->subpackage == subpackage)
       switch (tolower(file->type))
       {
 	case 'c' :
-	    qprintf(scriptfile, "chown %s %s/conf%s.N\n", file->user, SoftwareDir, file->dst);
-	    qprintf(scriptfile, "chgrp %s %s/conf%s.N\n", file->group, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "chown %s %s/conf/%s.N\n", file->user, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "chgrp %s %s/conf/%s.N\n", file->group, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "chmod %o %s/conf/%s.N\n", file->mode, SoftwareDir, file->dst);
 	case 'f' :
 	    qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
+	    qprintf(scriptfile, "chmod %o %s\n", file->mode, file->dst);
 	    break;
       }
 
   fputs("if test -f /usr/.writetest; then\n", scriptfile);
   fputs("	rm -f /usr/.writetest\n", scriptfile);
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (strncmp(file->dst, "/us1", 4) == 0 &&
+    if (strncmp(file->dst, "/usr", 4) == 0 &&
         strcmp(file->user, "root") != 0 && file->subpackage == subpackage)
       switch (tolower(file->type))
       {
 	case 'c' :
-	    qprintf(scriptfile, "	chown %s %s/conf%s.N\n", file->user, SoftwareDir, file->dst);
-	    qprintf(scriptfile, "	chgrp %s %s/conf%s.N\n", file->group, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "	chown %s %s/conf/%s.N\n", file->user, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "	chgrp %s %s/conf/%s.N\n", file->group, SoftwareDir, file->dst);
+	    qprintf(scriptfile, "	chmod %o %s/conf/%s.N\n", file->mode, SoftwareDir, file->dst);
 	case 'f' :
 	    qprintf(scriptfile, "	chown %s %s\n", file->user, file->dst);
 	    qprintf(scriptfile, "	chgrp %s %s\n", file->group, file->dst);
+	    qprintf(scriptfile, "	chmod %o %s\n", file->mode, file->dst);
 	    break;
       }
   fputs("fi\n", scriptfile);
@@ -2229,15 +2271,15 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
     fputs("if test \"$rcdir\" = \"\" ; then\n", scriptfile);
-    fputs("	if test -d /us1/local/etc/rc.d; then\n", scriptfile);
+    fputs("	if test -d /usr/local/etc/rc.d; then\n", scriptfile);
     fputs("		for file in", scriptfile);
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
         qprintf(scriptfile, " %s", file->dst);
     fputs("; do\n", scriptfile);
-    fputs("			rm -f /us1/local/etc/rc.d/$file.sh\n", scriptfile);
+    fputs("			rm -f /usr/local/etc/rc.d/$file.sh\n", scriptfile);
     qprintf(scriptfile, "			ln -s %s/init.d/$file "
-                        "/us1/local/etc/rc.d/$file.sh\n",
+                        "/usr/local/etc/rc.d/$file.sh\n",
             SoftwareDir);
     fputs("		done\n", scriptfile);
     fputs("	else\n", scriptfile);
@@ -2259,6 +2301,9 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	fputs("		fi\n", scriptfile);
 	fputs("	fi\n", scriptfile);
 
+	fputs("	if test -x /sbin/chkconfig; then\n", scriptfile);
+	qprintf(scriptfile, "		/sbin/chkconfig --add %s >/dev/null\n", file->dst);
+	fputs("	else\n", scriptfile);
 	for (runlevels = get_runlevels(dist->files + i, "0235");
              isdigit(*runlevels & 255);
 	     runlevels ++)
@@ -2268,15 +2313,16 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	  else
 	    number = get_start(file, 99);
 
-          fprintf(scriptfile, "	if test -d $rcdir/rc%c.d; then\n", *runlevels);
-	  qprintf(scriptfile, "		/bin/rm -f $rcdir/rc%c.d/%c%02d%s\n",
+          fprintf(scriptfile, "		if test -d $rcdir/rc%c.d; then\n", *runlevels);
+	  qprintf(scriptfile, "			/bin/rm -f $rcdir/rc%c.d/%c%02d%s\n",
 	          *runlevels, *runlevels == '0' ? 'K' : 'S', number, file->dst);
-	  qprintf(scriptfile, "		/bin/ln -s %s/init.d/%s "
+	  qprintf(scriptfile, "			/bin/ln -s %s/init.d/%s "
                               "$rcdir/rc%c.d/%c%02d%s\n",
                   SoftwareDir, file->dst, *runlevels,
 		  *runlevels == '0' ? 'K' : 'S', number, file->dst);
-	  fputs("	fi\n", scriptfile);
+	  fputs("		fi\n", scriptfile);
         }
+	fputs("	fi\n", scriptfile);
 	// Gentoo runlevels
         fputs("	if test -d $rcdir/runlevels/default; then\n", scriptfile);
 	qprintf(scriptfile, "		/bin/rm -f $rcdir/runlevels/default/%s\n", file->dst);
@@ -2300,7 +2346,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      qprintf(scriptfile, "%s/init.d/%s start\n", SoftwareDir, file->dst);
+      qprintf(scriptfile, "%s/init.d/%s start || true\n", SoftwareDir, file->dst);
 
   fputs("echo Installation is complete.\n", scriptfile);
 
@@ -2337,9 +2383,16 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
 
   for (i = 0; files[i] != NULL; i ++)
   {
-    snprintf(srcname, sizeof(srcname), "%s/%s.%s", directory, prodfull, files[i]);
-    snprintf(dstname, sizeof(dstname), "%s%s.%s", destdir, prodfull, files[i]);
 
+    if ((CustomLic) && (i==1) && (!isLic))
+    {
+      snprintf(srcname, sizeof(srcname), "%s/%s", directory, STATIC_LIC);
+      snprintf(dstname, sizeof(dstname), "%s%s", destdir, STATIC_LIC);
+      isLic = 1;
+    } else {
+      snprintf(srcname, sizeof(srcname), "%s/%s.%s", directory, prodfull, files[i]);
+      snprintf(dstname, sizeof(dstname), "%s%s.%s", destdir, prodfull, files[i]);
+    }
     if (stat(srcname, &srcstat))
     {
       if (!i)
@@ -2367,9 +2420,16 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
       return (-1);
     }
 
-    if (Verbosity)
-      printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,
+    if (Verbosity) {
+      if ((CustomLic) && (i==1))
+      {
+        printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0,
+	     STATIC_LIC);
+      } else {
+        printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,
 	     prodfull, files[i]);
+      }
+    }
   }
 
   return (0);
@@ -2384,7 +2444,7 @@ static int				/* O - -1 on error, 0 on success */
 write_patch(dist_t     *dist,		/* I - Software distribution */
             const char *prodname,	/* I - Product name */
             int        rootsize,	/* I - Size of root files in kbytes */
-	    int        usrsize,		/* I - Size of /us1 files in kbytes */
+	    int        usrsize,		/* I - Size of /usr files in kbytes */
 	    const char *directory,	/* I - Directory */
 	    const char *subpackage)	/* I - Subpackage */
 {
@@ -2476,7 +2536,7 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      qprintf(scriptfile, "%s/init.d/%s stop\n", SoftwareDir, file->dst);
+      qprintf(scriptfile, "%s/init.d/%s stop || true\n", SoftwareDir, file->dst);
 
   write_commands(dist, scriptfile, COMMAND_PRE_PATCH, subpackage);
 
@@ -2519,7 +2579,7 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
 
   if (usrsize)
   {
-    fputs("if echo Write Test >/us1/.writetest 2>/dev/null; then\n", scriptfile);
+    fputs("if echo Write Test >/usr/.writetest 2>/dev/null; then\n", scriptfile);
     if (CompressFiles)
       fprintf(scriptfile, "	gzip -dc %s.pss | $ac_tar -\n", prodfull);
     else
@@ -2534,7 +2594,7 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
   fputs("echo Updating file permissions...\n", scriptfile);
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (strncmp(file->dst, "/us1", 4) != 0 &&
+    if (strncmp(file->dst, "/usr", 4) != 0 &&
         strcmp(file->user, "root") != 0 && file->subpackage == subpackage)
       switch (file->type)
       {
@@ -2548,7 +2608,7 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
   fputs("if test -f /usr/.writetest; then\n", scriptfile);
   fputs("	rm -f /usr/.writetest\n", scriptfile);
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (strncmp(file->dst, "/us1", 4) == 0 &&
+    if (strncmp(file->dst, "/usr", 4) == 0 &&
         strcmp(file->user, "root") != 0 && file->subpackage == subpackage)
       switch (file->type)
       {
@@ -2621,15 +2681,15 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
     fputs("if test \"$rcdir\" = \"\" ; then\n", scriptfile);
-    fputs("	if test -d /us1/local/etc/rc.d; then\n", scriptfile);
+    fputs("	if test -d /usr/local/etc/rc.d; then\n", scriptfile);
     fputs("		for file in", scriptfile);
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'I' && file->subpackage == subpackage)
         qprintf(scriptfile, " %s", file->dst);
     fputs("; do\n", scriptfile);
-    fputs("			rm -f /us1/local/etc/rc.d/$file.sh\n", scriptfile);
+    fputs("			rm -f /usr/local/etc/rc.d/$file.sh\n", scriptfile);
     qprintf(scriptfile, "			ln -s %s/init.d/$file "
-                        "/us1/local/etc/rc.d/$file.sh\n",
+                        "/usr/local/etc/rc.d/$file.sh\n",
             SoftwareDir);
     fputs("		done\n", scriptfile);
     fputs("	else\n", scriptfile);
@@ -2702,7 +2762,7 @@ static int				/* O - -1 on error, 0 on success */
 write_remove(dist_t     *dist,		/* I - Software distribution */
              const char *prodname,	/* I - Product name */
              int        rootsize,	/* I - Size of root files in kbytes */
-	     int        usrsize,	/* I - Size of /us1 files in kbytes */
+	     int        usrsize,	/* I - Size of /usr files in kbytes */
 	     const char *directory,	/* I - Directory */
 	     const char *subpackage)	/* I - Subpackage */
 {
@@ -2752,7 +2812,6 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   if (subpackage)
   {
     char	line[1024],			/* Line buffer */
-		*start,				/* Start of line */
 		*ptr;				/* Pointer into line */
     for (i = 0; i < dist->num_descriptions; i ++)
       if (dist->descriptions[i].subpackage == subpackage)
@@ -2777,10 +2836,10 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
            dist->version);
   fputs("	echo \"\"\n", scriptfile);
   fputs("	while true ; do\n", scriptfile);
-  fputs("		echo $ac_n \"Do you wish to continue? $ac_c\"\n", scriptfile);
+  fputs("		echo $ac_n \"Do you wish to continue? [Yes] $ac_c\"\n", scriptfile);
   fputs("		read yesno\n", scriptfile);
   fputs("		case \"$yesno\" in\n", scriptfile);
-  fputs("			y | yes | Y | Yes | YES)\n", scriptfile);
+  fputs("			y | yes | Y | Yes | YES | \"\")\n", scriptfile);
   fputs("			break\n", scriptfile);
   fputs("			;;\n", scriptfile);
   fputs("			n | no | N | No | NO)\n", scriptfile);
@@ -2801,7 +2860,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      qprintf(scriptfile, "%s/init.d/%s stop\n", SoftwareDir, file->dst);
+      qprintf(scriptfile, "%s/init.d/%s stop || true\n", SoftwareDir, file->dst);
 
   write_commands(dist, scriptfile, COMMAND_PRE_REMOVE, subpackage);
 
@@ -2825,13 +2884,13 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
     fputs("if test \"$rcdir\" = \"\" ; then\n", scriptfile);
-    fputs("	if test -d /us1/local/etc/rc.d; then\n", scriptfile);
+    fputs("	if test -d /usr/local/etc/rc.d; then\n", scriptfile);
     fputs("		for file in", scriptfile);
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
         qprintf(scriptfile, " %s", file->dst);
     fputs("; do\n", scriptfile);
-    fputs("			rm -f /us1/local/etc/rc.d/$file.sh\n", scriptfile);
+    fputs("			rm -f /usr/local/etc/rc.d/$file.sh\n", scriptfile);
     fputs("		done\n", scriptfile);
     fputs("	else\n", scriptfile);
     fputs("		echo Unable to determine location of startup scripts!\n", scriptfile);
@@ -2842,14 +2901,9 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       {
         // qprintf(scriptfile, "	%s/init.d/%s stop\n", SoftwareDir, file->dst); // double job?
 
-	fputs("	if test -d $rcdir/init.d; then\n", scriptfile);
-	qprintf(scriptfile, "		/bin/rm -f $rcdir/init.d/%s\n", file->dst);
+	fputs("	if test -x /sbin/chkconfig; then\n", scriptfile);
+	qprintf(scriptfile, "		/sbin/chkconfig --del %s >/dev/null\n", file->dst);
 	fputs("	else\n", scriptfile);
-	fputs("		if test -d /etc/init.d; then\n", scriptfile);
-	qprintf(scriptfile, "			/bin/rm -f /etc/init.d/%s\n", file->dst);
-	fputs("		fi\n", scriptfile);
-	fputs("	fi\n", scriptfile);
-
 	for (runlevels = get_runlevels(dist->files + i, "0235");
              isdigit(*runlevels & 255);
 	     runlevels ++)
@@ -2859,15 +2913,24 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 	  else
 	    number = get_start(file, 99);
 
-          fprintf(scriptfile, "	if test -d $rcdir/rc%c.d; then\n", *runlevels);
-	  qprintf(scriptfile, "		/bin/rm -f $rcdir/rc%c.d/%c%02d%s\n",
+          fprintf(scriptfile, "		if test -d $rcdir/rc%c.d; then\n", *runlevels);
+	  qprintf(scriptfile, "			/bin/rm -f $rcdir/rc%c.d/%c%02d%s\n",
 	          *runlevels, *runlevels == '0' ? 'K' : 'S', number, file->dst);
-	  fputs("	fi\n", scriptfile);
+	  fputs("		fi\n", scriptfile);
         }
+	fputs("	fi\n", scriptfile);
+	fputs("	if test -d $rcdir/init.d; then\n", scriptfile);
+	qprintf(scriptfile, "		/bin/rm -f $rcdir/init.d/%s\n", file->dst);
+	fputs("	else\n", scriptfile);
+	fputs("		if test -d /etc/init.d; then\n", scriptfile);
+	qprintf(scriptfile, "			/bin/rm -f /etc/init.d/%s\n", file->dst);
+	fputs("		fi\n", scriptfile);
 	// Gentoo runlevels
+	fputs("	fi\n", scriptfile);
         fputs("	if test -d $rcdir/runlevels/default; then\n", scriptfile);
 	qprintf(scriptfile, "		/bin/rm -f $rcdir/runlevels/default/%s\n", file->dst);
 	fputs("	fi\n", scriptfile);
+	
 
 #ifdef __sgi
         fputs("	if test -x /etc/chkconfig; then\n", scriptfile);
@@ -2883,7 +2946,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
-        strncmp(file->dst, "/us1", 4) != 0 && file->subpackage == subpackage)
+        strncmp(file->dst, "/usr", 4) != 0 && file->subpackage == subpackage)
       break;
 
   if (i)
@@ -2891,7 +2954,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     col = fputs("for file in", scriptfile);
     for (; i > 0; i --, file ++)
       if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
-          strncmp(file->dst, "/us1", 4) != 0 && file->subpackage == subpackage)
+          strncmp(file->dst, "/usr", 4) != 0 && file->subpackage == subpackage)
       {
         if (col > 80)
 	  col = qprintf(scriptfile, " \\\n%s", file->dst) - 2;
@@ -2909,7 +2972,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
-        strncmp(file->dst, "/us1", 4) == 0 && file->subpackage == subpackage)
+        strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
       break;
 
   if (i)
@@ -2918,7 +2981,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     col = fputs("	for file in", scriptfile);
     for (; i > 0; i --, file ++)
       if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
-          strncmp(file->dst, "/us1", 4) == 0 && file->subpackage == subpackage)
+          strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
       {
         if (col > 80)
 	  col = qprintf(scriptfile, " \\\n%s", file->dst) - 2;
@@ -2996,7 +3059,9 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       if (tolower(file->type) == 'd' && file->subpackage == subpackage)
       {
 	qprintf(scriptfile, "if test -d %s; then\n", file->dst);
-	qprintf(scriptfile, "	rmdir %s >/dev/null 2>&1 && true\n", file->dst);
+//placeholder
+	qprintf(scriptfile, "	rm -f \"%s/possessed%s%s.placeholder\"\n", SoftwareDir, file->dst, prodfull);
+	qprintf(scriptfile, "	rmdir %s/possessed%s 2>/dev/null && rmdir %s 2>/dev/null || true\n", SoftwareDir, file->dst, file->dst);
 	fputs("fi\n", scriptfile);
       }
   }
@@ -3004,7 +3069,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   write_commands(dist, scriptfile, COMMAND_POST_REMOVE, subpackage);
 
   fprintf(scriptfile, "rm -f %s/%s.remove\n", SoftwareDir, prodfull);
-  fprintf(scriptfile, "( find %s/../ -type d | sort -r | xargs rmdir -p 2> /dev/null ) && true\n", SoftwareDir);
+  fprintf(scriptfile, "( find %s/../ -type d | sort -r | xargs rmdir -p 2> /dev/null ) || true\n", SoftwareDir);
 
   fputs("echo Removal is complete.\n", scriptfile);
 
@@ -3022,9 +3087,9 @@ static int				/* O - 0 on success, -1 on error */
 write_space_checks(const char *prodname,/* I - Distribution name */
                    FILE       *fp,	/* I - File to write to */
                    const char *sw,	/* I - / archive */
-		   const char *ss,	/* I - /us1 archive */
+		   const char *ss,	/* I - /usr archive */
 		   int        rootsize,	/* I - / install size in kbytes */
-		   int        usrsize)	/* I - /us1 install size in kbytes */
+		   int        usrsize)	/* I - /usr install size in kbytes */
 {
   fputs("case `uname` in\n", fp);
   fputs("	AIX)\n", fp);
@@ -3106,5 +3171,5 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 
 
 /*
- * End of "$Id: portable.c,v 1.11.2.27 2009/06/17 09:56:58 bsavelev Exp $".
+ * End of "$Id: portable.c,v 1.11.2.55 2009/10/08 12:34:47 bsavelev Exp $".
  */

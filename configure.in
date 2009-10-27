@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: configure.in,v 1.1 2009/01/22 10:46:58 anikolov Exp $"
+dnl "$Id: configure.in,v 1.1.1.1.2.2 2009/10/09 16:01:14 bsavelev Exp $"
 dnl
 dnl   Configuration script for the ESP Package Manager (EPM).
 dnl
@@ -63,6 +63,7 @@ else
 fi)
 
 AC_ARG_ENABLE(gui, [  --enable-gui            turn on GUI utilities [[default=auto]]])
+AC_ARG_ENABLE(gui_cli, [  --enable-gui_cli        turn on CLI GUI utilities [[default=auto]]])
 
 AC_ARG_WITH(docdir, [  --with-docdir=/dir      set directory for documentation
                           [[default=${datadir}/doc/epm]]],
@@ -102,6 +103,7 @@ AC_PATH_PROG(RM,rm)
 AC_PATH_PROG(RPM,rpm)
 AC_PATH_PROG(RPMBUILD,rpmbuild)
 AC_PATH_PROG(STRIP,strip)
+AC_PATH_PROGS(OBJCOPY,objcopy gobjcopy)
 
 dnl Architecture checks...
 AC_C_CONST
@@ -158,10 +160,26 @@ else
 	fi
 fi
 
+
+if test "x$enable_gui_cli" != xno; then
+	AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+	if test "x$PKG_CONFIG" = "xno"; then
+    	    AC_MSG_WARN([You need to install pkg-config])
+	    NEWT_LIBS=-lnewt
+	else
+	    PKG_CHECK_MODULES(NEWT, libnewt)
+	fi
+	CLIGUIS="setup_cli"
+else
+	CLIGUIS=""
+fi
+
+AC_SUBST(NEWT_LIBS)
 AC_SUBST(INSTALL_GUIS)
 AC_SUBST(INSTALL_OSX)
 AC_SUBST(GUIS)
 AC_SUBST(GUILIBS)
+AC_SUBST(CLIGUIS)
 
 dnl Set the default compression value...
 case "$uname" in
@@ -349,6 +367,9 @@ AC_SUBST(EPM_GZIP)
 AC_DEFINE_UNQUOTED(EPM_STRIP, "$STRIP")
 AC_SUBST(EPM_STRIP)
 
+AC_DEFINE_UNQUOTED(EPM_OBJCOPY, "$OBJCOPY")
+AC_SUBST(EPM_OBJCOPY)
+
 AC_DEFINE_UNQUOTED(EPM_BINDIR, "$exec_prefix/bin")
 AC_SUBST(EPM_BINDIR)
 
@@ -389,5 +410,5 @@ dnl Output the makefile, list file, and config header...
 AC_OUTPUT(Makefile epm.list doc/Makefile)
 
 dnl
-dnl End of "$Id: configure.in,v 1.1 2009/01/22 10:46:58 anikolov Exp $".
+dnl End of "$Id: configure.in,v 1.1.1.1.2.2 2009/10/09 16:01:14 bsavelev Exp $".
 dnl

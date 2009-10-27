@@ -1,5 +1,5 @@
 /*
- * "$Id: dist.c,v 1.2.2.1 2009/06/04 15:55:15 bsavelev Exp $"
+ * "$Id: dist.c,v 1.2.2.7 2009/09/30 12:59:34 bsavelev Exp $"
  *
  *   Distribution functions for the ESP Package Manager (EPM).
  *
@@ -75,6 +75,7 @@ static char	*get_line(char *buffer, int size, FILE *fp,
 static char	*get_string(char **src, char *dst, size_t dstsize);
 static int	patmatch(const char *, const char *);
 static int	sort_subpackages(char **a, char **b);
+static int	subpackage_cmp(char *a, char *b);
 
 
 /*
@@ -88,6 +89,7 @@ static int	sort_subpackages(char **a, char **b);
 #define SKIP_IFSAT	16		/* Set if an #if statement has been satisfied */
 #define SKIP_MASK	7		/* Bits to look at */
 
+char		*CustomPlatform = NULL;
 
 /*
  * 'add_command()' - Add a command to the distribution...
@@ -980,6 +982,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	    }
 
             strlcpy(dist->version, temp, sizeof(dist->version));
+            sprintf(dist->fulver,"%s",format_vernumber(dist->version));
 	    if ((temp = strchr(dist->version, ' ')) != NULL)
 	    {
 	      *temp++ = '\0';
@@ -998,6 +1001,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	else if (!strcmp(line, "%release"))
 	{
 	  strlcpy(dist->release, temp, sizeof(dist->release));
+ 	  sprintf(dist->fulver,"%s-%s", format_vernumber(dist->version),dist->release);
 	  dist->vernumber += atoi(temp);
 	}
 	else if (!strcmp(line, "%incompat"))
@@ -1260,7 +1264,7 @@ sort_dist_files(dist_t *dist)		/* I - Distribution to sort */
           !strcmp(file[0].user, file[1].user) &&
 	  !strcmp(file[0].group, file[1].group) &&
 	  !strcmp(file[0].options, file[1].options) &&
-	  !sort_subpackages(file[0].subpackage, file[1].subpackage))
+	  !subpackage_cmp(file[0].subpackage, file[1].subpackage))
       {
        /*
         * Ignore exact duplicates...
@@ -1731,11 +1735,24 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 
       if (strcmp(buffer + 8, "all\n") != 0)
       {
-	namelen = strlen(platform->sysname);
+	if (CustomPlatform)
+	{
+	  ptr = CustomPlatform;
+	  bufptr = malloc(strlen(ptr) * sizeof(char));
+	  while( *ptr && *ptr++ != '-') *bufptr++ = *ptr;
+	  if (bufptr)
+	    namelen = strlen(bufptr);
+	  else
+	    namelen = strlen(CustomPlatform);
+	  snprintf(namever, sizeof(namever), "%s",CustomPlatform);
+	} else {
+	  namelen = strlen(platform->sysname);
+	  //snprintf(namever, sizeof(namever), "%s-%s", platform->sysname,
+	         //platform->release);
+	  snprintf(namever, sizeof(namever), "%s-%s-%s", platform->sysname,
+	         platform->release,platform->machine);
+	}
         bufptr  = buffer + 8;
-	snprintf(namever, sizeof(namever), "%s-%s", platform->sysname,
-	         platform->release);
-
 	while (isspace(*bufptr & 255))
 	  bufptr ++;
 
@@ -2308,26 +2325,31 @@ static int				/* O - Result of comparison */
 sort_subpackages(char **a,		/* I - First subpackage */
                  char **b)		/* I - Second subpackage */
 {
+  return (strcmp(*a, *b));
+}
+
+static int				/* O - Result of comparison */
+subpackage_cmp(	char *a,		/* I - First subpackage */
+			char *b)		/* I - Second subpackage */
+{
   size_t stLen1 = 0;
 
 //for main package where subpackage not defined
-   if (!a && !b )
-     return 0;
+   if (a || b)
+     return 1;
 
   if (a)
     stLen1 = strlen( a );
+	
 
   if (stLen1 && b) {
-     if (!strncasecmp(a, b, stLen1))
+    if(strncmp(a, b, stLen1));
        return 0;
   }
   return 1;
-
-//old variant
-//   return (strcmp(*a, *b));
 }
 
 
 /*
- * End of "$Id: dist.c,v 1.2.2.1 2009/06/04 15:55:15 bsavelev Exp $".
+ * End of "$Id: dist.c,v 1.2.2.7 2009/09/30 12:59:34 bsavelev Exp $".
  */

@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0107 
+version 1.0109 
 header_name {.h} 
 code_name {.cxx}
 Function {make_window()} {open
@@ -8,7 +8,7 @@ Function {make_window()} {open
     label Uninstall
     callback {if (CancelButton->active())
   exit(0);} open selected
-    xywh {479 257 640 310} type Double
+    xywh {87 295 640 310} type Double resizable
     code0 {\#include "gui-common.h"}
     code1 {\#include "uninst2.h"} visible
   } {
@@ -29,13 +29,13 @@ Function {make_window()} {open
       xywh {10 85 130 25} labelfont 1 align 20 deactivate
     }
     Fl_Wizard Wizard {open
-      xywh {150 10 480 255} box THIN_DOWN_BOX color 48
+      xywh {150 10 480 255} box THIN_DOWN_BOX color 48 resizable
     } {
       Fl_Group {Pane[0]} {open
         xywh {150 10 480 255} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Help_View ReadmeFile {
-          xywh {170 30 440 215}
+          xywh {170 30 440 215} resizable
         }
       }
       Fl_Group {Pane[1]} {open
@@ -48,7 +48,7 @@ Function {make_window()} {open
         Fl_Check_Browser SoftwareList {
           label { Installed Software:}
           callback list_cb
-          xywh {170 83 440 127} type Multi box DOWN_BOX selection_color 7 labelfont 1 align 5 when 3
+          xywh {170 83 440 127} type Multi box DOWN_BOX selection_color 7 labelfont 1 align 5 when 3 resizable
         }
         Fl_Box SoftwareSize {
           label {0k marked for removal.}
@@ -80,14 +80,14 @@ list_cb(0,0);}
         }
       }
       Fl_Group {Pane[3]} {open
-        xywh {150 10 480 255} labelfont 1 labelsize 18 labelcolor 4 align 21
+        xywh {150 10 480 255} labelfont 1 labelsize 18 labelcolor 4 align 21 resizable
       } {
         Fl_Progress RemovePercent {
           label {Progress Label...}
           xywh {170 45 440 15} color 48 selection_color 221 align 5
         }
         Fl_Browser RemoveLog {
-          xywh {170 70 440 175}
+          xywh {170 70 440 175} resizable
         }
       }
     }

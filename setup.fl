@@ -7,8 +7,8 @@ Function {make_window()} {open
   Fl_Window SetupWindow {
     label Install
     callback {if (CancelButton->active())
-  exit(0);} open selected
-    xywh {491 361 640 330} type Double resizable
+  exit(0);} open
+    xywh {31 301 675 330} type Double resizable
     code0 {\#include "gui-common.h"}
     code1 {\#include "setup2.h"} visible
   } {
@@ -36,18 +36,22 @@ Function {make_window()} {open
       label Installing
       xywh {10 135 130 25} labelfont 1 align 20 deactivate
     }
+    Fl_Box {Title[6]} {
+      label Finish
+      xywh {10 160 130 25} labelfont 1 align 20 deactivate
+    }
     Fl_Wizard Wizard {open
-      xywh {150 10 480 275} box THIN_DOWN_BOX color 48
+      xywh {140 10 530 285} box THIN_DOWN_BOX color 48
     } {
       Fl_Group {Pane[0]} {open
-        xywh {150 10 480 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+        xywh {145 10 515 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Help_View ReadmeFile {
-          xywh {170 30 440 235}
+          xywh {145 30 515 235}
         }
       }
       Fl_Group {Pane[1]} {open
-        xywh {150 10 480 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+        xywh {150 10 510 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Box {} {
           label {Select the installation type:}
@@ -91,7 +95,7 @@ Function {make_window()} {open
         }
       }
       Fl_Group {Pane[2]} {open
-        xywh {150 10 480 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+        xywh {150 10 510 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Box {} {
           label {Select the software you want to install:}
@@ -100,7 +104,7 @@ Function {make_window()} {open
         Fl_Check_Browser SoftwareList {
           label { Available Software:}
           callback list_cb
-          xywh {170 85 440 145} type Multi box DOWN_BOX selection_color 7 labelfont 1 align 5 when 3
+          xywh {155 85 505 145} type Multi box DOWN_BOX selection_color 7 labelfont 1 align 5 when 3
         }
         Fl_Box SoftwareSize {
           label {0k marked for installation.}
@@ -120,7 +124,7 @@ list_cb(0,0);}
         }
       }
       Fl_Group {Pane[3]} {open
-        xywh {150 10 480 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+        xywh {150 10 510 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Box {} {
           label {Confirm your software selections below:}
@@ -128,40 +132,53 @@ list_cb(0,0);}
         }
         Fl_Browser ConfirmList {
           label {Selected Software:}
-          xywh {170 85 440 180} labelfont 1 align 5
+          xywh {150 85 510 180} labelfont 1 align 5
         }
       }
       Fl_Group {Pane[4]} {open
-        xywh {150 10 480 275} labelfont 1 labelsize 18 labelcolor 4 align 21
+        xywh {140 10 528 273} labelfont 1 labelsize 18 labelcolor 4 align 21
       } {
         Fl_Help_View LicenseFile {
           label {License Agreement:}
-          xywh {163 48 455 192} labelfont 1 align 5 resizable
+          xywh {145 48 515 194} labelfont 1 align 133 resizable
         }
-        Fl_Group {} {open
-          xywh {170 240 400 35}
+        Fl_Group {} {open selected
+          xywh {145 240 481 35}
         } {
           Fl_Round_Button LicenseAccept {
-            label {Accept agreement and install}
+            label {Accept and install}
             callback {NextButton->activate();}
-            xywh {210 250 210 25} type Radio down_box ROUND_DOWN_BOX align 148
+            xywh {160 245 149 25} type Radio down_box ROUND_DOWN_BOX align 148
           }
           Fl_Round_Button LicenseDecline {
             label {Cancel installation}
             callback {NextButton->activate();}
-            xywh {430 250 140 25} type Radio down_box ROUND_DOWN_BOX
+            xywh {311 245 149 25} type Radio down_box ROUND_DOWN_BOX
           }
         }
+        Fl_Choice Language {
+          label {Language:}
+          callback change_lang open
+          xywh {570 246 89 20} down_box BORDER_BOX
+        } {}
       }
       Fl_Group {Pane[5]} {open
-        xywh {150 10 480 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+        xywh {150 10 510 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Progress InstallPercent {
           label {Progress Label...}
           xywh {170 47 440 15} color 48 selection_color 221 align 5
         }
         Fl_Browser InstallLog {
-          xywh {170 74 440 191}
+          xywh {150 74 510 191}
+        }
+      }
+      Fl_Group {Pane[6]} {open
+        xywh {145 20 525 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+      } {
+        Fl_Help_View PostinFile {
+          label {Congratulation:}
+          xywh {145 48 515 194} align 133 resizable
         }
       }
     }

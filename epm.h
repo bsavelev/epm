@@ -1,5 +1,5 @@
 /*
- * "$Id: epm.h,v 1.1.1.1.2.1 2009/06/04 15:55:15 bsavelev Exp $"
+ * "$Id: epm.h,v 1.1.1.1.2.7 2009/10/02 07:43:33 bsavelev Exp $"
  *
  *   Definitions for the ESP Package Manager (EPM).
  *
@@ -220,6 +220,7 @@ typedef struct				/**** Distribution Structure ****/
 		packager[256],		/* Packager name */
 		license[256],		/* License file to copy */
 		readme[256];		/* README file to copy */
+  char		fulver[256];		/* Full version */
   int		num_subpackages;	/* Number of subpackages */
   char		**subpackages;		/* Subpackage names */
   int		num_descriptions;	/* Number of description strings */
@@ -246,6 +247,10 @@ extern const char	*SetupProgram;	/* Setup program */
 extern const char	*SoftwareDir;	/* Software directory path */
 extern const char	*UninstProgram;	/* Uninstall program */
 extern int		Verbosity;	/* Be verbose? */
+extern int		DebugPackage;	/* 1 if we should create debug package */
+extern int		CustomLic;	/* 1 if we should use unified lic */
+extern char		*TempDir;
+extern char		*CustomPlatform;
 
 
 /*
@@ -271,6 +276,7 @@ extern const char *get_runlevels(file_t *file, const char *deflevels);
 extern int	get_start(file_t *file, int defstart);
 extern int	get_stop(file_t *file, int defstop);
 extern int	get_vernumber(const char *version);
+extern char*	format_vernumber(const char *version);
 extern int	make_aix(const char *prodname, const char *directory,
 		         const char *platname, dist_t *dist,
 			 struct utsname *platform);
@@ -346,5 +352,5 @@ extern int	write_dist(const char *listname, dist_t *dist);
 
 
 /*
- * End of "$Id: epm.h,v 1.1.1.1.2.1 2009/06/04 15:55:15 bsavelev Exp $".
+ * End of "$Id: epm.h,v 1.1.1.1.2.7 2009/10/02 07:43:33 bsavelev Exp $".
  */

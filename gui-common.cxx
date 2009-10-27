@@ -1,5 +1,5 @@
 //
-// "$Id: gui-common.cxx,v 1.2.2.1 2009/03/26 14:01:44 bsavelev Exp $"
+// "$Id: gui-common.cxx,v 1.2.2.2 2009/09/30 12:59:35 bsavelev Exp $"
 //
 //   ESP Software Wizard common functions for the ESP Package Manager (EPM).
 //
@@ -188,7 +188,7 @@ gui_get_installed(void)
 	  if (!strncmp(line, "#%product ", 10))
 	    strncpy(temp->name, line + 10, sizeof(temp->name) - 1);
 	  else if (!strncmp(line, "#%version ", 10))
-	    sscanf(line + 10, "%31s%d", temp->version, &(temp->vernumber));
+	    sscanf(line + 10, "%31s%s", temp->version, &(temp->fulver));
 	  else if (!strncmp(line, "#%rootsize ", 11))
 	    temp->rootsize = atoi(line + 11);
 	  else if (!strncmp(line, "#%usrsize ", 10))
@@ -357,5 +357,5 @@ gui_sort_dists(const gui_dist_t *d0,	// I - First distribution
 
 
 //
-// End of "$Id: gui-common.cxx,v 1.2.2.1 2009/03/26 14:01:44 bsavelev Exp $".
+// End of "$Id: gui-common.cxx,v 1.2.2.2 2009/09/30 12:59:35 bsavelev Exp $".
 //

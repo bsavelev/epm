@@ -1,5 +1,5 @@
 //
-// "$Id: setup2.cxx,v 1.15.2.6 2009/05/27 08:18:19 bsavelev Exp $"
+// "$Id: setup2.cxx,v 1.15.2.19 2009/10/16 12:24:14 bsavelev Exp $"
 //
 //   ESP Software Installation Wizard main entry for the ESP Package Manager (EPM).
 //
@@ -20,7 +20,6 @@
 //   main()         - Main entry for software wizard...
 //   get_dists()    - Get a list of available software products.
 //   install_dist() - Install a distribution...
-//   license_dist() - Show the license for a distribution...
 //   list_cb()      - Handle selections in the software list.
 //   load_image()   - Load the setup image file (setup.gif/xpm)...
 //   load_readme()  - Load the readme file...
@@ -89,7 +88,12 @@ AuthorizationRef SetupAuthorizationRef;
 #define PANE_CONFIRM	3
 #define PANE_LICENSE	4
 #define PANE_INSTALL	5
+#define PANE_POSTIN	6
 
+
+//LANG
+#define LANG_EN	0
+#define LANG_RU	1
 
 //
 // Define a C API function type for comparisons...
@@ -104,6 +108,9 @@ typedef int (*compare_func_t)(const void *, const void *);
 //
 
 int licaccept = 0;
+FILE    *fdfile = NULL;
+int skip_pane_select = 1;
+
 
 //
 // Local functions...
@@ -117,7 +124,6 @@ void	load_readme(void);
 void	load_types(void);
 void	log_cb(int fd, int *fdptr);
 void	update_sizes(void);
-
 
 //
 // 'main()' - Main entry for software wizard...
@@ -309,7 +315,7 @@ get_dists(const char *d)	// I - Directory to look in
 	if (strncmp(line, "#%product ", 10) == 0)
 	  strncpy(temp->name, line + 10, sizeof(temp->name) - 1);
 	else if (strncmp(line, "#%version ", 10) == 0)
-	  sscanf(line + 10, "%31s%d", temp->version, &(temp->vernumber));
+	  sscanf(line + 10, "%31s%s", temp->version, &(temp->fulver));
 	else if (strncmp(line, "#%rootsize ", 11) == 0)
 	  temp->rootsize = atoi(line + 11);
 	else if (strncmp(line, "#%usrsize ", 10) == 0)
@@ -409,12 +415,12 @@ get_dists(const char *d)	// I - Directory to look in
       strcat(line, " (new)");
       SoftwareList->add(line, 0);
     }
-    else if (installed->vernumber > temp->vernumber)
+    else if (strcmp(installed->fulver,temp->fulver) > 0)
     {
       strcat(line, " (downgrade)");
       SoftwareList->add(line, 0);
     }
-    else if (installed->vernumber == temp->vernumber)
+    else if (strcmp(installed->fulver,temp->fulver) == 0)
     {
       strcat(line, " (installed)");
       SoftwareList->add(line, 0);
@@ -445,8 +451,14 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
 #endif // !__APPLE__
 
 
+  fdfile = fopen("install.log", "a+");
   sprintf(command, "**** %s ****", dist->name);
   InstallLog->add(command);
+  if (fdfile)
+  {
+    fwrite( command, strlen(command), sizeof(char), fdfile );
+    fwrite( "\n", strlen("\n"), 1, fdfile );
+  }
 
 #ifdef __APPLE__
   // Run the install script using Apple's authorization API...
@@ -549,71 +561,10 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
   // Show the user that we're ready...
   SetupWindow->cursor(FL_CURSOR_DEFAULT);
 
+  if (fdfile)
+    fclose(fdfile);
   // Return...
   return (status);
-}
-
-
-//
-// 'license_dist()' - Show the license for a distribution...
-//
-
-int					// O - 0 if accepted, 1 if not
-license_dist()				// I - Distribution to license
-{
-  char		licfile[1024];		// License filename
-  struct stat	licinfo;		// License file info
-  static int	liclength = 0;		// Size of license file
-  static char	liclabel[1024];		// Label for license pane
-
-
-  // See if we need to show the license file...
-  sprintf(licfile, "LICENSE");
-  if (!stat(licfile, &licinfo) && licinfo.st_size != liclength)
-  {
-    // Save this license's length...
-    liclength = licinfo.st_size;
-
-    // Set the title string...
-    snprintf(liclabel, sizeof(liclabel), "Software License");
-    LicenseFile->label(liclabel);
-
-    // Load the license into the viewer...
-    LicenseFile->textfont(FL_HELVETICA);
-    LicenseFile->textsize(14);
-
-    gui_load_file(LicenseFile, licfile);
-
-    // Show the license window and wait for the user...
-    Pane[PANE_LICENSE]->show();
-    Title[PANE_LICENSE]->activate();
-    LicenseAccept->clear();
-    LicenseDecline->clear();
-    NextButton->deactivate();
-    CancelButton->activate();
-
-    while (Pane[PANE_LICENSE]->visible())
-      Fl::wait();
-
-    Title[PANE_INSTALL]->deactivate();
-
-    CancelButton->deactivate();
-    NextButton->deactivate();
-
-    if (LicenseDecline->value())
-    {
-      // Can't install without acceptance...
-      char	message[1024];		// Message for log
-
-
-      liclength = 0;
-      snprintf(message, sizeof(message), "License not accepted!");
-      InstallLog->add(message);
-      return (1);
-    }
-  }
-
-  return (0);
 }
 
 
@@ -624,13 +575,10 @@ license_dist()				// I - Distribution to license
 void
 list_cb(Fl_Check_Browser *, void *)
 {
-  int		i, j, k, m, l,n;
+  int		i, j, k;
   gui_dist_t	*dist,
-		*dist2,
-		*dist3,
-		*dist_tmp,
-		*dist_f;
-  gui_depend_t	*depend, *depend1;
+		*dist2;
+  gui_depend_t	*depend;
 
 
   if (SoftwareList->nchecked() == 0)
@@ -641,45 +589,34 @@ list_cb(Fl_Check_Browser *, void *)
     return;
   }
 
-  for (i = 0, dist = Dists; i < NumDists; i ++, dist ++)
-    if (SoftwareList->checked(i + 1))
-    {
-      // Check for required/incompatible products...
-      for (j = 0, depend = dist->depends; j < dist->num_depends; j ++, depend ++) {
-	//std::cout << "dist: " << dist->product << ". depend: " << depend->product << std::endl;
-        switch (depend->type)
-	{
-	  case DEPEND_REQUIRES :
+  int LoopExitFlag = 0;
+
+  while (LoopExitFlag != SoftwareList->nchecked())
+  {
+    LoopExitFlag = SoftwareList->nchecked();
+    for (i = 0, dist = Dists; i < NumDists; i ++, dist ++)
+      if (SoftwareList->checked(i + 1))
+        for (j = 0, depend = dist->depends; j < dist->num_depends; j ++, depend ++)
+        {
+          switch (depend->type)
+          {
+            case DEPEND_REQUIRES :
 	      if ((dist2 = gui_find_dist(depend->product, NumDists,
 	                                 Dists)) != NULL)
 	      {
   		// Software is in the list, is it selected?
-	        k = dist2 - Dists;
-
-		if (SoftwareList->checked(k + 1))
-		  continue;
-
-        	// Nope, select it unless we're unchecked another selection...
-		if (SoftwareList->value() != (k + 1))
+		k = dist2 - Dists;
+		// if item checked
+		if (SoftwareList->checked(SoftwareList->value())) {
+// 		  std::cout << "checked!" << std::endl;
+		  if (SoftwareList->checked(k + 1))
+		    continue;
 		  SoftwareList->checked(k + 1, 1);
-		else
-		{
-		  SoftwareList->checked(i + 1, 0);
-		  dist_tmp = dist;
-		  for (m=0; m<5; m ++) {
-			for (l=0, dist_f = Dists; l < NumDists; l ++, dist_f ++ ) {
-				for (n = 0, depend1 = dist_f->depends; n < dist_f->num_depends; n ++, depend1 ++) {
-					if (depend1 !=NULL) {
-						dist3 = gui_find_dist(depend1->product, NumDists, Dists);
-						if (dist_tmp == dist3) {
-							SoftwareList->checked(l + 1, 0);
-							dist_tmp = dist_f;
-						}
-					}
-				}
-			}
-		  }
-		  break;
+		} else {
+		  // uncheck item
+// 		  std::cout << "unchecked!" << std::endl;
+		  if ( ! SoftwareList->checked(k + 1))
+		    SoftwareList->checked(i + 1, 0);
 		}
 	      }
 	      else if ((dist2 = gui_find_dist(depend->product, NumInstalled,
@@ -689,11 +626,12 @@ list_cb(Fl_Check_Browser *, void *)
 		fl_alert("%s requires %s to be installed, but it is not available "
 	        	 "for installation.", dist->name, depend->product);
 		SoftwareList->checked(i + 1, 0);
+		skip_pane_select = 0;
 		break;
 	      }
 	      break;
 
-          case DEPEND_INCOMPAT :
+            case DEPEND_INCOMPAT :
 	      if ((dist2 = gui_find_dist(depend->product, NumInstalled,
 	                                 Installed)) != NULL)
 	      {
@@ -701,6 +639,7 @@ list_cb(Fl_Check_Browser *, void *)
 		fl_alert("%s is incompatible with %s. Please remove it before "
 	        	 "installing this software.", dist->name, dist2->name);
 		SoftwareList->checked(i + 1, 0);
+		skip_pane_select = 0;
 		break;
 	      }
 	      else if ((dist2 = gui_find_dist(depend->product, NumDists,
@@ -717,13 +656,14 @@ list_cb(Fl_Check_Browser *, void *)
 		fl_alert("%s is incompatible with %s. Please deselect it before "
 	        	 "installing this software.", dist->name, dist2->name);
 		SoftwareList->checked(i + 1, 0);
+		skip_pane_select = 0;
 		break;
 	      }
-	  default :
+            default :
 	      break;
-	}
-     }
-   }
+          }
+        }
+  }
 
   update_sizes();
 
@@ -902,6 +842,7 @@ load_types(void)
     Title[PANE_CONFIRM]->position(10, 60);
     Title[PANE_LICENSE]->position(10, 85);
     Title[PANE_INSTALL]->position(10, 110);
+    Title[PANE_POSTIN]->position(10, 135);
   }
 
   for (i = 0, dt = InstTypes; i < NumInstTypes; i ++, dt ++)
@@ -966,24 +907,14 @@ log_cb(int fd,			// I - Pipe to read from
     bufused += bytes;
     buffer[bufused] = '\0';
 
-    FILE    *fdfile = NULL;
-    size_t  stWr = 0;
     while ((bufptr = strchr(buffer, '\n')) != NULL)
     {
       *bufptr++ = '\0';
-	fdfile = fopen("install.log", "a+");
 	if (fdfile)
 	{
-		stWr = fwrite( buffer, strlen(buffer), sizeof(char), fdfile );
-//		if (!stWr)
-//			perror("fwrite");
- 		stWr = fwrite( "\n", strlen("\n"), 1, fdfile );
-//		if (!stWr)
-//			perror("fwrite");
-		fclose(fdfile);
+		fwrite( buffer, strlen(buffer), sizeof(char), fdfile );
+ 		fwrite( "\n", strlen("\n"), 1, fdfile );
 	}
-	else
-		perror("fopen");
 
       InstallLog->add(buffer);
       strcpy(buffer, bufptr);
@@ -994,18 +925,42 @@ log_cb(int fd,			// I - Pipe to read from
   InstallLog->bottomline(InstallLog->size());
 }
 
+void lockInstallAll() {
+int		j,k,m;
+gui_dist_t	*dist,*dist1;
+gui_depend_t	*depend;
+
+  InstallAllButton->deactivate();
+  for (j = 0, dist = Dists; j < NumDists; j ++, dist ++ )
+      for (k = 0, depend = dist->depends; k < dist->num_depends; k ++, depend ++ )
+        if ( depend != NULL)
+	  if (depend->type == DEPEND_INCOMPAT)
+	    for (m = 0, dist1 = Dists; m < NumDists; m ++, dist1 ++ )
+	    {
+	      if (strcmp(dist1->product,depend->product)) {
+//not equal
+		InstallAllButton->activate();
+	      } else {
+		InstallAllButton->deactivate();
+		return;
+	      }
+            }
+}
 
 void update_control(int from) {
-  int		i,j,k;			// Looping var
+  int		i;		// Looping var
   int		progress;		// Progress so far...
   int		error;			// Errors?
   static char	message[1024];		// Progress message...
   static char	install_type[1024];	// EPM_INSTALL_TYPE env variable
-  gui_dist_t	*dist;
-  gui_depend_t	*depend;
-
+	
   update_label();
 
+//open log
+  if (!fdfile) {
+    fdfile = fopen("install.log", "w+");
+    fclose(fdfile);
+  }
   if (Wizard->value() == Pane[PANE_WELCOME]) {
     PrevButton->deactivate();
     NextButton->activate();
@@ -1020,12 +975,7 @@ void update_control(int from) {
     CancelButton->activate();
   }
   if (Wizard->value() == Pane[PANE_SELECT]) {
-  for (j = 0, dist = Dists; j < NumDists; j ++, dist ++ )
-      for (k = 0, depend = dist->depends; k < dist->num_depends; k ++, depend ++ )
-        if ( depend != NULL)
-	  if (depend->type == DEPEND_INCOMPAT)
-	    InstallAllButton->deactivate();
-
+      lockInstallAll();
       NextButton->activate();
       CancelButton->activate();
       if (SoftwareList->nchecked() == 0)
@@ -1050,42 +1000,73 @@ void update_control(int from) {
 
       // Skip product selection if this type has a list already...
         if (InstTypes[i].num_products > 0  && from == 1)
-          Wizard->next();
+	{
+	//dont skip! may be conflicts. check depends with list_cb
+	  skip_pane_select = 1;
+	  list_cb(0,0);
+	  if ( skip_pane_select )
+            Wizard->next();
+	}
       }
   }
   if (Wizard->value() == Pane[PANE_LICENSE]) {
     //copy code from license_dist
-    char		licfile[1024];		// License filename
-    struct stat	licinfo;		// License file info
-    static char	liclabel[1024];		// Label for license pane
+    char		licfile_en[1024];		// License filename
+    char		licfile_ru[1024];		// License filename
+    struct stat		licinfo;		// License file info
+    static char		liclabel[1024];		// Label for license pane
+    int			has_licfile = 0;
     // See if we need to show the license file...
-    sprintf(licfile, "LICENSE");
+    sprintf(licfile_en, LIC_EN);
+    sprintf(licfile_ru, LIC_RU);
+    snprintf(liclabel, sizeof(liclabel), "Software License");
     CancelButton->label("Cancel");
-    CancelButton->activate();
+    CancelButton->deactivate();
     PrevButton->activate();
     NextButton->activate();
-    if (!stat(licfile, &licinfo))
-    {
+//hack
+    licaccept = 0;
       // Set the title string...
-      snprintf(liclabel, sizeof(liclabel), "Software License");
       LicenseFile->label(liclabel);
       // Load the license into the viewer...
       LicenseFile->textfont(FL_HELVETICA);
       LicenseFile->textsize(14);
-      gui_load_file(LicenseFile, licfile);
+    if (!stat(licfile_en, &licinfo))
+    {
+      //Lang control
+      Language->add("English");
+      Language->value(LANG_EN);
+      gui_load_file(LicenseFile, licfile_en);
+      has_licfile = 1;
+    }
+    if (!stat(licfile_ru, &licinfo))
+    {
+      //Lang control
+      Language->add("Russian");
+      if (!has_licfile)
+        gui_load_file(LicenseFile, licfile_ru);
+      has_licfile = 1;
+    }
+    if (has_licfile)
+    {
       // Show the license window and wait for the user...
       Pane[PANE_LICENSE]->show();
       Title[PANE_LICENSE]->activate();
-      LicenseAccept->set();
       NextButton->activate();
-      LicenseDecline->clear();
       CancelButton->activate();
+      if ( licaccept == 0 ) {
+        LicenseDecline->set();
+        LicenseAccept->clear();
+      } else {
+        LicenseDecline->clear();
+        LicenseAccept->set();
+      }
 
-       while (Pane[PANE_LICENSE]->visible())
-         Fl::wait();
-       Title[PANE_INSTALL]->deactivate();
-       CancelButton->deactivate();
-       NextButton->deactivate();
+      while (Pane[PANE_LICENSE]->visible())
+        Fl::wait();
+      Title[PANE_INSTALL]->deactivate();
+      CancelButton->deactivate();
+      NextButton->deactivate();
 
       if (LicenseDecline->value())
       {
@@ -1113,11 +1094,11 @@ void update_control(int from) {
       fl_beep();
       return;
     }
+//deactivate buttons due install progress
     NextButton->deactivate();
     PrevButton->deactivate();
     CancelButton->deactivate();
-    CancelButton->label("Close");
-    FILE    *fdfile = NULL;
+    CancelButton->label("Cancel");
     fdfile = fopen("install.log", "w+");
     if (fdfile)
 	fclose(fdfile);
@@ -1141,16 +1122,39 @@ void update_control(int from) {
 
     InstallPercent->value(100.0);
 
-    if (error)
+    if (error) {
       InstallPercent->label("Installation Failed!");
-    else
+      CancelButton->label("Close");
+      NextButton->deactivate();
+    } else {
       InstallPercent->label("Installation Complete");
-
+      NextButton->activate();
+    }
     Pane[PANE_INSTALL]->redraw();
 
-    CancelButton->activate();
+    CancelButton->deactivate();
 
     fl_beep();
+
+  }
+
+  if (Wizard->value() == Pane[PANE_POSTIN]) {
+    // Show the licenses for each of the selected software packages...
+    char		postin[1024];		// postin message filename
+    struct stat	postin_info;		// postin message file info
+    update_label();
+    NextButton->deactivate();
+    PrevButton->deactivate();
+    CancelButton->activate();
+    CancelButton->label("Close");
+    sprintf(postin, "POSTIN-MSG");
+    if (!stat(postin, &postin_info))
+    {
+      // Load the license into the viewer...
+      gui_load_file(PostinFile, postin);
+      PostinFile->textfont(FL_HELVETICA);
+      PostinFile->textsize(14);
+    }
 
   }
 
@@ -1172,13 +1176,13 @@ void update_control(int from) {
 void update_label() {
 int i;
 // update titles
-  for (i = 0; i < 6; i ++)
+  for (i = 0; i < 7; i ++)
   {
     Title[i]->activate();
     if (Pane[i]->visible())
       break;
   }
-  for (i ++; i < 6; i ++)
+  for (i ++; i < 7; i ++)
     Title[i]->deactivate();
 }
 
@@ -1227,7 +1231,7 @@ type_cb(Fl_Round_Button *w, void *)	// I - Radio button widget
   {
     if ((installed = gui_find_dist(temp->product, NumInstalled,
                                    Installed)) != NULL &&
-        installed->vernumber < temp->vernumber)
+        (strcmp(installed->fulver,temp->fulver) < 0))
       SoftwareList->checked(i + 1, 1);
   }
 
@@ -1301,38 +1305,57 @@ update_sizes(void)
 
     if (rootsize >= 1024)
       snprintf(sizelabel, sizeof(sizelabel),
-               "%+.1fm required, %dm available.", rootsize / 1024.0,
+               "%+.1fm required, %dMb available.", rootsize / 1024.0,
                rootfree);
     else
       snprintf(sizelabel, sizeof(sizelabel),
-               "%+dk required, %dm available.", rootsize, rootfree);
+               "%+dk required, %dMb available.", rootsize, rootfree);
   }
   else if (rootsize >= 1024 && usrsize >= 1024)
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+.1fm required on /, %dm available,\n"
-             "%+.1fm required on /usr, %dm available.",
+             "%+.1fm required on /, %dMb available,\n"
+             "%+.1fm required on /usr, %dMb available.",
              rootsize / 1024.0, rootfree, usrsize / 1024.0, usrfree);
   else if (rootsize >= 1024)
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+.1fm required on /, %dm available,\n"
-             "%+dk required on /usr, %dm available.",
+             "%+.1fm required on /, %dMb available,\n"
+             "%+dk required on /usr, %dMb available.",
              rootsize / 1024.0, rootfree, usrsize, usrfree);
   else if (usrsize >= 1024)
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+dk required on /, %dm available,\n"
-             "%+.1fm required on /usr, %dm available.",
+             "%+dk required on /, %dMb available,\n"
+             "%+.1fm required on /usr, %dMb available.",
              rootsize, rootfree, usrsize / 1024.0, usrfree);
   else
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+dk required on /, %dm available,\n"
-             "%+dk required on /usr, %dm available.",
+             "%+dk required on /, %dMb available,\n"
+             "%+dk required on /usr, %dMb available.",
              rootsize, rootfree, usrsize, usrfree);
 
   SoftwareSize->label(sizelabel);
   SoftwareSize->redraw();
 }
 
+void
+change_lang(Fl_Choice*, void*)
+{
+   //copy code from license_dist
+    char		licfile_en[1024];		// License filename
+    char		licfile_ru[1024];		// License filename
+    // See if we need to show the license file...
+    sprintf(licfile_en, LIC_EN);
+    sprintf(licfile_ru, LIC_RU);
+    switch (Language->value())
+    {
+	case LANG_EN:
+		gui_load_file(LicenseFile, licfile_en);
+		break;
+	case LANG_RU:
+		gui_load_file(LicenseFile, licfile_ru);
+		break;
+    }
+}
 
 //
-// End of "$Id: setup2.cxx,v 1.15.2.6 2009/05/27 08:18:19 bsavelev Exp $".
+// End of "$Id: setup2.cxx,v 1.15.2.19 2009/10/16 12:24:14 bsavelev Exp $".
 //

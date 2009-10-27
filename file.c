@@ -1,5 +1,5 @@
 /*
- * "$Id: file.c,v 1.1.1.1.2.1 2009/05/28 13:27:40 bsavelev Exp $"
+ * "$Id: file.c,v 1.1.1.1.2.16 2009/10/09 16:01:14 bsavelev Exp $"
  *
  *   File functions for the ESP Package Manager (EPM).
  *
@@ -201,15 +201,24 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
   file_t	*file;			/* Software file */
   FILE		*fp;			/* File pointer */
   char		header[4];		/* File header... */
+  char		*dir_name,
+		*file_name;
+  dist_t	*dist_tmp;
+  const char	*subpkg = "debug";
+  const char delim[32] = "/\0";
+  char *subpkg_name;
 
 
+//create temp dist for debug package files
+  if (DebugPackage)
+    dist_tmp=new_dist();
  /*
   * Loop through the distribution files and strip any executable
   * files.
   */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (tolower(file->type) == 'f' && (file->mode & 0111) &&
+    if (tolower(file->type) == 'f' &&
         strstr(file->options, "nostrip()") == NULL)
     {
      /*
@@ -244,10 +253,12 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
         * File could not be opened; error out...
 	*/
 
-        fprintf(stderr, "epm: Unable to open file \"%s\" for destination "
+	fprintf(stderr, "epm: Unable to open file \"%s\" for destination "
 	                "\"%s\" -\n     %s\n",
 	        file->src, file->dst, strerror(errno));
 
+	if (!KeepFiles)
+	  run_command(NULL, "/bin/rm -rf %s", TempDir);
         exit(1);
       }
 
@@ -255,7 +266,76 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
       * Strip executables...
       */
 
-      run_command(NULL, EPM_STRIP " %s", file->src);
+     int res=0;
+     res = run_command(NULL, "/bin/sh -c '/usr/bin/file %s | egrep \"ELF.*not stripped\"'", file->src);
+     if (!res)
+     {
+      if (Verbosity > 1)
+       fprintf(stdout, "Copying %s\n",file->src);
+
+       //copy file before strip
+      char debug_src[512] = "\0";
+      strcat(debug_src,TempDir);
+      file_name = strdup(file->src);
+      dir_name = strdup(file->dst);
+      strcat(debug_src,dirname(dir_name));
+      strcat(debug_src,delim);
+      strcat(debug_src,basename(file_name));
+      dir_name = strdup(debug_src);
+      run_command(NULL, "mkdir -p %s", dirname(dir_name));
+      copy_file(debug_src,file->src,file->mode,file->user,file->group);
+      strcpy(file->src,debug_src);
+
+      if (Verbosity > 1)
+       fprintf(stdout, "Stripping %s\n",file->src);
+
+      if (DebugPackage)
+      {
+	char appendix[255]=".debug";
+	char debug_dst[512] = "\0";
+	strcat(debug_dst,file->src);
+	strcat(debug_dst,appendix);
+	res = run_command(NULL, "%s --only-keep-debug %s %s", EPM_OBJCOPY, file->src, debug_dst);
+       if (!res) {
+	run_command(NULL, EPM_STRIP " %s", file->src);
+	run_command(NULL, "%s --add-gnu-debuglink=%s %s ", EPM_OBJCOPY, debug_dst, file->src);
+	//subpackage
+	char dst[1024] = "\0";
+	dir_name = strdup(file->dst);
+	strcat(dst,dirname(dir_name));
+	strcat(dst,delim);
+	file_name = strdup(file->src);
+	strcat(dst,strdup(basename(file_name)));
+	strcat(dst,appendix);
+	subpkg_name=find_subpackage(dist_tmp, subpkg);
+	file_t *new_file = add_file(dist_tmp, subpkg_name);
+	new_file->type = file->type;
+	new_file->mode = file->mode;
+	strcpy(new_file->src, debug_dst);
+	strcpy(new_file->dst, dst);
+	strcpy(new_file->user, file->user);
+	strcpy(new_file->group, file->group);
+	strcpy(new_file->options, file->options);
+       }
+      }
+      else
+      {
+	run_command(NULL, EPM_STRIP " %s", file->src);
+      }
+     }
+    }
+  if (DebugPackage)
+    for (i = dist_tmp->num_files, file = dist_tmp->files; i > 0; i --, file ++)
+    {
+	subpkg_name=find_subpackage(dist, subpkg);
+	file_t *new_file = add_file(dist, subpkg_name);
+	new_file->type = file->type;
+	new_file->mode = file->mode;
+	strcpy(new_file->src, file->src);
+	strcpy(new_file->dst, file->dst);
+	strcpy(new_file->user, file->user);
+	strcpy(new_file->group, file->group);
+	strcpy(new_file->options, file->options);	
     }
 }
 
@@ -292,14 +372,14 @@ unlink_package(const char *ext,		/* I - Package filename extension */
 
 if (!strcmp(ext,"rpm")) {
   if (dist->release[0])
-    snprintf(name, sizeof(name), "%s-%s-%s", prodfull, dist->version,
+    snprintf(name, sizeof(name), "%s_%s-%s", prodfull, dist->version,
              dist->release);
   else
-    snprintf(name, sizeof(name), "%s-%s", prodfull, dist->version);
+    snprintf(name, sizeof(name), "%s_%s", prodfull, dist->version);
 
   if (platname[0])
   {
-    strlcat(name, ".", sizeof(name));
+    strlcat(name, "_", sizeof(name));
     strlcat(name, platname, sizeof(name));
   }
 
@@ -355,5 +435,5 @@ if (!strcmp(ext,"rpm")) {
 
 
 /*
- * End of "$Id: file.c,v 1.1.1.1.2.1 2009/05/28 13:27:40 bsavelev Exp $".
+ * End of "$Id: file.c,v 1.1.1.1.2.16 2009/10/09 16:01:14 bsavelev Exp $".
  */

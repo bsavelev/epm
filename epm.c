@@ -1,5 +1,5 @@
 /*
- * "$Id: epm.c,v 1.2 2009/02/10 11:04:16 anikolov Exp $"
+ * "$Id: epm.c,v 1.2.2.7 2009/10/08 12:34:47 bsavelev Exp $"
  *
  *   Main program source for the ESP Package Manager (EPM).
  *
@@ -41,6 +41,9 @@ const char	*SetupProgram = EPM_LIBDIR "/setup";
 const char	*SoftwareDir = EPM_SOFTWARE;
 const char	*UninstProgram = EPM_LIBDIR "/uninst";
 int		Verbosity = 0;
+int		DebugPackage = 0;		/* 1 if we should create debug package */
+int		CustomLic = 0;
+char		*TempDir = "\0";
 
 
 /*
@@ -117,6 +120,8 @@ main(int  argc,				/* I - Number of command-line args */
   listname[0]  = '\0';
   directory[0] = '\0';
   show_depend  = 0;
+
+  TempDir = "./epm-install";
 
   for (i = 1; i < argc; i ++)
     if (argv[i][0] == '-')
@@ -285,6 +290,13 @@ main(int  argc,				/* I - Number of command-line args */
 	    Verbosity += strlen(argv[i]) - 1;
 	    break;
 
+	case 'd' : /* debug package */
+	    if (strip =! 0)
+	      DebugPackage = 1;
+            break;
+	case 'l' : /* CustomLic */
+	    CustomLic = 1;
+            break;
         case 'z' : /* Compress output */
 	    CompressFiles = 1;
 	    break;
@@ -375,6 +387,17 @@ main(int  argc,				/* I - Number of command-line args */
 	    {
 	      info();
 	      return (0);
+	    }
+	    else if (!strcmp(argv[i], "--sysname"))
+	    {
+	      i ++;
+	      if (i < argc)
+	        CustomPlatform = argv[i];
+	      else
+	      {
+		puts("epm: Expected platform sysname.");
+		usage();
+	      }
 	    }
 	    else
             {
@@ -676,6 +699,11 @@ usage(void)
   puts("    Use the named architecture instead of the local one.");
   puts("-g");
   puts("    Don't strip executables in distributions.");
+  puts("-d");
+  puts("    Create debug subpackage for executables with debug symbols. Only for portable.");
+  puts("    Overrides by \"-g\".");
+  puts("-l");
+  puts("    Create portable with unified (one name for all subpackage) license file.");
   puts("-f {aix,bsd,deb,depot,inst,native,pkg,portable,rpm,lsb,lsb-signed,lsb-init,setld,slackware,swinstall,tardist}");
   puts("    Set distribution format.");
   puts("-k");
@@ -718,6 +746,8 @@ usage(void)
   puts("    Include the named setup.types file with the distribution.");
   puts("--uninstalll-program /foo/bar/uninst");
   puts("    Use the named uninstall program instead of " EPM_LIBDIR "/uninst.");
+  puts("--sysname linux-2.6");
+  puts("    Use platform sysname instead of output uname");
   puts("--version");
   puts("    Show EPM version.");
 
@@ -726,5 +756,5 @@ usage(void)
 
 
 /*
- * End of "$Id: epm.c,v 1.2 2009/02/10 11:04:16 anikolov Exp $".
+ * End of "$Id: epm.c,v 1.2.2.7 2009/10/08 12:34:47 bsavelev Exp $".
  */

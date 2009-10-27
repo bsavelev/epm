@@ -8,7 +8,7 @@
 #include "setup2.h"
 extern Fl_Double_Window *SetupWindow;
 #include <FL/Fl_Box.H>
-extern Fl_Box *Title[6];
+extern Fl_Box *Title[7];
 #include <FL/Fl_Wizard.H>
 extern Fl_Wizard *Wizard;
 #include <FL/Fl_Group.H>
@@ -29,10 +29,14 @@ extern Fl_Browser *ConfirmList;
 extern Fl_Help_View *LicenseFile;
 extern Fl_Round_Button *LicenseAccept;
 extern Fl_Round_Button *LicenseDecline;
-extern Fl_Group *Pane[6];
+#include <FL/Fl_Choice.H>
+extern void change_lang(Fl_Choice*, void*);
+extern Fl_Choice *Language;
 #include <FL/Fl_Progress.H>
 extern Fl_Progress *InstallPercent;
 extern Fl_Browser *InstallLog;
+extern Fl_Group *Pane[7];
+extern Fl_Help_View *PostinFile;
 extern Fl_Box *WelcomeImage;
 extern Fl_Button *PrevButton;
 extern void next_cb(Fl_Button*, void*);

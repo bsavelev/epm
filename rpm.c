@@ -1,5 +1,5 @@
 /*
- * "$Id: rpm.c,v 1.1.1.1.2.9 2009/06/05 14:26:33 bsavelev Exp $"
+ * "$Id: rpm.c,v 1.1.1.1.2.15 2009/10/06 09:52:21 bsavelev Exp $"
  *
  *   Red Hat package gateway for the ESP Package Manager (EPM).
  *
@@ -40,6 +40,7 @@ static int	move_rpms(const char *prodname, const char *directory,
 			  const char *release);
 static int	write_spec(int format, const char *prodname, dist_t *dist,
 		           FILE *fp, const char *subpackage);
+char*		epm_basename(register char *s);
 
 
 /*
@@ -208,7 +209,7 @@ make_rpm(int            format,		/* I - Subformat */
 	    return (1);
           break;
       case 'i' :
-          if (format == PACKAGE_LSB || format == PACKAGE_LSB_SIGNED || PACKAGE_LSB_INIT)
+          if (format == PACKAGE_LSB || format == PACKAGE_LSB_SIGNED || format == PACKAGE_LSB_INIT)
 	    snprintf(filename, sizeof(filename), "%s/buildroot/etc/init.d/%s",
 		     directory, file->dst);
           else
@@ -293,14 +294,14 @@ make_rpm(int            format,		/* I - Subformat */
     */
 
     if (dist->release[0])
-      snprintf(name, sizeof(name), "%s-%s-%s", prodname, dist->version,
+      snprintf(name, sizeof(name), "%s_%s-%s", prodname, dist->version,
                dist->release);
     else
-      snprintf(name, sizeof(name), "%s-%s", prodname, dist->version);
+      snprintf(name, sizeof(name), "%s_%s", prodname, dist->version);
 
     if (platname[0])
     {
-      strlcat(name, ".", sizeof(name));
+      strlcat(name, "_", sizeof(name));
       strlcat(name, platname, sizeof(name));
     }
 
@@ -483,6 +484,7 @@ make_rpm(int            format,		/* I - Subformat */
     run_command(NULL, "/bin/rm -rf %s/RPMS", directory);
     run_command(NULL, "/bin/rm -f %s/rpms", directory);
     run_command(NULL, "/bin/rm -rf %s/buildroot", directory);
+    run_command(NULL, "/bin/rm -rf %s", TempDir);
 
     unlink(specname);
 
@@ -534,15 +536,15 @@ move_rpms(const char     *prodname,	/* I - Product short name */
     strlcpy(prodfull, prodname, sizeof(prodfull));
 
   if (dist->release[0])
-    snprintf(rpmname, sizeof(rpmname), "%s/%s-%s-%s", directory, prodfull,
+    snprintf(rpmname, sizeof(rpmname), "%s/%s_%s-%s", directory, prodfull,
              dist->version, dist->release);
   else
-    snprintf(rpmname, sizeof(rpmname), "%s/%s-%s", directory, prodfull,
+    snprintf(rpmname, sizeof(rpmname), "%s/%s_%s", directory, prodfull,
              dist->version);
 
   if (platname[0])
   {
-    strlcat(rpmname, ".", sizeof(rpmname));
+    strlcat(rpmname, "_", sizeof(rpmname));
     strlcat(rpmname, platname, sizeof(rpmname));
   }
 
@@ -708,7 +710,7 @@ write_spec(int        format,		/* I - Subformat */
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       {
-	qprintf(fp, "\tservice %s stop || true\n", basename(file->dst));
+	qprintf(fp, "\t/etc/init.d/%s stop || true\n", epm_basename(file->dst));
       }
       fputs("fi\n", fp);
   }
@@ -784,9 +786,9 @@ write_spec(int        format,		/* I - Subformat */
       {
 	fputs("if test \"x$1\" = x1; then\n", fp);
 	fputs("\techo Setting up init scripts...\n", fp);
-	qprintf(fp, "\tchkconfig --add %s\n", basename(file->dst));
+	qprintf(fp, "\tchkconfig --add %s\n", epm_basename(file->dst));
 	fputs("fi\n", fp);
-	qprintf(fp, "service %s start || true\n", basename(file->dst));
+	qprintf(fp, "/etc/init.d/%s start || true\n", epm_basename(file->dst));
       }
     }
     else
@@ -878,8 +880,8 @@ write_spec(int        format,		/* I - Subformat */
        for (; i > 0; i --, file ++)
 	 if (tolower(file->type) == 'i' && file->subpackage == subpackage)
          {
-	   qprintf(fp, "\tservice %s stop\n", basename(file->dst));
-	   qprintf(fp, "\tchkconfig --del %s\n", basename(file->dst));
+	   qprintf(fp, "\t/etc/init.d/%s stop\n", epm_basename(file->dst));
+	   qprintf(fp, "\tchkconfig --del %s\n", epm_basename(file->dst));
 	 }
    }
    else
@@ -1003,7 +1005,7 @@ write_spec(int        format,		/* I - Subformat */
 		      file->dst);
 	    else if (format == PACKAGE_LSB_INIT)
 	      fprintf(fp, "%%attr(0555,root,root) \"/etc/init.d/%s\"\n",
-		      basename(file->dst));
+		      epm_basename(file->dst));
             else
 	      fprintf(fp, "%%attr(0555,root,root) \"%s/init.d/%s\"\n",
 	              SoftwareDir, file->dst);
@@ -1013,7 +1015,7 @@ write_spec(int        format,		/* I - Subformat */
   return (0);
 }
 
-basename(register char *s)
+char* epm_basename(register char *s)
 {
 	register char *rv = s;
 	if (rv) for(;;)
@@ -1026,5 +1028,5 @@ basename(register char *s)
 	}
 
 /*
- * End of "$Id: rpm.c,v 1.1.1.1.2.9 2009/06/05 14:26:33 bsavelev Exp $".
+ * End of "$Id: rpm.c,v 1.1.1.1.2.15 2009/10/06 09:52:21 bsavelev Exp $".
  */

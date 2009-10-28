@@ -1370,7 +1370,7 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-debug          turn on debugging [default=no]
   --enable-gui            turn on GUI utilities [default=auto]
-  --enable-gui_cli        turn on CLI GUI utilities [default=auto]
+  --enable-gui_cli        turn on CLI GUI utilities [default=yes]
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]

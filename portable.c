@@ -2217,6 +2217,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("echo Updating file permissions...\n", scriptfile);
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
+    if (strcmp(file->user, "root") != 0 && file->subpackage == subpackage)
       switch (tolower(file->type))
       {
 	case 'c' :

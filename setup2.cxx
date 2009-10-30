@@ -78,19 +78,6 @@ AuthorizationRef SetupAuthorizationRef;
 #endif // __APPLE__
 
 
-//
-// Panes...
-//
-
-#define PANE_WELCOME	0
-#define PANE_TYPE	1
-#define PANE_SELECT	2
-#define PANE_CONFIRM	3
-#define PANE_LICENSE	4
-#define PANE_INSTALL	5
-#define PANE_POSTIN	6
-
-
 //LANG
 #define LANG_EN	0
 #define LANG_RU	1

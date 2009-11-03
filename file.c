@@ -30,6 +30,7 @@
  */
 
 #include "epm.h"
+#include <libgen.h>
 
 
 /*
@@ -203,15 +204,12 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
   char		header[4];		/* File header... */
   char		*dir_name,
 		*file_name;
-  dist_t	*dist_tmp;
+  dist_t	*dist_tmp = new_dist(); //create temp dist for debug package files
   const char	*subpkg = "dbg";
   const char delim[32] = "/\0";
   char *subpkg_name;
 
 
-//create temp dist for debug package files
-  if (DebugPackage)
-    dist_tmp=new_dist();
  /*
   * Loop through the distribution files and strip any executable
   * files.
@@ -283,7 +281,7 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
       strcat(debug_src,basename(file_name));
       dir_name = strdup(debug_src);
       run_command(NULL, "mkdir -p %s", dirname(dir_name));
-      copy_file(debug_src,file->src,file->mode,file->user,file->group);
+      copy_file(debug_src,file->src,0600,(uid_t)file->user,(uid_t)file->group);
       strcpy(file->src,debug_src);
 
       if (Verbosity > 1)

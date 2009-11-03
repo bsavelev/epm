@@ -274,7 +274,9 @@ write_combined(const char *title,	/* I - Title */
 {
   int		i;			/* Looping var */
   tarf_t	*tarfile;		/* Distribution tar file */
+  tarf_t	*tarfile_dbg;		/* Distribution tar file */
   char		tarfilename[1024],	/* Name of tar file */
+		tarfilename_dbg[1024],	/* Name of tar file */
 		filename[1024];		/* Name of temporary file */
 #ifdef __APPLE__
   FILE		*fp;			/* Plist file... */
@@ -304,6 +306,11 @@ write_combined(const char *title,	/* I - Title */
     strlcat(tarfilename, platname, sizeof(tarfilename));
   }
 
+  if (DebugPackage)
+  {
+    sprintf(tarfilename_dbg,"%s", tarfilename);
+    strlcat(tarfilename_dbg, "-dbg.tar.gz", sizeof(tarfilename_dbg));
+  }
   strlcat(tarfilename, ".tar.gz", sizeof(tarfilename));
 
  /*
@@ -316,6 +323,13 @@ write_combined(const char *title,	/* I - Title */
             strerror(errno));
     return (-1);
   }
+  if (DebugPackage)
+    if ((tarfile_dbg = tar_open(tarfilename_dbg, 1)) == NULL)
+    {
+      fprintf(stderr, "epm: Unable to create output pipe to gzip -\n     %s\n",
+            strerror(errno));
+      return (-1);
+    }
 
   if (Verbosity)
     printf("Writing %s archive:\n", title);
@@ -508,11 +522,23 @@ write_combined(const char *title,	/* I - Title */
   }
 
   for (i = 0; i < dist->num_subpackages; i ++)
-    if (write_instfiles(tarfile, directory, prodname, platname, files, destdir,
-                	dist->subpackages[i]))
+    if (strcmp(dist->subpackages[i],"dbg")) //dont pack dbg subpackage in main tarfile
     {
-      tar_close(tarfile);
-      return (-1);
+      if (write_instfiles(tarfile, directory, prodname, platname, files, destdir,
+                	dist->subpackages[i]))
+      {
+        tar_close(tarfile);
+        return (-1);
+      }
+    }
+    else
+    {
+      if (write_instfiles(tarfile_dbg, directory, prodname, platname, files, destdir,
+                	dist->subpackages[i]))
+      {
+        tar_close(tarfile_dbg);
+        return (-1);
+      }
     }
 
  /*
@@ -883,6 +909,33 @@ write_combined(const char *title,	/* I - Title */
     printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0,
            tarfilename);
   }
+
+ if (DebugPackage)
+ {
+  if (Verbosity)
+  {
+    puts("     ------- ----------------------------------------");
+    printf("    %7.0fk %s-%s", tarfile_dbg->blocks * 0.5f, prodname, dist->version);
+    if (dist->release[0])
+      printf("-%s", dist->release);
+    if (!strcmp(title, "patch"))
+      fputs("-patch", stdout);
+    if (platname[0])
+      printf("-%s", platname);
+    puts(".tar");
+  }
+
+  tar_close(tarfile_dbg);
+
+  if (Verbosity)
+  {
+    stat(tarfilename_dbg, &srcstat);
+
+    puts("     ------- ----------------------------------------");
+    printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0,
+           tarfilename_dbg);
+  }
+ }
 
 #ifdef __APPLE__
   {

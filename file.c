@@ -204,7 +204,7 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
   char		*dir_name,
 		*file_name;
   dist_t	*dist_tmp;
-  const char	*subpkg = "debug";
+  const char	*subpkg = "dbg";
   const char delim[32] = "/\0";
   char *subpkg_name;
 

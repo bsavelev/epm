@@ -1060,6 +1060,14 @@ write_common(dist_t     *dist,		/* I - Distribution */
   char	line[1024],			/* Line buffer */
 	*start,				/* Start of line */
 	*ptr;				/* Pointer into line */
+  struct utsname platform;		/* UNIX name info */
+
+
+ /*
+  * Get platform information...
+  */
+
+  get_platform(&platform);
 
 
  /*
@@ -1163,6 +1171,19 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fputs("PATH=/usr/xpg4/bin:/bin:/usr/bin:/usr/ucb:/sbin:/usr/sbin:${PATH}\n", fp);
   fputs("SHELL=/bin/sh\n", fp);
   fprintf(fp,"PACKAGE_VERSION=\"%s\"\n",dist->fulver);
+  fputs("UNAME_S=`uname -s | tr [:upper:] [:lower:]`\n",fp);
+  if (CustomPlatform)
+    fprintf(fp,"PACKAGE_PLATFORM=\"%s\"\n", CustomPlatform);
+  else
+    fprintf(fp,"PACKAGE_PLATFORM=\"%s\"\n", platform.sysname);
+  fputs("case \"$PACKAGE_PLATFORM\" in\n", fp);
+  fputs("\t*\"$UNAME_S\"*)\n", fp);
+  fputs("\t;;\n", fp);
+  fputs("\t*)\n", fp);
+  fputs("\techo \"Package platform and running platform are different. Installation aborted\"\n", fp);
+  fputs("\texit 1\n", fp);
+  fputs("\t;;\n", fp);
+  fputs("esac\n", fp);
   fputs("case \"`uname`\" in\n", fp);
   fputs("\tDarwin*)\n", fp);
   fputs("\tcase \"`id -un`\" in\n", fp);

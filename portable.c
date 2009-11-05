@@ -2220,8 +2220,11 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	qprintf(scriptfile, "	mkdir -p %s/possessed%s\n", SoftwareDir, file->dst);
 	qprintf(scriptfile, "	echo \"Placeholder. Do not remove.\" > %s/possessed%s/%s.placeholder\n", SoftwareDir, file->dst, prodfull);
 	fputs("fi\n", scriptfile);
-	qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
-	qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
+	if (strcmp(file->user, "root") != 0)
+	{
+	  qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
+	  qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
+	}
 	qprintf(scriptfile, "chmod %o %s\n", file->mode, file->dst);
       }
   }

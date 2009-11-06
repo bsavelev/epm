@@ -1173,7 +1173,10 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fprintf(fp,"PACKAGE_VERSION=\"%s\"\n",dist->fulver);
   fputs("UNAME_S=`uname -s | tr [:upper:] [:lower:]`\n",fp);
   if (CustomPlatform)
-    fprintf(fp,"PACKAGE_PLATFORM=\"%s\"\n", CustomPlatform);
+    if (strcmp(CustomPlatform, "solaris") == 0)
+       fputs("PACKAGE_PLATFORM=\"sunos\"\n", fp);
+    else
+      fprintf(fp,"PACKAGE_PLATFORM=\"%s\"\n", CustomPlatform);
   else
     if (strcmp(platform.sysname, "solaris") == 0)
       fputs("PACKAGE_PLATFORM=\"sunos\"\n", fp);

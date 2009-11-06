@@ -297,16 +297,6 @@ write_combined(const char *title,	/* I - Title */
     snprintf(tarfilename, sizeof(tarfilename), "%s/%s_%s", directory, prodname,
              dist->version);
 
-  if (DebugPackage)
-  {
-    if (dist->release[0])
-      snprintf(tarfilename, sizeof(tarfilename), "%s/%s-dbg_%s-%s", directory,
-             prodname, dist->version, dist->release);
-    else
-      snprintf(tarfilename, sizeof(tarfilename), "%s/%s-dbg_%s", directory, prodname,
-             dist->version);
-  }
-
   if (!strcmp(title, "patch"))
     strlcat(tarfilename, "-patch", sizeof(tarfilename));
 
@@ -316,8 +306,27 @@ write_combined(const char *title,	/* I - Title */
     strlcat(tarfilename, platname, sizeof(tarfilename));
   }
 
-  strlcat(tarfilename_dbg, ".tar.gz", sizeof(tarfilename_dbg));
   strlcat(tarfilename, ".tar.gz", sizeof(tarfilename));
+
+  if (DebugPackage)
+  {
+    if (dist->release[0])
+      snprintf(tarfilename_dbg, sizeof(tarfilename_dbg), "%s/%s-dbg_%s-%s", directory,
+             prodname, dist->version, dist->release);
+    else
+      snprintf(tarfilename_dbg, sizeof(tarfilename_dbg), "%s/%s-dbg_%s", directory, prodname,
+             dist->version);
+    if (!strcmp(title, "patch"))
+      strlcat(tarfilename_dbg, "-patch", sizeof(tarfilename_dbg));
+
+    if (platname[0])
+    {
+      strlcat(tarfilename_dbg, "_", sizeof(tarfilename_dbg));
+      strlcat(tarfilename_dbg, platname, sizeof(tarfilename_dbg));
+    }
+    strlcat(tarfilename_dbg, ".tar.gz", sizeof(tarfilename_dbg));
+  }
+
 
  /*
   * Open output file...

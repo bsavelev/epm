@@ -3120,7 +3120,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   write_commands(dist, scriptfile, COMMAND_POST_REMOVE, subpackage);
 
   fprintf(scriptfile, "rm -f %s/%s.remove\n", SoftwareDir, prodfull);
-  fprintf(scriptfile, "rmdir -p %s || true\n", SoftwareDir);
+  fprintf(scriptfile, "rmdir -p %s 2>/dev/null || true\n", SoftwareDir);
 
   fputs("echo Removal is complete.\n", scriptfile);
 

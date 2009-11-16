@@ -1008,6 +1008,7 @@ void update_control(int from) {
     CancelButton->deactivate();
     PrevButton->activate();
     NextButton->activate();
+    InstallLog->clear();
 //hack
     licaccept = 0;
       // Set the title string...

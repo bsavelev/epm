@@ -490,7 +490,6 @@ remove_dist(const gui_dist_t *dist)	// I - Distribution to remove
   char		command[1024];		// Command string
   int		fds[2];			// Pipe FDs
   int		status;			// Exit status
-  char* 	env[] = { getenv("PATH"), "LANG=C", (char *)0 }; // C locale for maintainer scripts
 #ifndef __APPLE__
   int		pid;			// Process ID
 #endif // !__APPLE__
@@ -543,9 +542,10 @@ remove_dist(const gui_dist_t *dist)	// I - Distribution to remove
     close(fds[1]);
 
     // Execute the command; if an error occurs, return it...
-    if (dist->type == PACKAGE_PORTABLE)
-      execle(command, command, "now", (char *)0, env);
-    else
+    if (dist->type == PACKAGE_PORTABLE) {
+      setenv("LANG","C",1);
+      execle(command, command, "now", (char *)0, (char *)0);
+    } else
       execlp("rpm", "rpm", "-e", "--nodeps", dist->product, (char *)0);
 
     exit(errno);

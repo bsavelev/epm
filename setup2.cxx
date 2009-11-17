@@ -1010,11 +1010,12 @@ void update_control(int from) {
     InstallLog->clear();
 //hack
     licaccept = 0;
-      // Set the title string...
-      LicenseFile->label(liclabel);
-      // Load the license into the viewer...
-      LicenseFile->textfont(FL_HELVETICA);
-      LicenseFile->textsize(14);
+
+    // Set the title string...
+    LicenseFile->label(liclabel);
+    // Load the license into the viewer...
+    LicenseFile->textfont(FL_HELVETICA);
+    LicenseFile->textsize(10);
 
     if (Language->size() != 0)
     {
@@ -1344,6 +1345,10 @@ load_license()
     // See if we need to show the license file...
     sprintf(licfile_en, LIC_EN);
     sprintf(licfile_ru, LIC_RU);
+
+    LicenseFile->textfont(FL_HELVETICA);
+    LicenseFile->textsize(10);
+
     if (!stat(licfile_en, &licinfo))
     {
       //Lang control

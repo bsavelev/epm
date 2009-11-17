@@ -1048,6 +1048,11 @@ void update_control(int from) {
       } else if (LicenseAccept->value())
         licaccept = 1;
     }
+    else
+    {
+      licaccept = 1;
+      Wizard->next();
+    }
   }
 //install must be in own check
   if (Wizard->value() == Pane[PANE_INSTALL]) {
@@ -1123,6 +1128,10 @@ void update_control(int from) {
       gui_load_file(PostinFile, postin);
       PostinFile->textfont(FL_HELVETICA);
       PostinFile->textsize(14);
+    }
+    else
+    {
+      PostinFile->value("<p>Default postin text</p>");
     }
 
   }

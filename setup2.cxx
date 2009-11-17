@@ -97,7 +97,6 @@ typedef int (*compare_func_t)(const void *, const void *);
 int		licaccept = 0;
 FILE		*fdfile = NULL;
 int		skip_pane_select = 1;
-int		has_licfile = 0;
 
 
 //
@@ -1016,7 +1015,8 @@ void update_control(int from) {
       // Load the license into the viewer...
       LicenseFile->textfont(FL_HELVETICA);
       LicenseFile->textsize(14);
-    if (has_licfile)
+
+    if (Language->size() != 0)
     {
       // Show the license window and wait for the user...
       Pane[PANE_LICENSE]->show();
@@ -1341,15 +1341,13 @@ load_license()
       Language->add("English");
       Language->value(LANG_EN);
       gui_load_file(LicenseFile, licfile_en);
-      has_licfile = 1;
     }
     if (!stat(licfile_ru, &licinfo))
     {
       //Lang control
       Language->add("Russian");
-      if (!has_licfile)
+      if (Language->size() == 0)
         gui_load_file(LicenseFile, licfile_ru);
-      has_licfile = 1;
     }
 }
 

@@ -81,7 +81,7 @@ AuthorizationRef SetupAuthorizationRef;
 
 #define PANE_WELCOME	0
 #define PANE_SELECT	1
-#define PANE_CONFIRM	2
+#define PANE_RMCONFIRM	2
 #define PANE_REMOVE	3
 
 
@@ -407,7 +407,7 @@ update_control(int from)
     PrevButton->deactivate();
     NextButton->activate();
   }
-  if (Wizard->value() == Pane[PANE_CONFIRM])
+  if (Wizard->value() == Pane[PANE_RMCONFIRM])
   {
     ConfirmList->clear();
     PrevButton->activate();

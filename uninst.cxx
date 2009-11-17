@@ -378,10 +378,10 @@ Fl_Double_Window* make_window() {
         { SoftwareSize = new Fl_Box(170, 215, 220, 35, "0k marked for removal.");
           SoftwareSize->align(196|FL_ALIGN_INSIDE);
         } // Fl_Box* SoftwareSize
-        { RemoveAllButton = new Fl_Button(400, 220, 90, 25, "Remove All");
+        { RemoveAllButton = new Fl_Button(400, 220, 90, 25, "Select all");
           RemoveAllButton->callback((Fl_Callback*)cb_RemoveAllButton);
         } // Fl_Button* RemoveAllButton
-        { RemoveNoneButton = new Fl_Button(500, 220, 110, 25, "Remove None");
+        { RemoveNoneButton = new Fl_Button(500, 220, 110, 25, "Select none");
           RemoveNoneButton->callback((Fl_Callback*)cb_RemoveNoneButton);
         } // Fl_Button* RemoveNoneButton
         Pane[1]->end();

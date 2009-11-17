@@ -111,13 +111,13 @@ Function {make_window()} {open
           xywh {170 235 241 35} align 212
         }
         Fl_Button InstallAllButton {
-          label {Install All}
+          label {Select all}
           callback {SoftwareList->check_all();
 list_cb(0,0);}
           xywh {421 240 80 25}
         }
         Fl_Button InstallNoneButton {
-          label {Install None}
+          label {Select none}
           callback {SoftwareList->check_none();
 list_cb(0,0);}
           xywh {511 240 99 25}

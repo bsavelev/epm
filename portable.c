@@ -1844,7 +1844,7 @@ write_distfiles(const char *directory,	/* I - Directory */
     }
 
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-      if (strncmp(file->dst, "/usr", 4) != 0 && file->subpackage == subpackage)
+//       if (strncmp(file->dst, "/usr", 4) != 0 && file->subpackage == subpackage)
 	switch (file->type)
 	{
 	  case 'C' : /* Config file */
@@ -1932,7 +1932,7 @@ write_distfiles(const char *directory,	/* I - Directory */
     }
 
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-      if (strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
+//       if (strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
 	switch (file->type)
 	{
 	  case 'C' : /* Config file */
@@ -2162,6 +2162,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   write_depends(prodname, dist, scriptfile, subpackage);
   write_commands(dist, scriptfile, COMMAND_PRE_INSTALL, subpackage);
 
+/*
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
         strncmp(file->dst, "/usr", 4) != 0 && file->subpackage == subpackage)
@@ -2188,21 +2189,24 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
   }
+*/
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
-        strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
+//         strncmp(file->dst, "/usr", 4) == 0 && 
+	file->subpackage == subpackage)
       break;
 
   if (i)
   {
-    fputs("if test -w /usr ; then\n", scriptfile);
-    fputs("	echo Backing up old versions of shared files to be installed...\n", scriptfile);
+//     fputs("if test -w /usr ; then\n", scriptfile);
+    fputs("echo Backing up old versions of files to be installed...\n", scriptfile);
 
-    col = fputs("	for file in", scriptfile);
+    col = fputs("for file in", scriptfile);
     for (; i > 0; i --, file ++)
       if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
-          strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
+//           strncmp(file->dst, "/usr", 4) == 0 && 
+	  file->subpackage == subpackage)
       {
         if (col > 80)
 	  col = qprintf(scriptfile, " \\\n%s", file->dst) - 2;
@@ -2211,11 +2215,16 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       }
 
     fputs("; do\n", scriptfile);
-    fputs("		if test -d \"$file\" -o -f \"$file\" -o -h \"$file\"; then\n", scriptfile);
+    fputs("	if test -d \"$file\" -o -f \"$file\" -o -h \"$file\"; then\n", scriptfile);
+    fputs("		if test -w \"`dirname \"$file\"`\" ; then\n", scriptfile);
     fputs("			mv -f \"$file\" \"$file.O\"\n", scriptfile);
+    fputs("		else\n", scriptfile);
+    fputs("			echo Error: Cannot write in \"`dirname \"$file\"`\".\n", scriptfile);
+    fputs("			exit 1\n", scriptfile);
     fputs("		fi\n", scriptfile);
-    fputs("	done\n", scriptfile);
-    fputs("fi\n", scriptfile);
+    fputs("	fi\n", scriptfile);
+    fputs("done\n", scriptfile);
+//     fputs("fi\n", scriptfile);
   }
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
@@ -2231,7 +2240,13 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       {
 	qprintf(scriptfile, "if test ! -d %s -a ! -f %s -a ! -h %s; then\n",
         	file->dst, file->dst, file->dst);
-	qprintf(scriptfile, "	mkdir -p %s\n", file->dst);
+        qprintf(scriptfile, "	if test -w \"`dirname \"%s\"`\" ; then\n", file->dst);
+	qprintf(scriptfile, "		mkdir %s\n", file->dst);
+	fputs("	else\n", scriptfile);
+	qprintf(scriptfile, "		echo Error: Cannot write in \"`dirname \"%s\"`\".\n",
+	        file->dst);
+	fputs("		exit 1\n", scriptfile);
+	fputs("	fi\n", scriptfile);
 	fputs("else\n", scriptfile);
 	qprintf(scriptfile, "	if test -f %s; then\n", file->dst);
 	qprintf(scriptfile, "		echo Error: %s already exists as a regular file!\n",
@@ -2263,6 +2278,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       fprintf(scriptfile, "$ac_tar %s.sw\n", prodfull);
   }
 
+/*
   if (usrsize)
   {
     fputs("if echo Write Test >/usr/.writetest 2>/dev/null; then\n", scriptfile);
@@ -2272,6 +2288,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       fprintf(scriptfile, "	$ac_tar %s.ss\n", prodfull);
     fputs("fi\n", scriptfile);
   }
+*/
 
   fprintf(scriptfile, "if test -d %s; then\n", SoftwareDir);
   fprintf(scriptfile, "	rm -f %s/%s.remove\n", SoftwareDir, prodfull);
@@ -3025,6 +3042,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 
   fputs("echo Removing/restoring installed files...\n", scriptfile);
 
+/*
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
         strncmp(file->dst, "/usr", 4) != 0 && file->subpackage == subpackage)
@@ -3050,19 +3068,22 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
   }
+*/
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
-        strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
+//         strncmp(file->dst, "/usr", 4) == 0 &&
+	file->subpackage == subpackage)
       break;
 
   if (i)
   {
-    fputs("if test -w /usr ; then\n", scriptfile);
-    col = fputs("	for file in", scriptfile);
+//     fputs("if test -w /usr ; then\n", scriptfile);
+    col = fputs("for file in", scriptfile);
     for (; i > 0; i --, file ++)
       if ((tolower(file->type) == 'f' || tolower(file->type) == 'l') &&
-          strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
+//           strncmp(file->dst, "/usr", 4) == 0 &&
+	  file->subpackage == subpackage)
       {
         if (col > 80)
 	  col = qprintf(scriptfile, " \\\n%s", file->dst) - 2;
@@ -3071,12 +3092,22 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       }
 
     fputs("; do\n", scriptfile);
+    fputs("	if test -w \"`dirname \"$file\"`\" ; then\n", scriptfile);
     fputs("		rm -f \"$file\"\n", scriptfile);
     fputs("		if test -d \"$file.O\" -o -f \"$file.O\" -o -h \"$file.O\"; then\n", scriptfile);
-    fputs("			mv -f \"$file.O\" \"$file\"\n", scriptfile);
+    fputs("			if test -w \"`dirname \"$file\"`\" ; then\n", scriptfile);
+    fputs("				mv -f \"$file.O\" \"$file\"\n", scriptfile);
+    fputs("			else\n", scriptfile);
+    fputs("				echo Error: Cannot write in \"`dirname \"$file\"`\".\n", scriptfile);
+    fputs("				exit 1\n", scriptfile);
+    fputs("			fi\n", scriptfile);
     fputs("		fi\n", scriptfile);
-    fputs("	done\n", scriptfile);
-    fputs("fi\n", scriptfile);
+    fputs("	else\n", scriptfile);
+    fputs("		echo Error: Cannot write in \"`dirname \"$file\"`\".\n", scriptfile);
+    fputs("		exit 1\n", scriptfile);
+    fputs("	fi\n", scriptfile);
+    fputs("done\n", scriptfile);
+//     fputs("fi\n", scriptfile);
   }
 
   fputs("echo Checking configuration files...\n", scriptfile);
@@ -3139,7 +3170,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     for (; i > 0; i --, file --)
       if (tolower(file->type) == 'd' && file->subpackage == subpackage)
       {
-	qprintf(scriptfile, "if test -d %s; then\n", file->dst);
+	qprintf(scriptfile, "if test -d %s -a -w \"`dirname \"%s\"`\" ; then\n", file->dst, file->dst);
 //placeholder
 	qprintf(scriptfile, "	rm -f \"%s/possessed%s/%s.placeholder\"\n", SoftwareDir, file->dst, prodfull);
 	qprintf(scriptfile, "	rmdir %s/possessed%s 2>/dev/null && rmdir %s 2>/dev/null || true\n", SoftwareDir, file->dst, file->dst);

@@ -1348,9 +1348,13 @@ write_depends(const char *prodname,	/* I - Product name */
                       SoftwareDir, product);
               fprintf(fp, "	if test -x %s.install; then\n",
                       product);
-              fprintf(fp, "		echo Installing required %s software...\n",
+              fputs("\t	if test x$DEPEND_RUN = x ; then\n", fp);
+              fprintf(fp, "\t		echo Installing required %s software...\n",
                       product);
-              fprintf(fp, "		./%s.install now\n", product);
+              fprintf(fp, "\t		./%s.install now\n", product);
+              fputs("\t	else\n", fp);
+              fprintf(fp, "\t		./%s.install --depend\n", product);
+              fputs("\t	fi\n", fp);
               fputs("	else\n", fp);
               fprintf(fp, "		echo Sorry, you must first install \\'%s\\'!\n",
 	              product);
@@ -1376,9 +1380,13 @@ write_depends(const char *prodname,	/* I - Product name */
 	        	d->vernumber[0], d->vernumber[1]);
         	fprintf(fp, "	if test -x %s.install; then\n",
                 	product);
-        	fprintf(fp, "		echo Installing required %s software...\n",
+        	fputs("\t	if test x$DEPEND_RUN = x\n ; then", fp);
+        	fprintf(fp, "\t		echo Installing required %s software...\n",
                 	product);
-        	fprintf(fp, "		./%s.install now\n", product);
+        	fprintf(fp, "\t		./%s.install now\n", product);
+        	fputs("\t	else\n", fp);
+        	fprintf(fp, "\t		./%s.install --depend\n", product);
+        	fputs("\t	fi\n", fp);
         	fputs("	else\n", fp);
         	fprintf(fp, "		echo Sorry, you must first install \\'%s\\' version %s to %s!\n",
 	        	product, d->version[0], d->version[1]);
@@ -2069,9 +2077,13 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("\tcd \"`dirname \"$0\"`\"\n", scriptfile);
   fputs("fi\n", scriptfile);
 
-  fputs("if test \"$*\" = \"now\"; then\n", scriptfile);
-  fputs("	echo Software license silently accepted via command-line option.\n", scriptfile);
+  fputs("if test \"$*\" = \"--depend\"; then\n", scriptfile);
+  fputs("  DEPEND_RUN=\"yes\"\n", scriptfile);
   fputs("else\n", scriptfile);
+  fputs("  DEPEND_RUN=\"no\"\n", scriptfile);
+  fputs("  if test \"$*\" = \"now\"; then\n", scriptfile);
+  fputs("	echo Software license silently accepted via command-line option.\n", scriptfile);
+  fputs("  else\n", scriptfile);
   fputs("	echo \"\"\n", scriptfile);
 
 //boris 2009-03-13
@@ -2143,6 +2155,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("	done\n", scriptfile);
 //  }
 
+  fputs("  fi\n", scriptfile);
   fputs("fi\n", scriptfile);
   fprintf(scriptfile, "if test -x %s/%s.remove; then\n", SoftwareDir, prodfull);
   fprintf(scriptfile, "\tif [ \"`grep \'^#%%version\' %s/%s.remove | awk \'{print $3}\'`\" = \"$PACKAGE_VERSION\" ] ; then\n", SoftwareDir, prodfull);

@@ -1349,17 +1349,21 @@ write_depends(const char *prodname,	/* I - Product name */
                       SoftwareDir, product);
               fprintf(fp, "	if test -x %s.install; then\n",
                       product);
-              fputs("\t	if test x$DEPEND_RUN = x ; then\n", fp);
+              fputs("\t	if test x$DEPEND_RUN = xno ; then\n", fp);
               fprintf(fp, "\t		echo Installing required %s software...\n",
                       product);
               fprintf(fp, "\t		./%s.install now\n", product);
               fputs("\t	else\n", fp);
-              fprintf(fp, "\t		./%s.install --depend\n", product);
+              fprintf(fp, "\t		./%s.install --depend --recursion\n", product);
               fputs("\t	fi\n", fp);
               fputs("	else\n", fp);
-              fprintf(fp, "		echo Sorry, you must first install \\'%s\\'!\n",
+              fputs("\t	if test x$DEPEND_RUN = xno ; then\n", fp);
+              fprintf(fp, "\t		echo Sorry, you must first install \\'%s\\'!\n",
 	              product);
               fputs("		ERROR=1\n", fp);
+              fputs("\t	else\n", fp);
+              fprintf(fp, "\t		echo %s >> .depend\n", product);
+              fputs("\t	fi\n", fp);
               fputs("	fi\n", fp);
               fputs("fi\n", fp);
 
@@ -1381,17 +1385,21 @@ write_depends(const char *prodname,	/* I - Product name */
 	        	d->vernumber[0], d->vernumber[1]);
         	fprintf(fp, "	if test -x %s.install; then\n",
                 	product);
-        	fputs("\t	if test x$DEPEND_RUN = x\n ; then", fp);
+        	fputs("\t	if test x$DEPEND_RUN = xno\n ; then", fp);
         	fprintf(fp, "\t		echo Installing required %s software...\n",
                 	product);
         	fprintf(fp, "\t		./%s.install now\n", product);
         	fputs("\t	else\n", fp);
-        	fprintf(fp, "\t		./%s.install --depend\n", product);
+        	fprintf(fp, "\t		./%s.install --depend --recursion\n", product);
         	fputs("\t	fi\n", fp);
         	fputs("	else\n", fp);
+        	fputs("\t	if test x$DEPEND_RUN = xno\n ; then", fp);
         	fprintf(fp, "		echo Sorry, you must first install \\'%s\\' version %s to %s!\n",
 	        	product, d->version[0], d->version[1]);
-        	fputs("		exit 1\n", fp);
+        	fputs("		ERROR=1\n", fp);
+        	fputs("\t	else\n", fp);
+        	fprintf(fp, "\t		echo %s >> .depend\n", product);
+        	fputs("\t	fi\n", fp);
         	fputs("	fi\n", fp);
         	fputs("fi\n", fp);
 	      }
@@ -1497,6 +1505,14 @@ write_depends(const char *prodname,	/* I - Product name */
       }
     }
 
+  fputs("if test x$RECURSION = xno -a -r .depend ; then \n", fp);
+  fputs("\techo Dependency check failed! Full list of unmet dependencies:\n", fp);
+  fputs("\tcat .depend\n", fp);
+  fputs("\trm -f .depend\n", fp);
+  fputs("\texit 1\n", fp);
+  fputs("elif test x$DEPEND_RUN = xyes ; then\n", fp);
+  fputs("\texit 0\n", fp);
+  fputs("fi\n", fp);
   fputs("[ $ERROR -eq 1 ]  && exit 1\n", fp);
 
   return (0);
@@ -2075,15 +2091,20 @@ write_install(dist_t     *dist,		/* I - Software distribution */
                     "     %s\n", filename, strerror(errno));
     return (-1);
   }
-  qprintf(scriptfile, "echo Copyright %s\n", dist->copyright);
-  fputs("if test \"`dirname \"$0\"`\" != \".\"; then\n", scriptfile);
-  fputs("\tcd \"`dirname \"$0\"`\"\n", scriptfile);
-  fputs("fi\n", scriptfile);
-
   fputs("if test \"$*\" = \"--depend\"; then\n", scriptfile);
   fputs("  DEPEND_RUN=\"yes\"\n", scriptfile);
+  fputs("  RECURSION=\"no\"\n", scriptfile);
+  fputs("elif test \"$*\" = \"--depend --recursion\"; then\n", scriptfile);
+  fputs("  DEPEND_RUN=\"yes\"\n", scriptfile);
+  fputs("  RECURSION=\"yes\"\n", scriptfile);
   fputs("else\n", scriptfile);
+  qprintf(scriptfile, "  echo Copyright %s\n", dist->copyright);
+  fputs("  if test \"`dirname \"$0\"`\" != \".\"; then\n", scriptfile);
+  fputs("\tcd \"`dirname \"$0\"`\"\n", scriptfile);
+  fputs("  fi\n", scriptfile);
   fputs("  DEPEND_RUN=\"no\"\n", scriptfile);
+  fputs("  RECURSION=\"no\"\n", scriptfile);
+  fputs("  ./\"$0\" --depend\n", scriptfile);
   fputs("  if test \"$*\" = \"now\"; then\n", scriptfile);
   fputs("	echo Software license silently accepted via command-line option.\n", scriptfile);
   fputs("  else\n", scriptfile);

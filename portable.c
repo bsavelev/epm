@@ -2104,6 +2104,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   qprintf(scriptfile, "	echo software version %s on your system.\n",
           dist->version);
   fputs("	echo \"\"\n", scriptfile);
+  write_depends(prodname, dist, scriptfile, subpackage);
   fputs("	while true ; do\n", scriptfile);
   fputs("		echo $ac_n \"Do you wish to continue? [Yes] $ac_c\"\n", scriptfile);
   fputs("		read yesno\n", scriptfile);
@@ -2159,7 +2160,6 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   write_space_checks(prodfull, scriptfile, rootsize ? "sw" : NULL,
                      usrsize ? "ss" : NULL, rootsize, usrsize);
-  write_depends(prodname, dist, scriptfile, subpackage);
   write_commands(dist, scriptfile, COMMAND_PRE_INSTALL, subpackage);
 
 /*

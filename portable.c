@@ -1311,6 +1311,7 @@ write_depends(const char *prodname,	/* I - Product name */
 			};
 
 
+  fputs("ERROR=0\n", fp);
   for (i = 0, d = dist->depends; i < dist->num_depends; i ++, d ++)
     if (d->subpackage == subpackage)
     {
@@ -1358,7 +1359,7 @@ write_depends(const char *prodname,	/* I - Product name */
               fputs("	else\n", fp);
               fprintf(fp, "		echo Sorry, you must first install \\'%s\\'!\n",
 	              product);
-              fputs("		exit 1\n", fp);
+              fputs("		ERROR=1\n", fp);
               fputs("	fi\n", fp);
               fputs("fi\n", fp);
 
@@ -1495,6 +1496,8 @@ write_depends(const char *prodname,	/* I - Product name */
 	    break;
       }
     }
+
+  fputs("[ $ERROR -eq 1 ]  && exit 1\n", fp);
 
   return (0);
 }

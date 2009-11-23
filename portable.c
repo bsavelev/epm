@@ -1311,7 +1311,6 @@ write_depends(const char *prodname,	/* I - Product name */
 			};
 
 
-  fputs("TOBE_INST=''\n", fp);
   fputs("ERROR=0\n", fp);
   for (i = 0, d = dist->depends; i < dist->num_depends; i ++, d ++)
     if (d->subpackage == subpackage)
@@ -1350,7 +1349,9 @@ write_depends(const char *prodname,	/* I - Product name */
                       SoftwareDir, product);
               fprintf(fp, "	if test -x %s.install; then\n",
                       product);
-              fprintf(fp, "		TOBE_INST='$TOBE_INST %s'\n", product);
+              fprintf(fp, "		echo Installing required %s software...\n",
+                      product);
+              fprintf(fp, "		./%s.install now\n", product);
               fputs("	else\n", fp);
               fprintf(fp, "		echo Sorry, you must first install \\'%s\\'!\n",
 	              product);
@@ -1376,11 +1377,13 @@ write_depends(const char *prodname,	/* I - Product name */
 	        	d->vernumber[0], d->vernumber[1]);
         	fprintf(fp, "	if test -x %s.install; then\n",
                 	product);
-        	fprintf(fp, "		TOBE_INST='$TOBE_INST %s'\n", product);
+        	fprintf(fp, "		echo Installing required %s software...\n",
+                	product);
+        	fprintf(fp, "		./%s.install now\n", product);
         	fputs("	else\n", fp);
         	fprintf(fp, "		echo Sorry, you must first install \\'%s\\' version %s to %s!\n",
 	        	product, d->version[0], d->version[1]);
-        	fputs("		ERROR=1\n", fp);
+        	fputs("		exit 1\n", fp);
         	fputs("	fi\n", fp);
         	fputs("fi\n", fp);
 	      }
@@ -1487,10 +1490,6 @@ write_depends(const char *prodname,	/* I - Product name */
     }
 
   fputs("[ $ERROR -eq 1 ]  && exit 1\n", fp);
-  fputs("for pkg in $TOBE_INTS ; do\n", fp);
-  fputs("	echo Installing required $f software...\n", fp);
-  fputs("	./$f.install now\n", fp);
-  fputs("done\n", fp);
 
   return (0);
 }

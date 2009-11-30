@@ -2104,7 +2104,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("  fi\n", scriptfile);
   fputs("  DEPEND_RUN=\"no\"\n", scriptfile);
   fputs("  RECURSION=\"no\"\n", scriptfile);
-  fputs("  ./\"$0\" --depend\n", scriptfile);
+  fputs("  ./\"`basename $0`\" --depend\n", scriptfile);
   fputs("  if test \"$*\" = \"now\"; then\n", scriptfile);
   fputs("	echo Software license silently accepted via command-line option.\n", scriptfile);
   fputs("  else\n", scriptfile);

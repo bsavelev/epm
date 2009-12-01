@@ -1186,7 +1186,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fputs("PATH=/usr/xpg4/bin:/bin:/usr/bin:/usr/ucb:/sbin:/usr/sbin:${PATH}\n", fp);
   fputs("SHELL=/bin/sh\n", fp);
   fprintf(fp,"PACKAGE_VERSION=\"%s\"\n",dist->fulver);
-  fputs("UNAME_S=`uname -s | tr [:upper:] [:lower:]`\n",fp);
+  fputs("UNAME_S=`uname -s | tr \"[:upper:]\" \"[:lower:]\"`\n",fp);
   if (CustomPlatform)
     if (strcmp(CustomPlatform, "solaris") == 0)
        fputs("PACKAGE_PLATFORM=\"sunos\"\n", fp);

@@ -1,3 +1,4 @@
 [submodule "fltk"]
 	path = fltk
-	url = http://buildbot.i.drweb.ru/~b.savelev/git/fltk.git/
+	url = git://buildbot.i.drweb.ru/home/b.savelev/git/fltk.git/
+	track = origin/master

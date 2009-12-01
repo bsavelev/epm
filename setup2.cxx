@@ -78,19 +78,6 @@ AuthorizationRef SetupAuthorizationRef;
 #endif // __APPLE__
 
 
-//
-// Panes...
-//
-
-#define PANE_WELCOME	0
-#define PANE_TYPE	1
-#define PANE_SELECT	2
-#define PANE_CONFIRM	3
-#define PANE_LICENSE	4
-#define PANE_INSTALL	5
-#define PANE_POSTIN	6
-
-
 //LANG
 #define LANG_EN	0
 #define LANG_RU	1
@@ -107,9 +94,9 @@ typedef int (*compare_func_t)(const void *, const void *);
 // Local var
 //
 
-int licaccept = 0;
-FILE    *fdfile = NULL;
-int skip_pane_select = 1;
+int		licaccept = 0;
+FILE		*fdfile = NULL;
+int		skip_pane_select = 1;
 
 
 //
@@ -122,6 +109,7 @@ int	license_dist(const gui_dist_t *dist);
 void	load_image(void);
 void	load_readme(void);
 void	load_types(void);
+void	load_license(void);
 void	log_cb(int fd, int *fdptr);
 void	update_sizes(void);
 
@@ -193,6 +181,7 @@ main(int  argc,			// I - Number of command-line arguments
   load_image();
   load_readme();
   load_types();
+  load_license();
 
   w->show();
 
@@ -848,10 +837,10 @@ load_types(void)
   for (i = 0, dt = InstTypes; i < NumInstTypes; i ++, dt ++)
   {
     if (dt->size >= 1024)
-      sprintf(dt->label + strlen(dt->label), " (+%.1fm disk space)",
+      sprintf(dt->label + strlen(dt->label), " (+%.1fMb disk space)",
               dt->size / 1024.0);
     else if (dt->size)
-      sprintf(dt->label + strlen(dt->label), " (+%dk disk space)", dt->size);
+      sprintf(dt->label + strlen(dt->label), " (+%dKb disk space)", dt->size);
 
     if ((lineptr = strchr(dt->label, '/')) != NULL)
       TypeButton[i]->label(lineptr + 1);
@@ -1011,43 +1000,24 @@ void update_control(int from) {
   }
   if (Wizard->value() == Pane[PANE_LICENSE]) {
     //copy code from license_dist
-    char		licfile_en[1024];		// License filename
-    char		licfile_ru[1024];		// License filename
-    struct stat		licinfo;		// License file info
     static char		liclabel[1024];		// Label for license pane
-    int			has_licfile = 0;
-    // See if we need to show the license file...
-    sprintf(licfile_en, LIC_EN);
-    sprintf(licfile_ru, LIC_RU);
+
     snprintf(liclabel, sizeof(liclabel), "Software License");
     CancelButton->label("Cancel");
     CancelButton->deactivate();
     PrevButton->activate();
     NextButton->activate();
+    InstallLog->clear();
 //hack
     licaccept = 0;
-      // Set the title string...
-      LicenseFile->label(liclabel);
-      // Load the license into the viewer...
-      LicenseFile->textfont(FL_HELVETICA);
-      LicenseFile->textsize(14);
-    if (!stat(licfile_en, &licinfo))
-    {
-      //Lang control
-      Language->add("English");
-      Language->value(LANG_EN);
-      gui_load_file(LicenseFile, licfile_en);
-      has_licfile = 1;
-    }
-    if (!stat(licfile_ru, &licinfo))
-    {
-      //Lang control
-      Language->add("Russian");
-      if (!has_licfile)
-        gui_load_file(LicenseFile, licfile_ru);
-      has_licfile = 1;
-    }
-    if (has_licfile)
+
+    // Set the title string...
+    LicenseFile->label(liclabel);
+    // Load the license into the viewer...
+    LicenseFile->textfont(FL_HELVETICA);
+    LicenseFile->textsize(10);
+
+    if (Language->size() != 0)
     {
       // Show the license window and wait for the user...
       Pane[PANE_LICENSE]->show();
@@ -1078,6 +1048,11 @@ void update_control(int from) {
         licaccept = 0;
       } else if (LicenseAccept->value())
         licaccept = 1;
+    }
+    else
+    {
+      licaccept = 1;
+      Wizard->next();
     }
   }
 //install must be in own check
@@ -1154,6 +1129,10 @@ void update_control(int from) {
       gui_load_file(PostinFile, postin);
       PostinFile->textfont(FL_HELVETICA);
       PostinFile->textsize(14);
+    }
+    else
+    {
+      PostinFile->value("<p>Default postin text</p>");
     }
 
   }
@@ -1353,6 +1332,36 @@ change_lang(Fl_Choice*, void*)
 	case LANG_RU:
 		gui_load_file(LicenseFile, licfile_ru);
 		break;
+    }
+}
+
+void
+load_license()
+{
+  struct stat		licinfo;		// License file info
+  char		licfile_en[1024];		// License filename
+  char		licfile_ru[1024];		// License filename
+
+    // See if we need to show the license file...
+    sprintf(licfile_en, LIC_EN);
+    sprintf(licfile_ru, LIC_RU);
+
+    LicenseFile->textfont(FL_HELVETICA);
+    LicenseFile->textsize(10);
+
+    if (!stat(licfile_en, &licinfo))
+    {
+      //Lang control
+      Language->add("English");
+      Language->value(LANG_EN);
+      gui_load_file(LicenseFile, licfile_en);
+    }
+    if (!stat(licfile_ru, &licinfo))
+    {
+      //Lang control
+      Language->add("Russian");
+      if (Language->size() == 0)
+        gui_load_file(LicenseFile, licfile_ru);
     }
 }
 

@@ -465,10 +465,10 @@ Fl_Double_Window* make_window() {
         { SoftwareSize = new Fl_Box(170, 235, 241, 35, "0k marked for installation.");
           SoftwareSize->align(196|FL_ALIGN_INSIDE);
         } // Fl_Box* SoftwareSize
-        { InstallAllButton = new Fl_Button(421, 240, 80, 25, "Install All");
+        { InstallAllButton = new Fl_Button(421, 240, 80, 25, "Select all");
           InstallAllButton->callback((Fl_Callback*)cb_InstallAllButton);
         } // Fl_Button* InstallAllButton
-        { InstallNoneButton = new Fl_Button(511, 240, 99, 25, "Install None");
+        { InstallNoneButton = new Fl_Button(511, 240, 99, 25, "Select none");
           InstallNoneButton->callback((Fl_Callback*)cb_InstallNoneButton);
         } // Fl_Button* InstallNoneButton
         Pane[2]->end();

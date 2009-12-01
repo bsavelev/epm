@@ -55,13 +55,13 @@ Function {make_window()} {open
           xywh {170 215 220 35} align 212
         }
         Fl_Button RemoveAllButton {
-          label {Remove All}
+          label {Select all}
           callback {SoftwareList->check_all();
 list_cb(0,0);}
           xywh {400 220 90 25}
         }
         Fl_Button RemoveNoneButton {
-          label {Remove None}
+          label {Select none}
           callback {SoftwareList->check_none();
 list_cb(0,0);}
           xywh {500 220 110 25}

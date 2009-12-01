@@ -111,5 +111,18 @@ int		gui_sort_dists(const gui_dist_t *d0, const gui_dist_t *d1);
 #define LIC_RU "LICENSE.ru"
 
 //
+// Panes...
+//
+
+#define PANE_WELCOME	0
+#define PANE_TYPE	1
+#define PANE_SELECT	2
+#define PANE_CONFIRM	3
+#define PANE_LICENSE	4
+#define PANE_INSTALL	5
+#define PANE_POSTIN	6
+
+
+//
 // End of "$Id: gui-common.h,v 1.1.1.1.2.2 2009/09/30 12:59:35 bsavelev Exp $".
 //

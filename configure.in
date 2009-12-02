@@ -102,7 +102,7 @@ fi
 AC_PATH_PROG(RM,rm)
 AC_PATH_PROG(RPM,rpm)
 AC_PATH_PROG(RPMBUILD,rpmbuild)
-AC_PATH_PROG(STRIP,strip)
+AC_PATH_PROGS(STRIP,strip gstrip)
 AC_PATH_PROGS(OBJCOPY,objcopy gobjcopy)
 
 dnl Architecture checks...

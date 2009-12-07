@@ -3237,48 +3237,12 @@ write_space_checks(const char *prodname,/* I - Distribution name */
 		   int        rootsize,	/* I - / install size in kbytes */
 		   int        usrsize)	/* I - /usr install size in kbytes */
 {
-  fputs("case `uname` in\n", fp);
-  fputs("	AIX)\n", fp);
-  fputs("	dfroot=`df -k / | tr '\\n' ' '`\n", fp);
-  fputs("	dfusr=`df -k /usr | tr '\\n' ' '`\n", fp);
-  fputs("	fsroot=`echo $dfroot | awk '{print $15}'`\n", fp);
-  fputs("	sproot=`echo $dfroot | awk '{print $11}'`\n", fp);
-  fputs("	fsusr=`echo $dfusr | awk '{print $15}'`\n", fp);
-  fputs("	spusr=`echo $dfusr | awk '{print $11}'`\n", fp);
-  fputs("	;;\n\n", fp);
-  fputs("	HP-UX)\n", fp);
-  fputs("	dfroot=`df -k / | tr '\\n' ' '`\n", fp);
-  fputs("	dfusr=`df -k /usr | tr '\\n' ' '`\n", fp);
-  fputs("	fsroot=`echo $dfroot | awk '{print $1}'`\n", fp);
-  fputs("	sproot=`echo $dfroot | awk '{print $9}'`\n", fp);
-  fputs("	fsusr=`echo $dfusr | awk '{print $1}'`\n", fp);
-  fputs("	spusr=`echo $dfusr | awk '{print $9}'`\n", fp);
-  fputs("	;;\n\n", fp);
-  fputs("	IRIX*)\n", fp);
-  fputs("	dfroot=`df -k / | tr '\\n' ' '`\n", fp);
-  fputs("	dfusr=`df -k /usr | tr '\\n' ' '`\n", fp);
-  fputs("	fsroot=`echo $dfroot | awk '{print $15}'`\n", fp);
-  fputs("	sproot=`echo $dfroot | awk '{print $13}'`\n", fp);
-  fputs("	fsusr=`echo $dfusr | awk '{print $15}'`\n", fp);
-  fputs("	spusr=`echo $dfusr | awk '{print $13}'`\n", fp);
-  fputs("	;;\n\n", fp);
-  fputs("	SCO*)\n", fp);
-  fputs("	dfroot=`df -k -B / | tr '\\n' ' '`\n", fp);
-  fputs("	dfusr=`df -k -B /usr | tr '\\n' ' '`\n", fp);
-  fputs("	fsroot=`echo $dfroot | awk '{print $13}'`\n", fp);
-  fputs("	sproot=`echo $dfroot | awk '{print $11}'`\n", fp);
-  fputs("	fsusr=`echo $dfusr | awk '{print $13}'`\n", fp);
-  fputs("	spusr=`echo $dfusr | awk '{print $11}'`\n", fp);
-  fputs("	;;\n\n", fp);
-  fputs("	*)\n", fp);
-  fputs("	dfroot=`df -k / | tr '\\n' ' '`\n", fp);
-  fputs("	dfusr=`df -k /usr | tr '\\n' ' '`\n", fp);
-  fputs("	fsroot=`echo $dfroot | awk '{print $13}'`\n", fp);
-  fputs("	sproot=`echo $dfroot | awk '{print $11}'`\n", fp);
-  fputs("	fsusr=`echo $dfusr | awk '{print $13}'`\n", fp);
-  fputs("	spusr=`echo $dfusr | awk '{print $11}'`\n", fp);
-  fputs("	;;\n", fp);
-  fputs("esac\n", fp);
+  fputs("dfroot=`df -k -P / | tail -n1 | tr '\\n' ' '`\n", fp);
+  fputs("dfusr=`df -k -P /usr | tail -n1 | tr '\\n' ' '`\n", fp);
+  fputs("fsroot=`echo $dfroot | awk '{print $6}'`\n", fp);
+  fputs("sproot=`echo $dfroot | awk '{print $4}'`\n", fp);
+  fputs("fsusr=`echo $dfusr | awk '{print $4}'`\n", fp);
+  fputs("spusr=`echo $dfusr | awk '{print $6}'`\n", fp);
   fputs("\n", fp);
 
   fputs("if test x$sproot = x -o x$spusr = x; then\n", fp);

@@ -3241,8 +3241,8 @@ write_space_checks(const char *prodname,/* I - Distribution name */
   fputs("dfusr=`df -k -P /usr | tail -n1 | tr '\\n' ' '`\n", fp);
   fputs("fsroot=`echo $dfroot | awk '{print $6}'`\n", fp);
   fputs("sproot=`echo $dfroot | awk '{print $4}'`\n", fp);
-  fputs("fsusr=`echo $dfusr | awk '{print $4}'`\n", fp);
-  fputs("spusr=`echo $dfusr | awk '{print $6}'`\n", fp);
+  fputs("fsusr=`echo $dfusr | awk '{print $6}'`\n", fp);
+  fputs("spusr=`echo $dfusr | awk '{print $4}'`\n", fp);
   fputs("\n", fp);
 
   fputs("if test x$sproot = x -o x$spusr = x; then\n", fp);

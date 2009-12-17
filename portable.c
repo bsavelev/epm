@@ -2371,16 +2371,22 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("echo Updating file permissions...\n", scriptfile);
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (strcmp(file->user, "root") != 0 && file->subpackage == subpackage)
+    if (file->subpackage == subpackage)
       switch (tolower(file->type))
       {
 	case 'c' :
-	    qprintf(scriptfile, "chown %s %s/conf/%s.N\n", file->user, SoftwareDir, file->dst);
-	    qprintf(scriptfile, "chgrp %s %s/conf/%s.N\n", file->group, SoftwareDir, file->dst);
+	    if (strcmp(file->user, "root") != 0 )
+	    {
+	      qprintf(scriptfile, "chown %s %s/conf/%s.N\n", file->user, SoftwareDir, file->dst);
+	      qprintf(scriptfile, "chgrp %s %s/conf/%s.N\n", file->group, SoftwareDir, file->dst);
+	    }
 	    qprintf(scriptfile, "chmod %o %s/conf/%s.N\n", file->mode, SoftwareDir, file->dst);
 	case 'f' :
-	    qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
-	    qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
+	    if (strcmp(file->user, "root") != 0 )
+	    {
+	      qprintf(scriptfile, "chown %s %s\n", file->user, file->dst);
+	      qprintf(scriptfile, "chgrp %s %s\n", file->group, file->dst);
+	    }
 	    qprintf(scriptfile, "chmod %o %s\n", file->mode, file->dst);
 	    break;
       }

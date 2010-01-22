@@ -3215,9 +3215,12 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 	qprintf(scriptfile, "if test -d %s -a -w \"`dirname \"%s\"`\" ; then\n", file->dst, file->dst);
 //placeholder
 	qprintf(scriptfile, "	rm -f \"%s/possessed%s/%s.placeholder\"\n", SoftwareDir, file->dst, prodfull);
-	qprintf(scriptfile, "	rmdir %s/possessed%s 2>/dev/null && \\\n", SoftwareDir, file->dst);
-	qprintf(scriptfile, "	rmdir -p %s 2>/dev/null || true\n",file->dst);
-	qprintf(scriptfile, "	rmdir -p %s/possessed`dirname %s` 2>/dev/null || true\n", SoftwareDir, file->dst);
+	qprintf(scriptfile, "	if ( cd %s && rmdir -p possessed%s 2>/dev/null ) ; then\n", SoftwareDir, file->dst);
+	qprintf(scriptfile, "\t\trmdir -p %s 2>/dev/null || true\n",file->dst);
+	fputs("\telse\n", scriptfile);
+	qprintf(scriptfile, "\t\trmdir %s/possessed%s 2>/dev/null && \\\n", SoftwareDir, file->dst);
+	qprintf(scriptfile, "\t\trmdir %s 2>/dev/null || true\n",file->dst);
+	fputs("\tfi\n", scriptfile);
 	fputs("fi\n", scriptfile);
       }
   }

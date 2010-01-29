@@ -3177,6 +3177,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("	fi\n", scriptfile);
     qprintf(scriptfile, "	rm -f \"%s/conf/$file.N\"\n", SoftwareDir);
     fputs("done\n", scriptfile);
+    qprintf(scriptfile, "rmdir \"%s/conf\" 2>/dev/null || true\n", SoftwareDir);
   }
 
   // Remove init.d scripts
@@ -3199,6 +3200,8 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("; do\n", scriptfile);
     qprintf(scriptfile, "		rm -f %s/init.d/$file \n", SoftwareDir);
     fputs("done\n", scriptfile);
+    qprintf(scriptfile, "rmdir %s/init.d/$file \n", SoftwareDir);
+    qprintf(scriptfile, "rmdir \"%s/init.d\" 2>/dev/null || true\n", SoftwareDir);
   }
 
   for (i = dist->num_files, file = dist->files + i - 1; i > 0; i --, file --)
@@ -3217,9 +3220,9 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 	qprintf(scriptfile, "	rm -f \"%s/possessed%s/%s.placeholder\"\n", SoftwareDir, file->dst, prodfull);
 	qprintf(scriptfile, "	if ( cd %s && rmdir -p possessed%s 2>/dev/null ) ; then\n", SoftwareDir, file->dst);
 	qprintf(scriptfile, "\t\trmdir -p %s 2>/dev/null || true\n",file->dst);
-	fputs("\telse\n", scriptfile);
+	qprintf(scriptfile, "\telif ( cd %s && rmdir possessed%s 2>/dev/null ) ; then\n", SoftwareDir, file->dst);
 	qprintf(scriptfile, "\t\trmdir %s 2>/dev/null || true\n",file->dst);
-	fputs("\tfi\n", scriptfile);
+	fputs("\tfi fi\n", scriptfile);
 	fputs("fi\n", scriptfile);
       }
   }

@@ -3223,7 +3223,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 	qprintf(scriptfile, "\t\trmdir -p %s 2>/dev/null || true\n",file->dst);
 	qprintf(scriptfile, "\telif ( cd %s && rmdir possessed%s 2>/dev/null ) ; then\n", SoftwareDir, file->dst);
 	qprintf(scriptfile, "\t\trmdir %s 2>/dev/null || true\n",file->dst);
-	fputs("\tfi fi\n", scriptfile);
+	fputs("\tfi\n", scriptfile);
 	fputs("fi\n", scriptfile);
       }
   }

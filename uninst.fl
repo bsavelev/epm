@@ -7,7 +7,7 @@ Function {make_window()} {open
   Fl_Window UninstallWindow {
     label Uninstall
     callback {if (CancelButton->active())
-  exit(0);} open selected
+  exit(0);} open
     xywh {87 295 640 310} type Double resizable
     code0 {\#include "gui-common.h"}
     code1 {\#include "uninst2.h"} visible
@@ -91,8 +91,8 @@ list_cb(0,0);}
         }
       }
     }
-    Fl_Box WelcomeImage {
-      image {default.xpm} xywh {10 170 130 130} align 22
+    Fl_Box WelcomeImage {selected
+      image {install-109x119.png} xywh {10 170 130 130} align 22
     }
     Fl_Button PrevButton {
       label {@-2< Back}

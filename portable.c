@@ -2092,6 +2092,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
                     "     %s\n", filename, strerror(errno));
     return (-1);
   }
+  fputs("FORCE_INSTALL=\"no\"\n", scriptfile);
   fputs("if test \"$*\" = \"--depend\"; then\n", scriptfile);
   fputs("  DEPEND_RUN=\"yes\"\n", scriptfile);
   fputs("  RECURSION=\"no\"\n", scriptfile);
@@ -2107,9 +2108,10 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("  RECURSION=\"no\"\n", scriptfile);
   fputs("  ./\"`basename $0`\" --depend\n", scriptfile);
   fputs("  if test \"$*\" = \"now\"; then\n", scriptfile);
-  fputs("	DEPEND_RUN=\"no\"\n", scriptfile);
-  fputs("	RECURSION=\"no\"\n", scriptfile);
   fputs("	echo Software license silently accepted via command-line option.\n", scriptfile);
+  fputs("  elif test \"$*\" = \"--force\"; then\n", scriptfile);
+  fputs("	echo Software license silently accepted via command-line option.\n", scriptfile);
+  fputs("	FORCE_INSTALL=\"yes\"\n", scriptfile);
   fputs("  else\n", scriptfile);
   fputs("	echo \"\"\n", scriptfile);
 
@@ -2184,7 +2186,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   fputs("  fi\n", scriptfile);
   fputs("fi\n", scriptfile);
-  fprintf(scriptfile, "if test -x %s/%s.remove -a x$DEPEND_RUN = xno; then\n", SoftwareDir, prodfull);
+  fprintf(scriptfile, "if test -x %s/%s.remove -a x$DEPEND_RUN = xno -a x$FORCE_INSTALL = xno; then\n", SoftwareDir, prodfull);
   fprintf(scriptfile, "\tif [ \"`grep \'^#%%version\' %s/%s.remove | awk \'{print $3}\'`\" = \"$PACKAGE_VERSION\" ] ; then\n", SoftwareDir, prodfull);
   fprintf(scriptfile,"\t\techo \"Package %s is up-to-date.\"\n",prodfull);
   fputs("\t\texit 0\n",scriptfile);

@@ -2184,7 +2184,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   fputs("  fi\n", scriptfile);
   fputs("fi\n", scriptfile);
-  fprintf(scriptfile, "if test -x %s/%s.remove; then\n", SoftwareDir, prodfull);
+  fprintf(scriptfile, "if test -x %s/%s.remove -a x$DEPEND_RUN = xno; then\n", SoftwareDir, prodfull);
   fprintf(scriptfile, "\tif [ \"`grep \'^#%%version\' %s/%s.remove | awk \'{print $3}\'`\" = \"$PACKAGE_VERSION\" ] ; then\n", SoftwareDir, prodfull);
   fprintf(scriptfile,"\t\techo \"Package %s is up-to-date.\"\n",prodfull);
   fputs("\t\texit 0\n",scriptfile);

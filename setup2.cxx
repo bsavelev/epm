@@ -97,6 +97,7 @@ typedef int (*compare_func_t)(const void *, const void *);
 int		licaccept = 0;
 FILE		*fdfile = NULL;
 int		skip_pane_select = 1;
+int		Verbosity = 0;
 
 
 //
@@ -1116,7 +1117,27 @@ void update_control(int from) {
   if (Wizard->value() == Pane[PANE_POSTIN]) {
     // Show the licenses for each of the selected software packages...
     char		postin[1024];		// postin message filename
+    char		xterm_cmd[1024];	// postin script
     struct stat	postin_info;		// postin message file info
+
+#define POSTIN_SCRIPT "./scripts/postinstall.sh"
+#define POSTIN_SCRIPT_ADD "echo 'Press <enter> to quit'; read"
+    sprintf(xterm_cmd, "%s; %s",POSTIN_SCRIPT,POSTIN_SCRIPT_ADD);
+    if (!stat(POSTIN_SCRIPT, &postin_info))
+    {
+      int 		pid;
+      int		status;
+      SetupWindow->hide();
+      if ((pid = fork()) == 0)
+      {
+        execlp("xterm","xterm","-title","DrWeb","-e",xterm_cmd, (char *)0);
+      }
+      while (true)
+        if (waitpid(0, &status, WNOHANG) == pid)
+          break;
+      wait(&status);
+      SetupWindow->show();
+    }
     update_label();
     NextButton->deactivate();
     PrevButton->deactivate();

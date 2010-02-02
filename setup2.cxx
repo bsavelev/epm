@@ -1123,7 +1123,7 @@ void update_control(int from) {
 #define POSTIN_SCRIPT "./scripts/postinstall.sh"
 #define POSTIN_SCRIPT_ADD "echo 'Press <enter> to quit'; read"
     sprintf(xterm_cmd, "%s; %s",POSTIN_SCRIPT,POSTIN_SCRIPT_ADD);
-    if (!stat(POSTIN_SCRIPT, &postin_info))
+    if (!stat(POSTIN_SCRIPT, &postin_info) && !system("which xterm 2>/dev/null >/dev/null"))
     {
       int 		pid;
       int		status;

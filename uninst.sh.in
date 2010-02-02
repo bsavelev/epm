@@ -155,9 +155,10 @@ runCustomRemove() {
 packageListLoop=false
 retval=0
 if [ -n "$selectedCustom" ] ; then
+    clear
     echo "A list of packages marked for removal:"
     for f in $selectedCustom ; do
-	printf "\t%s\n" "$f"
+	printf "\t%s\n" "`basename "$f" .remove`"
     done
     while true ; do
 	printf "Are you sure you want to remove the selected packages? [Yes]"

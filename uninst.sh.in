@@ -1,0 +1,206 @@
+#!/bin/sh
+
+WelcomePane(){
+clear
+echo ""
+echo This installation script will help you remove Dr.Web product
+echo ""
+while true ; do
+    printf "Do you wish to continue? [Yes] "
+    showyesno
+done
+}
+
+checkRoot() {
+if [ `id -u` != 0 ]; then
+  echo
+  echo 'Sorry, you must be root to install this software.'
+  echo
+  exit 1
+fi
+}
+
+envInit(){
+if [ -f /usr/xpg4/bin/awk ]; then
+    AWK=/usr/xpg4/bin/awk
+else
+    AWK=awk
+fi
+
+if [ -f /usr/xpg4/bin/sed ]; then
+    SED=/usr/xpg4/bin/sed
+else
+    SED=sed
+fi
+
+if [ -f /usr/xpg4/bin/grep ]; then
+    GREP=/usr/xpg4/bin/grep
+else
+    GREP=grep
+fi
+
+if [ -f /usr/xpg4/bin/egrep ]; then
+    EGREP=/usr/xpg4/bin/egrep
+else
+    EGREP=egrep
+fi
+}
+
+showyesno() {
+    read yesno
+    case "$yesno" in
+        y | yes | Y | Yes | YES | "")
+            break
+        ;;
+        n | no | N | No | NO)
+            exit 1
+        ;;
+        *)
+            echo Please enter yes or no.
+        ;;
+    esac
+}
+
+initCustom(){
+list=`ls *.remove 2>/dev/null`
+selectedCustom=""
+packageListLoop=true
+}
+
+isselectedCustom(){
+item="$1"
+retval=1
+for m in $selectedCustom ; do
+    if [ "$m" = "$item" ] ; then
+	retval=0
+	break
+    fi
+done
+return $retval
+}
+
+numToNameCustom() {
+num=$1
+i=0
+retval=""
+for k in $list ; do
+    i=`expr $i + 1`
+    if [ $num -eq $i ] ; then
+	retval=$k
+	break
+    fi
+done
+echo "$retval"
+}
+
+doselectCustom() {
+#check if not number
+[ 1 -eq "$1" ] 2>/dev/null
+if [ $? -eq 2 ] ; then
+    name=$1
+else
+    name=`numToNameCustom $1`
+fi
+
+if ( isselectedCustom "$name" ) ; then
+    #remove
+    selectedCustom=`echo "$selectedCustom" | tr "[:space:]" "\n" | $GREP -v "$name"`
+else
+    #add
+    if [ -z "$selectedCustom" ] ; then
+	selectedCustom="$name"
+    else
+	selectedCustom="$name $selectedCustom"
+    fi
+fi
+    REQ_CHECK_LOOP=true
+    while $REQ_CHECK_LOOP ; do
+	REQ_CHECK_LOOP=false
+	for f in $list ; do
+	  if ( ! isselectedCustom "$f" ) ; then
+	    crequires=`cat "./$f" | grep '#%requires' | awk '{print $2".remove"}' | sort | uniq`
+	    if [ -n "$crequires" ] ; then
+		for l in $crequires ; do
+		  if ( isselectedCustom "$name" ) ; then
+		    if ( isselectedCustom "$l" ) ; then
+			selectedCustom="$selectedCustom $f"
+			REQ_CHECK_LOOP=true
+		    fi
+		  else
+		    selectedCustom=`echo "$selectedCustom" | tr "[:space:]" "\n" | $GREP -v "$l"`
+		  fi
+		done
+	    fi
+	  fi
+	done
+    done
+    selectedCustom=`echo "$selectedCustom" | tr "[:space:]" "\n" | sort | uniq`
+}
+
+showListCustom() {
+clear
+k=0
+echo "Select the software you want to remove:"
+for p in $list ; do
+    k=`expr $k + 1`
+    flag=" "
+    isselectedCustom "$p" && flag="X"
+    product="`head "$p" | $GREP %product | $SED 's|^#%product ||'`"
+    ver="`head "$p" | $GREP %version | cut -d" " -f2`"
+    printf "\t[%s] %d %s (%s)\n" "$flag" $k "$product" "$ver"
+done
+}
+
+runCustomRemove() {
+packageListLoop=false
+retval=0
+if [ -n "$selectedCustom" ] ; then
+    echo "A list of packages marked for removal:"
+    for f in $selectedCustom ; do
+	printf "\t%s\n" "$f"
+    done
+    while true ; do
+	printf "Are you sure you want to remove the selected packages? [Yes]"
+	showyesno
+    done
+    for comp in $selectedCustom ; do
+	./"$comp" now
+    done
+else
+    echo "Nothing to remove. Exiting..."
+    retval=1
+fi
+return $retval
+}
+
+mainCustom() {
+if [ -z "$list" ] ; then
+    echo "Nothing to remove. Exiting..."
+    return 1
+fi
+while $packageListLoop ; do
+    showListCustom
+    echo
+    printf "To select a package you want to remove or deselect some previously\nselected package - enter the corresponding package number and press Enter.\nEnter 0 to remove the previously selected package and exit.\n"
+    read -p "Select: "
+    usersel=$REPLY
+    if [ $usersel -eq 0 ] ; then runCustomRemove
+    else
+	doselectCustom $usersel
+    fi
+done
+}
+
+checkRoot
+SOFTWAREDIR="@EPM_SOFTWARE@"
+if [ -d "$SOFTWAREDIR" ] ; then
+    cd "$SOFTWAREDIR"
+else
+    echo "Software dir -- "$SOFTWAREDIR" not found."
+    exit 1
+fi
+envInit
+initCustom
+mainCustom
+
+exit 0

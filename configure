@@ -4740,16 +4740,17 @@ if test "x$ac_cv_header_strings_h" = x""yes; then :
 fi
 
 
-ac_fn_c_check_header_mongrel "$LINENO" "sys/mount.h" "ac_cv_header_sys_mount_h" "$ac_includes_default"
-if test "x$ac_cv_header_sys_mount_h" = x""yes; then :
-  $as_echo "#define HAVE_SYS_MOUNT_H 1" >>confdefs.h
+ac_fn_c_check_header_mongrel "$LINENO" "sys/param.h" "ac_cv_header_sys_param_h" "$ac_includes_default"
+if test "x$ac_cv_header_sys_param_h" = x""yes; then :
+  $as_echo "#define HAVE_SYS_PARAM_H 1" >>confdefs.h
 
 fi
 
 
-ac_fn_c_check_header_mongrel "$LINENO" "sys/param.h" "ac_cv_header_sys_param_h" "$ac_includes_default"
-if test "x$ac_cv_header_sys_param_h" = x""yes; then :
-  $as_echo "#define HAVE_SYS_PARAM_H 1" >>confdefs.h
+ac_fn_c_check_header_compile "$LINENO" "sys/mount.h" "ac_cv_header_sys_mount_h" "#include <sys/param.h>
+"
+if test "x$ac_cv_header_sys_mount_h" = x""yes; then :
+  $as_echo "#define HAVE_SYS_MOUNT_H 1" >>confdefs.h
 
 fi
 

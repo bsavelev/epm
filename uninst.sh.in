@@ -183,8 +183,8 @@ while $packageListLoop ; do
     showListCustom
     echo
     printf "To select a package you want to remove or deselect some previously\nselected package - enter the corresponding package number and press Enter.\nEnter 0 to remove the previously selected package and exit.\n"
-    read -p "Select: "
-    usersel=$REPLY
+    usersel=0
+    read -p "Select: " usersel
     if [ $usersel -eq 0 ] ; then runCustomRemove
     else
 	doselectCustom $usersel

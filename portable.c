@@ -3203,7 +3203,6 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("; do\n", scriptfile);
     qprintf(scriptfile, "		rm -f %s/init.d/$file \n", SoftwareDir);
     fputs("done\n", scriptfile);
-    qprintf(scriptfile, "rmdir %s/init.d/$file \n", SoftwareDir);
     qprintf(scriptfile, "rmdir \"%s/init.d\" 2>/dev/null || true\n", SoftwareDir);
   }
 

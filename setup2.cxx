@@ -1117,27 +1117,10 @@ void update_control(int from) {
   if (Wizard->value() == Pane[PANE_POSTIN]) {
     // Show the licenses for each of the selected software packages...
     char		postin[1024];		// postin message filename
-    char		xterm_cmd[1024];	// postin script
     struct stat	postin_info;		// postin message file info
-
+    int res;
 #define POSTIN_SCRIPT "./scripts/postinstall.sh"
-#define POSTIN_SCRIPT_ADD "echo 'Press <enter> to quit'; read"
-    sprintf(xterm_cmd, "%s; %s",POSTIN_SCRIPT,POSTIN_SCRIPT_ADD);
-    if (!stat(POSTIN_SCRIPT, &postin_info) && !system("which xterm 2>/dev/null >/dev/null"))
-    {
-      int 		pid;
-      int		status;
-      SetupWindow->hide();
-      if ((pid = fork()) == 0)
-      {
-        execlp("xterm","xterm","-title","DrWeb","-e",xterm_cmd, (char *)0);
-      }
-      while (true)
-        if (waitpid(0, &status, WNOHANG) == pid)
-          break;
-      wait(&status);
-      SetupWindow->show();
-    }
+    res = run_command(NULL, "%s", POSTIN_SCRIPT);
     update_label();
     NextButton->deactivate();
     PrevButton->deactivate();

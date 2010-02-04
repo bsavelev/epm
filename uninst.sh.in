@@ -182,13 +182,32 @@ fi
 while $packageListLoop ; do
     showListCustom
     echo
-    printf "To select a package you want to remove or deselect some previously\nselected package - enter the corresponding package number and press Enter.\nEnter 0 to remove the previously selected package and exit.\n"
+printf "To select a package you want to remove or deselect some previously
+selected package - enter the corresponding package number and press Enter.
+
+You may enter A or All to select all the packages, and N or None to deselect all of them.
+Enter R or Remove to remove selected packages.\nEnter 0, Q or Quit to quit the dialog.
+All values are case insensitive.\n"
     usersel=0
     read -p "Select: " usersel
-    if [ $usersel -eq 0 ] ; then runCustomRemove
-    else
-	doselectCustom $usersel
-    fi
+    case "$usersel" in
+	0 | [qQ] | [qQ][uU][iI][tT])
+	    exit 0
+	;;
+	[rR] | [rR][eE][mM][oO][vV][eE])
+	    runCustomRemove
+	    return $?
+	;;
+	[aA][lL][lL] | [aA])
+	    selectedCustom="$list"
+	;;
+	[nN][oO][nN][eE] | [nN])
+	    selectedCustom=""
+	;;
+	*)
+	    doselectCustom $usersel
+	;;
+    esac
 done
 }
 

@@ -1153,7 +1153,7 @@ void update_control(int from) {
     }
     else
     {
-      PostinFile->value("<p>Default postin text</p>");
+      PostinFile->value("<span>Installation complete</span>");
     }
 
   }

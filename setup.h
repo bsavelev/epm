@@ -35,6 +35,8 @@ extern Fl_Choice *Language;
 #include <FL/Fl_Progress.H>
 extern Fl_Progress *InstallPercent;
 extern Fl_Browser *InstallLog;
+#include <FL/Fl_Check_Button.H>
+extern Fl_Check_Button *CheckPostin;
 extern Fl_Group *Pane[7];
 extern Fl_Help_View *PostinFile;
 extern Fl_Box *WelcomeImage;

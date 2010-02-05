@@ -172,6 +172,10 @@ list_cb(0,0);}
         Fl_Browser InstallLog {
           xywh {150 74 510 191}
         }
+        Fl_Check_Button CheckPostin {
+          label {Run interactive postinstall script}
+          xywh {145 270 515 20} down_box DOWN_BOX
+        }
       }
       Fl_Group {Pane[6]} {open
         xywh {145 20 525 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide

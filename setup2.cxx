@@ -99,6 +99,8 @@ FILE		*fdfile = NULL;
 int		skip_pane_select = 1;
 int		Verbosity = 0;
 
+#define POSTIN_SCRIPT "./scripts/postinstall.sh"
+#define POSTIN_I_SCRIPT "./scripts/postinstall-i.sh"
 
 //
 // Local functions...
@@ -943,7 +945,9 @@ void update_control(int from) {
   int		error;			// Errors?
   static char	message[1024];		// Progress message...
   static char	install_type[1024];	// EPM_INSTALL_TYPE env variable
-	
+  char		postin_script[1024];
+  struct stat	postin_info;		// postin message file info	
+
   update_label();
 
 //open log
@@ -1071,6 +1075,7 @@ void update_control(int from) {
       return;
     }
 //deactivate buttons due install progress
+    CheckPostin->hide();
     NextButton->deactivate();
     PrevButton->deactivate();
     CancelButton->deactivate();
@@ -1105,6 +1110,9 @@ void update_control(int from) {
     } else {
       InstallPercent->label("Installation Complete");
       NextButton->activate();
+      sprintf(postin_script, POSTIN_I_SCRIPT);
+      if (!stat(postin_script, &postin_info))
+        CheckPostin->show();
     }
     Pane[PANE_INSTALL]->redraw();
 
@@ -1117,10 +1125,13 @@ void update_control(int from) {
   if (Wizard->value() == Pane[PANE_POSTIN]) {
     // Show the licenses for each of the selected software packages...
     char		postin[1024];		// postin message filename
-    struct stat	postin_info;		// postin message file info
     int res;
-#define POSTIN_SCRIPT "./scripts/postinstall.sh"
-    res = run_command(NULL, "%s", POSTIN_SCRIPT);
+
+    sprintf(postin_script, POSTIN_SCRIPT);
+    if (!stat(postin_script, &postin_info))
+      res = run_command(NULL, "%s", POSTIN_SCRIPT);
+    if (CheckPostin->value() != 0)
+      res = run_command(NULL, "%s", POSTIN_I_SCRIPT);
     update_label();
     NextButton->deactivate();
     PrevButton->deactivate();

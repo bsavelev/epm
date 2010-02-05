@@ -57,6 +57,8 @@ Fl_Progress *InstallPercent=(Fl_Progress *)0;
 
 Fl_Browser *InstallLog=(Fl_Browser *)0;
 
+Fl_Check_Button *CheckPostin=(Fl_Check_Button *)0;
+
 Fl_Group *Pane[7]={(Fl_Group *)0};
 
 Fl_Help_View *PostinFile=(Fl_Help_View *)0;
@@ -2444,6 +2446,9 @@ Fl_Double_Window* make_window() {
         } // Fl_Progress* InstallPercent
         { InstallLog = new Fl_Browser(150, 74, 510, 191);
         } // Fl_Browser* InstallLog
+        { CheckPostin = new Fl_Check_Button(145, 270, 515, 20, "Run interactive postinstall script");
+          CheckPostin->down_box(FL_DOWN_BOX);
+        } // Fl_Check_Button* CheckPostin
         Pane[5]->end();
       } // Fl_Group* Pane[5]
       { Pane[6] = new Fl_Group(145, 20, 525, 275);

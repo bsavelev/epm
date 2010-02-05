@@ -11,6 +11,11 @@ while true ; do
 done
 }
 
+checkNum() {
+[ 1 -eq "$1" ] 2>/dev/null
+return $?
+}
+
 checkRoot() {
 if [ `id -u` != 0 ]; then
   echo
@@ -95,7 +100,7 @@ echo "$retval"
 
 doselectCustom() {
 #check if not number
-[ 1 -eq "$1" ] 2>/dev/null
+checkNum "$1"
 if [ $? -eq 2 ] ; then
     name=$1
 else
@@ -205,7 +210,10 @@ All values are case insensitive.\n"
 	    selectedCustom=""
 	;;
 	*)
-	    doselectCustom $usersel
+	    checkNum "$usersel"
+	    if [ $? -ne 2 ] ; then
+		doselectCustom $usersel
+	    fi
 	;;
     esac
 done

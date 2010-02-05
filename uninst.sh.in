@@ -132,7 +132,10 @@ fi
 			REQ_CHECK_LOOP=true
 		    fi
 		  else
-		    selectedCustom=`echo "$selectedCustom" | tr "[:space:]" "\n" | $GREP -v "$l"`
+		    if ( isselectedCustom "$l" ) ; then
+			selectedCustom=`echo "$selectedCustom" | tr "[:space:]" "\n" | $GREP -v "$l"`
+			REQ_CHECK_LOOP=true
+		    fi
 		  fi
 		done
 	    fi

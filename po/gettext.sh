@@ -87,7 +87,11 @@ fi
 # looks up the translation of MSGID and substitutes shell variables in the
 # result.
 eval_gettext () {
+if ( which envsubst >/dev/null 2>/dev/null ) ; then
   gettext "$1" | (export PATH `envsubst --variables "$1"`; envsubst "$1")
+else
+  gettext "$1"
+fi
 }
 
 # eval_ngettext MSGID MSGID-PLURAL COUNT

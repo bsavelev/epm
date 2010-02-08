@@ -5253,6 +5253,12 @@ _ACEOF
 	fi
 fi
 
+
+cat >>confdefs.h <<_ACEOF
+#define LOCALEDIR "$datarootdir/locale"
+_ACEOF
+
+
 ac_config_files="$ac_config_files Makefile epm.list doc/Makefile uninst.sh"
 
 cat >confcache <<\_ACEOF

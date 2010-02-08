@@ -1,0 +1,379 @@
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: n.zdanova@drweb.com \n"
+"POT-Creation-Date: 2010-02-04 13:47+0300\n"
+"Last-Translator: Natalia Zdanova <n.zdanova@drweb.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: setup.cxx:2260
+msgid "Install"
+msgstr ""
+
+#: setup.cxx:2262 uninst.cxx:2240
+msgid "Welcome"
+msgstr ""
+
+#: setup.cxx:2266
+msgid "Install Type"
+msgstr ""
+
+#: setup.cxx:2271 uninst.cxx:2244
+msgid "Select Software"
+msgstr ""
+
+#: setup.cxx:2276 uninst.cxx:2249
+msgid "Confirm"
+msgstr ""
+
+#: setup.cxx:2281
+msgid "License"
+msgstr ""
+
+#: setup.cxx:2286
+msgid "Installing"
+msgstr ""
+
+#: setup.cxx:2291
+msgid "Finish"
+msgstr ""
+
+#: setup.cxx:2315
+msgid "Select the installation type:"
+msgstr ""
+
+#: setup.cxx:2369
+msgid "Select the software you want to install:"
+msgstr ""
+
+#: setup.cxx:2372
+msgid " Available Software:"
+msgstr ""
+
+#: setup.cxx:2381
+msgid "0k marked for installation."
+msgstr ""
+
+#: setup.cxx:2384 uninst.cxx:2295
+msgid "Select all"
+msgstr ""
+
+#: setup.cxx:2387 uninst.cxx:2298
+msgid "Select none"
+msgstr ""
+
+#: setup.cxx:2398
+msgid "Confirm your software selections below:"
+msgstr ""
+
+#: setup.cxx:2401
+msgid "Selected Software:"
+msgstr ""
+
+#: setup.cxx:2412
+msgid "License Agreement:"
+msgstr ""
+
+#: setup.cxx:2418
+msgid "Accept and install"
+msgstr ""
+
+#: setup.cxx:2424
+msgid "Cancel installation"
+msgstr ""
+
+#: setup.cxx:2431
+msgid "Language:"
+msgstr ""
+
+#: setup.cxx:2443 uninst.cxx:2323
+msgid "Progress Label..."
+msgstr ""
+
+#: setup.cxx:2450
+msgid "Run interactive postinstall script"
+msgstr ""
+
+#: setup.cxx:2461
+msgid "Congratulation:"
+msgstr ""
+
+#: setup.cxx:2473 uninst.cxx:2341
+msgid "@-2< Back"
+msgstr ""
+
+#: setup.cxx:2476 uninst.cxx:2344
+msgid "Next @-2>"
+msgstr ""
+
+#: setup.cxx:2479 setup2.cxx:1015 setup2.cxx:1086 setup2.cxx:1165
+#: uninst.cxx:2347 uninst2.cxx:419
+msgid "Cancel"
+msgstr ""
+
+#: setup2.cxx:227
+msgid "You must be logged in as root to run setup!"
+msgstr ""
+
+#: setup2.cxx:397
+msgid "No software found to install!"
+msgstr ""
+
+#: setup2.cxx:411
+msgid " (new)"
+msgstr ""
+
+#: setup2.cxx:416
+msgid " (downgrade)"
+msgstr ""
+
+#: setup2.cxx:421
+msgid " (installed)"
+msgstr ""
+
+#: setup2.cxx:426
+msgid " (upgrade)"
+msgstr ""
+
+#: setup2.cxx:473
+msgid "Failed to execute install script!"
+msgstr ""
+
+#: setup2.cxx:506
+msgid "Unable to install"
+msgstr ""
+
+#: setup2.cxx:622
+#, c-format
+msgid ""
+"%s requires %s to be installed, but it is not available for installation."
+msgstr ""
+
+#: setup2.cxx:635
+#, c-format
+msgid ""
+"%s is incompatible with %s. Please remove it before installing this software."
+msgstr ""
+
+#: setup2.cxx:652
+#, c-format
+msgid ""
+"%s is incompatible with %s. Please deselect it before installing this "
+"software."
+msgstr ""
+
+#: setup2.cxx:716
+msgid ""
+"This program allows you to install the following software:\n"
+"<ul>\n"
+msgstr ""
+
+#: setup2.cxx:847
+#, c-format
+msgid " (+%.1fMb disk space)"
+msgstr ""
+
+#: setup2.cxx:850
+#, c-format
+msgid " (+%dKb disk space)"
+msgstr ""
+
+#: setup2.cxx:1014
+#, c-format
+msgid "Software License"
+msgstr ""
+
+#: setup2.cxx:1055
+#, c-format
+msgid "License not accepted!"
+msgstr ""
+
+#: setup2.cxx:1073
+msgid "Installation Canceled!"
+msgstr ""
+
+#: setup2.cxx:1075 setup2.cxx:1112 setup2.cxx:1143 uninst2.cxx:433
+msgid "Close"
+msgstr ""
+
+#: setup2.cxx:1096
+#, c-format
+msgid "Installing %s v%s..."
+msgstr ""
+
+#: setup2.cxx:1111
+msgid "Installation Failed!"
+msgstr ""
+
+#: setup2.cxx:1115
+msgid "Installation Complete"
+msgstr ""
+
+#: setup2.cxx:1306 uninst2.cxx:714
+#, c-format
+msgid "%+.1fMb required, %dMb available."
+msgstr ""
+
+#: setup2.cxx:1310 uninst2.cxx:718
+#, c-format
+msgid "%+dk required, %dMb available."
+msgstr ""
+
+#: setup2.cxx:1314 uninst2.cxx:722
+#, c-format
+msgid ""
+"%+.1fMb required on /, %dMb available,\n"
+"%+.1fMb required on /usr, %dMb available."
+msgstr ""
+
+#: setup2.cxx:1319 uninst2.cxx:727
+#, c-format
+msgid ""
+"%+.1fMb required on /, %dMb available,\n"
+"%+dk required on /usr, %dMb available."
+msgstr ""
+
+#: setup2.cxx:1324 uninst2.cxx:732
+#, c-format
+msgid ""
+"%+dk required on /, %dMb available,\n"
+"%+.1fMb required on /usr, %dMb available."
+msgstr ""
+
+#: setup2.cxx:1329 uninst2.cxx:737
+#, c-format
+msgid ""
+"%+dk required on /, %dMb available,\n"
+"%+dk required on /usr, %dMb available."
+msgstr ""
+
+#: setup2.cxx:1374
+msgid "English"
+msgstr ""
+
+#: setup2.cxx:1381
+msgid "Russian"
+msgstr ""
+
+#: uninst.cxx:2238
+msgid "Uninstall"
+msgstr ""
+
+#: uninst.cxx:2254
+msgid "Removing"
+msgstr ""
+
+#: uninst.cxx:2279
+msgid "Select the software to remove:"
+msgstr ""
+
+#: uninst.cxx:2282
+msgid " Installed Software:"
+msgstr ""
+
+#: uninst.cxx:2292
+msgid "0k marked for removal."
+msgstr ""
+
+#: uninst.cxx:2309
+msgid "Confirm software selected for removal:"
+msgstr ""
+
+#: uninst.cxx:2312
+msgid "Software to Remove:"
+msgstr ""
+
+#: uninst2.cxx:193
+msgid "You must be logged in as root to run uninstall!"
+msgstr ""
+
+#: uninst2.cxx:317
+msgid ""
+"This program allows you to remove the following software:</p>\n"
+"<ul>\n"
+msgstr ""
+
+#: uninst2.cxx:438
+#, c-format
+msgid "Removing %s v%s..."
+msgstr ""
+
+#: uninst2.cxx:454
+msgid "Removal Failed!"
+msgstr ""
+
+#: uninst2.cxx:456
+msgid "Removal Complete"
+msgstr ""
+
+#: uninst2.cxx:560
+msgid "Unable to remove"
+msgstr ""
+
+#: uninst2.cxx:635
+msgid "No software found to remove!"
+msgstr ""
+
+#: uninst.sh.in:6
+#, sh-format
+msgid "This installation script will help you remove Dr.Web packages"
+msgstr ""
+
+#: uninst.sh.in:9
+#, sh-format
+msgid "Do you wish to continue? [Yes] "
+msgstr ""
+
+#: uninst.sh.in:22
+#, sh-format
+msgid "Sorry, you must be root to install this software."
+msgstr ""
+
+#: uninst.sh.in:64
+#, sh-format
+msgid "Please enter yes or no."
+msgstr ""
+
+#: uninst.sh.in:151
+#, sh-format
+msgid "Select the software you want to remove:"
+msgstr ""
+
+#: uninst.sh.in:167
+#, sh-format
+msgid "A list of packages marked for removal:"
+msgstr ""
+
+#: uninst.sh.in:172
+#, sh-format
+msgid "Are you sure you want to remove the selected packages? [Yes] "
+msgstr ""
+
+#: uninst.sh.in:179 uninst.sh.in:187
+#, sh-format
+msgid "Nothing to remove. Exiting..."
+msgstr ""
+
+#: uninst.sh.in:193
+#, sh-format
+msgid ""
+"To select a package you want to remove or deselect some previously\n"
+"selected package - enter the corresponding package number and press Enter.\n"
+"\n"
+"You may enter A or All to select all the packages, and N or None to deselect "
+"all of them.\n"
+"Enter R or Remove to remove selected packages.\\nEnter 0, Q or Quit to quit "
+"the dialog.\n"
+"All values are case insensitive.\\n"
+msgstr ""
+
+#: uninst.sh.in:200
+#, sh-format
+msgid "Select: "
+msgstr ""
+
+#: uninst.sh.in:230
+#, sh-format
+msgid "Software dir -- '%s' not found."
+msgstr ""

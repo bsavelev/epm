@@ -1,12 +1,18 @@
 #!/bin/sh
 
+export TEXTDOMAINDIR="@datarootdir@/locale"
+export TEXTDOMAIN=epm
+
+gettext_sh="@datarootdir@/locale/gettext.sh"
+[ -f "$gettest_sh" ] && . "$gettext_sh"
+
 WelcomePane(){
 clear
 echo ""
-echo This installation script will help you remove Dr.Web product
+echo "`eval_gettext \"This installation script will help you remove Dr.Web packages\"`"
 echo ""
 while true ; do
-    printf "Do you wish to continue? [Yes] "
+    printf "`eval_gettext \"Do you wish to continue? [Yes] \"`"
     showyesno
 done
 }
@@ -19,7 +25,7 @@ return $?
 checkRoot() {
 if [ `id -u` != 0 ]; then
   echo
-  echo 'Sorry, you must be root to install this software.'
+  echo "`eval_gettext \"Sorry, you must be root to install this software.\"`"
   echo
   exit 1
 fi
@@ -61,7 +67,7 @@ showyesno() {
             exit 1
         ;;
         *)
-            echo Please enter yes or no.
+            echo "`eval_gettext \"Please enter yes or no.\"`"
         ;;
     esac
 }
@@ -148,7 +154,7 @@ fi
 showListCustom() {
 clear
 k=0
-echo "Select the software you want to remove:"
+echo "`eval_gettext \"Select the software you want to remove:\"`"
 for p in $list ; do
     k=`expr $k + 1`
     flag=" "
@@ -164,19 +170,19 @@ packageListLoop=false
 retval=0
 if [ -n "$selectedCustom" ] ; then
     clear
-    echo "A list of packages marked for removal:"
+    echo "`eval_gettext \"A list of packages marked for removal:\"`"
     for f in $selectedCustom ; do
 	printf "\t%s\n" "`basename "$f" .remove`"
     done
     while true ; do
-	printf "Are you sure you want to remove the selected packages? [Yes]"
+	printf "`eval_gettext \"Are you sure you want to remove the selected packages? [Yes] \"`"
 	showyesno
     done
     for comp in $selectedCustom ; do
 	./"$comp" now
     done
 else
-    echo "Nothing to remove. Exiting..."
+    echo "`eval_gettext \"Nothing to remove. Exiting...\"`"
     retval=1
 fi
 return $retval
@@ -184,20 +190,20 @@ return $retval
 
 mainCustom() {
 if [ -z "$list" ] ; then
-    echo "Nothing to remove. Exiting..."
+    echo "`eval_gettext \"Nothing to remove. Exiting...\"`"
     return 1
 fi
 while $packageListLoop ; do
     showListCustom
     echo
-printf "To select a package you want to remove or deselect some previously
+printf "`eval_gettext \"To select a package you want to remove or deselect some previously
 selected package - enter the corresponding package number and press Enter.
 
 You may enter A or All to select all the packages, and N or None to deselect all of them.
 Enter R or Remove to remove selected packages.\nEnter 0, Q or Quit to quit the dialog.
-All values are case insensitive.\n"
+All values are case insensitive.\n\"`"
     usersel=0
-    read -p "Select: " usersel
+    read -p "`eval_gettext \"Select: \"`" usersel
     case "$usersel" in
 	0 | [qQ] | [qQ][uU][iI][tT])
 	    exit 0
@@ -227,7 +233,7 @@ SOFTWAREDIR="@EPM_SOFTWARE@"
 if [ -d "$SOFTWAREDIR" ] ; then
     cd "$SOFTWAREDIR"
 else
-    echo "Software dir -- "$SOFTWAREDIR" not found."
+    printf "`eval_gettext \"Software dir -- '%s' not found.\"`" "$SOFTWAREDIR"
     exit 1
 fi
 envInit

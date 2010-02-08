@@ -132,6 +132,12 @@ main(int  argc,			// I - Number of command-line arguments
   Fl::background(230, 230, 230);
   Fl::scheme("gtk+");
 
+  setlocale(LC_ALL, "");
+  char localedir[1024];
+  sprintf(localedir,"%slocale", findMypath(argv[0]));
+  bindtextdomain ("epm", localedir);
+  textdomain("epm");
+
 #ifdef __APPLE__
   // OSX passes an extra command-line option when run from the Finder.
   // If the first command-line argument is "-psn..." then skip it and use the full path
@@ -220,7 +226,7 @@ main(int  argc,			// I - Number of command-line arguments
 #else
   if (getuid() != 0)
   {
-    fl_alert("You must be logged in as root to run setup!");
+    fl_alert(gettext("You must be logged in as root to run setup!"));
     return (1);
   }
 #endif // __APPLE__
@@ -390,7 +396,7 @@ get_dists(const char *d)	// I - Directory to look in
 
   if (NumDists == 0)
   {
-    fl_alert("No software found to install!");
+    fl_alert(gettext("No software found to install!"));
     exit(1);
   }
 
@@ -404,22 +410,22 @@ get_dists(const char *d)	// I - Directory to look in
     if ((installed = gui_find_dist(temp->product, NumInstalled,
                                    Installed)) == NULL)
     {
-      strcat(line, " (new)");
+      strcat(line, gettext(" (new)"));
       SoftwareList->add(line, 0);
     }
     else if (strcmp(installed->fulver,temp->fulver) > 0)
     {
-      strcat(line, " (downgrade)");
+      strcat(line, gettext(" (downgrade)"));
       SoftwareList->add(line, 0);
     }
     else if (strcmp(installed->fulver,temp->fulver) == 0)
     {
-      strcat(line, " (installed)");
+      strcat(line, gettext(" (installed)"));
       SoftwareList->add(line, 0);
     }
     else
     {
-      strcat(line, " (upgrade)");
+      strcat(line, gettext(" (upgrade)"));
       SoftwareList->add(line, 1);
     }
   }
@@ -466,7 +472,7 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
 
   if (astatus != errAuthorizationSuccess)
   {
-    InstallLog->add("Failed to execute install script!");
+    InstallLog->add(gettext("Failed to execute install script!"));
     return (1);
   }
 
@@ -499,7 +505,7 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
   else if (pid < 0)
   {
     // Unable to fork!
-    sprintf(command, "Unable to install %s:", dist->name);
+    sprintf(command, "%s %s:", gettext("Unable to install"), dist->name);
     InstallLog->add(command);
 
     sprintf(command, "\t%s", strerror(errno));
@@ -615,8 +621,8 @@ list_cb(Fl_Check_Browser *, void *)
 	                                      Installed)) == NULL)
 	      {
 		// Required but not installed or available!
-		fl_alert("%s requires %s to be installed, but it is not available "
-	        	 "for installation.", dist->name, depend->product);
+		fl_alert(gettext("%s requires %s to be installed, but it is not available "
+	        	 "for installation."), dist->name, depend->product);
 		SoftwareList->checked(i + 1, 0);
 		skip_pane_select = 0;
 		break;
@@ -628,8 +634,8 @@ list_cb(Fl_Check_Browser *, void *)
 	                                 Installed)) != NULL)
 	      {
 		// Already installed!
-		fl_alert("%s is incompatible with %s. Please remove it before "
-	        	 "installing this software.", dist->name, dist2->name);
+		fl_alert(gettext("%s is incompatible with %s. Please remove it before "
+	        	 "installing this software."), dist->name, dist2->name);
 		SoftwareList->checked(i + 1, 0);
 		skip_pane_select = 0;
 		break;
@@ -645,8 +651,8 @@ list_cb(Fl_Check_Browser *, void *)
 		  continue;
 
         	// Yes, tell the user...
-		fl_alert("%s is incompatible with %s. Please deselect it before "
-	        	 "installing this software.", dist->name, dist2->name);
+		fl_alert(gettext("%s is incompatible with %s. Please deselect it before "
+	        	 "installing this software."), dist->name, dist2->name);
 		SoftwareList->checked(i + 1, 0);
 		skip_pane_select = 0;
 		break;
@@ -709,8 +715,8 @@ load_readme(void)
     buffer = new char[1024 + NumDists * 300];
 
     strcpy(buffer,
-           "This program allows you to install the following software:\n"
-	   "<ul>\n");
+           gettext("This program allows you to install the following software:\n"
+	   "<ul>\n"));
     ptr = buffer + strlen(buffer);
 
     for (i = NumDists, dist = Dists; i > 0; i --, dist ++)
@@ -840,10 +846,10 @@ load_types(void)
   for (i = 0, dt = InstTypes; i < NumInstTypes; i ++, dt ++)
   {
     if (dt->size >= 1024)
-      sprintf(dt->label + strlen(dt->label), " (+%.1fMb disk space)",
+      sprintf(dt->label + strlen(dt->label), gettext(" (+%.1fMb disk space)"),
               dt->size / 1024.0);
     else if (dt->size)
-      sprintf(dt->label + strlen(dt->label), " (+%dKb disk space)", dt->size);
+      sprintf(dt->label + strlen(dt->label), gettext(" (+%dKb disk space)"), dt->size);
 
     if ((lineptr = strchr(dt->label, '/')) != NULL)
       TypeButton[i]->label(lineptr + 1);
@@ -1007,8 +1013,8 @@ void update_control(int from) {
     //copy code from license_dist
     static char		liclabel[1024];		// Label for license pane
 
-    snprintf(liclabel, sizeof(liclabel), "Software License");
-    CancelButton->label("Cancel");
+    snprintf(liclabel, sizeof(liclabel), gettext("Software License"));
+    CancelButton->label(gettext("Cancel"));
     CancelButton->deactivate();
     PrevButton->activate();
     NextButton->activate();
@@ -1048,7 +1054,7 @@ void update_control(int from) {
         // Can't install without acceptance...
         char	message[1024];		// Message for log
         InstallLog->clear();
-        snprintf(message, sizeof(message), "License not accepted!");
+        snprintf(message, sizeof(message), gettext("License not accepted!"));
         InstallLog->add(message);
         licaccept = 0;
       } else if (LicenseAccept->value())
@@ -1066,9 +1072,9 @@ void update_control(int from) {
     update_label();
     if ( licaccept == 0 )
     {
-      InstallPercent->label("Installation Canceled!");
+      InstallPercent->label(gettext("Installation Canceled!"));
       Pane[PANE_INSTALL]->redraw();
-      CancelButton->label("Close");
+      CancelButton->label(gettext("Close"));
       CancelButton->activate();
       NextButton->deactivate();
       fl_beep();
@@ -1079,7 +1085,7 @@ void update_control(int from) {
     NextButton->deactivate();
     PrevButton->deactivate();
     CancelButton->deactivate();
-    CancelButton->label("Cancel");
+    CancelButton->label(gettext("Cancel"));
     fdfile = fopen("install.log", "w+");
     if (fdfile)
 	fclose(fdfile);
@@ -1089,7 +1095,7 @@ void update_control(int from) {
     for (i = 0, progress = 0, error = 0; i < NumDists; i ++)
       if (SoftwareList->checked(i + 1))
       {
-        sprintf(message, "Installing %s v%s...", Dists[i].name,
+        sprintf(message, gettext("Installing %s v%s..."), Dists[i].name,
 	        Dists[i].version);
 
         InstallPercent->value(100.0 * progress / SoftwareList->nchecked());
@@ -1104,11 +1110,11 @@ void update_control(int from) {
     InstallPercent->value(100.0);
 
     if (error) {
-      InstallPercent->label("Installation Failed!");
-      CancelButton->label("Close");
+      InstallPercent->label(gettext("Installation Failed!"));
+      CancelButton->label(gettext("Close"));
       NextButton->deactivate();
     } else {
-      InstallPercent->label("Installation Complete");
+      InstallPercent->label(gettext("Installation Complete"));
       NextButton->activate();
       sprintf(postin_script, POSTIN_I_SCRIPT);
       if (!stat(postin_script, &postin_info))
@@ -1136,7 +1142,7 @@ void update_control(int from) {
     NextButton->deactivate();
     PrevButton->deactivate();
     CancelButton->activate();
-    CancelButton->label("Close");
+    CancelButton->label(gettext("Close"));
     sprintf(postin, "POSTIN-MSG");
     if (!stat(postin, &postin_info))
     {
@@ -1158,7 +1164,7 @@ void update_control(int from) {
     for (i = 0; i < NumDists; i ++)
       if (SoftwareList->checked(i + 1))
         ConfirmList->add(SoftwareList->text(i + 1));
-    CancelButton->label("Cancel");
+    CancelButton->label(gettext("Cancel"));
     CancelButton->activate();
     PrevButton->activate();
     NextButton->activate();
@@ -1299,31 +1305,31 @@ update_sizes(void)
 
     if (rootsize >= 1024)
       snprintf(sizelabel, sizeof(sizelabel),
-               "%+.1fm required, %dMb available.", rootsize / 1024.0,
+               gettext("%+.1fMb required, %dMb available."), rootsize / 1024.0,
                rootfree);
     else
       snprintf(sizelabel, sizeof(sizelabel),
-               "%+dk required, %dMb available.", rootsize, rootfree);
+               gettext("%+dk required, %dMb available."), rootsize, rootfree);
   }
   else if (rootsize >= 1024 && usrsize >= 1024)
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+.1fm required on /, %dMb available,\n"
-             "%+.1fm required on /usr, %dMb available.",
+             gettext("%+.1fMb required on /, %dMb available,\n"
+             "%+.1fMb required on /usr, %dMb available."),
              rootsize / 1024.0, rootfree, usrsize / 1024.0, usrfree);
   else if (rootsize >= 1024)
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+.1fm required on /, %dMb available,\n"
-             "%+dk required on /usr, %dMb available.",
+             gettext("%+.1fMb required on /, %dMb available,\n"
+             "%+dk required on /usr, %dMb available."),
              rootsize / 1024.0, rootfree, usrsize, usrfree);
   else if (usrsize >= 1024)
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+dk required on /, %dMb available,\n"
-             "%+.1fm required on /usr, %dMb available.",
+             gettext("%+dk required on /, %dMb available,\n"
+             "%+.1fMb required on /usr, %dMb available."),
              rootsize, rootfree, usrsize / 1024.0, usrfree);
   else
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+dk required on /, %dMb available,\n"
-             "%+dk required on /usr, %dMb available.",
+             gettext("%+dk required on /, %dMb available,\n"
+             "%+dk required on /usr, %dMb available."),
              rootsize, rootfree, usrsize, usrfree);
 
   SoftwareSize->label(sizelabel);
@@ -1367,14 +1373,14 @@ load_license()
     if (!stat(licfile_en, &licinfo))
     {
       //Lang control
-      Language->add("English");
+      Language->add(gettext("English"));
       Language->value(LANG_EN);
       gui_load_file(LicenseFile, licfile_en);
     }
     if (!stat(licfile_ru, &licinfo))
     {
       //Lang control
-      Language->add("Russian");
+      Language->add(gettext("Russian"));
       if (Language->size() == 0)
         gui_load_file(LicenseFile, licfile_ru);
     }

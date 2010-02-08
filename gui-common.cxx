@@ -356,6 +356,29 @@ gui_sort_dists(const gui_dist_t *d0,	// I - First distribution
 }
 
 
+char* findMypath(const char* argv)
+{	
+	static char path[300];
+	int i;
+	
+	strncpy(path, argv, sizeof(path));
+	
+	for (i = strlen(path) - 1; i >= 0; --i)
+	{
+		if (path[i] == '\\' || path[i] == '/')
+		{
+			path[i + 1] = 0;
+			break;
+		}
+	}	
+	
+	if (i == -1) // user just typed the binary name
+		strcpy(path, ".");
+				
+	return path;
+}
+
+
 //
 // End of "$Id: gui-common.cxx,v 1.2.2.2 2009/09/30 12:59:35 bsavelev Exp $".
 //

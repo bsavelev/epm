@@ -114,6 +114,10 @@ main(int  argc,			// I - Number of command-line arguments
   Fl::background(230, 230, 230);
   Fl::scheme("gtk+");
 
+  setlocale(LC_ALL, "");
+  bindtextdomain ("epm", LOCALEDIR);
+  textdomain("epm");
+
 #ifdef __APPLE__
   // OSX passes an extra command-line option when run from the Finder.
   // If the first command-line argument is "-psn..." then skip it and use the full path
@@ -186,7 +190,7 @@ main(int  argc,			// I - Number of command-line arguments
 #else
   if (getuid() != 0)
   {
-    fl_alert("You must be logged in as root to run uninstall!");
+    fl_alert(gettext("You must be logged in as root to run uninstall!"));
     return (1);
   }
 #endif // __APPLE__
@@ -310,9 +314,9 @@ load_readme(void)
 
     buffer = new char[1024 + NumInstalled * 400];
 
-    strcpy(buffer, "This program allows you to remove the following "
+    strcpy(buffer, gettext("This program allows you to remove the following "
                    "software:</p>\n"
-		   "<ul>\n");
+		   "<ul>\n"));
     ptr = buffer + strlen(buffer);
 
     for (i = NumInstalled, dist = Installed; i > 0; i --, dist ++)
@@ -412,7 +416,7 @@ update_control(int from)
     ConfirmList->clear();
     PrevButton->activate();
     CancelButton->activate();
-    CancelButton->label("Cancel");
+    CancelButton->label(gettext("Cancel"));
 
     for (i = 0; i < NumInstalled; i ++)
       if (SoftwareList->checked(i + 1))
@@ -426,12 +430,12 @@ update_control(int from)
     PrevButton->deactivate();
     NextButton->deactivate();
     CancelButton->deactivate();
-    CancelButton->label("Close");
+    CancelButton->label(gettext("Close"));
 
     for (i = 0, progress = 0, error = 0; i < NumInstalled; i ++)
       if (SoftwareList->checked(i + 1))
       {
-        sprintf(message, "Removing %s v%s...", Installed[i].name,
+        sprintf(message, gettext("Removing %s v%s..."), Installed[i].name,
 	        Installed[i].version);
 
         RemovePercent->value(100.0 * progress / SoftwareList->nchecked());
@@ -447,9 +451,9 @@ update_control(int from)
     RemovePercent->value(100.0);
 
     if (error)
-      RemovePercent->label("Removal Failed!");
+      RemovePercent->label(gettext("Removal Failed!"));
     else
-      RemovePercent->label("Removal Complete");
+      RemovePercent->label(gettext("Removal Complete"));
 
     Pane[PANE_REMOVE]->redraw();
 
@@ -520,7 +524,7 @@ remove_dist(const gui_dist_t *dist)	// I - Distribution to remove
 
   if (astatus != errAuthorizationSuccess)
   {
-    RemoveLog->add("Failed to execute remove script!");
+    RemoveLog->add(getext("Failed to execute remove script!"));
     return (1);
   }
 
@@ -553,7 +557,7 @@ remove_dist(const gui_dist_t *dist)	// I - Distribution to remove
   else if (pid < 0)
   {
     // Unable to fork!
-    sprintf(command, "Unable to remove %s:", dist->name);
+    sprintf(command, "%s %s:", gettext("Unable to remove"), dist->name);
     RemoveLog->add(command);
 
     sprintf(command, "\t%s", strerror(errno));
@@ -628,7 +632,7 @@ show_installed()
 
   if (NumInstalled == 0)
   {
-    fl_alert("No software found to remove!");
+    fl_alert(gettext("No software found to remove!"));
     exit(1);
   }
 
@@ -707,31 +711,31 @@ update_sizes(void)
 
     if (rootsize >= 1024)
       snprintf(sizelabel, sizeof(sizelabel),
-               "%+.1fm required, %dm available.", rootsize / 1024.0,
+               gettext("%+.1fMb required, %dMb available."), rootsize / 1024.0,
                rootfree);
     else
       snprintf(sizelabel, sizeof(sizelabel),
-               "%+dk required, %dm available.", rootsize, rootfree);
+               gettext("%+dk required, %dMb available."), rootsize, rootfree);
   }
   else if (rootsize >= 1024 && usrsize >= 1024)
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+.1fm required on /, %dm available,\n"
-             "%+.1fm required on /usr, %dm available.",
+             gettext("%+.1fMb required on /, %dMb available,\n"
+             "%+.1fMb required on /usr, %dMb available."),
              rootsize / 1024.0, rootfree, usrsize / 1024.0, usrfree);
   else if (rootsize >= 1024)
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+.1fm required on /, %dm available,\n"
-             "%+dk required on /usr, %dm available.",
+             gettext("%+.1fMb required on /, %dMb available,\n"
+             "%+dk required on /usr, %dMb available."),
              rootsize / 1024.0, rootfree, usrsize, usrfree);
   else if (usrsize >= 1024)
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+dk required on /, %dm available,\n"
-             "%+.1fm required on /usr, %dm available.",
+             gettext("%+dk required on /, %dMb available,\n"
+             "%+.1fMb required on /usr, %dMb available."),
              rootsize, rootfree, usrsize / 1024.0, usrfree);
   else
     snprintf(sizelabel, sizeof(sizelabel),
-             "%+dk required on /, %dm available,\n"
-             "%+dk required on /usr, %dm available.",
+             gettext("%+dk required on /, %dMb available,\n"
+             "%+dk required on /usr, %dMb available."),
              rootsize, rootfree, usrsize, usrfree);
 
   SoftwareSize->label(sizelabel);

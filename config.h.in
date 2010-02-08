@@ -141,6 +141,7 @@
 
 #define EPM_COMPRESS 0
 
+#undef LOCALEDIR
 
 /*
  * End of "$Id: config.h.in,v 1.1.1.1.2.2 2009/10/09 16:01:14 bsavelev Exp $".

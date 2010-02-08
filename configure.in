@@ -406,6 +406,8 @@ else
 	fi
 fi
 
+AC_DEFINE_UNQUOTED(LOCALEDIR, "$datarootdir/locale", "")
+
 dnl Output the makefile, list file, and config header...
 AC_OUTPUT(Makefile epm.list doc/Makefile uninst.sh)
 

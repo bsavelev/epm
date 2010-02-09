@@ -5220,10 +5220,6 @@ if test "$uname" = "IRIX64"; then
 fi
 
 
-CFLAGS="${CFLAGS:=}"
-CXXFLAGS="${CXXFLAGS:=}"
-LDFLAGS="${LDFLAGS:=}"
-
 
 
 # Check whether --with-archflags was given.
@@ -8024,6 +8020,7 @@ fi
 cat >>confdefs.h <<_ACEOF
 #define LOCALEDIR "$datarootdir/locale"
 _ACEOF
+
 
 
 ac_config_files="$ac_config_files Makefile epm.list doc/Makefile po/Makefile uninst.sh"

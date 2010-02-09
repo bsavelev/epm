@@ -44,10 +44,6 @@ fi
 dnl Clear default debugging options and set normal optimization by
 dnl default unless the user asks for debugging specifically.
 
-CFLAGS="${CFLAGS:=}"
-CXXFLAGS="${CXXFLAGS:=}"
-LDFLAGS="${LDFLAGS:=}"
-AC_SUBST(LDFLAGS)
 
 AC_ARG_WITH(archflags, [  --with-archflags=flags  specify architecture flags [[default=none]]],
 	ARCHFLAGS="$withval",
@@ -411,6 +407,7 @@ else
 fi
 
 AC_DEFINE_UNQUOTED(LOCALEDIR, "$datarootdir/locale", "")
+AC_SUBST(LDFLAGS)
 
 dnl Output the makefile, list file, and config header...
 AC_OUTPUT(Makefile epm.list doc/Makefile po/Makefile uninst.sh)

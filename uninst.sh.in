@@ -3,10 +3,19 @@
 export TEXTDOMAINDIR="@datarootdir@/locale"
 export TEXTDOMAIN=epm
 
-gettext_sh="@datarootdir@/locale/gettext.sh"
-[ -f "$gettest_sh" ] && . "$gettext_sh"
+eval_gettext() {
+if ( which gettext >/dev/null 2>/dev/null ) ; then
+    if ( which envsubst >/dev/null 2>/dev/null ) ; then
+	gettext "$1" | (export PATH `envsubst --variables "$1"`; envsubst "$1")
+    else
+	gettext "$1"
+    fi
+else
+    echo "$1"
+fi
+}
 
-WelcomePane(){
+WelcomePane() {
 clear
 echo ""
 echo "`eval_gettext \"This installation script will help you remove Dr.Web packages\"`"

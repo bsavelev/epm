@@ -107,152 +107,152 @@ msgstr ""
 msgid "Next @-2>"
 msgstr ""
 
-#: setup.cxx:2479 setup2.cxx:1017 setup2.cxx:1088 setup2.cxx:1167
+#: setup.cxx:2479 setup2.cxx:1015 setup2.cxx:1086 setup2.cxx:1165
 #: uninst.cxx:2347 uninst2.cxx:419
 msgid "Cancel"
 msgstr ""
 
-#: setup2.cxx:229
+#: setup2.cxx:227
 msgid "You must be logged in as root to run setup!"
 msgstr ""
 
-#: setup2.cxx:399
+#: setup2.cxx:397
 msgid "No software found to install!"
 msgstr ""
 
-#: setup2.cxx:413
+#: setup2.cxx:411
 msgid " (new)"
 msgstr ""
 
-#: setup2.cxx:418
+#: setup2.cxx:416
 msgid " (downgrade)"
 msgstr ""
 
-#: setup2.cxx:423
+#: setup2.cxx:421
 msgid " (installed)"
 msgstr ""
 
-#: setup2.cxx:428
+#: setup2.cxx:426
 msgid " (upgrade)"
 msgstr ""
 
-#: setup2.cxx:475
+#: setup2.cxx:473
 msgid "Failed to execute install script!"
 msgstr ""
 
-#: setup2.cxx:508
+#: setup2.cxx:506
 msgid "Unable to install"
 msgstr ""
 
-#: setup2.cxx:624
+#: setup2.cxx:622
 #, c-format
 msgid ""
 "%s requires %s to be installed, but it is not available for installation."
 msgstr ""
 
-#: setup2.cxx:637
+#: setup2.cxx:635
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please remove it before installing this software."
 msgstr ""
 
-#: setup2.cxx:654
+#: setup2.cxx:652
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please deselect it before installing this "
 "software."
 msgstr ""
 
-#: setup2.cxx:718
+#: setup2.cxx:716
 msgid ""
 "This program allows you to install the following software:\n"
 "<ul>\n"
 msgstr ""
 
-#: setup2.cxx:849
+#: setup2.cxx:847
 #, c-format
 msgid " (+%.1fMb disk space)"
 msgstr ""
 
-#: setup2.cxx:852
+#: setup2.cxx:850
 #, c-format
 msgid " (+%dKb disk space)"
 msgstr ""
 
-#: setup2.cxx:1016
+#: setup2.cxx:1014
 #, c-format
 msgid "Software License"
 msgstr ""
 
-#: setup2.cxx:1057
+#: setup2.cxx:1055
 #, c-format
 msgid "License not accepted!"
 msgstr ""
 
-#: setup2.cxx:1075
+#: setup2.cxx:1073
 msgid "Installation Canceled!"
 msgstr ""
 
-#: setup2.cxx:1077 setup2.cxx:1114 setup2.cxx:1145 uninst2.cxx:433
+#: setup2.cxx:1075 setup2.cxx:1112 setup2.cxx:1143 uninst2.cxx:433
 msgid "Close"
 msgstr ""
 
-#: setup2.cxx:1098
+#: setup2.cxx:1096
 #, c-format
 msgid "Installing %s v%s..."
 msgstr ""
 
-#: setup2.cxx:1113
+#: setup2.cxx:1111
 msgid "Installation Failed!"
 msgstr ""
 
-#: setup2.cxx:1117
+#: setup2.cxx:1115
 msgid "Installation Complete"
 msgstr ""
 
-#: setup2.cxx:1308 uninst2.cxx:714
+#: setup2.cxx:1306 uninst2.cxx:714
 #, c-format
 msgid "%+.1fMb required, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1312 uninst2.cxx:718
+#: setup2.cxx:1310 uninst2.cxx:718
 #, c-format
 msgid "%+dk required, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1316 uninst2.cxx:722
+#: setup2.cxx:1314 uninst2.cxx:722
 #, c-format
 msgid ""
 "%+.1fMb required on /, %dMb available,\n"
 "%+.1fMb required on /usr, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1321 uninst2.cxx:727
+#: setup2.cxx:1319 uninst2.cxx:727
 #, c-format
 msgid ""
 "%+.1fMb required on /, %dMb available,\n"
 "%+dk required on /usr, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1326 uninst2.cxx:732
+#: setup2.cxx:1324 uninst2.cxx:732
 #, c-format
 msgid ""
 "%+dk required on /, %dMb available,\n"
 "%+.1fMb required on /usr, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1331 uninst2.cxx:737
+#: setup2.cxx:1329 uninst2.cxx:737
 #, c-format
 msgid ""
 "%+dk required on /, %dMb available,\n"
 "%+dk required on /usr, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1376
+#: setup2.cxx:1374
 msgid "English"
 msgstr ""
 
-#: setup2.cxx:1383
+#: setup2.cxx:1381
 msgid "Russian"
 msgstr ""
 
@@ -315,47 +315,47 @@ msgstr ""
 msgid "No software found to remove!"
 msgstr ""
 
-#: uninst.sh.in:21
+#: uninst.sh.in:6
 #, sh-format
 msgid "This installation script will help you remove Dr.Web packages"
 msgstr ""
 
-#: uninst.sh.in:24
+#: uninst.sh.in:9
 #, sh-format
 msgid "Do you wish to continue? [Yes] "
 msgstr ""
 
-#: uninst.sh.in:37
+#: uninst.sh.in:22
 #, sh-format
 msgid "Sorry, you must be root to install this software."
 msgstr ""
 
-#: uninst.sh.in:79
+#: uninst.sh.in:64
 #, sh-format
 msgid "Please enter yes or no."
 msgstr ""
 
-#: uninst.sh.in:166
+#: uninst.sh.in:151
 #, sh-format
 msgid "Select the software you want to remove:"
 msgstr ""
 
-#: uninst.sh.in:182
+#: uninst.sh.in:167
 #, sh-format
 msgid "A list of packages marked for removal:"
 msgstr ""
 
-#: uninst.sh.in:187
+#: uninst.sh.in:172
 #, sh-format
 msgid "Are you sure you want to remove the selected packages? [Yes] "
 msgstr ""
 
-#: uninst.sh.in:194 uninst.sh.in:202
+#: uninst.sh.in:179 uninst.sh.in:187
 #, sh-format
 msgid "Nothing to remove. Exiting..."
 msgstr ""
 
-#: uninst.sh.in:208
+#: uninst.sh.in:193
 #, sh-format
 msgid ""
 "To select a package you want to remove or deselect some previously\n"
@@ -368,12 +368,12 @@ msgid ""
 "All values are case insensitive.\\n"
 msgstr ""
 
-#: uninst.sh.in:215
+#: uninst.sh.in:200
 #, sh-format
 msgid "Select: "
 msgstr ""
 
-#: uninst.sh.in:245
+#: uninst.sh.in:230
 #, sh-format
 msgid "Software dir -- '%s' not found."
 msgstr ""

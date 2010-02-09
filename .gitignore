@@ -1,5 +1,7 @@
 *.*~
-Makefile
+/Makefile
+/doc/Makefile
+*.mo
 *.list
 epm
 setup
@@ -27,3 +29,4 @@ doc/mkepmlist.html
 doc/setup.html
 doc/setup.types.html
 uninst.sh
+doc/test/*.html

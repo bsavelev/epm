@@ -1,0 +1,5 @@
+../setup.cxx \
+../setup2.cxx \
+../uninst.cxx \
+../uninst2.cxx \
+../uninst.sh.in

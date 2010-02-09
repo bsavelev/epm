@@ -1,6 +1,6 @@
 all: ru.mo
 
-GMSGFMT ?= msgfmt
+GMSGFMT = @GMSGFMT@
 
 %.mo: %.po
 	@lang=`echo $* | sed -e 's,.*/,,'`; \

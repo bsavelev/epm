@@ -2295,7 +2295,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	fputs("fi\n", scriptfile);
 //placeholder
 	qprintf(scriptfile, "if test -d %s; then\n", file->dst);
-	qprintf(scriptfile, "	mkdir -p %s/possessed%s\n", SoftwareDir, file->dst);
+	qprintf(scriptfile, "	mkdir %s/possessed\n", SoftwareDir);
+	qprintf(scriptfile, "	mkdir %s/possessed%s\n", SoftwareDir, file->dst);
 	qprintf(scriptfile, "	echo \"Placeholder. Do not remove.\" > %s/possessed%s/%s.placeholder\n", SoftwareDir, file->dst, prodfull);
 	fputs("fi\n", scriptfile);
 	if (strcmp(file->user, "root") != 0)
@@ -2332,7 +2333,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fprintf(scriptfile, "if test -d %s; then\n", SoftwareDir);
   fprintf(scriptfile, "	rm -f %s/%s.remove\n", SoftwareDir, prodfull);
   fputs("else\n", scriptfile);
-  fprintf(scriptfile, "	mkdir -p %s\n", SoftwareDir);
+  fprintf(scriptfile, "	mkdir %s\n", SoftwareDir);
   fputs("fi\n", scriptfile);
   fprintf(scriptfile, "cp %s.remove %s\n", prodfull, SoftwareDir);
   fprintf(scriptfile, "chmod 544 %s/%s.remove\n", SoftwareDir, prodfull);
@@ -2359,7 +2360,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("	if test ! -f \"$file\"; then\n", scriptfile);
 //create dir for conf file
     fputs("\t\tif test ! -d `dirname \"$file\"` -a ! -f `dirname \"$file\"` -a ! -h `dirname \"$file\"`; then\n", scriptfile);
-    fputs("\t\t\tmkdir -p `dirname \"$file\"`\n", scriptfile);
+    fputs("\t\t\tmkdir `dirname \"$file\"`\n", scriptfile);
     fputs("\t\telse\n", scriptfile);
     fputs("\t\t\tif test -f `dirname \"$file\"`; then\n", scriptfile);
     fputs("\t\t\t\techo Error: `dirname \"$file\"` already exists as a regular file!\n", scriptfile);
@@ -2696,7 +2697,7 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
       {
 	qprintf(scriptfile, "if test ! -d %s -a ! -f %s -a ! -h %s; then\n",
         	file->dst, file->dst, file->dst);
-	qprintf(scriptfile, "	mkdir -p %s\n", file->dst);
+	qprintf(scriptfile, "	mkdir %s\n", file->dst);
 	fputs("else\n", scriptfile);
 	qprintf(scriptfile, "	if test -f %s; then\n", file->dst);
 	qprintf(scriptfile, "		echo Error: %s already exists as a regular file!\n",
@@ -3179,7 +3180,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("		rm -f \"$file\"\n", scriptfile);
     fputs("	fi\n", scriptfile);
     qprintf(scriptfile, "	rm -f \"%s/conf/$file.N\"\n", SoftwareDir);
-    qprintf(scriptfile, "	cd \"%s\" && rmdir -p \"`dirname \"conf/$file.N\"`\" 2>/dev/null || true\n", SoftwareDir);
+    qprintf(scriptfile, "	cd \"%s\" && rmdir \"`dirname \"conf/$file.N\"`\" 2>/dev/null || true\n", SoftwareDir);
     fputs("done\n", scriptfile);
   }
 
@@ -3222,10 +3223,9 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 	qprintf(scriptfile, "	rm -f \"%s/possessed%s/%s.placeholder\"\n", SoftwareDir, file->dst, prodfull);
 	qprintf(scriptfile, "\tif ( cd %s && rmdir possessed%s 2>/dev/null ) ; then\n", SoftwareDir, file->dst);
 	qprintf(scriptfile, "\t\trmdir %s 2>/dev/null || true\n",file->dst);
-	qprintf(scriptfile, "	elif ( cd %s && rmdir -p possessed%s 2>/dev/null ) ; then\n", SoftwareDir, file->dst);
-	qprintf(scriptfile, "\t\trmdir -p %s 2>/dev/null || true\n",file->dst);
 	fputs("\tfi\n", scriptfile);
 	fputs("fi\n", scriptfile);
+	qprintf(scriptfile, "rmdir \"%s/possessed\" 2>/dev/null || true\n", SoftwareDir);
       }
   }
 

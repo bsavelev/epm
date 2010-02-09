@@ -1,6 +1,5 @@
 *.*~
-/Makefile
-/doc/Makefile
+Makefile
 *.mo
 *.list
 epm

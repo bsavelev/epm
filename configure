@@ -595,6 +595,7 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+EPM_LDFLAGS
 EPM_DATADIR
 EPM_LIBDIR
 EPM_BINDIR
@@ -5246,7 +5247,7 @@ if test "${enable_debug+set}" = set; then :
   enableval=$enable_debug; if eval "test x$enable_debug = xyes"; then
  	OPTIM="-g $OPTIM"
 else
-	LDFLAGS="$LDFLAGS -s"
+	EPM_LDFLAGS="-s"
 fi
 fi
 

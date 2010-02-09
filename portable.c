@@ -2266,6 +2266,12 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 //     fputs("fi\n", scriptfile);
   }
 
+  fprintf(scriptfile, "if test -d %s; then\n", SoftwareDir);
+  fprintf(scriptfile, "	rm -f %s/%s.remove\n", SoftwareDir, prodfull);
+  fputs("else\n", scriptfile);
+  fprintf(scriptfile, "	mkdir %s\n", SoftwareDir);
+  fputs("fi\n", scriptfile);
+
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'd' && file->subpackage == subpackage)
       break;
@@ -2295,8 +2301,12 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	fputs("fi\n", scriptfile);
 //placeholder
 	qprintf(scriptfile, "if test -d %s; then\n", file->dst);
-	qprintf(scriptfile, "	mkdir %s/possessed\n", SoftwareDir);
-	qprintf(scriptfile, "	mkdir %s/possessed%s\n", SoftwareDir, file->dst);
+	qprintf(scriptfile, "\tif [ ! -d %s/possessed ] ; then\n", SoftwareDir);
+	qprintf(scriptfile, "\t\tmkdir %s/possessed\n", SoftwareDir);
+	fputs("\tfi\n", scriptfile);
+	qprintf(scriptfile, "\tif [ ! -d %s/possessed%s ] ; then\n", SoftwareDir, file->dst);
+	qprintf(scriptfile, "\t\tmkdir %s/possessed%s\n", SoftwareDir, file->dst);
+	fputs("\tfi\n", scriptfile);
 	qprintf(scriptfile, "	echo \"Placeholder. Do not remove.\" > %s/possessed%s/%s.placeholder\n", SoftwareDir, file->dst, prodfull);
 	fputs("fi\n", scriptfile);
 	if (strcmp(file->user, "root") != 0)
@@ -2330,11 +2340,6 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   }
 */
 
-  fprintf(scriptfile, "if test -d %s; then\n", SoftwareDir);
-  fprintf(scriptfile, "	rm -f %s/%s.remove\n", SoftwareDir, prodfull);
-  fputs("else\n", scriptfile);
-  fprintf(scriptfile, "	mkdir %s\n", SoftwareDir);
-  fputs("fi\n", scriptfile);
   fprintf(scriptfile, "cp %s.remove %s\n", prodfull, SoftwareDir);
   fprintf(scriptfile, "chmod 544 %s/%s.remove\n", SoftwareDir, prodfull);
 

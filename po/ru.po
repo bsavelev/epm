@@ -13,7 +13,7 @@ msgstr "Установка компонентов"
 
 #: setup.cxx:2262 uninst.cxx:2240
 msgid "Welcome"
-msgstr "Начало установки"
+msgstr "Начало"
 
 #: setup.cxx:2266
 msgid "Install Type"
@@ -25,7 +25,7 @@ msgstr "Выбор пакетов"
 
 #: setup.cxx:2276 uninst.cxx:2249
 msgid "Confirm"
-msgstr "Подтверждение установки"
+msgstr "Подтверждениe"
 
 #: setup.cxx:2281
 msgid "License"

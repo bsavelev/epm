@@ -11,7 +11,7 @@ Function {make_window()} {open
     label Uninstall
     callback {if (CancelButton->active())
   exit(0);} open
-    xywh {87 295 640 310} type Double resizable
+    xywh {19 296 640 310} type Double resizable
     code0 {\#include "gui-common.h"}
     code1 {\#include "uninst2.h"} visible
   } {
@@ -34,7 +34,7 @@ Function {make_window()} {open
     Fl_Wizard Wizard {open
       xywh {150 10 480 255} box THIN_DOWN_BOX color 48 resizable
     } {
-      Fl_Group {Pane[0]} {open
+      Fl_Group {Pane[0]} {
         xywh {150 10 480 255} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Help_View ReadmeFile {
@@ -54,20 +54,20 @@ Function {make_window()} {open
           xywh {170 83 440 127} type Multi box DOWN_BOX selection_color 7 labelfont 1 align 5 when 3 resizable
         }
         Fl_Box SoftwareSize {
-          label {0k marked for removal.}
-          xywh {170 215 220 35} align 212
+          label {0k marked for removal.} selected
+          xywh {170 205 420 30} align 212
         }
         Fl_Button RemoveAllButton {
           label {Select all}
           callback {SoftwareList->check_all();
 list_cb(0,0);}
-          xywh {400 220 90 25}
+          xywh {325 235 120 25}
         }
         Fl_Button RemoveNoneButton {
           label {Select none}
           callback {SoftwareList->check_none();
 list_cb(0,0);}
-          xywh {500 220 110 25}
+          xywh {450 235 160 25}
         }
       }
       Fl_Group {Pane[2]} {open
@@ -94,24 +94,24 @@ list_cb(0,0);}
         }
       }
     }
-    Fl_Box WelcomeImage {selected
+    Fl_Box WelcomeImage {
       image {install-109x119.png} xywh {10 170 130 130} align 22
     }
     Fl_Button PrevButton {
       label {@-2< Back}
       callback {Wizard->prev();
 update_control(0);}
-      xywh {396 275 72 25}
+      xywh {380 275 80 25}
     }
     Fl_Button NextButton {
       label {Next @-2>}
       callback next_cb
-      xywh {478 275 74 25}
+      xywh {467 275 80 25}
     }
     Fl_Button CancelButton {
       label Cancel
       callback {exit(0);}
-      xywh {562 275 68 25}
+      xywh {554 275 80 25}
     }
   }
 } 

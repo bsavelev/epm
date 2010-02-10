@@ -2289,13 +2289,13 @@ Fl_Double_Window* make_window() {
           SoftwareList->when(3);
           Fl_Group::current()->resizable(SoftwareList);
         } // Fl_Check_Browser* SoftwareList
-        { SoftwareSize = new Fl_Box(170, 215, 220, 35, gettext("0k marked for removal."));
+        { SoftwareSize = new Fl_Box(170, 205, 420, 30, gettext("0k marked for removal."));
           SoftwareSize->align(196|FL_ALIGN_INSIDE);
         } // Fl_Box* SoftwareSize
-        { RemoveAllButton = new Fl_Button(400, 220, 90, 25, gettext("Select all"));
+        { RemoveAllButton = new Fl_Button(325, 235, 120, 25, gettext("Select all"));
           RemoveAllButton->callback((Fl_Callback*)cb_RemoveAllButton);
         } // Fl_Button* RemoveAllButton
-        { RemoveNoneButton = new Fl_Button(500, 220, 110, 25, gettext("Select none"));
+        { RemoveNoneButton = new Fl_Button(450, 235, 160, 25, gettext("Select none"));
           RemoveNoneButton->callback((Fl_Callback*)cb_RemoveNoneButton);
         } // Fl_Button* RemoveNoneButton
         Pane[1]->end();
@@ -2338,13 +2338,13 @@ Fl_Double_Window* make_window() {
       WelcomeImage->image(image_install);
       WelcomeImage->align(FL_ALIGN_BOTTOM_LEFT|FL_ALIGN_INSIDE);
     } // Fl_Box* WelcomeImage
-    { PrevButton = new Fl_Button(396, 275, 72, 25, gettext("@-2< Back"));
+    { PrevButton = new Fl_Button(380, 275, 80, 25, gettext("@-2< Back"));
       PrevButton->callback((Fl_Callback*)cb_PrevButton);
     } // Fl_Button* PrevButton
-    { NextButton = new Fl_Button(478, 275, 74, 25, gettext("Next @-2>"));
+    { NextButton = new Fl_Button(467, 275, 80, 25, gettext("Next @-2>"));
       NextButton->callback((Fl_Callback*)next_cb);
     } // Fl_Button* NextButton
-    { CancelButton = new Fl_Button(562, 275, 68, 25, gettext("Cancel"));
+    { CancelButton = new Fl_Button(554, 275, 80, 25, gettext("Cancel"));
       CancelButton->callback((Fl_Callback*)cb_CancelButton);
     } // Fl_Button* CancelButton
     UninstallWindow->end();

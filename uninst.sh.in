@@ -18,7 +18,7 @@ fi
 WelcomePane() {
 clear
 echo ""
-echo "`eval_gettext \"This installation script will help you remove Dr.Web packages\"`"
+echo "`eval_gettext \"This script will help you remove Dr.Web packages\"`"
 echo ""
 while true ; do
     printf "`eval_gettext \"Do you wish to continue? [Yes] \"`"
@@ -34,7 +34,7 @@ return $?
 checkRoot() {
 if [ `id -u` != 0 ]; then
   echo
-  echo "`eval_gettext \"Sorry, you must be root to install this software.\"`"
+  echo "`eval_gettext \"Sorry, you must be root to remove Dr.Web software.\"`"
   echo
   exit 1
 fi

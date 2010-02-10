@@ -3,11 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-02-10 14:15+0300\n"
+"POT-Creation-Date: 2010-02-10 15:39+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,7 +105,7 @@ msgid "Run interactive postinstall script"
 msgstr ""
 
 #: setup.cxx:2461
-msgid "Congratulation:"
+msgid "Postinstall information:"
 msgstr ""
 
 #: setup.cxx:2473 uninst.cxx:2341
@@ -194,11 +195,11 @@ msgstr ""
 
 #: setup2.cxx:1057
 #, c-format
-msgid "License not accepted!"
+msgid "License is not accepted!"
 msgstr ""
 
 #: setup2.cxx:1075
-msgid "Installation Canceled!"
+msgid "Installation canceled!"
 msgstr ""
 
 #: setup2.cxx:1077 setup2.cxx:1114 setup2.cxx:1145 uninst2.cxx:433
@@ -325,7 +326,7 @@ msgstr ""
 
 #: uninst.sh.in:21
 #, sh-format
-msgid "This installation script will help you remove Dr.Web packages"
+msgid "This script will help you remove Dr.Web packages"
 msgstr ""
 
 #: uninst.sh.in:24
@@ -335,7 +336,7 @@ msgstr ""
 
 #: uninst.sh.in:37
 #, sh-format
-msgid "Sorry, you must be root to install this software."
+msgid "Sorry, you must be root to remove Dr.Web software."
 msgstr ""
 
 #: uninst.sh.in:79

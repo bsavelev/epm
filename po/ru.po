@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: n.zdanova@drweb.com \n"
-"POT-Creation-Date: 2010-02-04 13:47+0300\n"
+"Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
+"POT-Creation-Date: 2010-02-10 15:39+0300\n"
 "Last-Translator: Natalia Zdanova <n.zdanova@drweb.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -9,152 +9,157 @@ msgstr ""
 
 #: setup.cxx:2260
 msgid "Install"
-msgstr ""
+msgstr "Установка компонентов"
 
 #: setup.cxx:2262 uninst.cxx:2240
 msgid "Welcome"
-msgstr ""
+msgstr "Начало установки"
 
 #: setup.cxx:2266
 msgid "Install Type"
-msgstr ""
+msgstr "Тип установки"
 
 #: setup.cxx:2271 uninst.cxx:2244
 msgid "Select Software"
-msgstr ""
+msgstr "Выбор пакетов"
 
 #: setup.cxx:2276 uninst.cxx:2249
 msgid "Confirm"
-msgstr ""
+msgstr "Подтверждение установки"
 
 #: setup.cxx:2281
 msgid "License"
-msgstr ""
+msgstr "Лицензионное соглашение"
 
 #: setup.cxx:2286
 msgid "Installing"
-msgstr ""
+msgstr "Установка"
 
 #: setup.cxx:2291
 msgid "Finish"
-msgstr ""
+msgstr "Завершение установки"
 
 #: setup.cxx:2315
 msgid "Select the installation type:"
-msgstr ""
+msgstr "Выберите тип установки:"
 
 #: setup.cxx:2369
 msgid "Select the software you want to install:"
-msgstr ""
+msgstr "Выберите компоненты, которые вы хотите установить:"
 
 #: setup.cxx:2372
 msgid " Available Software:"
-msgstr ""
+msgstr "Доступные компоненты:"
 
 #: setup.cxx:2381
 msgid "0k marked for installation."
-msgstr ""
+msgstr "0k отмечено для установки."
 
 #: setup.cxx:2384 uninst.cxx:2295
 msgid "Select all"
-msgstr ""
+msgstr "Выделить все"
 
 #: setup.cxx:2387 uninst.cxx:2298
 msgid "Select none"
-msgstr ""
+msgstr "Отменить выделение"
 
 #: setup.cxx:2398
 msgid "Confirm your software selections below:"
-msgstr ""
+msgstr "Подтвердите ваш выбор:"
 
 #: setup.cxx:2401
 msgid "Selected Software:"
-msgstr ""
+msgstr "Выбранные компоненты:"
 
 #: setup.cxx:2412
 msgid "License Agreement:"
-msgstr ""
+msgstr "Лицензионное соглашение:"
 
 #: setup.cxx:2418
 msgid "Accept and install"
-msgstr ""
+msgstr "Принять соглашение и продолжить установку "
 
 #: setup.cxx:2424
 msgid "Cancel installation"
-msgstr ""
+msgstr "Прекратить установку"
 
 #: setup.cxx:2431
 msgid "Language:"
-msgstr ""
+msgstr "Выбрать язык:"
 
 #: setup.cxx:2443 uninst.cxx:2323
 msgid "Progress Label..."
-msgstr ""
+msgstr "Индикатор выполнения..."
 
 #: setup.cxx:2450
 msgid "Run interactive postinstall script"
-msgstr ""
+msgstr "Запустить интерактивный установочный скрипт"
 
 #: setup.cxx:2461
-msgid "Congratulation:"
-msgstr ""
+msgid "Postinstall information:"
+msgstr "Заключительный этап:"
 
 #: setup.cxx:2473 uninst.cxx:2341
 msgid "@-2< Back"
-msgstr ""
+msgstr "@-2< Назад"
 
 #: setup.cxx:2476 uninst.cxx:2344
 msgid "Next @-2>"
-msgstr ""
+msgstr "Вперед @-2>"
 
 #: setup.cxx:2479 setup2.cxx:1017 setup2.cxx:1088 setup2.cxx:1167
 #: uninst.cxx:2347 uninst2.cxx:419
 msgid "Cancel"
-msgstr ""
+msgstr "Отменить"
 
 #: setup2.cxx:229
 msgid "You must be logged in as root to run setup!"
 msgstr ""
+"Вы должны иметь привилегии администратора для запуска процесса установки!"
 
 #: setup2.cxx:399
 msgid "No software found to install!"
-msgstr ""
+msgstr "Не обнаружено компонентов для установки!"
 
 #: setup2.cxx:413
 msgid " (new)"
-msgstr ""
+msgstr "(new)"
 
 #: setup2.cxx:418
 msgid " (downgrade)"
-msgstr ""
+msgstr " (downgrade)"
 
 #: setup2.cxx:423
 msgid " (installed)"
-msgstr ""
+msgstr " (installed)"
 
 #: setup2.cxx:428
 msgid " (upgrade)"
-msgstr ""
+msgstr " (upgrade)"
 
 #: setup2.cxx:475
 msgid "Failed to execute install script!"
-msgstr ""
+msgstr "Не удалось запустить установочный скрипт!"
 
 #: setup2.cxx:508
 msgid "Unable to install"
-msgstr ""
+msgstr "Невозможно установить"
 
 #: setup2.cxx:624
 #, c-format
 msgid ""
 "%s requires %s to be installed, but it is not available for installation."
 msgstr ""
+"Для установки %s должен быть предварительно установлен %s, однако он "
+"недоступен для установки."
 
 #: setup2.cxx:637
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please remove it before installing this software."
 msgstr ""
+"%s несовместим с %s. Пожалуйста, удалите его перед установкой данного "
+"компонента."
 
 #: setup2.cxx:654
 #, c-format
@@ -162,63 +167,67 @@ msgid ""
 "%s is incompatible with %s. Please deselect it before installing this "
 "software."
 msgstr ""
+"%s несовместим с %s. Пожалуйста, снимите соответствующее выделение перед "
+"установкой данного компонента."
 
 #: setup2.cxx:718
 msgid ""
 "This program allows you to install the following software:\n"
 "<ul>\n"
 msgstr ""
+"Данная программа позволит вам установить следующие компоненты:\n"
+"<ul>\n"
 
 #: setup2.cxx:849
 #, c-format
 msgid " (+%.1fMb disk space)"
-msgstr ""
+msgstr " (+%.1fMb дискового пространства)"
 
 #: setup2.cxx:852
 #, c-format
 msgid " (+%dKb disk space)"
-msgstr ""
+msgstr " (+%dKb дискового пространства)"
 
 #: setup2.cxx:1016
 #, c-format
 msgid "Software License"
-msgstr ""
+msgstr "Лицензионное соглашение"
 
 #: setup2.cxx:1057
 #, c-format
-msgid "License not accepted!"
-msgstr ""
+msgid "License is not accepted!"
+msgstr "Условия Лицензионного соглашения не приняты!"
 
 #: setup2.cxx:1075
-msgid "Installation Canceled!"
-msgstr ""
+msgid "Installation canceled!"
+msgstr "Установка прекращена!"
 
 #: setup2.cxx:1077 setup2.cxx:1114 setup2.cxx:1145 uninst2.cxx:433
 msgid "Close"
-msgstr ""
+msgstr "Закрыть"
 
 #: setup2.cxx:1098
 #, c-format
 msgid "Installing %s v%s..."
-msgstr ""
+msgstr "Устанавливаются %s v%s..."
 
 #: setup2.cxx:1113
 msgid "Installation Failed!"
-msgstr ""
+msgstr "Не удалось произвести установку!"
 
 #: setup2.cxx:1117
 msgid "Installation Complete"
-msgstr ""
+msgstr "Установка завершена"
 
 #: setup2.cxx:1308 uninst2.cxx:714
 #, c-format
 msgid "%+.1fMb required, %dMb available."
-msgstr ""
+msgstr "%+.1fMb требуется, %dMb доступно."
 
 #: setup2.cxx:1312 uninst2.cxx:718
 #, c-format
 msgid "%+dk required, %dMb available."
-msgstr ""
+msgstr "%+dk требуется, %dMb доступно."
 
 #: setup2.cxx:1316 uninst2.cxx:722
 #, c-format
@@ -226,6 +235,8 @@ msgid ""
 "%+.1fMb required on /, %dMb available,\n"
 "%+.1fMb required on /usr, %dMb available."
 msgstr ""
+"%+.1fMb требуется в /, %dMb доступно,\n"
+"%+.1fMb требуется в /usr, %dMb доступно."
 
 #: setup2.cxx:1321 uninst2.cxx:727
 #, c-format
@@ -233,6 +244,8 @@ msgid ""
 "%+.1fMb required on /, %dMb available,\n"
 "%+dk required on /usr, %dMb available."
 msgstr ""
+"%+.1fMb требуется в /, %dMb доступно,\n"
+"%+dk требуется в /usr, %dMb доступно."
 
 #: setup2.cxx:1326 uninst2.cxx:732
 #, c-format
@@ -240,6 +253,8 @@ msgid ""
 "%+dk required on /, %dMb available,\n"
 "%+.1fMb required on /usr, %dMb available."
 msgstr ""
+"%+dk требуется в /, %dMb доступно,\n"
+"%+.1fMb rтребуется в /usr, %dMb доступно."
 
 #: setup2.cxx:1331 uninst2.cxx:737
 #, c-format
@@ -247,113 +262,120 @@ msgid ""
 "%+dk required on /, %dMb available,\n"
 "%+dk required on /usr, %dMb available."
 msgstr ""
+"%+dk требуется в /, %dMb доступно,\n"
+"%+dk требуется в /usr, %dMb доступно."
 
 #: setup2.cxx:1376
 msgid "English"
-msgstr ""
+msgstr "Английский"
 
 #: setup2.cxx:1383
 msgid "Russian"
-msgstr ""
+msgstr "Русский"
 
 #: uninst.cxx:2238
 msgid "Uninstall"
-msgstr ""
+msgstr "Удаление компонентов"
 
 #: uninst.cxx:2254
 msgid "Removing"
-msgstr ""
+msgstr "Удаление"
 
 #: uninst.cxx:2279
 msgid "Select the software to remove:"
-msgstr ""
+msgstr "Выберите компоненты для удаления:"
 
 #: uninst.cxx:2282
 msgid " Installed Software:"
-msgstr ""
+msgstr "Установленные компоненты:"
 
 #: uninst.cxx:2292
 msgid "0k marked for removal."
-msgstr ""
+msgstr "0k отмечено для удаления."
 
 #: uninst.cxx:2309
 msgid "Confirm software selected for removal:"
-msgstr ""
+msgstr "Подтвердите удаление выбранных компонентов:"
 
 #: uninst.cxx:2312
 msgid "Software to Remove:"
-msgstr ""
+msgstr "Компоненты для удаления:"
 
 #: uninst2.cxx:193
 msgid "You must be logged in as root to run uninstall!"
 msgstr ""
+"Вы должны иметь привилегии администратора для запуска процесса удаления "
+"компонентов!"
 
 #: uninst2.cxx:317
 msgid ""
 "This program allows you to remove the following software:</p>\n"
 "<ul>\n"
 msgstr ""
+"Данная программа позволит вам удалить следующие компоненты:</p>\n"
+"<ul>\n"
 
 #: uninst2.cxx:438
 #, c-format
 msgid "Removing %s v%s..."
-msgstr ""
+msgstr "Удаляются %s v%s..."
 
 #: uninst2.cxx:454
 msgid "Removal Failed!"
-msgstr ""
+msgstr "Не удалось произвести удаление!"
 
 #: uninst2.cxx:456
 msgid "Removal Complete"
-msgstr ""
+msgstr "Удаление завершено"
 
 #: uninst2.cxx:560
 msgid "Unable to remove"
-msgstr ""
+msgstr "Невозможно удалить"
 
 #: uninst2.cxx:635
 msgid "No software found to remove!"
-msgstr ""
+msgstr "Не обнаружено компонентов для удаления!"
 
 #: uninst.sh.in:21
 #, sh-format
-msgid "This installation script will help you remove Dr.Web packages"
-msgstr ""
+msgid "This script will help you remove Dr.Web packages"
+msgstr "Данный скрипт поможет вам удалить компоненты Dr.Web"
 
 #: uninst.sh.in:24
 #, sh-format
 msgid "Do you wish to continue? [Yes] "
-msgstr ""
+msgstr "Вы хотите продолжить? [Yes]"
 
 #: uninst.sh.in:37
 #, sh-format
-msgid "Sorry, you must be root to install this software."
+msgid "Sorry, you must be root to remove Dr.Web software."
 msgstr ""
+"Вы должны иметь привилегии администратора для удаления компонентов Dr.Web"
 
 #: uninst.sh.in:79
 #, sh-format
 msgid "Please enter yes or no."
-msgstr ""
+msgstr "Пожалуйста, введите yes или no."
 
 #: uninst.sh.in:166
 #, sh-format
 msgid "Select the software you want to remove:"
-msgstr ""
+msgstr "Выберите компоненты, которые вы хотите удалить:"
 
 #: uninst.sh.in:182
 #, sh-format
 msgid "A list of packages marked for removal:"
-msgstr ""
+msgstr "Список компонентов, отмеченных для удаления:"
 
 #: uninst.sh.in:187
 #, sh-format
 msgid "Are you sure you want to remove the selected packages? [Yes] "
-msgstr ""
+msgstr "Вы уверены, что хотите удалить выбранные компоненты? [Yes] "
 
 #: uninst.sh.in:194 uninst.sh.in:202
 #, sh-format
 msgid "Nothing to remove. Exiting..."
-msgstr ""
+msgstr "Компоненты для удаления не обнаружены. Выход..."
 
 #: uninst.sh.in:208
 #, sh-format
@@ -367,13 +389,19 @@ msgid ""
 "the dialog.\n"
 "All values are case insensitive.\\n"
 msgstr ""
+"Чтобы выбрать пакет для установки либо снять выделение с какого-либо ранее "
+"выбранного пакета\\n- введите соответствующий номер пакета и нажмите Enter."
+"\\nВведите A или All, чтобы отметить все пакеты, введите N или None, чтобы "
+"снять выделение\\nсо всех пакетов.\\nВведите R или Remove, чтобы удалить "
+"отмеченные пакеты.\\nВведите 0, Q или Quit, чтобы выйти из программы "
+"установки to quit the dialog.\\nВсе значения регистронезависимы.\\n"
 
 #: uninst.sh.in:215
 #, sh-format
 msgid "Select: "
-msgstr ""
+msgstr "Выбрать:"
 
 #: uninst.sh.in:245
 #, sh-format
 msgid "Software dir -- '%s' not found."
-msgstr ""
+msgstr "Директория с файлами компонентов -- '%s' не обнаружена."

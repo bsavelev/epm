@@ -184,7 +184,7 @@ list_cb(0,0);}
         xywh {145 20 525 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Help_View PostinFile {
-          label {Congratulation:}
+          label {Postinstall information:}
           xywh {145 48 515 194} align 133 resizable
         }
       }

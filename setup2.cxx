@@ -1054,7 +1054,7 @@ void update_control(int from) {
         // Can't install without acceptance...
         char	message[1024];		// Message for log
         InstallLog->clear();
-        snprintf(message, sizeof(message), gettext("License not accepted!"));
+        snprintf(message, sizeof(message), gettext("License is not accepted!"));
         InstallLog->add(message);
         licaccept = 0;
       } else if (LicenseAccept->value())
@@ -1072,7 +1072,7 @@ void update_control(int from) {
     update_label();
     if ( licaccept == 0 )
     {
-      InstallPercent->label(gettext("Installation Canceled!"));
+      InstallPercent->label(gettext("Installation canceled!"));
       Pane[PANE_INSTALL]->redraw();
       CancelButton->label(gettext("Close"));
       CancelButton->activate();

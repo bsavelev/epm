@@ -2458,7 +2458,7 @@ Fl_Double_Window* make_window() {
         Pane[6]->labelcolor((Fl_Color)4);
         Pane[6]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         Pane[6]->hide();
-        { PostinFile = new Fl_Help_View(145, 48, 515, 194, gettext("Congratulation:"));
+        { PostinFile = new Fl_Help_View(145, 48, 515, 194, gettext("Postinstall information:"));
           PostinFile->align(133);
           Fl_Group::current()->resizable(PostinFile);
         } // Fl_Help_View* PostinFile

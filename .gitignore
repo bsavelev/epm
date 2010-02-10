@@ -1,6 +1,9 @@
 *.*~
 Makefile
+*.gmo
 *.mo
+locale
+.deps
 *.list
 epm
 setup
@@ -29,3 +32,4 @@ doc/setup.html
 doc/setup.types.html
 uninst.sh
 doc/test/*.html
+stamp-*

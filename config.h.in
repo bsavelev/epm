@@ -1,148 +1,141 @@
-/*
- * "$Id: config.h.in,v 1.1.1.1.2.2 2009/10/09 16:01:14 bsavelev Exp $"
- *
- *   Configuration file for the ESP Package Manager (EPM).
- *
- *   Copyright 1999-2005 by Easy Software Products.
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2, or (at your option)
- *   any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- */
+/* config.h.in.  Generated from configure.in by autoheader.  */
 
-/*
- * Version of software...
- */
+/* Flag for compress */
+#undef EPM_COMPRESS
 
-#define EPM_VERSION	""
+/* Path to datadir */
+#undef EPM_DATADIR
 
+/* Path to gzip */
+#undef EPM_GZIP
 
-/*
- * Where are files stored?
- */
+/* Path to libdir */
+#undef EPM_LIBDIR
 
-#define EPM_SOFTWARE	"/etc/software"
+/* Path to objcopy */
+#undef EPM_OBJCOPY
 
+/* rpm arch arg */
+#undef EPM_RPMARCH
 
-/*
- * Where are binaries stored?
- */
+/* rpmbuild path */
+#undef EPM_RPMBUILD
 
-#define EPM_BINDIR	"/usr/bin"
-#define EPM_DATADIR	"/usr/share/epm"
-#define EPM_LIBDIR	"/usr/lib/epm"
-
-
-/*
- * What options does the strip command take?
- */
-
-#define EPM_STRIP	"/bin/strip"
-
-
-/*
- * What options does the objcopy command take?
- */
-
-#define EPM_OBJCOPY	"/usr/bin/objcopy"
-
-
-/*
- * What command is used to build RPMs?
- */
-
-#define EPM_RPMBUILD	"rpm"
-
-
-/*
- * What option is used to specify the RPM architecture?
- */
-
-#define EPM_RPMARCH	"--target"
-
-
-/*
- * Does this version of RPM support the "topdir_" variable?
- */
-
+/* RPM topdir */
 #undef EPM_RPMTOPDIR
 
+/* SoftwareDir path */
+#undef EPM_SOFTWARE
 
-/*
- * Compiler stuff...
- */
+/* Path to strip */
+#undef EPM_STRIP
 
-#undef const
-#undef __CHAR_UNSIGNED__
+/* Version of software */
+#undef EPM_VERSION
 
-
-/*
- * Do we have the <strings.h> header file?
- */
-
-#undef HAVE_STRINGS_H
-
-
-/*
- * Which header files do we use for the statfs() function?
- */
-
-#undef HAVE_SYS_MOUNT_H
-#undef HAVE_SYS_STATFS_H
-#undef HAVE_SYS_VFS_H
-#undef HAVE_SYS_PARAM_H
-
-
-/*
- * Do we have the strXXX() functions?
- */
-
-#undef HAVE_STRCASECMP
-#undef HAVE_STRDUP
-#undef HAVE_STRLCAT
-#undef HAVE_STRLCPY
-#undef HAVE_STRNCASECMP
-
-
-/*
- * Do we have the (v)snprintf() functions?
- */
-
-#undef HAVE_SNPRINTF
-#undef HAVE_VSNPRINTF
-
-
-/*
- * Which directory functions and headers do we use?
- */
-
+/* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
+   */
 #undef HAVE_DIRENT_H
-#undef HAVE_SYS_DIR_H
-#undef HAVE_SYS_NDIR_H
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
+
+/* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
 #undef HAVE_NDIR_H
 
+/* Define to 1 if you have the `snprintf' function. */
+#undef HAVE_SNPRINTF
 
-/*
- * Where is the "gzip" executable?
- */
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
 
-#define EPM_GZIP	"gzip"
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
 
+/* Define to 1 if you have the `strcasecmp' function. */
+#undef HAVE_STRCASECMP
 
-/*
- * Compress files by default?
- */
+/* Define to 1 if you have the `strdup' function. */
+#undef HAVE_STRDUP
 
-#define EPM_COMPRESS 0
+/* Have strings.h */
+#undef HAVE_STRINGS_H
 
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the `strlcat' function. */
+#undef HAVE_STRLCAT
+
+/* Define to 1 if you have the `strlcpy' function. */
+#undef HAVE_STRLCPY
+
+/* Define to 1 if you have the `strncasecmp' function. */
+#undef HAVE_STRNCASECMP
+
+/* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
+   */
+#undef HAVE_SYS_DIR_H
+
+/* Have sys/mount.h */
+#undef HAVE_SYS_MOUNT_H
+
+/* Define to 1 if you have the <sys/ndir.h> header file, and it defines `DIR'.
+   */
+#undef HAVE_SYS_NDIR_H
+
+/* Have sys/param.h */
+#undef HAVE_SYS_PARAM_H
+
+/* Have sys/statfs.h */
+#undef HAVE_SYS_STATFS_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Have sys/vfs.h */
+#undef HAVE_SYS_VFS_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the `vsnprintf' function. */
+#undef HAVE_VSNPRINTF
+
+/* Path to localedir */
 #undef LOCALEDIR
 
-/*
- * End of "$Id: config.h.in,v 1.1.1.1.2.2 2009/10/09 16:01:14 bsavelev Exp $".
- */
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* Define to 1 if you have the ANSI C header files. */
+#undef STDC_HEADERS
+
+/* Define to 1 if type `char' is unsigned and you are not using gcc.  */
+#ifndef __CHAR_UNSIGNED__
+# undef __CHAR_UNSIGNED__
+#endif
+
+/* Define to empty if `const' does not conform to ANSI C. */
+#undef const

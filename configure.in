@@ -16,21 +16,16 @@ dnl   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 dnl   GNU General Public License for more details.
 dnl
 
+VERSION=4.2
+VERNUMBER=420
+
 AC_INIT(epm.c)
+AM_INIT_AUTOMAKE(epm, 4.2, [b.savelev@drweb.com])
 AC_CONFIG_HEADER(config.h)
-AC_PREFIX_DEFAULT(/usr)
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION(0.15)
-
-dnl Version number...
-
-VERSION=4.2
-VERNUMBER=420
-AC_SUBST(VERSION)
-AC_SUBST(VERNUMBER)
-AC_DEFINE_UNQUOTED(EPM_VERSION, "ESP Package Manager v$VERSION")
 
 dnl Get the operating system...
 
@@ -63,7 +58,6 @@ else
 fi)
 
 AC_ARG_ENABLE(gui, [  --enable-gui            turn on GUI utilities [[default=auto]]])
-#AC_ARG_ENABLE(gui_cli, [  --enable-gui_cli        turn on CLI GUI utilities [[default=yes]]])
 
 AC_ARG_WITH(docdir, [  --with-docdir=/dir      set directory for documentation
                           [[default=${datadir}/doc/epm]]],
@@ -75,7 +69,7 @@ AC_SUBST(docdir)
 AC_ARG_WITH(softwaredir, [  --with-softwaredir=/dir set directory for EPM uninstall files and init scripts
                           [[default=/etc/software]]],
 	softwaredir="$withval",
-	softwaredir="")
+	softwaredir="/etc/software")
 
 dnl Checks for programs...
 AC_PROG_CC
@@ -118,11 +112,11 @@ fi
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_DIRENT
-AC_CHECK_HEADER(strings.h,AC_DEFINE(HAVE_STRINGS_H))
-AC_CHECK_HEADER(sys/param.h,AC_DEFINE(HAVE_SYS_PARAM_H))
-AC_CHECK_HEADER(sys/mount.h,AC_DEFINE(HAVE_SYS_MOUNT_H),,[#include <sys/param.h>])
-AC_CHECK_HEADER(sys/statfs.h,AC_DEFINE(HAVE_SYS_STATFS_H))
-AC_CHECK_HEADER(sys/vfs.h,AC_DEFINE(HAVE_SYS_VFS_H))
+AC_CHECK_HEADER(strings.h,AC_DEFINE([HAVE_STRINGS_H],[],[Have strings.h]))
+AC_CHECK_HEADER(sys/param.h,AC_DEFINE([HAVE_SYS_PARAM_H],[],[Have sys/param.h]))
+AC_CHECK_HEADER(sys/mount.h,AC_DEFINE([HAVE_SYS_MOUNT_H],[],[Have sys/mount.h]),,[#include <sys/param.h>])
+AC_CHECK_HEADER(sys/statfs.h,AC_DEFINE([HAVE_SYS_STATFS_H],[],[Have sys/statfs.h]))
+AC_CHECK_HEADER(sys/vfs.h,AC_DEFINE([HAVE_SYS_VFS_H],[],[Have sys/vfs.h]))
 
 dnl Checks for string functions.
 AC_CHECK_FUNCS(strcasecmp strdup strlcat strlcpy strncasecmp)
@@ -144,10 +138,11 @@ if test "x$FLTKCONFIG" = x; then
 	GUILIBS=""
 	INSTALL_GUIS=""
 	INSTALL_OSX=""
+	EPM_GUI_CXXFLAGS=""
 
 	AC_MSG_WARN([Sorry, setup GUI requires FLTK 1.1.x.])
 else
-	CXXFLAGS="`$FLTKCONFIG --cflags` ${CXXFLAGS}"
+	EPM_GUI_CXXFLAGS="`$FLTKCONFIG --cflags`"
 	GUIS="setup uninst"
 	GUILIBS="`$FLTKCONFIG --use-images --ldstaticflags`"
 	INSTALL_GUIS="install-guis"
@@ -160,37 +155,17 @@ else
 	fi
 fi
 
-
-#if test "x$enable_gui_cli" != xno; then
-#	AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
-#	if test "x$PKG_CONFIG" = "xno"; then
-#    	    AC_MSG_WARN([You need to install pkg-config])
-#	    NEWT_LIBS=-lnewt
-#	else
-#	    PKG_CHECK_MODULES(NEWT, libnewt)
-#	fi
-#	CLIGUIS="setup_cli"
-#else
-#	CLIGUIS=""
-#fi
-
-AC_SUBST(NEWT_LIBS)
-AC_SUBST(INSTALL_GUIS)
-AC_SUBST(INSTALL_OSX)
-AC_SUBST(GUIS)
-AC_SUBST(GUILIBS)
-AC_SUBST(CLIGUIS)
-
 dnl Set the default compression value...
 case "$uname" in
 	Darwin* | *BSD | Linux* | SunOS*)
 		# MacOS X, *BSD, Linux, and Solaris come with gzip standard
-		AC_DEFINE(EPM_COMPRESS, 1)
+		EPM_COMPRESS=1
+
 		;;
 
 	*)
 		# All other OS's do not.
-		AC_DEFINE(EPM_COMPRESS, 0)
+		EPM_COMPRESS=0
 		;;
 esac
 		
@@ -202,28 +177,28 @@ if test -n "$GCC"; then
 	fi
 
 	# Add useful warning options...
-	CFLAGS="-Wall -Wformat -Wno-format-y2k -Wunused $CFLAGS"
-	CXXFLAGS="-Wall -Wformat -Wno-format-y2k -Wunused $CXXFLAGS"
+	EPM_CFLAGS="-Wall -Wformat -Wno-format-y2k -Wunused $EPM_CFLAGS"
+	EPM_CXXFLAGS="-Wall -Wformat -Wno-format-y2k -Wunused $EPM_CXXFLAGS"
 
 	# See if GCC supports -fno-rtti...
 	AC_MSG_CHECKING(if GCC supports -fno-rtti)
-	OLDCFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS -fno-rtti"
+	OLDEPM_CFLAGS="$EPM_CFLAGS"
+	EPM_CFLAGS="$EPM_CFLAGS -fno-rtti"
 	AC_TRY_COMPILE(,,
-		CXXFLAGS="$CXXFLAGS -fno-rtti"
+		EPM_CXXFLAGS="$EPM_CXXFLAGS -fno-rtti"
 		AC_MSG_RESULT(yes),
 		AC_MSG_RESULT(no))
-	CFLAGS="$OLDCFLAGS"
+	EPM_CFLAGS="$OLDEPM_CFLAGS"
 
 	# See if GCC supports -fno-exceptions...
 	AC_MSG_CHECKING(if GCC supports -fno-exceptions)
-	OLDCFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS -fno-exceptions"
+	OLDEPM_CFLAGS="$EPM_CFLAGS"
+	EPM_CFLAGS="$EPM_CFLAGS -fno-exceptions"
 	AC_TRY_COMPILE(,,
-		CXXFLAGS="$CXXFLAGS -fno-exceptions"
+		EPM_CXXFLAGS="$EPM_CXXFLAGS -fno-exceptions"
 		AC_MSG_RESULT(yes),
 		AC_MSG_RESULT(no))
-	CFLAGS="$OLDCFLAGS"
+	EPM_CFLAGS="$OLDEPM_CFLAGS"
 
 	# See if we are running HP-UX or Solaris; if so, try the
 	# -fpermissive option...
@@ -231,13 +206,13 @@ if test -n "$GCC"; then
 		SunOS* | HP-UX*)
 			AC_MSG_CHECKING(if GCC supports -fpermissive)
 
-			OLDCFLAGS="$CFLAGS"
-			CFLAGS="$CFLAGS -fpermissive"
+			OLDEPM_CFLAGS="$EPM_CFLAGS"
+			EPM_CFLAGS="$EPM_CFLAGS -fpermissive"
 			AC_TRY_COMPILE(,,
-				CXXFLAGS="$CXXFLAGS -fpermissive"
+				EPM_CXXFLAGS="$EPM_CXXFLAGS -fpermissive"
 				AC_MSG_RESULT(yes),
 				AC_MSG_RESULT(no))
-			CFLAGS="$OLDCFLAGS"
+			EPM_CFLAGS="$OLDEPM_CFLAGS"
 			;;
 
 		*)
@@ -296,7 +271,7 @@ case $uname in
                 ;;
 esac
 
-AC_SUBST(ARFLAGS)
+
 
 dnl Fix "prefix" variable if it hasn't been specified...
 if test "$prefix" = "NONE"; then
@@ -351,66 +326,71 @@ if test "$mandir" = "\${prefix}/man" -a "$prefix" = "/usr"; then
 	esac
 fi
 
-dnl EPM_SOFTWARE needs special attention for the default location...
-if test x$softwaredir = x; then
-	EPM_SOFTWARE="/etc/software"
-else
-	EPM_SOFTWARE="$softwaredir"
-fi
-
-AC_DEFINE_UNQUOTED(EPM_SOFTWARE, "$EPM_SOFTWARE")
-AC_SUBST(EPM_SOFTWARE)
-
-AC_DEFINE_UNQUOTED(EPM_GZIP, "$GZIP")
-AC_SUBST(EPM_GZIP)
-
-AC_DEFINE_UNQUOTED(EPM_STRIP, "$STRIP")
-AC_SUBST(EPM_STRIP)
-
-AC_DEFINE_UNQUOTED(EPM_OBJCOPY, "$OBJCOPY")
-AC_SUBST(EPM_OBJCOPY)
-
-AC_DEFINE_UNQUOTED(EPM_BINDIR, "$exec_prefix/bin")
-AC_SUBST(EPM_BINDIR)
-
-AC_DEFINE_UNQUOTED(EPM_LIBDIR, "$libdir/epm")
-AC_SUBST(EPM_LIBDIR)
-
-AC_DEFINE_UNQUOTED(EPM_DATADIR, "$datadir/epm")
-AC_SUBST(EPM_DATADIR)
-
 dnl Figure out the right option to use for the RPM build architecture...
 if test "x$RPM" != x; then
 	# It would be nice if Red Hat could make up its mind...
 	rpmversion="`$RPM --version | awk '{print $3}' | awk -F. '{print $1 * 10000 + $2 * 100 + $3}'`"
-
 	if test $rpmversion -lt 30000; then
-		AC_DEFINE_UNQUOTED(EPM_RPMARCH, "--buildarch ")
+		RPMARCH_DEF="--buildarch "
 	else
 		if test $rpmversion -ge 40003; then
-			AC_DEFINE_UNQUOTED(EPM_RPMARCH, "--target ")
+		    RPMARCH_DEF="--target "
 		else
-			AC_DEFINE_UNQUOTED(EPM_RPMARCH, "--target=")
+		    RPMARCH_DEF="--target= "
 		fi
 	fi
 fi
 
 if test "x$RPMBUILD" != x; then
-	AC_DEFINE_UNQUOTED(EPM_RPMBUILD, "$RPMBUILD")
-	AC_DEFINE(EPM_RPMTOPDIR)
+	RPMBUILD_DEF=$RPMBUILD
 else
 	if test "x$RPM" != x; then
-		AC_DEFINE_UNQUOTED(EPM_RPMBUILD, "$RPM")
+		RPMBUILD_DEF=$RPM
 	else
-		AC_DEFINE_UNQUOTED(EPM_RPMBUILD, "rpm")
+		RPMBUILD_DEF="rpm"
 	fi
 fi
 
-AC_DEFINE_UNQUOTED(LOCALEDIR, "$datarootdir/locale", "")
+dnl Version number...
+AC_SUBST(VERSION)
+AC_SUBST(VERNUMBER)
+AC_SUBST(EPM_SOFTWARE)
+AC_SUBST(EPM_GZIP)
+AC_SUBST(EPM_STRIP)
+AC_SUBST(EPM_OBJCOPY)
+AC_SUBST(EPM_LIBDIR)
+AC_SUBST(EPM_DATADIR)
 AC_SUBST(EPM_LDFLAGS)
+AC_SUBST(ARFLAGS)
+AC_SUBST(INSTALL_GUIS)
+AC_SUBST(INSTALL_OSX)
+AC_SUBST(GUIS)
+AC_SUBST(GUILIBS)
+AC_SUBST(EPM_CFLAGS)
+AC_SUBST(EPM_CXXFLAGS)
+AC_SUBST(EPM_GUI_CXXFLAGS)
+
+AC_DEFINE_UNQUOTED([EPM_GZIP], ["$GZIP"], [Path to gzip])
+AC_DEFINE_UNQUOTED([EPM_STRIP], ["$STRIP"], [Path to strip])
+AC_DEFINE_UNQUOTED([EPM_OBJCOPY], ["$OBJCOPY"], [Path to objcopy])
+AC_DEFINE_UNQUOTED([EPM_DATADIR], ["$datadir/epm"],[Path to datadir])
+AC_DEFINE_UNQUOTED([EPM_LIBDIR], ["$libdir/epm"], [Path to libdir])
+AC_DEFINE_UNQUOTED([LOCALEDIR], ["$datarootdir/locale"], [Path to localedir])
+AC_DEFINE_UNQUOTED([EPM_VERSION], ["ESP Package Manager v$VERSION"], [Version of software])
+AC_DEFINE_UNQUOTED([EPM_SOFTWARE], ["$EPM_SOFTWARE"], [SoftwareDir path])
+AC_DEFINE([EPM_RPMTOPDIR],[],[RPM topdir])
+AC_DEFINE_UNQUOTED([EPM_RPMBUILD], ["$RPMBUILD_DEF"], [rpmbuild path])
+AC_DEFINE_UNQUOTED([EPM_RPMARCH], ["$RPMARCH_DEF"], [rpm arch arg])
+AC_DEFINE([EPM_COMPRESS], [$EPM_COMPRESS], [Flag for compress])
 
 dnl Output the makefile, list file, and config header...
-AC_OUTPUT(Makefile epm.list doc/Makefile po/Makefile uninst.sh)
+AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([po/Makefile.in])
+AC_CONFIG_FILES([doc/Makefile])
+AC_CONFIG_FILES([epm.list])
+AC_CONFIG_FILES([uninst.sh])
+
+AC_OUTPUT
 
 dnl
 dnl End of "$Id: configure.in,v 1.1.1.1.2.2 2009/10/09 16:01:14 bsavelev Exp $".

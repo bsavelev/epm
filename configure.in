@@ -19,7 +19,7 @@ dnl
 VERSION=4.2
 VERNUMBER=420
 
-AC_INIT(epm.c)
+AC_INIT(epm, 4.2, [b.savelev@drweb.com])
 AM_INIT_AUTOMAKE(epm, 4.2, [b.savelev@drweb.com])
 AC_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
@@ -350,6 +350,8 @@ else
 		RPMBUILD_DEF="rpm"
 	fi
 fi
+
+EPM_SOFTWARE="$softwaredir"
 
 dnl Version number...
 AC_SUBST(VERSION)

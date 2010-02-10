@@ -12,7 +12,7 @@
 
 PACKAGE = epm
 VERSION = 4.2
-PACKAGE_BUGREPORT = 
+PACKAGE_BUGREPORT = b.savelev@drweb.com
 
 SHELL = /bin/sh
 

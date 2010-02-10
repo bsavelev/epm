@@ -135,7 +135,10 @@ main(int  argc,			// I - Number of command-line arguments
   setlocale(LC_ALL, "");
   char localedir[1024];
   sprintf(localedir,"%slocale", findMypath(argv[0]));
-  bindtextdomain ("epm", localedir);
+  if (!access(localedir,0))
+    bindtextdomain ("epm", localedir);
+  else
+    bindtextdomain ("epm", LOCALEDIR);
   textdomain("epm");
 
 #ifdef __APPLE__

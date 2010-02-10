@@ -115,7 +115,12 @@ main(int  argc,			// I - Number of command-line arguments
   Fl::scheme("gtk+");
 
   setlocale(LC_ALL, "");
-  bindtextdomain ("epm", LOCALEDIR);
+  char localedir[1024];
+  sprintf(localedir,"%slocale", findMypath(argv[0]));
+  if (!access(localedir,0))
+    bindtextdomain ("epm", localedir);
+  else
+    bindtextdomain ("epm", LOCALEDIR);
   textdomain("epm");
 
 #ifdef __APPLE__

@@ -33,7 +33,8 @@ libepm_a_SOURCES = \
 			string.c \
 			support.c \
 			swinstall.c \
-			tar.c
+			tar.c \
+			config.h
 
 setup_SOURCES	=	setup.cxx \
 			setup2.cxx \

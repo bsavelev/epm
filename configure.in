@@ -383,7 +383,7 @@ AC_DEFINE_UNQUOTED([EPM_SOFTWARE], ["$EPM_SOFTWARE"], [SoftwareDir path])
 AC_DEFINE([EPM_RPMTOPDIR],[],[RPM topdir])
 AC_DEFINE_UNQUOTED([EPM_RPMBUILD], ["$RPMBUILD_DEF"], [rpmbuild path])
 AC_DEFINE_UNQUOTED([EPM_RPMARCH], ["$RPMARCH_DEF"], [rpm arch arg])
-AC_DEFINE([EPM_COMPRESS], [$EPM_COMPRESS], [Flag for compress])
+AC_DEFINE_UNQUOTED([EPM_COMPRESS], [$EPM_COMPRESS], [Flag for compress])
 
 dnl Output the makefile, list file, and config header...
 AC_CONFIG_FILES([Makefile])

@@ -8782,7 +8782,9 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-$as_echo "#define EPM_COMPRESS \$EPM_COMPRESS" >>confdefs.h
+cat >>confdefs.h <<_ACEOF
+#define EPM_COMPRESS $EPM_COMPRESS
+_ACEOF
 
 
 ac_config_files="$ac_config_files Makefile"

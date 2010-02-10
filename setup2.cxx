@@ -140,6 +140,7 @@ main(int  argc,			// I - Number of command-line arguments
   else
     bindtextdomain ("epm", LOCALEDIR);
   textdomain("epm");
+  bind_textdomain_codeset("epm","UTF-8");
 
 #ifdef __APPLE__
   // OSX passes an extra command-line option when run from the Finder.

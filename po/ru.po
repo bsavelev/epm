@@ -29,7 +29,7 @@ msgstr "Подтверждениe"
 
 #: setup.cxx:2281
 msgid "License"
-msgstr "Лицензионное соглашение"
+msgstr "Лицензия"
 
 #: setup.cxx:2286
 msgid "Installing"
@@ -37,7 +37,7 @@ msgstr "Установка"
 
 #: setup.cxx:2291
 msgid "Finish"
-msgstr "Завершение установки"
+msgstr "Завершение"
 
 #: setup.cxx:2315
 msgid "Select the installation type:"

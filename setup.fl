@@ -11,7 +11,7 @@ Function {make_window()} {open
     label Install
     callback {if (CancelButton->active())
   exit(0);} open
-    xywh {31 301 675 330} type Double resizable
+    xywh {144 433 680 330} type Double resizable
     code0 {\#include "gui-common.h"}
     code1 {\#include "setup2.h"} visible
   } {
@@ -43,170 +43,170 @@ Function {make_window()} {open
       label Finish
       xywh {10 160 130 25} labelfont 1 align 20 deactivate
     }
-    Fl_Wizard Wizard {open
-      xywh {140 10 530 285} box THIN_DOWN_BOX color 48
+    Fl_Wizard Wizard {open selected
+      xywh {145 10 530 285} box THIN_DOWN_BOX color 48
     } {
       Fl_Group {Pane[0]} {open
-        xywh {145 10 515 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+        xywh {145 10 520 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Help_View ReadmeFile {
-          xywh {145 30 515 235}
+          xywh {145 30 520 235}
         }
       }
       Fl_Group {Pane[1]} {open
-        xywh {150 10 510 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+        xywh {155 10 510 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Box {} {
           label {Select the installation type:}
-          xywh {170 30 440 25} align 148
+          xywh {175 30 440 25} align 148
         }
         Fl_Group {} {open
-          xywh {170 65 440 200}
+          xywh {175 65 440 200}
         } {
           Fl_Round_Button {TypeButton[0]} {
             callback type_cb
-            xywh {170 65 440 25} type Radio down_box ROUND_DOWN_BOX
+            xywh {175 65 440 25} type Radio down_box ROUND_DOWN_BOX
           }
           Fl_Round_Button {TypeButton[1]} {
             callback type_cb
-            xywh {170 90 440 25} type Radio down_box ROUND_DOWN_BOX
+            xywh {175 90 440 25} type Radio down_box ROUND_DOWN_BOX
           }
           Fl_Round_Button {TypeButton[2]} {
             callback type_cb
-            xywh {170 115 440 25} type Radio down_box ROUND_DOWN_BOX
+            xywh {175 115 440 25} type Radio down_box ROUND_DOWN_BOX
           }
           Fl_Round_Button {TypeButton[3]} {
             callback type_cb
-            xywh {170 140 440 25} type Radio down_box ROUND_DOWN_BOX
+            xywh {175 140 440 25} type Radio down_box ROUND_DOWN_BOX
           }
           Fl_Round_Button {TypeButton[4]} {
             callback type_cb
-            xywh {170 165 440 25} type Radio down_box ROUND_DOWN_BOX
+            xywh {175 165 440 25} type Radio down_box ROUND_DOWN_BOX
           }
           Fl_Round_Button {TypeButton[5]} {
             callback type_cb
-            xywh {170 190 440 25} type Radio down_box ROUND_DOWN_BOX
+            xywh {175 190 440 25} type Radio down_box ROUND_DOWN_BOX
           }
           Fl_Round_Button {TypeButton[6]} {
             callback type_cb
-            xywh {170 215 440 25} type Radio down_box ROUND_DOWN_BOX
+            xywh {175 215 440 25} type Radio down_box ROUND_DOWN_BOX
           }
           Fl_Round_Button {TypeButton[7]} {
             callback type_cb
-            xywh {170 240 440 25} type Radio down_box ROUND_DOWN_BOX
+            xywh {175 240 440 25} type Radio down_box ROUND_DOWN_BOX
           }
         }
       }
       Fl_Group {Pane[2]} {open
-        xywh {150 10 510 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+        xywh {155 10 510 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Box {} {
           label {Select the software you want to install:}
-          xywh {170 30 440 25} align 148
+          xywh {175 30 440 25} align 148
         }
         Fl_Check_Browser SoftwareList {
           label { Available Software:}
           callback list_cb
-          xywh {155 85 505 145} type Multi box DOWN_BOX selection_color 7 labelfont 1 align 5 when 3
+          xywh {160 85 505 145} type Multi box DOWN_BOX selection_color 7 labelfont 1 align 5 when 3
         }
         Fl_Box SoftwareSize {
           label {0k marked for installation.}
-          xywh {170 235 241 35} align 212
+          xywh {175 225 485 30} align 212
         }
         Fl_Button InstallAllButton {
           label {Select all}
           callback {SoftwareList->check_all();
 list_cb(0,0);}
-          xywh {421 240 80 25}
+          xywh {326 260 130 25}
         }
         Fl_Button InstallNoneButton {
           label {Select none}
           callback {SoftwareList->check_none();
 list_cb(0,0);}
-          xywh {511 240 99 25}
+          xywh {475 260 160 25}
         }
       }
       Fl_Group {Pane[3]} {open
-        xywh {150 10 510 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+        xywh {155 10 510 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Box {} {
           label {Confirm your software selections below:}
-          xywh {170 30 440 25} align 148
+          xywh {175 30 440 25} align 148
         }
         Fl_Browser ConfirmList {
           label {Selected Software:}
-          xywh {150 85 510 180} labelfont 1 align 5
+          xywh {155 85 510 180} labelfont 1 align 5
         }
       }
       Fl_Group {Pane[4]} {open
-        xywh {140 10 528 273} labelfont 1 labelsize 18 labelcolor 4 align 21
+        xywh {145 10 528 273} labelfont 1 labelsize 18 labelcolor 4 align 21
       } {
         Fl_Help_View LicenseFile {
           label {License Agreement:}
-          xywh {145 48 515 194} labelfont 1 align 133 resizable
+          xywh {145 52 520 194} labelfont 1 align 133 resizable
         }
         Fl_Group {} {open
-          xywh {145 240 481 35}
+          xywh {145 240 494 40}
         } {
           Fl_Round_Button LicenseAccept {
             label {Accept and install}
             callback {NextButton->activate();}
-            xywh {160 245 149 25} type Radio down_box ROUND_DOWN_BOX align 148
+            xywh {165 255 290 25} type Radio down_box ROUND_DOWN_BOX align 148
           }
           Fl_Round_Button LicenseDecline {
             label {Cancel installation}
             callback {NextButton->activate();}
-            xywh {311 245 149 25} type Radio down_box ROUND_DOWN_BOX
+            xywh {490 255 149 25} type Radio down_box ROUND_DOWN_BOX
           }
         }
         Fl_Choice Language {
           label {Language:}
           callback change_lang open
-          xywh {570 246 89 20} down_box BORDER_BOX
+          xywh {480 14 184 20} down_box BORDER_BOX
         } {}
       }
       Fl_Group {Pane[5]} {open
-        xywh {150 10 510 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+        xywh {145 10 520 280} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Progress InstallPercent {
           label {Progress Label...}
-          xywh {170 47 440 15} color 48 selection_color 221 align 5
+          xywh {175 47 440 15} color 48 selection_color 221 align 5
         }
         Fl_Browser InstallLog {
-          xywh {150 74 510 191}
+          xywh {155 74 510 191}
         }
         Fl_Check_Button CheckPostin {
           label {Run interactive postinstall script}
-          xywh {145 270 515 20} down_box DOWN_BOX
+          xywh {145 270 520 20} down_box DOWN_BOX
         }
       }
       Fl_Group {Pane[6]} {open
-        xywh {145 20 525 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
+        xywh {145 20 530 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
         Fl_Help_View PostinFile {
           label {Postinstall information:}
-          xywh {145 48 515 194} align 133 resizable
+          xywh {145 48 520 194} align 133 resizable
         }
       }
     }
-    Fl_Box WelcomeImage {selected
+    Fl_Box WelcomeImage {
       image {install-109x119.png} xywh {10 190 130 130} align 22
     }
     Fl_Button PrevButton {
       label {@-2< Back}
       callback {Wizard->prev();
 update_control(0);}
-      xywh {396 295 72 25}
+      xywh {366 295 83 25}
     }
     Fl_Button NextButton {
       label {Next @-2>}
       callback next_cb
-      xywh {478 295 74 25}
+      xywh {463 295 87 25}
     }
     Fl_Button CancelButton {
       label Cancel
       callback {exit(0);}
-      xywh {562 295 68 25}
+      xywh {562 295 83 25}
     }
   }
 } 

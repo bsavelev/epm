@@ -2257,7 +2257,7 @@ static void cb_CancelButton(Fl_Button*, void*) {
 }
 
 Fl_Double_Window* make_window() {
-  { SetupWindow = new Fl_Double_Window(675, 330, gettext("Install"));
+  { SetupWindow = new Fl_Double_Window(680, 330, gettext("Install"));
     SetupWindow->callback((Fl_Callback*)cb_SetupWindow);
     { Title[0] = new Fl_Box(10, 10, 130, 25, gettext("Welcome"));
       Title[0]->labelfont(1);
@@ -2293,65 +2293,65 @@ Fl_Double_Window* make_window() {
       Title[6]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
       Title[6]->deactivate();
     } // Fl_Box* Title[6]
-    { Wizard = new Fl_Wizard(140, 10, 530, 285);
+    { Wizard = new Fl_Wizard(145, 10, 530, 285);
       Wizard->box(FL_THIN_DOWN_BOX);
       Wizard->color((Fl_Color)48);
-      { Pane[0] = new Fl_Group(145, 10, 515, 275);
+      { Pane[0] = new Fl_Group(145, 10, 520, 275);
         Pane[0]->labelfont(1);
         Pane[0]->labelsize(18);
         Pane[0]->labelcolor((Fl_Color)4);
         Pane[0]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         Pane[0]->hide();
-        { ReadmeFile = new Fl_Help_View(145, 30, 515, 235);
+        { ReadmeFile = new Fl_Help_View(145, 30, 520, 235);
         } // Fl_Help_View* ReadmeFile
         Pane[0]->end();
       } // Fl_Group* Pane[0]
-      { Pane[1] = new Fl_Group(150, 10, 510, 275);
+      { Pane[1] = new Fl_Group(155, 10, 510, 275);
         Pane[1]->labelfont(1);
         Pane[1]->labelsize(18);
         Pane[1]->labelcolor((Fl_Color)4);
         Pane[1]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         Pane[1]->hide();
-        { Fl_Box* o = new Fl_Box(170, 30, 440, 25, gettext("Select the installation type:"));
+        { Fl_Box* o = new Fl_Box(175, 30, 440, 25, gettext("Select the installation type:"));
           o->align(132|FL_ALIGN_INSIDE);
         } // Fl_Box* o
-        { Fl_Group* o = new Fl_Group(170, 65, 440, 200);
-          { TypeButton[0] = new Fl_Round_Button(170, 65, 440, 25);
+        { Fl_Group* o = new Fl_Group(175, 65, 440, 200);
+          { TypeButton[0] = new Fl_Round_Button(175, 65, 440, 25);
             TypeButton[0]->type(102);
             TypeButton[0]->down_box(FL_ROUND_DOWN_BOX);
             TypeButton[0]->callback((Fl_Callback*)type_cb);
           } // Fl_Round_Button* TypeButton[0]
-          { TypeButton[1] = new Fl_Round_Button(170, 90, 440, 25);
+          { TypeButton[1] = new Fl_Round_Button(175, 90, 440, 25);
             TypeButton[1]->type(102);
             TypeButton[1]->down_box(FL_ROUND_DOWN_BOX);
             TypeButton[1]->callback((Fl_Callback*)type_cb);
           } // Fl_Round_Button* TypeButton[1]
-          { TypeButton[2] = new Fl_Round_Button(170, 115, 440, 25);
+          { TypeButton[2] = new Fl_Round_Button(175, 115, 440, 25);
             TypeButton[2]->type(102);
             TypeButton[2]->down_box(FL_ROUND_DOWN_BOX);
             TypeButton[2]->callback((Fl_Callback*)type_cb);
           } // Fl_Round_Button* TypeButton[2]
-          { TypeButton[3] = new Fl_Round_Button(170, 140, 440, 25);
+          { TypeButton[3] = new Fl_Round_Button(175, 140, 440, 25);
             TypeButton[3]->type(102);
             TypeButton[3]->down_box(FL_ROUND_DOWN_BOX);
             TypeButton[3]->callback((Fl_Callback*)type_cb);
           } // Fl_Round_Button* TypeButton[3]
-          { TypeButton[4] = new Fl_Round_Button(170, 165, 440, 25);
+          { TypeButton[4] = new Fl_Round_Button(175, 165, 440, 25);
             TypeButton[4]->type(102);
             TypeButton[4]->down_box(FL_ROUND_DOWN_BOX);
             TypeButton[4]->callback((Fl_Callback*)type_cb);
           } // Fl_Round_Button* TypeButton[4]
-          { TypeButton[5] = new Fl_Round_Button(170, 190, 440, 25);
+          { TypeButton[5] = new Fl_Round_Button(175, 190, 440, 25);
             TypeButton[5]->type(102);
             TypeButton[5]->down_box(FL_ROUND_DOWN_BOX);
             TypeButton[5]->callback((Fl_Callback*)type_cb);
           } // Fl_Round_Button* TypeButton[5]
-          { TypeButton[6] = new Fl_Round_Button(170, 215, 440, 25);
+          { TypeButton[6] = new Fl_Round_Button(175, 215, 440, 25);
             TypeButton[6]->type(102);
             TypeButton[6]->down_box(FL_ROUND_DOWN_BOX);
             TypeButton[6]->callback((Fl_Callback*)type_cb);
           } // Fl_Round_Button* TypeButton[6]
-          { TypeButton[7] = new Fl_Round_Button(170, 240, 440, 25);
+          { TypeButton[7] = new Fl_Round_Button(175, 240, 440, 25);
             TypeButton[7]->type(102);
             TypeButton[7]->down_box(FL_ROUND_DOWN_BOX);
             TypeButton[7]->callback((Fl_Callback*)type_cb);
@@ -2360,16 +2360,16 @@ Fl_Double_Window* make_window() {
         } // Fl_Group* o
         Pane[1]->end();
       } // Fl_Group* Pane[1]
-      { Pane[2] = new Fl_Group(150, 10, 510, 275);
+      { Pane[2] = new Fl_Group(155, 10, 510, 275);
         Pane[2]->labelfont(1);
         Pane[2]->labelsize(18);
         Pane[2]->labelcolor((Fl_Color)4);
         Pane[2]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         Pane[2]->hide();
-        { Fl_Box* o = new Fl_Box(170, 30, 440, 25, gettext("Select the software you want to install:"));
+        { Fl_Box* o = new Fl_Box(175, 30, 440, 25, gettext("Select the software you want to install:"));
           o->align(132|FL_ALIGN_INSIDE);
         } // Fl_Box* o
-        { SoftwareList = new Fl_Check_Browser(155, 85, 505, 145, gettext(" Available Software:"));
+        { SoftwareList = new Fl_Check_Browser(160, 85, 505, 145, gettext(" Available Software:"));
           SoftwareList->type(3);
           SoftwareList->box(FL_DOWN_BOX);
           SoftwareList->selection_color(FL_BACKGROUND2_COLOR);
@@ -2378,87 +2378,87 @@ Fl_Double_Window* make_window() {
           SoftwareList->align(FL_ALIGN_TOP_LEFT);
           SoftwareList->when(3);
         } // Fl_Check_Browser* SoftwareList
-        { SoftwareSize = new Fl_Box(170, 235, 241, 35, gettext("0k marked for installation."));
+        { SoftwareSize = new Fl_Box(175, 225, 485, 30, gettext("0k marked for installation."));
           SoftwareSize->align(196|FL_ALIGN_INSIDE);
         } // Fl_Box* SoftwareSize
-        { InstallAllButton = new Fl_Button(421, 240, 80, 25, gettext("Select all"));
+        { InstallAllButton = new Fl_Button(326, 260, 130, 25, gettext("Select all"));
           InstallAllButton->callback((Fl_Callback*)cb_InstallAllButton);
         } // Fl_Button* InstallAllButton
-        { InstallNoneButton = new Fl_Button(511, 240, 99, 25, gettext("Select none"));
+        { InstallNoneButton = new Fl_Button(475, 260, 160, 25, gettext("Select none"));
           InstallNoneButton->callback((Fl_Callback*)cb_InstallNoneButton);
         } // Fl_Button* InstallNoneButton
         Pane[2]->end();
       } // Fl_Group* Pane[2]
-      { Pane[3] = new Fl_Group(150, 10, 510, 275);
+      { Pane[3] = new Fl_Group(155, 10, 510, 275);
         Pane[3]->labelfont(1);
         Pane[3]->labelsize(18);
         Pane[3]->labelcolor((Fl_Color)4);
         Pane[3]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         Pane[3]->hide();
-        { Fl_Box* o = new Fl_Box(170, 30, 440, 25, gettext("Confirm your software selections below:"));
+        { Fl_Box* o = new Fl_Box(175, 30, 440, 25, gettext("Confirm your software selections below:"));
           o->align(132|FL_ALIGN_INSIDE);
         } // Fl_Box* o
-        { ConfirmList = new Fl_Browser(150, 85, 510, 180, gettext("Selected Software:"));
+        { ConfirmList = new Fl_Browser(155, 85, 510, 180, gettext("Selected Software:"));
           ConfirmList->labelfont(1);
           ConfirmList->align(FL_ALIGN_TOP_LEFT);
         } // Fl_Browser* ConfirmList
         Pane[3]->end();
       } // Fl_Group* Pane[3]
-      { Pane[4] = new Fl_Group(140, 10, 528, 273);
+      { Pane[4] = new Fl_Group(145, 10, 528, 273);
         Pane[4]->labelfont(1);
         Pane[4]->labelsize(18);
         Pane[4]->labelcolor((Fl_Color)4);
         Pane[4]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
-        { LicenseFile = new Fl_Help_View(145, 48, 515, 194, gettext("License Agreement:"));
+        { LicenseFile = new Fl_Help_View(145, 52, 520, 194, gettext("License Agreement:"));
           LicenseFile->labelfont(1);
           LicenseFile->align(133);
           Fl_Group::current()->resizable(LicenseFile);
         } // Fl_Help_View* LicenseFile
-        { Fl_Group* o = new Fl_Group(145, 240, 481, 35);
-          { LicenseAccept = new Fl_Round_Button(160, 245, 149, 25, gettext("Accept and install"));
+        { Fl_Group* o = new Fl_Group(145, 240, 494, 40);
+          { LicenseAccept = new Fl_Round_Button(165, 255, 290, 25, gettext("Accept and install"));
             LicenseAccept->type(102);
             LicenseAccept->down_box(FL_ROUND_DOWN_BOX);
             LicenseAccept->callback((Fl_Callback*)cb_LicenseAccept);
             LicenseAccept->align(132|FL_ALIGN_INSIDE);
           } // Fl_Round_Button* LicenseAccept
-          { LicenseDecline = new Fl_Round_Button(311, 245, 149, 25, gettext("Cancel installation"));
+          { LicenseDecline = new Fl_Round_Button(490, 255, 149, 25, gettext("Cancel installation"));
             LicenseDecline->type(102);
             LicenseDecline->down_box(FL_ROUND_DOWN_BOX);
             LicenseDecline->callback((Fl_Callback*)cb_LicenseDecline);
           } // Fl_Round_Button* LicenseDecline
           o->end();
         } // Fl_Group* o
-        { Language = new Fl_Choice(570, 246, 89, 20, gettext("Language:"));
+        { Language = new Fl_Choice(480, 14, 184, 20, gettext("Language:"));
           Language->down_box(FL_BORDER_BOX);
           Language->callback((Fl_Callback*)change_lang);
         } // Fl_Choice* Language
         Pane[4]->end();
       } // Fl_Group* Pane[4]
-      { Pane[5] = new Fl_Group(150, 10, 510, 275);
+      { Pane[5] = new Fl_Group(145, 10, 520, 280);
         Pane[5]->labelfont(1);
         Pane[5]->labelsize(18);
         Pane[5]->labelcolor((Fl_Color)4);
         Pane[5]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         Pane[5]->hide();
-        { InstallPercent = new Fl_Progress(170, 47, 440, 15, gettext("Progress Label..."));
+        { InstallPercent = new Fl_Progress(175, 47, 440, 15, gettext("Progress Label..."));
           InstallPercent->color((Fl_Color)48);
           InstallPercent->selection_color((Fl_Color)221);
           InstallPercent->align(FL_ALIGN_TOP_LEFT);
         } // Fl_Progress* InstallPercent
-        { InstallLog = new Fl_Browser(150, 74, 510, 191);
+        { InstallLog = new Fl_Browser(155, 74, 510, 191);
         } // Fl_Browser* InstallLog
-        { CheckPostin = new Fl_Check_Button(145, 270, 515, 20, gettext("Run interactive postinstall script"));
+        { CheckPostin = new Fl_Check_Button(145, 270, 520, 20, gettext("Run interactive postinstall script"));
           CheckPostin->down_box(FL_DOWN_BOX);
         } // Fl_Check_Button* CheckPostin
         Pane[5]->end();
       } // Fl_Group* Pane[5]
-      { Pane[6] = new Fl_Group(145, 20, 525, 275);
+      { Pane[6] = new Fl_Group(145, 20, 530, 275);
         Pane[6]->labelfont(1);
         Pane[6]->labelsize(18);
         Pane[6]->labelcolor((Fl_Color)4);
         Pane[6]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         Pane[6]->hide();
-        { PostinFile = new Fl_Help_View(145, 48, 515, 194, gettext("Postinstall information:"));
+        { PostinFile = new Fl_Help_View(145, 48, 520, 194, gettext("Postinstall information:"));
           PostinFile->align(133);
           Fl_Group::current()->resizable(PostinFile);
         } // Fl_Help_View* PostinFile
@@ -2470,13 +2470,13 @@ Fl_Double_Window* make_window() {
       WelcomeImage->image(image_install);
       WelcomeImage->align(FL_ALIGN_BOTTOM_LEFT|FL_ALIGN_INSIDE);
     } // Fl_Box* WelcomeImage
-    { PrevButton = new Fl_Button(396, 295, 72, 25, gettext("@-2< Back"));
+    { PrevButton = new Fl_Button(366, 295, 83, 25, gettext("@-2< Back"));
       PrevButton->callback((Fl_Callback*)cb_PrevButton);
     } // Fl_Button* PrevButton
-    { NextButton = new Fl_Button(478, 295, 74, 25, gettext("Next @-2>"));
+    { NextButton = new Fl_Button(463, 295, 87, 25, gettext("Next @-2>"));
       NextButton->callback((Fl_Callback*)next_cb);
     } // Fl_Button* NextButton
-    { CancelButton = new Fl_Button(562, 295, 68, 25, gettext("Cancel"));
+    { CancelButton = new Fl_Button(562, 295, 83, 25, gettext("Cancel"));
       CancelButton->callback((Fl_Callback*)cb_CancelButton);
     } // Fl_Button* CancelButton
     SetupWindow->end();

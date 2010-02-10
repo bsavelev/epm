@@ -58,7 +58,7 @@ struct gui_dist_t			//// Distributions
 struct gui_intype_t			//// Installation types
 {
   char		name[80];		// Type name
-  char		label[80];		// Type label
+  char		label[1024];		// Type label
   int		num_products;		// Number of products to install (0 = select)
   int		products[200];		// Products to install
   int		size;			// Size of products in kbytes

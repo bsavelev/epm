@@ -840,11 +840,11 @@ load_types(void)
   else
   {
     Title[PANE_TYPE]->hide();
-    Title[PANE_SELECT]->position(10, 35);
-    Title[PANE_CONFIRM]->position(10, 60);
-    Title[PANE_LICENSE]->position(10, 85);
-    Title[PANE_INSTALL]->position(10, 110);
-    Title[PANE_POSTIN]->position(10, 135);
+    Title[PANE_SELECT]->position(5, 35);
+    Title[PANE_CONFIRM]->position(5, 60);
+    Title[PANE_LICENSE]->position(5, 85);
+    Title[PANE_INSTALL]->position(5, 110);
+    Title[PANE_POSTIN]->position(5, 135);
   }
 
   for (i = 0, dt = InstTypes; i < NumInstTypes; i ++, dt ++)

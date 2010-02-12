@@ -11,39 +11,39 @@ Function {make_window()} {open
     label Install
     callback {if (CancelButton->active())
   exit(0);} open
-    xywh {144 433 680 330} type Double resizable
+    xywh {34 432 680 330} type Double resizable
     code0 {\#include "gui-common.h"}
     code1 {\#include "setup2.h"} visible
   } {
     Fl_Box {Title[0]} {
       label Welcome
-      xywh {10 10 130 25} labelfont 1 align 20
+      xywh {5 10 130 25} labelfont 1 align 20
     }
     Fl_Box {Title[1]} {
       label {Install Type}
-      xywh {10 35 130 25} labelfont 1 align 20 deactivate
+      xywh {5 35 130 25} labelfont 1 align 20 deactivate
     }
     Fl_Box {Title[2]} {
       label {Select Software}
-      xywh {10 60 130 25} labelfont 1 align 20 deactivate
+      xywh {5 60 130 25} labelfont 1 align 20 deactivate
     }
     Fl_Box {Title[3]} {
       label Confirm
-      xywh {10 85 130 25} labelfont 1 align 20 deactivate
+      xywh {5 85 130 25} labelfont 1 align 20 deactivate
     }
     Fl_Box {Title[4]} {
       label License
-      xywh {10 110 130 25} labelfont 1 align 20 deactivate
+      xywh {5 110 130 25} labelfont 1 align 20 deactivate
     }
     Fl_Box {Title[5]} {
       label Installing
-      xywh {10 135 130 25} labelfont 1 align 20 deactivate
+      xywh {5 135 130 25} labelfont 1 align 20 deactivate
     }
     Fl_Box {Title[6]} {
-      label Finish
-      xywh {10 160 130 25} labelfont 1 align 20 deactivate
+      label Finish selected
+      xywh {5 160 130 25} labelfont 1 align 20 deactivate
     }
-    Fl_Wizard Wizard {open selected
+    Fl_Wizard Wizard {open
       xywh {145 10 530 285} box THIN_DOWN_BOX color 48
     } {
       Fl_Group {Pane[0]} {open

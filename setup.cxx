@@ -2259,36 +2259,36 @@ static void cb_CancelButton(Fl_Button*, void*) {
 Fl_Double_Window* make_window() {
   { SetupWindow = new Fl_Double_Window(680, 330, gettext("Install"));
     SetupWindow->callback((Fl_Callback*)cb_SetupWindow);
-    { Title[0] = new Fl_Box(10, 10, 130, 25, gettext("Welcome"));
+    { Title[0] = new Fl_Box(5, 10, 130, 25, gettext("Welcome"));
       Title[0]->labelfont(1);
       Title[0]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
     } // Fl_Box* Title[0]
-    { Title[1] = new Fl_Box(10, 35, 130, 25, gettext("Install Type"));
+    { Title[1] = new Fl_Box(5, 35, 130, 25, gettext("Install Type"));
       Title[1]->labelfont(1);
       Title[1]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
       Title[1]->deactivate();
     } // Fl_Box* Title[1]
-    { Title[2] = new Fl_Box(10, 60, 130, 25, gettext("Select Software"));
+    { Title[2] = new Fl_Box(5, 60, 130, 25, gettext("Select Software"));
       Title[2]->labelfont(1);
       Title[2]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
       Title[2]->deactivate();
     } // Fl_Box* Title[2]
-    { Title[3] = new Fl_Box(10, 85, 130, 25, gettext("Confirm"));
+    { Title[3] = new Fl_Box(5, 85, 130, 25, gettext("Confirm"));
       Title[3]->labelfont(1);
       Title[3]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
       Title[3]->deactivate();
     } // Fl_Box* Title[3]
-    { Title[4] = new Fl_Box(10, 110, 130, 25, gettext("License"));
+    { Title[4] = new Fl_Box(5, 110, 130, 25, gettext("License"));
       Title[4]->labelfont(1);
       Title[4]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
       Title[4]->deactivate();
     } // Fl_Box* Title[4]
-    { Title[5] = new Fl_Box(10, 135, 130, 25, gettext("Installing"));
+    { Title[5] = new Fl_Box(5, 135, 130, 25, gettext("Installing"));
       Title[5]->labelfont(1);
       Title[5]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
       Title[5]->deactivate();
     } // Fl_Box* Title[5]
-    { Title[6] = new Fl_Box(10, 160, 130, 25, gettext("Finish"));
+    { Title[6] = new Fl_Box(5, 160, 130, 25, gettext("Finish"));
       Title[6]->labelfont(1);
       Title[6]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
       Title[6]->deactivate();

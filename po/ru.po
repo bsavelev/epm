@@ -126,7 +126,7 @@ msgstr "Не обнаружено компонентов для установк
 
 #: setup2.cxx:413
 msgid " (new)"
-msgstr "(new)"
+msgstr "(новый)"
 
 #: setup2.cxx:418
 msgid " (downgrade)"
@@ -134,7 +134,7 @@ msgstr " (downgrade)"
 
 #: setup2.cxx:423
 msgid " (installed)"
-msgstr " (installed)"
+msgstr " (установлен)"
 
 #: setup2.cxx:428
 msgid " (upgrade)"

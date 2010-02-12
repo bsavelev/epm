@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-02-10 15:39+0300\n"
+"POT-Creation-Date: 2010-02-12 12:55+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,152 +116,156 @@ msgstr ""
 msgid "Next @-2>"
 msgstr ""
 
-#: setup.cxx:2479 setup2.cxx:1017 setup2.cxx:1088 setup2.cxx:1167
-#: uninst.cxx:2347 uninst2.cxx:419
+#: setup.cxx:2479 setup2.cxx:1021 setup2.cxx:1092 setup2.cxx:1171
+#: uninst.cxx:2347 uninst2.cxx:425
 msgid "Cancel"
 msgstr ""
 
-#: setup2.cxx:229
+#: setup2.cxx:233
 msgid "You must be logged in as root to run setup!"
 msgstr ""
 
-#: setup2.cxx:399
+#: setup2.cxx:403
 msgid "No software found to install!"
 msgstr ""
 
-#: setup2.cxx:413
+#: setup2.cxx:417
 msgid " (new)"
 msgstr ""
 
-#: setup2.cxx:418
+#: setup2.cxx:422
 msgid " (downgrade)"
 msgstr ""
 
-#: setup2.cxx:423
+#: setup2.cxx:427
 msgid " (installed)"
 msgstr ""
 
-#: setup2.cxx:428
+#: setup2.cxx:432
 msgid " (upgrade)"
 msgstr ""
 
-#: setup2.cxx:475
+#: setup2.cxx:479
 msgid "Failed to execute install script!"
 msgstr ""
 
-#: setup2.cxx:508
+#: setup2.cxx:512
 msgid "Unable to install"
 msgstr ""
 
-#: setup2.cxx:624
+#: setup2.cxx:628
 #, c-format
 msgid ""
 "%s requires %s to be installed, but it is not available for installation."
 msgstr ""
 
-#: setup2.cxx:637
+#: setup2.cxx:641
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please remove it before installing this software."
 msgstr ""
 
-#: setup2.cxx:654
+#: setup2.cxx:658
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please deselect it before installing this "
 "software."
 msgstr ""
 
-#: setup2.cxx:718
+#: setup2.cxx:722
 msgid ""
 "This program allows you to install the following software:\n"
 "<ul>\n"
 msgstr ""
 
-#: setup2.cxx:849
+#: setup2.cxx:853
 #, c-format
 msgid " (+%.1fMb disk space)"
 msgstr ""
 
-#: setup2.cxx:852
+#: setup2.cxx:856
 #, c-format
 msgid " (+%dKb disk space)"
 msgstr ""
 
-#: setup2.cxx:1016
+#: setup2.cxx:1020
 #, c-format
 msgid "Software License"
 msgstr ""
 
-#: setup2.cxx:1057
+#: setup2.cxx:1061
 #, c-format
 msgid "License is not accepted!"
 msgstr ""
 
-#: setup2.cxx:1075
+#: setup2.cxx:1079
 msgid "Installation canceled!"
 msgstr ""
 
-#: setup2.cxx:1077 setup2.cxx:1114 setup2.cxx:1145 uninst2.cxx:433
+#: setup2.cxx:1081 setup2.cxx:1118 setup2.cxx:1149 uninst2.cxx:439
 msgid "Close"
 msgstr ""
 
-#: setup2.cxx:1098
+#: setup2.cxx:1102
 #, c-format
 msgid "Installing %s v%s..."
 msgstr ""
 
-#: setup2.cxx:1113
+#: setup2.cxx:1117
 msgid "Installation Failed!"
 msgstr ""
 
-#: setup2.cxx:1117
+#: setup2.cxx:1121
 msgid "Installation Complete"
 msgstr ""
 
-#: setup2.cxx:1308 uninst2.cxx:714
+#: setup2.cxx:1160
+msgid "<span>Installation complete</span>"
+msgstr ""
+
+#: setup2.cxx:1312 uninst2.cxx:720
 #, c-format
 msgid "%+.1fMb required, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1312 uninst2.cxx:718
+#: setup2.cxx:1316 uninst2.cxx:724
 #, c-format
 msgid "%+dk required, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1316 uninst2.cxx:722
+#: setup2.cxx:1320 uninst2.cxx:728
 #, c-format
 msgid ""
 "%+.1fMb required on /, %dMb available,\n"
 "%+.1fMb required on /usr, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1321 uninst2.cxx:727
+#: setup2.cxx:1325 uninst2.cxx:733
 #, c-format
 msgid ""
 "%+.1fMb required on /, %dMb available,\n"
 "%+dk required on /usr, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1326 uninst2.cxx:732
+#: setup2.cxx:1330 uninst2.cxx:738
 #, c-format
 msgid ""
 "%+dk required on /, %dMb available,\n"
 "%+.1fMb required on /usr, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1331 uninst2.cxx:737
+#: setup2.cxx:1335 uninst2.cxx:743
 #, c-format
 msgid ""
 "%+dk required on /, %dMb available,\n"
 "%+dk required on /usr, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1376
+#: setup2.cxx:1380
 msgid "English"
 msgstr ""
 
-#: setup2.cxx:1383
+#: setup2.cxx:1387
 msgid "Russian"
 msgstr ""
 
@@ -293,34 +297,34 @@ msgstr ""
 msgid "Software to Remove:"
 msgstr ""
 
-#: uninst2.cxx:193
+#: uninst2.cxx:199
 msgid "You must be logged in as root to run uninstall!"
 msgstr ""
 
-#: uninst2.cxx:317
+#: uninst2.cxx:323
 msgid ""
 "This program allows you to remove the following software:</p>\n"
 "<ul>\n"
 msgstr ""
 
-#: uninst2.cxx:438
+#: uninst2.cxx:444
 #, c-format
 msgid "Removing %s v%s..."
 msgstr ""
 
-#: uninst2.cxx:454
+#: uninst2.cxx:460
 msgid "Removal Failed!"
 msgstr ""
 
-#: uninst2.cxx:456
+#: uninst2.cxx:462
 msgid "Removal Complete"
 msgstr ""
 
-#: uninst2.cxx:560
+#: uninst2.cxx:566
 msgid "Unable to remove"
 msgstr ""
 
-#: uninst2.cxx:635
+#: uninst2.cxx:641
 msgid "No software found to remove!"
 msgstr ""
 

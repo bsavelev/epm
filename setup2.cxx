@@ -792,6 +792,11 @@ load_types(void)
         dt = InstTypes + NumInstTypes;
 	NumInstTypes ++;
 
+	if (!strcasecmp(lineptr,"Custom Configuration"))
+	  strncpy(lineptr, gettext("Custom Configuration"), sizeof(dt->name));
+	else if (!strcasecmp(lineptr,"Dr.Web for Linux Workstations"))
+	  strncpy(lineptr, gettext("Dr.Web for Linux Workstations"), sizeof(dt->name));
+
 	memset(dt, 0, sizeof(gui_intype_t));
 	if ((sep = strchr(lineptr, '/')) != NULL)
 	  *sep++ = '\0';

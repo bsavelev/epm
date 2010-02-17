@@ -187,7 +187,7 @@ msgstr "Выборочная установка"
 
 #: setup2.cxx:798
 msgid "Dr.Web for Linux Workstations"
-msgstr "Dr.Web для рабочих станций Linux"
+msgstr "Антивирус Др.Веб для рабочих станций Linux"
 
 #: setup2.cxx:860
 #, c-format

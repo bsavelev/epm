@@ -135,6 +135,8 @@ main(int  argc,			// I - Number of command-line arguments
   setlocale(LC_ALL, "");
   char localedir[1024];
   sprintf(localedir,"%slocale", findMypath(argv[0]));
+  if (!access(findMypath(argv[0]),0))
+    chdir(findMypath(argv[0]));
   if (!access(localedir,0))
     bindtextdomain ("epm", localedir);
   else

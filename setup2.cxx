@@ -1387,8 +1387,15 @@ load_license()
     {
       //Lang control
       Language->add(gettext("Russian"));
-      if (Language->size() == 0)
-        gui_load_file(LicenseFile, licfile_ru);
+      if (Language->size() == 0) {
+          Language->value(LANG_RU);
+          gui_load_file(LicenseFile, licfile_ru);
+      }
+      if (getenv("LANG"))
+        if (strcasestr(getenv("LANG"),"ru") != NULL) {
+          Language->value(LANG_RU);
+          gui_load_file(LicenseFile, licfile_ru);
+        }
     }
 }
 

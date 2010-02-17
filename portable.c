@@ -1373,20 +1373,24 @@ write_depends(const char *prodname,	/* I - Product name */
 	       /*
 		* Do version number checking...
 		*/
-
-        	fprintf(fp, "installed=`grep \'^#%%version\' "
-	                    "%s/%s.remove | awk \'{print $3}\'`\n",
-                	SoftwareDir, product);
-
+		fprintf(fp, "s1=`echo \"%s\" | sed \'s/\\([0-9]*\\)\\.\\([0-9]*\\)\\.\\([0-9]*\\).*/\\1/\' 2>/dev/null`\n", d->version[0]);
+		fprintf(fp, "s2=`echo \"%s\" | sed \'s/\\([0-9]*\\)\\.\\([0-9]*\\)\\.\\([0-9]*\\).*/\\2/\' 2>/dev/null`\n", d->version[0]);
+		fprintf(fp, "s3=`echo \"%s\" | sed \'s/\\([0-9]*\\)\\.\\([0-9]*\\)\\.\\([0-9]*\\).*/\\3/\' 2>/dev/null`\n", d->version[0]);
+		fputs("required_version=`expr $s1 \\* 10000 + $s2 \\* 100 + $s3 2>/dev/null`\n", fp);
+		fprintf(fp, "if [ -r %s/%s.remove ] ; then\n", SoftwareDir, product);
+		fprintf(fp, "\ts1=`grep \'^#%%version\' %s/%s.remove 2>/dev/null | awk \'{print $2}\' | sed \'s/\\([0-9]*\\)\\.\\([0-9]*\\)\\.\\([0-9]*\\).*/\\1/\' 2>/dev/null`\n", SoftwareDir, product);
+		fprintf(fp, "\ts2=`grep \'^#%%version\' %s/%s.remove 2>/dev/null | awk \'{print $2}\' | sed \'s/\\([0-9]*\\)\\.\\([0-9]*\\)\\.\\([0-9]*\\).*/\\2/\' 2>/dev/null`\n", SoftwareDir, product);
+		fprintf(fp, "\ts3=`grep \'^#%%version\' %s/%s.remove 2>/dev/null | awk \'{print $2}\' | sed \'s/\\([0-9]*\\)\\.\\([0-9]*\\)\\.\\([0-9]*\\).*/\\3/\' 2>/dev/null`\n", SoftwareDir, product);
+		fputs("\tinstalled=`expr $s1 \\* 10000 + $s2 \\* 100 + $s3 2>/dev/null`\n", fp);
+		fputs("fi\n", fp);
         	fputs("if test x$installed = x; then\n", fp);
 		fputs("	installed=0\n", fp);
 		fputs("fi\n", fp);
 
-		fprintf(fp, "if test $installed -lt %d -o $installed -gt %d; then\n",
-	        	d->vernumber[0], d->vernumber[1]);
+		fputs("if test $installed -lt $required_version ; then\n", fp);
         	fprintf(fp, "	if test -x %s.install; then\n",
                 	product);
-        	fputs("\t	if test x$DEPEND_RUN = xno\n ; then", fp);
+        	fputs("\t	if test x$DEPEND_RUN = xno ; then\n", fp);
         	fprintf(fp, "\t		echo Installing required %s software...\n",
                 	product);
         	fprintf(fp, "\t		./%s.install now\n", product);
@@ -1394,9 +1398,9 @@ write_depends(const char *prodname,	/* I - Product name */
         	fprintf(fp, "\t		./%s.install --depend --recursion\n", product);
         	fputs("\t	fi\n", fp);
         	fputs("	else\n", fp);
-        	fputs("\t	if test x$DEPEND_RUN = xno\n ; then", fp);
-        	fprintf(fp, "		echo Sorry, you must first install \\'%s\\' version %s to %s!\n",
-	        	product, d->version[0], d->version[1]);
+        	fputs("\t	if test x$DEPEND_RUN = xno ; then\n", fp);
+        	fprintf(fp, "\t\t\techo Sorry, you must first install \\'%s\\' version %s!\n",
+	        	product, d->version[0]);
         	fputs("		ERROR=1\n", fp);
         	fputs("\t	else\n", fp);
         	fprintf(fp, "\t		echo %s >> .depend\n", product);
@@ -1508,7 +1512,7 @@ write_depends(const char *prodname,	/* I - Product name */
 
   fputs("if test x$RECURSION = xno -a -r .depend ; then \n", fp);
   fputs("\techo Dependency check failed! Full list of unmet dependencies:\n", fp);
-  fputs("\tcat .depend\n", fp);
+  fputs("\tcat .depend | uniq\n", fp);
   fputs("\trm -f .depend\n", fp);
   fputs("\texit 1\n", fp);
   fputs("elif test x$DEPEND_RUN = xyes ; then\n", fp);

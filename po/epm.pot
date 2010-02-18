@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-02-17 17:03+0300\n"
+"POT-Creation-Date: 2010-02-18 17:13+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,11 +206,11 @@ msgstr ""
 msgid "License is not accepted!"
 msgstr ""
 
-#: setup2.cxx:1086
+#: setup2.cxx:1087
 msgid "Installation canceled!"
 msgstr ""
 
-#: setup2.cxx:1088 setup2.cxx:1125 setup2.cxx:1156 uninst2.cxx:439
+#: setup2.cxx:1089 setup2.cxx:1125 setup2.cxx:1156 uninst2.cxx:439
 msgid "Close"
 msgstr ""
 
@@ -351,7 +351,7 @@ msgstr ""
 msgid "Sorry, you must be root to remove Dr.Web software."
 msgstr ""
 
-#: uninst.sh.in:79
+#: uninst.sh.in:79 dummy/epm.install.sh:125 dummy/epm.remove.sh:119
 #, sh-format
 msgid "Please enter yes or no."
 msgstr ""
@@ -397,4 +397,183 @@ msgstr ""
 #: uninst.sh.in:245
 #, sh-format
 msgid "Software dir -- '%s' not found."
+msgstr ""
+
+#: dummy/epm.install.sh:44 dummy/epm.remove.sh:44
+#, sh-format
+msgid ""
+"Package platform and running platform are different. Installation aborted"
+msgstr ""
+
+#: dummy/epm.install.sh:54 dummy/epm.remove.sh:54
+#, sh-format
+msgid "Sorry, you must have administrative privileges to %s this software.\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:54 dummy/epm.install.sh:64
+#, sh-format
+msgid "install"
+msgstr ""
+
+#: dummy/epm.install.sh:64 dummy/epm.remove.sh:64
+#, sh-format
+msgid "Sorry, you must be root to %s this software.\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:100 dummy/epm.remove.sh:102
+#, sh-format
+msgid "Copyright %s\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:105 dummy/epm.install.sh:107
+#, sh-format
+msgid ""
+"By using this parameter you automatically confirm and accept the Software "
+"License Agreement."
+msgstr ""
+
+#: dummy/epm.install.sh:111
+#, sh-format
+msgid "This installation script will install the %s\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:112
+#, sh-format
+msgid "software version %s on your system.\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:115 dummy/epm.remove.sh:109
+#, sh-format
+msgid "Do you wish to continue? [Yes]"
+msgstr ""
+
+#: dummy/epm.install.sh:132
+#, sh-format
+msgid "Do you agree with the terms of this license?"
+msgstr ""
+
+#: dummy/epm.install.sh:150
+#, sh-format
+msgid "Package %s is up-to-date.\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:153
+#, sh-format
+msgid "Removing old versions of %s software...\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:204 dummy/epm.install.sh:222
+#, sh-format
+msgid "Installing required %s software...\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:211
+#, sh-format
+msgid "Sorry, you must first install '%s' version %s!\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:229
+#, sh-format
+msgid "Sorry, you must first install '%s'!\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:237
+#, sh-format
+msgid "Dependency check failed! Full list of unmet dependencies:"
+msgstr ""
+
+#: dummy/epm.install.sh:245
+#, sh-format
+msgid "Backing up old versions of files to be installed..."
+msgstr ""
+
+#: dummy/epm.install.sh:251 dummy/epm.install.sh:266 dummy/epm.remove.sh:178
+#: dummy/epm.remove.sh:183
+#, sh-format
+msgid "Error: Cannot write in %s.\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:261
+#, sh-format
+msgid "Creating installation directories..."
+msgstr ""
+
+#: dummy/epm.install.sh:271
+#, sh-format
+msgid "Error: %s already exists as a regular file!\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:285
+#, sh-format
+msgid "Installing software..."
+msgstr ""
+
+#: dummy/epm.install.sh:289 dummy/epm.remove.sh:187
+#, sh-format
+msgid "Checking configuration files..."
+msgstr ""
+
+#: dummy/epm.install.sh:296
+#, sh-format
+msgid "Error: %%s already exists as a regular file!\\n"
+msgstr ""
+
+#: dummy/epm.install.sh:303
+#, sh-format
+msgid "Updating file permissions..."
+msgstr ""
+
+#: dummy/epm.install.sh:310
+#, sh-format
+msgid "Setting up init scripts..."
+msgstr ""
+
+#: dummy/epm.install.sh:324 dummy/epm.remove.sh:140
+#, sh-format
+msgid "Unable to determine location of init scripts!"
+msgstr ""
+
+#: dummy/epm.install.sh:362
+#, sh-format
+msgid "Installation is complete."
+msgstr ""
+
+#: dummy/epm.remove.sh:54 dummy/epm.remove.sh:64
+#, sh-format
+msgid "remove"
+msgstr ""
+
+#: dummy/epm.remove.sh:99
+#, sh-format
+msgid "Package %s is not installed\\n"
+msgstr ""
+
+#: dummy/epm.remove.sh:105
+#, sh-format
+msgid "This removal script will remove the %s\\n"
+msgstr ""
+
+#: dummy/epm.remove.sh:106
+#, sh-format
+msgid "software version %s from your system.\\n"
+msgstr ""
+
+#: dummy/epm.remove.sh:127
+#, sh-format
+msgid "Cleaning up init scripts..."
+msgstr ""
+
+#: dummy/epm.remove.sh:170
+#, sh-format
+msgid "Removing/restoring installed files..."
+msgstr ""
+
+#: dummy/epm.remove.sh:200
+#, sh-format
+msgid "Removing empty installation directories..."
+msgstr ""
+
+#: dummy/epm.remove.sh:210
+#, sh-format
+msgid "Removal is complete."
 msgstr ""

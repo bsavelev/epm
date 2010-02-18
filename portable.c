@@ -1043,7 +1043,7 @@ write_commands(dist_t     *dist,	/* I - Distribution */
 
   if (i)
   {
-    fprintf(fp, "echo Running %s commands...\n", commands[type]);
+    fprintf(fp, "echo \"`eval_gettext \\\"Running %s commands...\\\"`\"\n", commands[type]);
 
     for (; i > 0; i --, c ++)
       if (c->type == type && c->subpackage == subpackage)
@@ -1187,7 +1187,31 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fputs("SHELL=/bin/sh\n", fp);
   fprintf(fp,"PACKAGE_VERSION=\"%s\"\n",dist->fulver);
   fprintf(fp,"SOFTWAREDIR=\"%s\"\n",SoftwareDir);
-  fputs("UNAME_S=`uname -s | tr \"[:upper:]\" \"[:lower:]\"`\n",fp);
+  fputs("UNAME_S=`uname -s | tr \"[:upper:]\" \"[:lower:]\"`\n\n",fp);
+
+  fputs("eval_gettext() {\n"
+	"if ( which gettext >/dev/null 2>/dev/null ) ; then\n"
+	"    if ( which envsubst >/dev/null 2>/dev/null ) ; then\n"
+	"        gettext \"$1\" | (export PATH `envsubst --variables \"$1\"`; envsubst \"$1\")\n"
+	"    else\n"
+	"        gettext \"$1\"\n"
+	"    fi\n"
+	"else\n"
+	"    echo \"$1\"\n"
+	"fi\n"
+	"}\n\n",fp);
+
+  fputs("if test \"`dirname \"$0\"`\" != \".\"; then\n", fp);
+  fputs("\tcd \"`dirname \"$0\"`\"\n", fp);
+  fputs("fi\n", fp);
+
+  fputs("if [ -d ./locale ] ; then\n"
+	"\texport TEXTDOMAINDIR=./locale\n"
+	"else\n",fp);
+  fprintf(fp,"\texport TEXTDOMAINDIR=%s\n", LOCALEDIR);
+  fputs("fi\n", fp);
+  fputs("export TEXTDOMAIN=epm\n",fp);
+
   if (CustomPlatform)
     if (strcmp(CustomPlatform, "solaris") == 0)
        fputs("PACKAGE_PLATFORM=\"sunos\"\n", fp);
@@ -1202,7 +1226,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fputs("\t*\"$UNAME_S\"*)\n", fp);
   fputs("\t;;\n", fp);
   fputs("\t*)\n", fp);
-  fputs("\techo \"Package platform and running platform are different. Installation aborted\"\n", fp);
+  fputs("\techo \"`eval_gettext \\\"Package platform and running platform are different. Installation aborted\\\"`\"\n", fp);
   fputs("\texit 1\n", fp);
   fputs("\t;;\n", fp);
   fputs("esac\n", fp);
@@ -1212,7 +1236,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fputs("\t\troot)\n", fp);
   fputs("\t\t;;\n", fp);
   fputs("\t\t*)\n", fp);
-  fprintf(fp, "\t\techo Sorry, you must have administrative priviledges to %s this software.\n",
+  fprintf(fp, "\tprintf \"`eval_gettext \\\"Sorry, you must have administrative privileges to %%s this software.\\n\\\"`\" \"`eval_gettext \\\"%s\\\"`\"\n",
           title[0] == 'I' ? "install" : title[0] == 'R' ? "remove" : "patch");
   fputs("\t\texit 1\n", fp);
   fputs("\t\t;;\n", fp);
@@ -1223,7 +1247,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fputs("\t\tuid=0*)\n", fp);
   fputs("\t\t;;\n", fp);
   fputs("\t\t*)\n", fp);
-  fprintf(fp, "\t\techo Sorry, you must be root to %s this software.\n",
+  fprintf(fp, "\tprintf \"`eval_gettext \\\"Sorry, you must be root to %%s this software.\\n\\\"`\" \"`eval_gettext \\\"%s\\\"`\"\n",
           title[0] == 'I' ? "install" : title[0] == 'R' ? "remove" : "patch");
   fputs("\t\texit 1\n", fp);
   fputs("\t\t;;\n", fp);
@@ -1335,7 +1359,7 @@ write_depends(const char *prodname,	/* I - Product name */
 
               qprintf(fp, "if test ! -r %s -a ! -h %s; then\n",
                       product, product);
-              qprintf(fp, "	echo Sorry, you must first install \\'%s\\'!\n",
+              qprintf(fp, "	echo \"`eval_gettext \\\"Sorry, you must first install \\'%s\\'!\\\"`\"\n",
 	              product);
               fputs("	exit 1\n", fp);
               fputs("fi\n", fp);
@@ -1345,28 +1369,6 @@ write_depends(const char *prodname,	/* I - Product name */
              /*
               * Require a product...
               */
-
-              fprintf(fp, "if test ! -x %s/%s.remove; then\n",
-                      SoftwareDir, product);
-              fprintf(fp, "	if test -x %s.install; then\n",
-                      product);
-              fputs("\t	if test x$DEPEND_RUN = xno ; then\n", fp);
-              fprintf(fp, "\t		echo Installing required %s software...\n",
-                      product);
-              fprintf(fp, "\t		./%s.install now\n", product);
-              fputs("\t	else\n", fp);
-              fprintf(fp, "\t		./%s.install --depend --recursion\n", product);
-              fputs("\t	fi\n", fp);
-              fputs("	else\n", fp);
-              fputs("\t	if test x$DEPEND_RUN = xno ; then\n", fp);
-              fprintf(fp, "\t		echo Sorry, you must first install \\'%s\\'!\n",
-	              product);
-              fputs("		ERROR=1\n", fp);
-              fputs("\t	else\n", fp);
-              fprintf(fp, "\t		echo %s >> .depend\n", product);
-              fputs("\t	fi\n", fp);
-              fputs("	fi\n", fp);
-              fputs("fi\n", fp);
 
               if (d->vernumber[0] > 0 || d->vernumber[1] < INT_MAX)
 	      {
@@ -1391,7 +1393,7 @@ write_depends(const char *prodname,	/* I - Product name */
         	fprintf(fp, "	if test -x %s.install; then\n",
                 	product);
         	fputs("\t	if test x$DEPEND_RUN = xno ; then\n", fp);
-        	fprintf(fp, "\t		echo Installing required %s software...\n",
+        	fprintf(fp, "\t		printf \"`eval_gettext \\\"Installing required %%s software...\\n\\\"`\" \"%s\"\n",
                 	product);
         	fprintf(fp, "\t		./%s.install now\n", product);
         	fputs("\t	else\n", fp);
@@ -1399,7 +1401,7 @@ write_depends(const char *prodname,	/* I - Product name */
         	fputs("\t	fi\n", fp);
         	fputs("	else\n", fp);
         	fputs("\t	if test x$DEPEND_RUN = xno ; then\n", fp);
-        	fprintf(fp, "\t\t\techo Sorry, you must first install \\'%s\\' version %s!\n",
+        	fprintf(fp, "\t\t\tprintf \"`eval_gettext \\\"Sorry, you must first install \\'%%s\\' version %%s!\\n\\\"`\" \"%s\" \"%s\"\n",
 	        	product, d->version[0]);
         	fputs("		ERROR=1\n", fp);
         	fputs("\t	else\n", fp);
@@ -1407,6 +1409,24 @@ write_depends(const char *prodname,	/* I - Product name */
         	fputs("\t	fi\n", fp);
         	fputs("	fi\n", fp);
         	fputs("fi\n", fp);
+	      } else {
+                fprintf(fp, "if test ! -x %s/%s.remove; then\n", SoftwareDir, product);
+                fprintf(fp, "\tif test -x %s.install; then\n", product);
+                fputs("\t\tif test x$DEPEND_RUN = xno ; then\n", fp);
+                fprintf(fp, "\t\t\tprintf \"`eval_gettext \\\"Installing required %%s software...\\n\\\"`\" \"%s\"\n", product);
+                fprintf(fp, "\t\t\t./%s.install now\n", product);
+                fputs("\t\telse\n", fp);
+                fprintf(fp, "\t\t\t./%s.install --depend --recursion\n", product);
+                fputs("\t\tfi\n", fp);
+                fputs("\telse\n", fp);
+                fputs("\t\tif test x$DEPEND_RUN = xno ; then\n", fp);
+                fprintf(fp, "\t\t\tprintf \"`eval_gettext \\\"Sorry, you must first install \\'%%s\\'!\\n\\\"`\" \"%s\"\n", product);
+                fputs("\t\t\tERROR=1\n", fp);
+                fputs("\t\telse\n", fp);
+                fprintf(fp, "\t\t\techo %s >> .depend\n", product);
+                fputs("\t\tfi\n", fp);
+                fputs("\tfi\n", fp);
+                fputs("fi\n", fp);
 	      }
             }
 	    break;
@@ -1420,9 +1440,9 @@ write_depends(const char *prodname,	/* I - Product name */
 
               qprintf(fp, "if test -r %s -o -h %s; then\n",
                       product, product);
-              qprintf(fp, "	echo Sorry, this software is incompatible with \\'%s\\'!\n",
+              qprintf(fp, "	printf \"`eval_gettext \\\"Sorry, this software is incompatible with \\'%%s\\'!\\n\\\"`\" \"%s\"\n",
 	              product);
-              fputs("	echo Please remove it first.\n", fp);
+              fputs("	echo \"`eval_gettext \\\"Please remove it first.\\\"`\"\n", fp);
               fputs("	exit 1\n", fp);
               fputs("fi\n", fp);
             }
@@ -1451,18 +1471,18 @@ write_depends(const char *prodname,	/* I - Product name */
 
 		fprintf(fp, "	if test $installed -ge %d -a $installed -le %d; then\n",
 	        	d->vernumber[0], d->vernumber[1]);
-        	fprintf(fp, "		echo Sorry, this software is incompatible with \\'%s\\' version %s to %s!\n",
+        	fprintf(fp, "		printf \"`eval_gettext \\\"Sorry, this software is incompatible with \\'%%s\\' version %%s to %%s!\\n\\\"`\" \"%s\" \"%s\" \"%s\"\n",
 	        	product, d->version[0], d->version[1]);
-        	fprintf(fp, "		echo Please remove it first by running \\'%s/%s.remove\\'.\n",
+        	fprintf(fp, "		printf \"`eval_gettext \\\"Please remove it first by running \\'%%s/%%s.remove\\'.\\n\\\"`\" \"%s\" \"%s\"\n",
 	        	SoftwareDir, product);
         	fputs("		exit 1\n", fp);
         	fputs("	fi\n", fp);
 	      }
 	      else
 	      {
-        	fprintf(fp, "	echo Sorry, this software is incompatible with \\'%s\\'!\n",
+        	fprintf(fp, "	printf \"`eval_gettext \\\"Sorry, this software is incompatible with \\'%%s\\'!\\n\\\"`\" \"%s\"\n",
 	        	product);
-        	fprintf(fp, "	echo Please remove it first by running \\'%s/%s.remove\\'.\n",
+        	fprintf(fp, "	echo \"`eval_gettext \\\"Please remove it first by running \\'%%s/%%s.remove\\'.\\n\\\"`\" \"%s\" \"%s\"\n",
 	        	SoftwareDir, product);
         	fputs("	exit 1\n", fp);
 	      }
@@ -1491,7 +1511,7 @@ write_depends(const char *prodname,	/* I - Product name */
 
 	      fprintf(fp, "	if test $installed -ge %d -a $installed -le %d; then\n",
 	              d->vernumber[0], d->vernumber[1]);
-              fprintf(fp, "		echo Automatically replacing \\'%s\\'...\n",
+              fprintf(fp, "		prinf \"`eval_gettext \\\"Automatically replacing \\'%%s\\'...\\n\\\"`\" \"%s\"\n",
 	              product);
               fprintf(fp, "		%s/%s.remove now\n",
 	              SoftwareDir, product);
@@ -1499,7 +1519,7 @@ write_depends(const char *prodname,	/* I - Product name */
 	    }
 	    else
 	    {
-              fprintf(fp, "	echo Automatically replacing \\'%s\\'...\n",
+              fprintf(fp, "	printf \"`eval_gettext \\\"Automatically replacing \\'%%s\\'...\\n\\\"`\" \"%s\"\n",
 	              product);
               fprintf(fp, "	%s/%s.remove now\n",
 	              SoftwareDir, product);
@@ -1511,7 +1531,7 @@ write_depends(const char *prodname,	/* I - Product name */
     }
 
   fputs("if test x$RECURSION = xno -a -r .depend ; then \n", fp);
-  fputs("\techo Dependency check failed! Full list of unmet dependencies:\n", fp);
+  fputs("\techo \"`eval_gettext \\\"Dependency check failed! Full list of unmet dependencies:\\\"`\"\n", fp);
   fputs("\tcat .depend | uniq\n", fp);
   fputs("\trm -f .depend\n", fp);
   fputs("\texit 1\n", fp);
@@ -2104,17 +2124,14 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("  DEPEND_RUN=\"yes\"\n", scriptfile);
   fputs("  RECURSION=\"yes\"\n", scriptfile);
   fputs("else\n", scriptfile);
-  qprintf(scriptfile, "  echo Copyright %s\n", dist->copyright);
-  fputs("  if test \"`dirname \"$0\"`\" != \".\"; then\n", scriptfile);
-  fputs("\tcd \"`dirname \"$0\"`\"\n", scriptfile);
-  fputs("  fi\n", scriptfile);
+  fprintf(scriptfile, "  printf \"`eval_gettext \\\"Copyright %%s\\n\\\"`\" \"%s\"\n", dist->copyright);
   fputs("  DEPEND_RUN=\"no\"\n", scriptfile);
   fputs("  RECURSION=\"no\"\n", scriptfile);
   fputs("  ./\"`basename $0`\" --depend\n", scriptfile);
   fputs("  if test \"$*\" = \"now\"; then\n", scriptfile);
-  fputs("	echo Software license silently accepted via command-line option.\n", scriptfile);
+  fputs("	echo \"`eval_gettext \\\"By using this parameter you automatically confirm and accept the Software License Agreement.\\\"`\"\n", scriptfile);
   fputs("  elif test \"$*\" = \"--force\"; then\n", scriptfile);
-  fputs("	echo Software license silently accepted via command-line option.\n", scriptfile);
+  fputs("	echo \"`eval_gettext \\\"By using this parameter you automatically confirm and accept the Software License Agreement.\\\"`\"\n", scriptfile);
   fputs("	FORCE_INSTALL=\"yes\"\n", scriptfile);
   fputs("  else\n", scriptfile);
   fputs("	echo \"\"\n", scriptfile);
@@ -2133,21 +2150,19 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       strlcpy(line, dist->descriptions[i].description, sizeof(line));
       if ((ptr = strchr(line, '\n')) != NULL)
         *ptr = '\0';
-      qprintf(scriptfile, "	echo This installation script will install the %s",
-           dist->product);
-      qprintf(scriptfile, " - %s\n",
-           line);
+      fprintf(scriptfile, "	printf \"`eval_gettext \\\"This installation script will install the %%s - %%s\\n\\\"`\" \"%s\" \"%s\"",
+           dist->product, line);
     }
   } else {
-   qprintf(scriptfile, "	echo This installation script will install the %s\n",
+   fprintf(scriptfile, "	printf \"`eval_gettext \\\"This installation script will install the %%s\\n\\\"`\" \"%s\"\n",
            dist->product);
   }
 //end boris
-  qprintf(scriptfile, "	echo software version %s on your system.\n",
+  fprintf(scriptfile, "	printf \"`eval_gettext \\\"software version %%s on your system.\\n\\\"`\" \"%s\"\n",
           dist->version);
   fputs("	echo \"\"\n", scriptfile);
   fputs("	while true ; do\n", scriptfile);
-  fputs("		echo $ac_n \"Do you wish to continue? [Yes] $ac_c\"\n", scriptfile);
+  fputs("		printf \"`eval_gettext \\\"Do you wish to continue? [Yes]\\\"`\"\n", scriptfile);
   fputs("		read yesno\n", scriptfile);
   fputs("		case \"$yesno\" in\n", scriptfile);
   fputs("			y | yes | Y | Yes | YES | \"\")\n", scriptfile);
@@ -2157,7 +2172,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("			exit 1\n", scriptfile);
   fputs("			;;\n", scriptfile);
   fputs("			*)\n", scriptfile);
-  fputs("			echo Please enter yes or no.\n", scriptfile);
+  fputs("			echo \"`eval_gettext \\\"Please enter yes or no.\\\"`\"\n", scriptfile);
   fputs("			;;\n", scriptfile);
   fputs("		esac\n", scriptfile);
   fputs("	done\n", scriptfile);
@@ -2172,7 +2187,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     }
     fputs("	echo \"\"\n", scriptfile);
     fputs("	while test $USER_MUST_AGREE; do\n", scriptfile);
-    fputs("		echo $ac_n \"Do you agree with the terms of this license? $ac_c\"\n", scriptfile);
+    fputs("		printf \"`eval_gettext \\\"Do you agree with the terms of this license?\\\"`\"\n", scriptfile);
     fputs("		read yesno\n", scriptfile);
     fputs("		case \"$yesno\" in\n", scriptfile);
     fputs("			y | yes | Y | Yes | YES)\n", scriptfile);
@@ -2182,7 +2197,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("			exit 1\n", scriptfile);
     fputs("			;;\n", scriptfile);
     fputs("			*)\n", scriptfile);
-    fputs("			echo Please enter yes or no.\n", scriptfile);
+    fputs("			echo \"`Please enter yes or no.\\\"`\"\n", scriptfile);
     fputs("			;;\n", scriptfile);
     fputs("		esac\n", scriptfile);
     fputs("	done\n", scriptfile);
@@ -2192,10 +2207,10 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("fi\n", scriptfile);
   fprintf(scriptfile, "if test -x %s/%s.remove -a x$DEPEND_RUN = xno -a x$FORCE_INSTALL = xno; then\n", SoftwareDir, prodfull);
   fprintf(scriptfile, "\tif [ \"`grep \'^#%%version\' %s/%s.remove | awk \'{print $3}\'`\" = \"$PACKAGE_VERSION\" ] ; then\n", SoftwareDir, prodfull);
-  fprintf(scriptfile,"\t\techo \"Package %s is up-to-date.\"\n",prodfull);
+  fprintf(scriptfile,"\t\tprintf \"`eval_gettext \\\"Package %%s is up-to-date.\\n\\\"`\" \"%s\"\n",prodfull);
   fputs("\t\texit 0\n",scriptfile);
   fputs("\telse\n",scriptfile);
-  fprintf(scriptfile, "	echo Removing old versions of %s software...\n",
+  fprintf(scriptfile, "	printf \"`eval_gettext \\\"Removing old versions of %%s software...\\n\\\"`\" \"%s\"\n",
           prodfull);
   fprintf(scriptfile, "	%s/%s.remove now\n", SoftwareDir, prodfull);
   fputs("fi fi\n", scriptfile);
@@ -2243,7 +2258,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   if (i)
   {
 //     fputs("if test -w /usr ; then\n", scriptfile);
-    fputs("echo Backing up old versions of files to be installed...\n", scriptfile);
+    fputs("echo \"`eval_gettext \\\"Backing up old versions of files to be installed...\\\"`\"\n", scriptfile);
 
     col = fputs("for file in", scriptfile);
     for (; i > 0; i --, file ++)
@@ -2262,7 +2277,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("		if test -w \"`dirname \"$file\"`\" ; then\n", scriptfile);
     fputs("			mv -f \"$file\" \"$file.O\"\n", scriptfile);
     fputs("		else\n", scriptfile);
-    fputs("			echo Error: Cannot write in \"`dirname \"$file\"`\".\n", scriptfile);
+    fputs("			printf \"`eval_gettext \\\"Error: Cannot write in %s.\\n\\\"`\" \"`dirname \"$file\"`\"\n", scriptfile);
     fputs("			exit 1\n", scriptfile);
     fputs("		fi\n", scriptfile);
     fputs("	fi\n", scriptfile);
@@ -2282,7 +2297,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   if (i)
   {
-    fputs("echo Creating installation directories...\n", scriptfile);
+    fputs("echo \"`eval_gettext \\\"Creating installation directories...\\\"`\"\n", scriptfile);
 
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'd' && file->subpackage == subpackage)
@@ -2292,13 +2307,13 @@ write_install(dist_t     *dist,		/* I - Software distribution */
         qprintf(scriptfile, "	if test -w \"`dirname \"%s\"`\" ; then\n", file->dst);
 	qprintf(scriptfile, "		mkdir %s\n", file->dst);
 	fputs("	else\n", scriptfile);
-	qprintf(scriptfile, "		echo Error: Cannot write in \"`dirname \"%s\"`\".\n",
+	qprintf(scriptfile, "		printf \"`eval_gettext \\\"Error: Cannot write in %%s.\\n\\\"`\" \"`dirname \"%s\"`\"\n",
 	        file->dst);
 	fputs("		exit 1\n", scriptfile);
 	fputs("	fi\n", scriptfile);
 	fputs("else\n", scriptfile);
 	qprintf(scriptfile, "	if test -f %s; then\n", file->dst);
-	qprintf(scriptfile, "		echo Error: %s already exists as a regular file!\n",
+	qprintf(scriptfile, "		printf \"`eval_gettext \\\"Error: %%s already exists as a regular file!\\n\\\"`\" \"%s\"\n",
 	        file->dst);
 	fputs("		exit 1\n", scriptfile);
 	fputs("	fi\n", scriptfile);
@@ -2322,7 +2337,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       }
   }
 
-  fputs("echo Installing software...\n", scriptfile);
+  fputs("echo \"`eval_gettext \\\"Installing software...\\\"`\"\n", scriptfile);
 
   if (rootsize)
   {
@@ -2353,7 +2368,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   if (i)
   {
-    fputs("echo Checking configuration files...\n", scriptfile);
+    fputs("echo \"`eval_gettext \\\"Checking configuration files...\\\"`\"\n", scriptfile);
 
     col = fputs("for file in", scriptfile);
     for (; i > 0; i --, file ++)
@@ -2372,7 +2387,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("\t\t\tmkdir `dirname \"$file\"`\n", scriptfile);
     fputs("\t\telse\n", scriptfile);
     fputs("\t\t\tif test -f `dirname \"$file\"`; then\n", scriptfile);
-    fputs("\t\t\t\techo Error: `dirname \"$file\"` already exists as a regular file!\n", scriptfile);
+    fputs("\t\t\t\tprintf \"`eval_gettext \\\"Error: %%s already exists as a regular file!\\n\\\"`\" \"`dirname \"$file\"`\"\n", scriptfile);
     fputs("\t\t\t\texit 1\n", scriptfile);
     fputs("\t\t\tfi\n", scriptfile);
     fputs("\t\tfi\n", scriptfile);
@@ -2381,7 +2396,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("done\n", scriptfile);
   }
 
-  fputs("echo Updating file permissions...\n", scriptfile);
+  fputs("echo \"`eval_gettext \\\"Updating file permissions...\\\"`\"\n", scriptfile);
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (file->subpackage == subpackage)
@@ -2410,7 +2425,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   if (i)
   {
-    fputs("echo Setting up init scripts...\n", scriptfile);
+    fputs("echo \"`eval_gettext \\\"Setting up init scripts...\\\"`\"\n", scriptfile);
 
    /*
     * Find where the frigging init scripts go...
@@ -2436,7 +2451,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
             SoftwareDir);
     fputs("		done\n", scriptfile);
     fputs("	else\n", scriptfile);
-    fputs("		echo Unable to determine location of startup scripts!\n", scriptfile);
+    fputs("		echo \"`eval_gettext \\\"Unable to determine location of init scripts!\\\"`\"\n", scriptfile);
     fputs("	fi\n", scriptfile);
     fputs("else\n", scriptfile);
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
@@ -2501,7 +2516,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       qprintf(scriptfile, "%s/init.d/%s start || true\n", SoftwareDir, file->dst);
 
-  fputs("echo Installation is complete.\n", scriptfile);
+  fputs("echo \"`eval_gettext \\\"Installation is complete.\\\"`\"\n", scriptfile);
 
   fclose(scriptfile);
 
@@ -2846,7 +2861,7 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
             SoftwareDir);
     fputs("		done\n", scriptfile);
     fputs("	else\n", scriptfile);
-    fputs("		echo Unable to determine location of startup scripts!\n", scriptfile);
+    fputs("		echo Unable to determine location of init scripts!\n", scriptfile);
     fputs("	fi\n", scriptfile);
     fputs("else\n", scriptfile);
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
@@ -2954,11 +2969,11 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 //   fputs("\t\texit 0\n", scriptfile);
   fputs("\tfi\n", scriptfile);
   fputs("else\n", scriptfile);
-  fprintf(scriptfile, "\techo \"Package %s is not installed\"\n", prodfull);
+  fprintf(scriptfile, "\tprintf \"`eval_gettext \\\"Package %%s is not installed\\n\\\"`\" \"%s\"\n", prodfull);
   fputs("\texit 1\n", scriptfile);
   fputs("fi\n", scriptfile);
 
-  qprintf(scriptfile, "echo Copyright %s\n", dist->copyright);
+  fprintf(scriptfile, "printf \"`eval_gettext \\\"Copyright %%s\\n\\\"`\" \"%s\"\n", dist->copyright);
   fputs("if test ! \"$*\" = \"now\"; then\n", scriptfile);
   fputs("	echo \"\"\n", scriptfile);
 //boris 2009-03-13
@@ -2975,21 +2990,18 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
       strlcpy(line, dist->descriptions[i].description, sizeof(line));
       if ((ptr = strchr(line, '\n')) != NULL)
         *ptr = '\0';
-      qprintf(scriptfile, "	echo This removal script will remove the %s",
-           dist->product);
-      qprintf(scriptfile, " - %s\n",
-           line);
+      fprintf(scriptfile, "\tprintf \"`eval_gettext \\\"This removal script will remove the %%s - %%s\\n\\\"`\" \"%s\" \"%s\"\n",
+           dist->product, line);
     }
   } else {
-   qprintf(scriptfile, "	echo This removal script will remove the %s\n",
-           dist->product);
+   fprintf(scriptfile, "\tprintf \"`eval_gettext \\\"This removal script will remove the %%s\\n\\\"`\" \"%s\"\n", dist->product);
   }
 //end boris
-   qprintf(scriptfile, "	echo software version %s from your system.\n",
+   fprintf(scriptfile, "\tprintf \"`eval_gettext \\\"software version %%s from your system.\\n\\\"`\" \"%s\"\n",
            dist->version);
   fputs("	echo \"\"\n", scriptfile);
   fputs("	while true ; do\n", scriptfile);
-  fputs("		echo $ac_n \"Do you wish to continue? [Yes] $ac_c\"\n", scriptfile);
+  fputs("		printf \"`eval_gettext \\\"Do you wish to continue? [Yes]\\\"`\"\n", scriptfile);
   fputs("		read yesno\n", scriptfile);
   fputs("		case \"$yesno\" in\n", scriptfile);
   fputs("			y | yes | Y | Yes | YES | \"\")\n", scriptfile);
@@ -2999,7 +3011,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   fputs("			exit 1\n", scriptfile);
   fputs("			;;\n", scriptfile);
   fputs("			*)\n", scriptfile);
-  fputs("			echo Please enter yes or no.\n", scriptfile);
+  fputs("			echo \"`eval_gettext \\\"Please enter yes or no.\\\"`\"\n", scriptfile);
   fputs("			;;\n", scriptfile);
   fputs("		esac\n", scriptfile);
   fputs("	done\n", scriptfile);
@@ -3023,7 +3035,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 
   if (i)
   {
-    fputs("echo Cleaning up init scripts...\n", scriptfile);
+    fputs("echo \"`eval_gettext \\\"Cleaning up init scripts...\\\"`\"\n", scriptfile);
 
    /*
     * Find where the frigging init scripts go...
@@ -3046,7 +3058,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("			rm -f /usr/local/etc/rc.d/$file.sh\n", scriptfile);
     fputs("		done\n", scriptfile);
     fputs("	else\n", scriptfile);
-    fputs("		echo Unable to determine location of startup scripts!\n", scriptfile);
+    fputs("		echo \"`eval_gettext \\\"Unable to determine location of init scripts!\\\"`\"\n", scriptfile);
     fputs("	fi\n", scriptfile);
     fputs("else\n", scriptfile);
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
@@ -3095,7 +3107,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("fi\n", scriptfile);
   }
 
-  fputs("echo Removing/restoring installed files...\n", scriptfile);
+  fputs("echo \"`eval_gettext \\\"Removing/restoring installed files...\\\"`\"\n", scriptfile);
 
 /*
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
@@ -3153,19 +3165,19 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("			if test -w \"`dirname \"$file\"`\" ; then\n", scriptfile);
     fputs("				mv -f \"$file.O\" \"$file\"\n", scriptfile);
     fputs("			else\n", scriptfile);
-    fputs("				echo Error: Cannot write in \"`dirname \"$file\"`\".\n", scriptfile);
+    fputs("				printf \"`eval_gettext \\\"Error: Cannot write in %s.\\n\\\"`\" \"`dirname \"$file\"`\"\n", scriptfile);
     fputs("				exit 1\n", scriptfile);
     fputs("			fi\n", scriptfile);
     fputs("		fi\n", scriptfile);
     fputs("	else\n", scriptfile);
-    fputs("		echo Error: Cannot write in \"`dirname \"$file\"`\".\n", scriptfile);
+    fputs("		printf \"`eval_gettext \\\"Error: Cannot write in %s.\\n\\\"`\" \"`dirname \"$file\"`\"\n", scriptfile);
     fputs("		exit 1\n", scriptfile);
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
 //     fputs("fi\n", scriptfile);
   }
 
-  fputs("echo Checking configuration files...\n", scriptfile);
+  fputs("echo \"`eval_gettext \\\"Checking configuration files...\\\"`\"\n", scriptfile);
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'c' && file->subpackage == subpackage)
@@ -3222,7 +3234,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 
   if (i)
   {
-    fputs("echo Removing empty installation directories...\n", scriptfile);
+    fputs("echo \"`eval_gettext \\\"Removing empty installation directories...\\\"`\"\n", scriptfile);
 
     for (; i > 0; i --, file --)
       if (tolower(file->type) == 'd' && file->subpackage == subpackage)
@@ -3243,7 +3255,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   fprintf(scriptfile, "rm -f %s/%s.remove\n", SoftwareDir, prodfull);
   fprintf(scriptfile, "rmdir -p %s 2>/dev/null || true\n", SoftwareDir);
 
-  fputs("echo Removal is complete.\n", scriptfile);
+  fputs("echo \"`eval_gettext \\\"Removal is complete.\\\"`\"\n", scriptfile);
 
   fclose(scriptfile);
 

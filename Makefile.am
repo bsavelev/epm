@@ -66,3 +66,12 @@ mkepmlist_LDADD = libepm.a
 
 AM_CFLAGS = $(ARCHFLAGS) $(OPTIM) $(EPM_CFLAGS)
 AM_CXXFLAGS = $(ARCHFLAGS) $(OPTIM) $(EPM_CXXFLAGS)
+
+
+dummy: epm$(EXEEXT) epm.test.list
+	./epm$(EXEEXT) -m dummy -a i386 epm epm.test.list
+	cd dummy && gzip -dc epm_$(PACKAGE_VERSION)_dummy.tar.gz | tar -xpPF - && \
+	    mv -f epm.install epm.install.sh && \
+	    mv -f epm.remove epm.remove.sh
+
+.PHONY: dummy

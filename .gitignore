@@ -4,7 +4,7 @@ Makefile
 *.mo
 locale
 .deps
-*.list
+epm.list
 epm
 setup
 uninstall
@@ -34,3 +34,4 @@ uninst.sh
 doc/test/*.html
 stamp-*
 /po/Makefile.in
+dummy

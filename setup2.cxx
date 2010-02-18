@@ -1397,7 +1397,7 @@ load_license()
           gui_load_file(LicenseFile, licfile_ru);
       }
       if (getenv("LANG"))
-        if (strcasestr(getenv("LANG"),"ru") != NULL) {
+        if (strncasecmp(getenv("LANG"),"ru",2) == 0) {
           Language->value(LANG_RU);
           gui_load_file(LicenseFile, licfile_ru);
         }

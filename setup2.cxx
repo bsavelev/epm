@@ -1081,6 +1081,7 @@ void update_control(int from) {
   if (Wizard->value() == Pane[PANE_INSTALL]) {
     // Show the licenses for each of the selected software packages...
     update_label();
+    CheckPostin->hide();
     if ( licaccept == 0 )
     {
       InstallPercent->label(gettext("Installation canceled!"));
@@ -1092,7 +1093,6 @@ void update_control(int from) {
       return;
     }
 //deactivate buttons due install progress
-    CheckPostin->hide();
     NextButton->deactivate();
     PrevButton->deactivate();
     CancelButton->deactivate();

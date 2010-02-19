@@ -522,7 +522,7 @@ msgstr "Ошибка: невозможно осуществить запись �
 #: dummy/epm.install.sh:262
 #, sh-format
 msgid "Creating installation directories..."
-msgstr ""
+msgstr "Создаются установочные директории..."
 
 #: dummy/epm.install.sh:272
 #, sh-format
@@ -537,22 +537,22 @@ msgstr "Устанавливается компонент..."
 #: dummy/epm.install.sh:290 dummy/epm.remove.sh:188
 #, sh-format
 msgid "Checking configuration files..."
-msgstr "Проверка конфигурационных файлов..."
+msgstr "Проверяются конфигурационных файлов..."
 
 #: dummy/epm.install.sh:297
 #, sh-format
 msgid "Error: %%s already exists as a regular file!\\n"
-msgstr ""
+msgstr "Ошибка: %%s уже используется как имя существующего файла!\\n"
 
 #: dummy/epm.install.sh:304
 #, sh-format
 msgid "Updating file permissions..."
-msgstr ""
+msgstr "Обновляются права доступа к файлам..."
 
 #: dummy/epm.install.sh:311
 #, sh-format
 msgid "Setting up init scripts..."
-msgstr ""
+msgstr "Запускается инициализационный скрипт..."
 
 #: dummy/epm.install.sh:325 dummy/epm.remove.sh:141
 #, sh-format
@@ -577,27 +577,27 @@ msgstr "Компонент %s не установлен\\n"
 #: dummy/epm.remove.sh:106
 #, sh-format
 msgid "This removal script will remove the %s\\n"
-msgstr ""
+msgstr "Данный скрипт удалит %s\\n"
 
 #: dummy/epm.remove.sh:107
 #, sh-format
 msgid "software version %s from your system.\\n"
-msgstr ""
+msgstr "версии %s с вашего компьютера.\\n"
 
 #: dummy/epm.remove.sh:128
 #, sh-format
 msgid "Cleaning up init scripts..."
-msgstr ""
+msgstr "Очищается автозагрузка и удаляются установочные скрипты..."
 
 #: dummy/epm.remove.sh:171
 #, sh-format
 msgid "Removing/restoring installed files..."
-msgstr "Удаляем/восстанавливаем установленные файлы..."
+msgstr "Удаляются/восстанавливаются установленные файлы..."
 
 #: dummy/epm.remove.sh:201
 #, sh-format
 msgid "Removing empty installation directories..."
-msgstr ""
+msgstr "Удаляются пустые установочные директории..."
 
 #: dummy/epm.remove.sh:211
 #, sh-format

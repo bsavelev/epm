@@ -1792,6 +1792,16 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 	           !strcmp(platform->sysname, "macosx"))
 	    memcpy(value, "macosx", 6); /* Keep existing nul/version */
 
+	  char *plat_sysname = strtok(value,"-");
+	  char *plat_release = strtok(NULL,"-");
+	  char *plat_machine = strtok(NULL,"-");
+	  if ( strncasecmp(plat_sysname, platform->sysname, strlen(plat_sysname)) &&
+		strncasecmp(plat_release, platform->release, strlen(plat_release)) &&
+		strncasecmp(plat_machine, platform->machine, strlen(plat_machine)))
+	    match = 0 == 0 ? SKIP_SYSTEM : 0;
+	  else
+	    match = 1;
+/*
           if ((ptr = strchr(value, '-')) != NULL)
 	    len = ptr - value;
 	  else
@@ -1801,6 +1811,7 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 	    match = 0;
 	  else
 	    match = strncasecmp(value, namever, strlen(value)) == 0 ? SKIP_SYSTEM : 0;
+*/
 
           if (op)
 	    *skip |= match;

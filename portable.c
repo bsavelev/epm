@@ -55,7 +55,7 @@ static int	write_commands(dist_t *dist, FILE *fp, int type,
 		               const char *subpackage);
 static FILE	*write_common(dist_t *dist, const char *title,
 			      int rootsize, int usrsize,
-		              const char *filename, const char *subpackage);
+		              const char *filename, const char *subpackage, const char prodfull[255]);
 static int	write_confcheck(FILE *fp);
 static int	write_depends(const char *prodname, dist_t *dist, FILE *fp,
 		              const char *subpackage);
@@ -1068,7 +1068,8 @@ write_common(dist_t     *dist,		/* I - Distribution */
              int        rootsize,	/* I - Size of root files in kbytes */
 	     int        usrsize,	/* I - Size of /usr files in kbytes */
              const char *filename,	/* I - Script to create */
-	     const char *subpackage)	/* I - Subpackage name */
+	     const char *subpackage,	/* I - Subpackage name */
+	     const char prodfull[255])	/* Full product name */
 {
   int	i;				/* Looping var */
   FILE	*fp;				/* File pointer */
@@ -1185,6 +1186,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
 
   fputs("PATH=/usr/xpg4/bin:/bin:/usr/bin:/usr/ucb:/sbin:/usr/sbin:${PATH}\n", fp);
   fputs("SHELL=/bin/sh\n", fp);
+  fprintf(fp,"PACKAGE_NAME=\"%s\"\n",prodfull);
   fprintf(fp,"PACKAGE_VERSION=\"%s\"\n",dist->fulver);
   fprintf(fp,"SOFTWAREDIR=\"%s\"\n",SoftwareDir);
   fputs("UNAME_S=`uname -s | tr \"[:upper:]\" \"[:lower:]\"`\n\n",fp);
@@ -2110,7 +2112,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   snprintf(filename, sizeof(filename), "%s/%s.install", directory, prodfull);
 
   if ((scriptfile = write_common(dist, "Installation", rootsize, usrsize,
-                                 filename, subpackage)) == NULL)
+                                 filename, subpackage, prodfull)) == NULL)
   {
     fprintf(stderr, "epm: Unable to create installation script \"%s\" -\n"
                     "     %s\n", filename, strerror(errno));
@@ -2516,7 +2518,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       qprintf(scriptfile, "%s/init.d/%s start || true\n", SoftwareDir, file->dst);
 
-  fputs("echo \"`eval_gettext \\\"Installation is complete.\\\"`\"\n", scriptfile);
+  fputs("printf \"`eval_gettext \\\"Installation %s is complete.\\n\\\"`\" \"$PACKAGE_NAME\"\n", scriptfile);
 
   fclose(scriptfile);
 
@@ -2636,7 +2638,7 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
   snprintf(filename, sizeof(filename), "%s/%s.patch", directory, prodfull);
 
   if ((scriptfile = write_common(dist, "Patch", rootsize, usrsize,
-                                 filename, subpackage)) == NULL)
+                                 filename, subpackage, prodfull)) == NULL)
   {
     fprintf(stderr, "epm: Unable to create patch script \"%s\" -\n"
                     "     %s\n", filename, strerror(errno));
@@ -2955,7 +2957,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   snprintf(filename, sizeof(filename), "%s/%s.remove", directory, prodfull);
 
   if ((scriptfile = write_common(dist, "Removal", rootsize, usrsize,
-                                 filename, subpackage)) == NULL)
+                                 filename, subpackage, prodfull)) == NULL)
   {
     fprintf(stderr, "epm: Unable to create removal script \"%s\" -\n"
                     "     %s\n", filename, strerror(errno));
@@ -3255,7 +3257,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   fprintf(scriptfile, "rm -f %s/%s.remove\n", SoftwareDir, prodfull);
   fprintf(scriptfile, "rmdir -p %s 2>/dev/null || true\n", SoftwareDir);
 
-  fputs("echo \"`eval_gettext \\\"Removal is complete.\\\"`\"\n", scriptfile);
+  fputs("printf \"`eval_gettext \\\"Removal %s is complete.\\n\\\"`\" \"$PACKAGE_NAME\"\n", scriptfile);
 
   fclose(scriptfile);
 

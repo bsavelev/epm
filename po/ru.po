@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 4.2\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-02-18 17:13+0300\n"
+"POT-Creation-Date: 2010-02-19 14:20+0300\n"
 "PO-Revision-Date: 2010-02-10 15:39+0300\n"
 "Last-Translator: Natalia Zdanova <n.zdanova@drweb.com>\n"
 "Language-Team: Natalia Zdanova <n.zdanova@drweb.com>\n"
@@ -10,108 +10,108 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: setup.cxx:2260
+#: setup.cxx:1818
 msgid "Install"
 msgstr "Установка компонентов"
 
-#: setup.cxx:2262 uninst.cxx:2240
+#: setup.cxx:1820 uninst.cxx:1798
 msgid "Welcome"
 msgstr "Начало"
 
-#: setup.cxx:2266
+#: setup.cxx:1824
 msgid "Install Type"
 msgstr "Тип установки"
 
-#: setup.cxx:2271 uninst.cxx:2244
+#: setup.cxx:1829 uninst.cxx:1802
 msgid "Select Software"
 msgstr "Выбор пакетов"
 
-#: setup.cxx:2276 uninst.cxx:2249
+#: setup.cxx:1834 uninst.cxx:1807
 msgid "Confirm"
 msgstr "Подтверждениe"
 
-#: setup.cxx:2281
+#: setup.cxx:1839
 msgid "License"
 msgstr "Лицензия"
 
-#: setup.cxx:2286
+#: setup.cxx:1844
 msgid "Installing"
 msgstr "Установка"
 
-#: setup.cxx:2291
+#: setup.cxx:1849
 msgid "Finish"
 msgstr "Завершение"
 
-#: setup.cxx:2315
+#: setup.cxx:1873
 msgid "Select the installation type:"
 msgstr "Выберите тип установки:"
 
-#: setup.cxx:2369
+#: setup.cxx:1927
 msgid "Select the software you want to install:"
 msgstr "Выберите компоненты, которые вы хотите установить:"
 
-#: setup.cxx:2372
+#: setup.cxx:1930
 msgid " Available Software:"
 msgstr "Доступные компоненты:"
 
-#: setup.cxx:2381
+#: setup.cxx:1939
 msgid "0k marked for installation."
 msgstr "0k отмечено для установки."
 
-#: setup.cxx:2384 uninst.cxx:2295
+#: setup.cxx:1942 uninst.cxx:1853
 msgid "Select all"
 msgstr "Выделить все"
 
-#: setup.cxx:2387 uninst.cxx:2298
+#: setup.cxx:1945 uninst.cxx:1856
 msgid "Select none"
 msgstr "Отменить выделение"
 
-#: setup.cxx:2398
+#: setup.cxx:1956
 msgid "Confirm your software selections below:"
 msgstr "Подтвердите ваш выбор:"
 
-#: setup.cxx:2401
+#: setup.cxx:1959
 msgid "Selected Software:"
 msgstr "Выбранные компоненты:"
 
-#: setup.cxx:2412
+#: setup.cxx:1970
 msgid "License Agreement:"
 msgstr "Лицензионное соглашение:"
 
-#: setup.cxx:2418
+#: setup.cxx:1976
 msgid "Accept and install"
 msgstr "Принять соглашение и продолжить установку "
 
-#: setup.cxx:2424
+#: setup.cxx:1982
 msgid "Cancel installation"
 msgstr "Прекратить установку"
 
-#: setup.cxx:2431
+#: setup.cxx:1989
 msgid "Language:"
 msgstr "Выбрать язык:"
 
-#: setup.cxx:2443 uninst.cxx:2323
+#: setup.cxx:2001 uninst.cxx:1881
 msgid "Progress Label..."
 msgstr "Индикатор выполнения..."
 
-#: setup.cxx:2450
+#: setup.cxx:2008
 msgid "Run interactive postinstall script"
 msgstr "Запустить интерактивный установочный скрипт"
 
-#: setup.cxx:2461
+#: setup.cxx:2019
 msgid "Postinstall information:"
 msgstr "Заключительный этап:"
 
-#: setup.cxx:2473 uninst.cxx:2341
+#: setup.cxx:2031 uninst.cxx:1899
 msgid "@-2< Back"
 msgstr "@-2< Назад"
 
-#: setup.cxx:2476 uninst.cxx:2344
+#: setup.cxx:2034 uninst.cxx:1902
 msgid "Next @-2>"
 msgstr "Вперед @-2>"
 
-#: setup.cxx:2479 setup2.cxx:1028 setup2.cxx:1099 setup2.cxx:1178
-#: uninst.cxx:2347 uninst2.cxx:425
+#: setup.cxx:2037 setup2.cxx:1028 setup2.cxx:1099 setup2.cxx:1178
+#: uninst.cxx:1905 uninst2.cxx:425
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -288,31 +288,31 @@ msgstr "Английский"
 msgid "Russian"
 msgstr "Русский"
 
-#: uninst.cxx:2238
+#: uninst.cxx:1796
 msgid "Uninstall"
 msgstr "Удаление компонентов"
 
-#: uninst.cxx:2254
+#: uninst.cxx:1812
 msgid "Removing"
 msgstr "Удаление"
 
-#: uninst.cxx:2279
+#: uninst.cxx:1837
 msgid "Select the software to remove:"
 msgstr "Выберите компоненты для удаления:"
 
-#: uninst.cxx:2282
+#: uninst.cxx:1840
 msgid " Installed Software:"
 msgstr "Установленные компоненты:"
 
-#: uninst.cxx:2292
+#: uninst.cxx:1850
 msgid "0k marked for removal."
 msgstr "0k отмечено для удаления."
 
-#: uninst.cxx:2309
+#: uninst.cxx:1867
 msgid "Confirm software selected for removal:"
 msgstr "Подтвердите удаление выбранных компонентов:"
 
-#: uninst.cxx:2312
+#: uninst.cxx:1870
 msgid "Software to Remove:"
 msgstr "Компоненты для удаления:"
 
@@ -367,7 +367,7 @@ msgid "Sorry, you must be root to remove Dr.Web software."
 msgstr ""
 "Вы должны иметь привилегии администратора для удаления компонентов Dr.Web."
 
-#: uninst.sh.in:79 dummy/epm.install.sh:125 dummy/epm.remove.sh:119
+#: uninst.sh.in:79 dummy/epm.install.sh:126 dummy/epm.remove.sh:120
 #, sh-format
 msgid "Please enter yes or no."
 msgstr "Пожалуйста, введите yes или no."
@@ -421,7 +421,7 @@ msgstr "Выбрать: "
 msgid "Software dir -- '%s' not found."
 msgstr "Директория с файлами компонентов -- '%s' не обнаружена."
 
-#: dummy/epm.install.sh:44 dummy/epm.remove.sh:44
+#: dummy/epm.install.sh:45 dummy/epm.remove.sh:45
 #, sh-format
 msgid ""
 "Package platform and running platform are different. Installation aborted"
@@ -429,27 +429,27 @@ msgstr ""
 "Тип ОС, для которой был разработан данный компонент, не совпадает с типом "
 "используемой в настоящий момент ОС. Невозможно продолжить установку."
 
-#: dummy/epm.install.sh:54 dummy/epm.remove.sh:54
+#: dummy/epm.install.sh:55 dummy/epm.remove.sh:55
 #, sh-format
 msgid "Sorry, you must have administrative privileges to %s this software.\\n"
 msgstr "Вы должны иметь привилегии администратора для %s данного ПО!"
 
-#: dummy/epm.install.sh:54 dummy/epm.install.sh:64
+#: dummy/epm.install.sh:55 dummy/epm.install.sh:65
 #, sh-format
 msgid "install"
 msgstr "установки"
 
-#: dummy/epm.install.sh:64 dummy/epm.remove.sh:64
+#: dummy/epm.install.sh:65 dummy/epm.remove.sh:65
 #, sh-format
 msgid "Sorry, you must be root to %s this software.\\n"
 msgstr "Вы должны иметь привилегии администратора (root) для %s данного ПО.\\n"
 
-#: dummy/epm.install.sh:100 dummy/epm.remove.sh:102
+#: dummy/epm.install.sh:101 dummy/epm.remove.sh:103
 #, sh-format
 msgid "Copyright %s\\n"
 msgstr "(C) %s\\n"
 
-#: dummy/epm.install.sh:105 dummy/epm.install.sh:107
+#: dummy/epm.install.sh:106 dummy/epm.install.sh:108
 #, sh-format
 msgid ""
 "By using this parameter you automatically confirm and accept the Software "
@@ -458,148 +458,148 @@ msgstr ""
 "Используя данный параметр, вы автоматически соглашаетесь с Лицензионным "
 "Договором и принимаете его."
 
-#: dummy/epm.install.sh:111
+#: dummy/epm.install.sh:112
 #, sh-format
 msgid "This installation script will install the %s\\n"
 msgstr "Данный установочный скрипт поможет вам установить %s\\n"
 
-#: dummy/epm.install.sh:112
+#: dummy/epm.install.sh:113
 #, sh-format
 msgid "software version %s on your system.\\n"
 msgstr "версия установленного в вашей системе ПО %s.\\n "
 
-#: dummy/epm.install.sh:115 dummy/epm.remove.sh:109
+#: dummy/epm.install.sh:116 dummy/epm.remove.sh:110
 #, sh-format
 msgid "Do you wish to continue? [Yes]"
 msgstr "Вы хотите продолжить? [Yes]"
 
-#: dummy/epm.install.sh:132
+#: dummy/epm.install.sh:133
 #, sh-format
 msgid "Do you agree with the terms of this license?"
 msgstr "Вы соглашаетесь с условиями данного Лицензионного Договора?"
 
-#: dummy/epm.install.sh:150
+#: dummy/epm.install.sh:151
 #, sh-format
 msgid "Package %s is up-to-date.\\n"
 msgstr "В системе установлена самая последняя версия компонента %s.\\n"
 
-#: dummy/epm.install.sh:153
+#: dummy/epm.install.sh:154
 #, sh-format
 msgid "Removing old versions of %s software...\\n"
 msgstr "Удаление старой версии компонента %s...\\n"
 
-#: dummy/epm.install.sh:204 dummy/epm.install.sh:222
+#: dummy/epm.install.sh:205 dummy/epm.install.sh:223
 #, sh-format
 msgid "Installing required %s software...\\n"
 msgstr "Установка требуемого компонента %s...\\n"
 
-#: dummy/epm.install.sh:211
+#: dummy/epm.install.sh:212
 #, sh-format
 msgid "Sorry, you must first install '%s' version %s!\\n"
 msgstr "Вы должны сперва установить версию '%s' компонента %s!\\n"
 
-#: dummy/epm.install.sh:229
+#: dummy/epm.install.sh:230
 #, sh-format
 msgid "Sorry, you must first install '%s'!\\n"
 msgstr "Вы должны сперва установить '%s'!\\n"
 
-#: dummy/epm.install.sh:237
+#: dummy/epm.install.sh:238
 #, sh-format
 msgid "Dependency check failed! Full list of unmet dependencies:"
 msgstr "В ходе проверки зависимостей не были найдены следующие зависимости:"
 
-#: dummy/epm.install.sh:245
+#: dummy/epm.install.sh:246
 #, sh-format
 msgid "Backing up old versions of files to be installed..."
 msgstr "Осуществляется резервное копирование старых версий файлов..."
 
-#: dummy/epm.install.sh:251 dummy/epm.install.sh:266 dummy/epm.remove.sh:178
-#: dummy/epm.remove.sh:183
+#: dummy/epm.install.sh:252 dummy/epm.install.sh:267 dummy/epm.remove.sh:179
+#: dummy/epm.remove.sh:184
 #, sh-format
 msgid "Error: Cannot write in %s.\\n"
 msgstr "Ошибка: невозможно осуществить запись файлов в директорию %s.\\n"
 
-#: dummy/epm.install.sh:261
+#: dummy/epm.install.sh:262
 #, sh-format
 msgid "Creating installation directories..."
 msgstr ""
 
-#: dummy/epm.install.sh:271
+#: dummy/epm.install.sh:272
 #, sh-format
 msgid "Error: %s already exists as a regular file!\\n"
 msgstr "Ошибка: %s уже используется как имя существующего файла!\\n"
 
-#: dummy/epm.install.sh:285
+#: dummy/epm.install.sh:286
 #, sh-format
 msgid "Installing software..."
 msgstr "Устанавливается компонент..."
 
-#: dummy/epm.install.sh:289 dummy/epm.remove.sh:187
+#: dummy/epm.install.sh:290 dummy/epm.remove.sh:188
 #, sh-format
 msgid "Checking configuration files..."
 msgstr "Проверка конфигурационных файлов..."
 
-#: dummy/epm.install.sh:296
+#: dummy/epm.install.sh:297
 #, sh-format
 msgid "Error: %%s already exists as a regular file!\\n"
 msgstr ""
 
-#: dummy/epm.install.sh:303
+#: dummy/epm.install.sh:304
 #, sh-format
 msgid "Updating file permissions..."
 msgstr ""
 
-#: dummy/epm.install.sh:310
+#: dummy/epm.install.sh:311
 #, sh-format
 msgid "Setting up init scripts..."
 msgstr ""
 
-#: dummy/epm.install.sh:324 dummy/epm.remove.sh:140
+#: dummy/epm.install.sh:325 dummy/epm.remove.sh:141
 #, sh-format
 msgid "Unable to determine location of init scripts!"
 msgstr "Невозможно определить местонахождение инициализационных скриптов!"
 
-#: dummy/epm.install.sh:362
+#: dummy/epm.install.sh:363
 #, sh-format
-msgid "Installation is complete."
-msgstr "Установка завершена"
+msgid "Installation %s is complete.\\n"
+msgstr "Установка %s завершена.\\n"
 
-#: dummy/epm.remove.sh:54 dummy/epm.remove.sh:64
+#: dummy/epm.remove.sh:55 dummy/epm.remove.sh:65
 #, sh-format
 msgid "remove"
 msgstr "удаления"
 
-#: dummy/epm.remove.sh:99
+#: dummy/epm.remove.sh:100
 #, sh-format
 msgid "Package %s is not installed\\n"
 msgstr "Компонент %s не установлен\\n"
 
-#: dummy/epm.remove.sh:105
+#: dummy/epm.remove.sh:106
 #, sh-format
 msgid "This removal script will remove the %s\\n"
 msgstr ""
 
-#: dummy/epm.remove.sh:106
+#: dummy/epm.remove.sh:107
 #, sh-format
 msgid "software version %s from your system.\\n"
 msgstr ""
 
-#: dummy/epm.remove.sh:127
+#: dummy/epm.remove.sh:128
 #, sh-format
 msgid "Cleaning up init scripts..."
 msgstr ""
 
-#: dummy/epm.remove.sh:170
+#: dummy/epm.remove.sh:171
 #, sh-format
 msgid "Removing/restoring installed files..."
 msgstr "Удаляем/восстанавливаем установленные файлы..."
 
-#: dummy/epm.remove.sh:200
+#: dummy/epm.remove.sh:201
 #, sh-format
 msgid "Removing empty installation directories..."
 msgstr ""
 
-#: dummy/epm.remove.sh:210
+#: dummy/epm.remove.sh:211
 #, sh-format
-msgid "Removal is complete."
-msgstr "Удаление завершено."
+msgid "Removal %s is complete.\\n"
+msgstr "Удаление %s завершено.\\n"

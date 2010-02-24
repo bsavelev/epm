@@ -1800,7 +1800,7 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 		if (plat_buf != NULL) {
 		  plat[i] = plat_buf;
 		  plat_buf = strtok(NULL,"-");
-		} else break;
+		} else { plat[i] = NULL; }
 	  plat_buf = strtok(namever,"-");
 	  for (i=0; i<3; i++)
 		if (plat_buf != NULL) {

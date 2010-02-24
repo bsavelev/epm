@@ -1792,15 +1792,39 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 	           !strcmp(platform->sysname, "macosx"))
 	    memcpy(value, "macosx", 6); /* Keep existing nul/version */
 
-	  char *plat_sysname = strtok(value,"-");
-	  char *plat_release = strtok(NULL,"-");
-	  char *plat_machine = strtok(NULL,"-");
-	  if ( strncasecmp(plat_sysname, platform->sysname, strlen(plat_sysname)) &&
-		strncasecmp(plat_release, platform->release, strlen(plat_release)) &&
-		strncasecmp(plat_machine, platform->machine, strlen(plat_machine)))
-	    match = 0 == 0 ? SKIP_SYSTEM : 0;
-	  else
-	    match = 1;
+	  char *plat_buf;
+	  char *plat[3], *namever_m[3];
+	  int i;
+	  plat_buf = strtok(value,"-");
+	  for (i=0; i<3; i++)
+		if (plat_buf != NULL) {
+		  plat[i] = plat_buf;
+		  plat_buf = strtok(NULL,"-");
+		} else break;
+	  plat_buf = strtok(namever,"-");
+	  for (i=0; i<3; i++)
+		if (plat_buf != NULL) {
+		  namever_m[i] = plat_buf;
+		  plat_buf = strtok(NULL,"-");
+		} else {
+		  switch(i) {
+		    case 0: namever_m[i]=platform->sysname;
+		    case 1: namever_m[i]=platform->release;
+		    case 2: namever_m[i]=platform->machine;
+		  }
+		}
+	match = SKIP_SYSTEM;
+	if ((plat[0] != NULL) && (namever_m[0] != NULL))
+	  if (strncasecmp(plat[0], namever_m[0], strlen(plat[0])) == 0) {
+	    if ((plat[1] != NULL) && (namever_m[1] != NULL))
+	      if (strncasecmp(plat[1], namever_m[1], strlen(plat[1])) == 0) {
+		if ((plat[2] != NULL) && (namever_m[2] != NULL))
+		  if (strncasecmp(plat[2], namever_m[2], strlen(plat[2])) != 0) {
+		    match = 0;
+		  }
+	      } else { match = 0; }
+	  } else { match = 0; }
+
 /*
           if ((ptr = strchr(value, '-')) != NULL)
 	    len = ptr - value;

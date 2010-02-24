@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 4.2\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-02-19 14:20+0300\n"
+"POT-Creation-Date: 2010-02-24 15:45+0300\n"
 "PO-Revision-Date: 2010-02-10 15:39+0300\n"
 "Last-Translator: Natalia Zdanova <n.zdanova@drweb.com>\n"
 "Language-Team: Natalia Zdanova <n.zdanova@drweb.com>\n"
@@ -110,7 +110,7 @@ msgstr "@-2< Назад"
 msgid "Next @-2>"
 msgstr "Вперед @-2>"
 
-#: setup.cxx:2037 setup2.cxx:1028 setup2.cxx:1099 setup2.cxx:1178
+#: setup.cxx:2037 setup2.cxx:1033 setup2.cxx:1104 setup2.cxx:1183
 #: uninst.cxx:1905 uninst2.cxx:425
 msgid "Cancel"
 msgstr "Отменить"
@@ -191,60 +191,70 @@ msgstr "Антивирус Др.Веб для рабочих станций Linu
 
 #: setup2.cxx:860
 #, c-format
+msgid " (%.1fMb disk space)"
+msgstr " (%.1fMb дискового пространства)"
+
+#: setup2.cxx:863
+#, c-format
+msgid " (%dKb disk space)"
+msgstr " (%dKb дискового пространства)"
+
+#: setup2.cxx:865
+#, c-format
 msgid " (+%.1fMb disk space)"
 msgstr " (+%.1fMb дискового пространства)"
 
-#: setup2.cxx:863
+#: setup2.cxx:868
 #, c-format
 msgid " (+%dKb disk space)"
 msgstr " (+%dKb дискового пространства)"
 
-#: setup2.cxx:1027
+#: setup2.cxx:1032
 #, c-format
 msgid "Software License"
 msgstr "Лицензионное соглашение"
 
-#: setup2.cxx:1068
+#: setup2.cxx:1073
 #, c-format
 msgid "License is not accepted!"
 msgstr "Условия Лицензионного соглашения не приняты!"
 
-#: setup2.cxx:1087
+#: setup2.cxx:1092
 msgid "Installation canceled!"
 msgstr "Установка прекращена!"
 
-#: setup2.cxx:1089 setup2.cxx:1125 setup2.cxx:1156 uninst2.cxx:439
+#: setup2.cxx:1094 setup2.cxx:1130 setup2.cxx:1161 uninst2.cxx:439
 msgid "Close"
 msgstr "Закрыть"
 
-#: setup2.cxx:1109
+#: setup2.cxx:1114
 #, c-format
 msgid "Installing %s v%s..."
 msgstr "Устанавливаются %s v%s..."
 
-#: setup2.cxx:1124
+#: setup2.cxx:1129
 msgid "Installation Failed!"
 msgstr "Не удалось произвести установку!"
 
-#: setup2.cxx:1128
+#: setup2.cxx:1133
 msgid "Installation Complete"
 msgstr "Установка завершена"
 
-#: setup2.cxx:1167
+#: setup2.cxx:1172
 msgid "<span>Installation complete</span>"
 msgstr "<span>Установка завершена</span>"
 
-#: setup2.cxx:1319 uninst2.cxx:720
+#: setup2.cxx:1324 uninst2.cxx:720
 #, c-format
 msgid "%+.1fMb required, %dMb available."
 msgstr "%+.1fMb требуется, %dMb доступно."
 
-#: setup2.cxx:1323 uninst2.cxx:724
+#: setup2.cxx:1328 uninst2.cxx:724
 #, c-format
 msgid "%+dk required, %dMb available."
 msgstr "%+dk требуется, %dMb доступно."
 
-#: setup2.cxx:1327 uninst2.cxx:728
+#: setup2.cxx:1332 uninst2.cxx:728
 #, c-format
 msgid ""
 "%+.1fMb required on /, %dMb available,\n"
@@ -253,7 +263,7 @@ msgstr ""
 "%+.1fMb требуется в /, %dMb доступно,\n"
 "%+.1fMb требуется в /usr, %dMb доступно."
 
-#: setup2.cxx:1332 uninst2.cxx:733
+#: setup2.cxx:1337 uninst2.cxx:733
 #, c-format
 msgid ""
 "%+.1fMb required on /, %dMb available,\n"
@@ -262,7 +272,7 @@ msgstr ""
 "%+.1fMb требуется в /, %dMb доступно,\n"
 "%+dk требуется в /usr, %dMb доступно."
 
-#: setup2.cxx:1337 uninst2.cxx:738
+#: setup2.cxx:1342 uninst2.cxx:738
 #, c-format
 msgid ""
 "%+dk required on /, %dMb available,\n"
@@ -271,7 +281,7 @@ msgstr ""
 "%+dk требуется в /, %dMb доступно,\n"
 "%+.1fMb rтребуется в /usr, %dMb доступно."
 
-#: setup2.cxx:1342 uninst2.cxx:743
+#: setup2.cxx:1347 uninst2.cxx:743
 #, c-format
 msgid ""
 "%+dk required on /, %dMb available,\n"
@@ -280,11 +290,11 @@ msgstr ""
 "%+dk требуется в /, %dMb доступно,\n"
 "%+dk требуется в /usr, %dMb доступно."
 
-#: setup2.cxx:1387
+#: setup2.cxx:1392
 msgid "English"
 msgstr "Английский"
 
-#: setup2.cxx:1394
+#: setup2.cxx:1399
 msgid "Russian"
 msgstr "Русский"
 

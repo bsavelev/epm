@@ -1133,7 +1133,10 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fputs("\n", fp);
   fprintf(fp, "#%%vendor %s\n", dist->vendor);
   fprintf(fp, "#%%copyright %s\n", dist->copyright);
-  fprintf(fp, "#%%version %s %s\n", dist->version, dist->fulver);
+  fprintf(fp, "#%%version %s %s\n", dist->version, format_vernumber(dist->version));
+  fprintf(fp, "#%%release %s\n", dist->release);
+  fprintf(fp, "#%%fullversion %s\n", dist->fulver);
+  fprintf(fp, "#%%drwversion %s %s-%s\n", dist->version, old_format_vernumber(dist->version), dist->release);
 
   for (i = 0; i < dist->num_descriptions; i ++)
     if (dist->descriptions[i].subpackage == subpackage)
@@ -1377,15 +1380,9 @@ write_depends(const char *prodname,	/* I - Product name */
 	       /*
 		* Do version number checking...
 		*/
-		fprintf(fp, "s1=`echo \"%s\" | sed \'s/\\([0-9]*\\)\\.\\([0-9]*\\)\\.\\([0-9]*\\).*/\\1/\' 2>/dev/null`\n", d->version[0]);
-		fprintf(fp, "s2=`echo \"%s\" | sed \'s/\\([0-9]*\\)\\.\\([0-9]*\\)\\.\\([0-9]*\\).*/\\2/\' 2>/dev/null`\n", d->version[0]);
-		fprintf(fp, "s3=`echo \"%s\" | sed \'s/\\([0-9]*\\)\\.\\([0-9]*\\)\\.\\([0-9]*\\).*/\\3/\' 2>/dev/null`\n", d->version[0]);
-		fputs("required_version=`expr $s1 \\* 10000 + $s2 \\* 100 + $s3 2>/dev/null`\n", fp);
-		fprintf(fp, "if [ -r %s/%s.remove ] ; then\n", SoftwareDir, product);
-		fprintf(fp, "\ts1=`grep \'^#%%version\' %s/%s.remove 2>/dev/null | awk \'{print $2}\' | sed \'s/\\([0-9]*\\)\\.\\([0-9]*\\)\\.\\([0-9]*\\).*/\\1/\' 2>/dev/null`\n", SoftwareDir, product);
-		fprintf(fp, "\ts2=`grep \'^#%%version\' %s/%s.remove 2>/dev/null | awk \'{print $2}\' | sed \'s/\\([0-9]*\\)\\.\\([0-9]*\\)\\.\\([0-9]*\\).*/\\2/\' 2>/dev/null`\n", SoftwareDir, product);
-		fprintf(fp, "\ts3=`grep \'^#%%version\' %s/%s.remove 2>/dev/null | awk \'{print $2}\' | sed \'s/\\([0-9]*\\)\\.\\([0-9]*\\)\\.\\([0-9]*\\).*/\\3/\' 2>/dev/null`\n", SoftwareDir, product);
-		fputs("\tinstalled=`expr $s1 \\* 10000 + $s2 \\* 100 + $s3 2>/dev/null`\n", fp);
+		fprintf(fp,"required_version=%d\n",get_vernumber(d->version[0]));
+		fprintf(fp, "if [ -r \"%s/%s.remove\" ] ; then\n", SoftwareDir, product);
+		fprintf(fp,"\tinstalled=`grep \"^%version\" %s/%s.remove | awk \'{print $2}\' 2>/dev/null`\n", SoftwareDir, product);
 		fputs("fi\n", fp);
         	fputs("if test x$installed = x; then\n", fp);
 		fputs("	installed=0\n", fp);
@@ -2208,7 +2205,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("  fi\n", scriptfile);
   fputs("fi\n", scriptfile);
   fprintf(scriptfile, "if test -x %s/%s.remove -a x$DEPEND_RUN = xno -a x$FORCE_INSTALL = xno; then\n", SoftwareDir, prodfull);
-  fprintf(scriptfile, "\tif [ \"`grep \'^#%%version\' %s/%s.remove | awk \'{print $3}\'`\" = \"$PACKAGE_VERSION\" ] ; then\n", SoftwareDir, prodfull);
+  fprintf(scriptfile, "\tif [ \"`grep \'^#%%fullversion\' %s/%s.remove | awk \'{print $3}\'`\" = \"$PACKAGE_VERSION\" ] ; then\n", SoftwareDir, prodfull);
   fprintf(scriptfile,"\t\tprintf \"`eval_gettext \\\"Package %%s is up-to-date.\\n\\\"`\" \"%s\"\n",prodfull);
   fputs("\t\texit 0\n",scriptfile);
   fputs("\telse\n",scriptfile);

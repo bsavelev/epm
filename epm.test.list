@@ -42,8 +42,9 @@ $srcdir=.
 %license ${srcdir}/COPYING
 %readme ${srcdir}/README
 %description Universal software packaging tool for UNIX.
-%version 4.2
+%version 5.0.2
 %requires drweb-common 5.0.2
+%release 1~linux
 %requires drweb-libs
 # Executables
 %system all

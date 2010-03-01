@@ -11,7 +11,7 @@ Function {make_window()} {open
     label Install
     callback {if (CancelButton->active())
   exit(0);} open
-    xywh {34 432 680 330} type Double resizable
+    xywh {156 346 680 330} type Double resizable
     code0 {\#include "gui-common.h"}
     code1 {\#include "setup2.h"} visible
   } {
@@ -40,11 +40,11 @@ Function {make_window()} {open
       xywh {5 135 130 25} labelfont 1 align 20 deactivate
     }
     Fl_Box {Title[6]} {
-      label Finish selected
+      label Finish
       xywh {5 160 130 25} labelfont 1 align 20 deactivate
     }
     Fl_Wizard Wizard {open
-      xywh {145 10 530 285} box THIN_DOWN_BOX color 48
+      xywh {145 10 780 285} box THIN_DOWN_BOX color 48
     } {
       Fl_Group {Pane[0]} {open
         xywh {145 10 520 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
@@ -139,30 +139,29 @@ list_cb(0,0);}
         }
       }
       Fl_Group {Pane[4]} {open
-        xywh {145 10 528 273} labelfont 1 labelsize 18 labelcolor 4 align 21
+        xywh {145 10 780 285} labelfont 1 labelsize 18 labelcolor 4 align 21
       } {
         Fl_Help_View LicenseFile {
-          label {License Agreement:}
-          xywh {145 52 520 194} labelfont 1 align 133 resizable
+          xywh {145 66 520 178} labelfont 1 align 133 resizable
         }
         Fl_Group {} {open
-          xywh {145 240 494 40}
+          xywh {145 240 780 55}
         } {
           Fl_Round_Button LicenseAccept {
             label {Accept and install}
             callback {NextButton->activate();}
-            xywh {165 255 290 25} type Radio down_box ROUND_DOWN_BOX align 148
+            xywh {160 244 505 25} type Radio down_box ROUND_DOWN_BOX align 148
           }
           Fl_Round_Button LicenseDecline {
             label {Cancel installation}
-            callback {NextButton->activate();}
-            xywh {490 255 149 25} type Radio down_box ROUND_DOWN_BOX
+            callback {NextButton->activate();} selected
+            xywh {160 269 505 25} type Radio down_box ROUND_DOWN_BOX
           }
         }
         Fl_Choice Language {
-          label {Language:}
+          label {View in:}
           callback change_lang open
-          xywh {480 14 184 20} down_box BORDER_BOX
+          xywh {210 40 115 20} down_box BORDER_BOX
         } {}
       }
       Fl_Group {Pane[5]} {open
@@ -207,6 +206,10 @@ update_control(0);}
       label Cancel
       callback {exit(0);}
       xywh {562 295 83 25}
+    }
+    Fl_Box {} {
+      label {License Agreement}
+      xywh {150 14 145 22} align 20
     }
   }
 } 

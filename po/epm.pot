@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-02-24 15:45+0300\n"
+"POT-Creation-Date: 2010-03-01 14:20+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,10 +80,6 @@ msgstr ""
 msgid "Selected Software:"
 msgstr ""
 
-#: setup.cxx:1970
-msgid "License Agreement:"
-msgstr ""
-
 #: setup.cxx:1976
 msgid "Accept and install"
 msgstr ""
@@ -93,7 +89,7 @@ msgid "Cancel installation"
 msgstr ""
 
 #: setup.cxx:1989
-msgid "Language:"
+msgid "View in:"
 msgstr ""
 
 #: setup.cxx:2001 uninst.cxx:1881
@@ -119,6 +115,10 @@ msgstr ""
 #: setup.cxx:2037 setup2.cxx:1033 setup2.cxx:1104 setup2.cxx:1183
 #: uninst.cxx:1905 uninst2.cxx:425
 msgid "Cancel"
+msgstr ""
+
+#: setup.cxx:2040
+msgid "License Agreement"
 msgstr ""
 
 #: setup2.cxx:235

@@ -1851,7 +1851,7 @@ Fl_Double_Window* make_window() {
       Title[6]->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
       Title[6]->deactivate();
     } // Fl_Box* Title[6]
-    { Wizard = new Fl_Wizard(145, 10, 530, 285);
+    { Wizard = new Fl_Wizard(145, 10, 780, 285);
       Wizard->box(FL_THIN_DOWN_BOX);
       Wizard->color((Fl_Color)48);
       { Pane[0] = new Fl_Group(145, 10, 520, 275);
@@ -1962,31 +1962,31 @@ Fl_Double_Window* make_window() {
         } // Fl_Browser* ConfirmList
         Pane[3]->end();
       } // Fl_Group* Pane[3]
-      { Pane[4] = new Fl_Group(145, 10, 528, 273);
+      { Pane[4] = new Fl_Group(145, 10, 780, 285);
         Pane[4]->labelfont(1);
         Pane[4]->labelsize(18);
         Pane[4]->labelcolor((Fl_Color)4);
         Pane[4]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
-        { LicenseFile = new Fl_Help_View(145, 52, 520, 194, gettext("License Agreement:"));
+        { LicenseFile = new Fl_Help_View(145, 66, 520, 178);
           LicenseFile->labelfont(1);
           LicenseFile->align(133);
           Fl_Group::current()->resizable(LicenseFile);
         } // Fl_Help_View* LicenseFile
-        { Fl_Group* o = new Fl_Group(145, 240, 494, 40);
-          { LicenseAccept = new Fl_Round_Button(165, 255, 290, 25, gettext("Accept and install"));
+        { Fl_Group* o = new Fl_Group(145, 240, 780, 55);
+          { LicenseAccept = new Fl_Round_Button(160, 244, 505, 25, gettext("Accept and install"));
             LicenseAccept->type(102);
             LicenseAccept->down_box(FL_ROUND_DOWN_BOX);
             LicenseAccept->callback((Fl_Callback*)cb_LicenseAccept);
             LicenseAccept->align(132|FL_ALIGN_INSIDE);
           } // Fl_Round_Button* LicenseAccept
-          { LicenseDecline = new Fl_Round_Button(490, 255, 149, 25, gettext("Cancel installation"));
+          { LicenseDecline = new Fl_Round_Button(160, 269, 505, 25, gettext("Cancel installation"));
             LicenseDecline->type(102);
             LicenseDecline->down_box(FL_ROUND_DOWN_BOX);
             LicenseDecline->callback((Fl_Callback*)cb_LicenseDecline);
           } // Fl_Round_Button* LicenseDecline
           o->end();
         } // Fl_Group* o
-        { Language = new Fl_Choice(480, 14, 184, 20, gettext("Language:"));
+        { Language = new Fl_Choice(210, 40, 115, 20, gettext("View in:"));
           Language->down_box(FL_BORDER_BOX);
           Language->callback((Fl_Callback*)change_lang);
         } // Fl_Choice* Language
@@ -2037,6 +2037,9 @@ Fl_Double_Window* make_window() {
     { CancelButton = new Fl_Button(562, 295, 83, 25, gettext("Cancel"));
       CancelButton->callback((Fl_Callback*)cb_CancelButton);
     } // Fl_Button* CancelButton
+    { Fl_Box* o = new Fl_Box(150, 14, 145, 22, gettext("License Agreement"));
+      o->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
+    } // Fl_Box* o
     SetupWindow->end();
     SetupWindow->resizable(SetupWindow);
   } // Fl_Double_Window* SetupWindow

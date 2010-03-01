@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 4.2\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-02-24 15:45+0300\n"
+"POT-Creation-Date: 2010-03-01 14:20+0300\n"
 "PO-Revision-Date: 2010-02-10 15:39+0300\n"
 "Last-Translator: Natalia Zdanova <n.zdanova@drweb.com>\n"
 "Language-Team: Natalia Zdanova <n.zdanova@drweb.com>\n"
@@ -74,21 +74,17 @@ msgstr "Подтвердите ваш выбор:"
 msgid "Selected Software:"
 msgstr "Выбранные компоненты:"
 
-#: setup.cxx:1970
-msgid "License Agreement:"
-msgstr "Лицензионное соглашение:"
-
 #: setup.cxx:1976
 msgid "Accept and install"
-msgstr "Принять соглашение и продолжить установку "
+msgstr "Принять соглашение и установить "
 
 #: setup.cxx:1982
 msgid "Cancel installation"
 msgstr "Прекратить установку"
 
 #: setup.cxx:1989
-msgid "Language:"
-msgstr "Выбрать язык:"
+msgid "View in:"
+msgstr "Просмотреть в:"
 
 #: setup.cxx:2001 uninst.cxx:1881
 msgid "Progress Label..."
@@ -114,6 +110,10 @@ msgstr "Вперед @-2>"
 #: uninst.cxx:1905 uninst2.cxx:425
 msgid "Cancel"
 msgstr "Отменить"
+
+#: setup.cxx:2040
+msgid "License Agreement"
+msgstr "Лицензионное соглашение"
 
 #: setup2.cxx:235
 msgid "You must be logged in as root to run setup!"

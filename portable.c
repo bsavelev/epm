@@ -2472,7 +2472,9 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	fputs("	fi\n", scriptfile);
 
 	fputs("	if test -x /sbin/chkconfig; then\n", scriptfile);
-	qprintf(scriptfile, "		/sbin/chkconfig --add %s >/dev/null 2>/dev/null || true\n", file->dst);
+	qprintf(scriptfile, "\t\t/sbin/chkconfig --add %s >/dev/null 2>&1 || true\n", file->dst);
+	fputs("	elif ( which update-rc.d >/dev/null 2>&1 ) ; then\n", scriptfile);
+	qprintf(scriptfile, "\t\tupdate-rc.d %s defaults >/dev/null 2>&1 || true\n", file->dst);
 	fputs("	else\n", scriptfile);
 	for (runlevels = get_runlevels(dist->files + i, "0235");
              isdigit(*runlevels & 255);
@@ -3069,7 +3071,9 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
         // qprintf(scriptfile, "	%s/init.d/%s stop\n", SoftwareDir, file->dst); // double job?
 
 	fputs("	if test -x /sbin/chkconfig; then\n", scriptfile);
-	qprintf(scriptfile, "		/sbin/chkconfig --del %s >/dev/null 2>/dev/null || true\n", file->dst);
+	qprintf(scriptfile, "\t\t/sbin/chkconfig --del %s >/dev/null 2>&1 || true\n", file->dst);
+	fputs("	elif ( which update-rc.d >/dev/null 2>&1 ); then\n", scriptfile);
+	qprintf(scriptfile, "\t\tupdate-rc.d -f %s >/dev/null 2>&1 || true\n", file->dst);
 	fputs("	else\n", scriptfile);
 	for (runlevels = get_runlevels(dist->files + i, "0235");
              isdigit(*runlevels & 255);

@@ -2198,7 +2198,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("			exit 1\n", scriptfile);
     fputs("			;;\n", scriptfile);
     fputs("			*)\n", scriptfile);
-    fputs("			echo \"`Please enter yes or no.\\\"`\"\n", scriptfile);
+    fputs("			echo \"`eval_gettext \\\"Please enter yes or no.\\\"`\"\n", scriptfile);
     fputs("			;;\n", scriptfile);
     fputs("		esac\n", scriptfile);
     fputs("	done\n", scriptfile);

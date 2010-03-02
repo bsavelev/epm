@@ -1386,6 +1386,8 @@ write_depends(const char *prodname,	/* I - Product name */
 		fputs("fi\n", fp);
         	fputs("if test x$installed = x; then\n", fp);
 		fputs("	installed=0\n", fp);
+        	fputs("elif ( ! expr \"$installed\" + 0 >/dev/null 2>&1 ) ; then\n", fp);
+		fputs("	installed=0\n", fp);
 		fputs("fi\n", fp);
 
 		fputs("if test $installed -lt $required_version ; then\n", fp);

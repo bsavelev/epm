@@ -1029,7 +1029,7 @@ void update_control(int from) {
     //copy code from license_dist
     static char		liclabel[1024];		// Label for license pane
 
-    snprintf(liclabel, sizeof(liclabel), gettext("Software License"));
+//    snprintf(liclabel, sizeof(liclabel), gettext("Software License"));
     CancelButton->label(gettext("Cancel"));
     CancelButton->deactivate();
     PrevButton->activate();

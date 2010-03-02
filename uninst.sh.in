@@ -5,10 +5,10 @@ TEXTDOMAIN=epm
 
 eval_gettext() {
 if ( which gettext >/dev/null 2>/dev/null ) ; then
-    if [ -x "`which envsubst1 2>/dev/null`" ] ; then
+    if [ -x "`which envsubst 2>/dev/null`" ] ; then
 	gettext "$1" | (`envsubst --variables "$1"`; envsubst "$1")
     else
-	gettext "$1"
+	gettext "$1" | echo "$1"
     fi
 else
     echo "$1"

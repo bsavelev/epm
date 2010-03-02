@@ -2151,7 +2151,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
       strlcpy(line, dist->descriptions[i].description, sizeof(line));
       if ((ptr = strchr(line, '\n')) != NULL)
         *ptr = '\0';
-      fprintf(scriptfile, "	printf \"`eval_gettext \\\"This installation script will install the %%s - %%s\\\"`\\n\" \"%s\" \"%s\"",
+      fprintf(scriptfile, "	printf \"`eval_gettext \\\"This installation script will install the %%s - %%s\\\"`\" \"%s\" \"%s\"\n",
            dist->product, line);
     }
   } else {

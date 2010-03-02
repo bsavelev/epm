@@ -1197,7 +1197,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fputs("eval_gettext() {\n"
 	"if ( which gettext >/dev/null 2>/dev/null ) ; then\n"
 	"    if ( which envsubst >/dev/null 2>/dev/null ) ; then\n"
-	"        gettext \"$1\" | (export PATH `envsubst --variables \"$1\"`; envsubst \"$1\")\n"
+	"        gettext \"$1\" | (`envsubst --variables \"$1\"`; envsubst \"$1\")\n"
 	"    else\n"
 	"        gettext \"$1\"\n"
 	"    fi\n"
@@ -1211,11 +1211,11 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fputs("fi\n", fp);
 
   fputs("if [ -d ./locale ] ; then\n"
-	"\texport TEXTDOMAINDIR=./locale\n"
+	"\tTEXTDOMAINDIR=./locale\n"
 	"else\n",fp);
-  fprintf(fp,"\texport TEXTDOMAINDIR=%s\n", LOCALEDIR);
+  fprintf(fp,"\tTEXTDOMAINDIR=%s\n", LOCALEDIR);
   fputs("fi\n", fp);
-  fputs("export TEXTDOMAIN=epm\n",fp);
+  fputs("TEXTDOMAIN=epm\n",fp);
 
   if (CustomPlatform)
     if (strcmp(CustomPlatform, "solaris") == 0)

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 4.2\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-03-02 16:39+0300\n"
+"POT-Creation-Date: 2010-03-02 19:24+0300\n"
 "PO-Revision-Date: 2010-02-10 15:39+0300\n"
 "Last-Translator: Natalia Zdanova <n.zdanova@drweb.com>\n"
 "Language-Team: Natalia Zdanova <n.zdanova@drweb.com>\n"
@@ -208,11 +208,6 @@ msgstr " (+%.1fMb дискового пространства)"
 #, c-format
 msgid " (+%dKb disk space)"
 msgstr " (+%dKb дискового пространства)"
-
-#: setup2.cxx:1032
-#, c-format
-msgid "Software License"
-msgstr "Лицензионное соглашение"
 
 #: setup2.cxx:1073
 #, c-format
@@ -613,3 +608,6 @@ msgstr "Удаляются пустые установочные директо�
 #, sh-format
 msgid "Removal %s is complete.\\n"
 msgstr "Удаление %s завершено.\\n"
+
+#~ msgid "Software License"
+#~ msgstr "Лицензионное соглашение"

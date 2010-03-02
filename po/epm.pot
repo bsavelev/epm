@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-03-02 16:39+0300\n"
+"POT-Creation-Date: 2010-03-02 19:24+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -204,11 +204,6 @@ msgstr ""
 #: setup2.cxx:868
 #, c-format
 msgid " (+%dKb disk space)"
-msgstr ""
-
-#: setup2.cxx:1032
-#, c-format
-msgid "Software License"
 msgstr ""
 
 #: setup2.cxx:1073

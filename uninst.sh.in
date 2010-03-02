@@ -1,12 +1,12 @@
 #!/bin/sh
 
-export TEXTDOMAINDIR="@datarootdir@/locale"
-export TEXTDOMAIN=epm
+TEXTDOMAINDIR="@datarootdir@/locale"
+TEXTDOMAIN=epm
 
 eval_gettext() {
 if ( which gettext >/dev/null 2>/dev/null ) ; then
-    if ( which envsubst >/dev/null 2>/dev/null ) ; then
-	gettext "$1" | (export PATH `envsubst --variables "$1"`; envsubst "$1")
+    if [ -x "`which envsubst1 2>/dev/null`" ] ; then
+	gettext "$1" | (`envsubst --variables "$1"`; envsubst "$1")
     else
 	gettext "$1"
     fi

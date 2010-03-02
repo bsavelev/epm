@@ -1382,7 +1382,7 @@ write_depends(const char *prodname,	/* I - Product name */
 		*/
 		fprintf(fp,"required_version=%d\n",get_vernumber(d->version[0]));
 		fprintf(fp, "if [ -r \"%s/%s.remove\" ] ; then\n", SoftwareDir, product);
-		fprintf(fp,"\tinstalled=`grep \"^%version\" %s/%s.remove | awk \'{print $2}\' 2>/dev/null`\n", SoftwareDir, product);
+		fprintf(fp,"\tinstalled=`grep \"%version\" %s/%s.remove | awk \'{print $3}\' 2>/dev/null`\n", SoftwareDir, product);
 		fputs("fi\n", fp);
         	fputs("if test x$installed = x; then\n", fp);
 		fputs("	installed=0\n", fp);

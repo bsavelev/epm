@@ -1196,7 +1196,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
 
   fputs("eval_gettext() {\n"
 	"if ( which gettext >/dev/null 2>/dev/null ) ; then\n"
-	"    if ( which envsubst >/dev/null 2>/dev/null ) ; then\n"
+	"    if [ -x \"`which envsubst 2>/dev/null`\" ] ; then\n"
 	"        gettext \"$1\" | (`envsubst --variables \"$1\"`; envsubst \"$1\")\n"
 	"    else\n"
 	"        gettext \"$1\"\n"

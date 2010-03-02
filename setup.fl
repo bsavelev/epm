@@ -11,7 +11,7 @@ Function {make_window()} {open
     label Install
     callback {if (CancelButton->active())
   exit(0);} open
-    xywh {156 346 680 330} type Double resizable
+    xywh {21 317 680 330} type Double resizable
     code0 {\#include "gui-common.h"}
     code1 {\#include "setup2.h"} visible
   } {
@@ -154,7 +154,7 @@ list_cb(0,0);}
           }
           Fl_Round_Button LicenseDecline {
             label {Cancel installation}
-            callback {NextButton->activate();} selected
+            callback {NextButton->activate();}
             xywh {160 269 505 25} type Radio down_box ROUND_DOWN_BOX
           }
         }
@@ -163,6 +163,10 @@ list_cb(0,0);}
           callback change_lang open
           xywh {210 40 115 20} down_box BORDER_BOX
         } {}
+        Fl_Box {} {
+          label {License Agreement} selected
+          xywh {150 19 145 22} align 20
+        }
       }
       Fl_Group {Pane[5]} {open
         xywh {145 10 520 280} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
@@ -206,10 +210,6 @@ update_control(0);}
       label Cancel
       callback {exit(0);}
       xywh {562 295 83 25}
-    }
-    Fl_Box {} {
-      label {License Agreement}
-      xywh {150 14 145 22} align 20
     }
   }
 } 

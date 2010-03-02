@@ -1990,6 +1990,9 @@ Fl_Double_Window* make_window() {
           Language->down_box(FL_BORDER_BOX);
           Language->callback((Fl_Callback*)change_lang);
         } // Fl_Choice* Language
+        { Fl_Box* o = new Fl_Box(150, 19, 145, 22, gettext("License Agreement"));
+          o->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
+        } // Fl_Box* o
         Pane[4]->end();
       } // Fl_Group* Pane[4]
       { Pane[5] = new Fl_Group(145, 10, 520, 280);
@@ -2037,9 +2040,6 @@ Fl_Double_Window* make_window() {
     { CancelButton = new Fl_Button(562, 295, 83, 25, gettext("Cancel"));
       CancelButton->callback((Fl_Callback*)cb_CancelButton);
     } // Fl_Button* CancelButton
-    { Fl_Box* o = new Fl_Box(150, 14, 145, 22, gettext("License Agreement"));
-      o->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
-    } // Fl_Box* o
     SetupWindow->end();
     SetupWindow->resizable(SetupWindow);
   } // Fl_Double_Window* SetupWindow

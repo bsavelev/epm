@@ -1,6 +1,15 @@
 #!/bin/sh
 
-TEXTDOMAINDIR="@datarootdir@/locale"
+if test "`dirname "$0"`" != "."; then
+	cd "`dirname "$0"`"
+fi
+if [ -d ./locale ] ; then
+	TEXTDOMAINDIR=./locale
+else
+	TEXTDOMAINDIR="@datarootdir@/locale"
+	TEXTDOMAINDIR=/usr/share/locale
+fi
+
 TEXTDOMAIN=epm
 
 export TEXTDOMAINDIR

@@ -1216,6 +1216,8 @@ write_common(dist_t     *dist,		/* I - Distribution */
   fprintf(fp,"\tTEXTDOMAINDIR=%s\n", LOCALEDIR);
   fputs("fi\n", fp);
   fputs("TEXTDOMAIN=epm\n",fp);
+  fputs("export TEXTDOMAIN\n",fp);
+  fputs("export tTEXTDOMAINDIR\n",fp);
 
   if (CustomPlatform)
     if (strcmp(CustomPlatform, "solaris") == 0)

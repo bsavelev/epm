@@ -1386,9 +1386,11 @@ write_depends(const char *prodname,	/* I - Product name */
 		fprintf(fp, "if [ -r \"%s/%s.remove\" ] ; then\n", SoftwareDir, product);
 		fprintf(fp,"\tinstalled=`grep \"#%%version\" %s/%s.remove | awk \'{print $3}\' 2>/dev/null`\n", SoftwareDir, product);
 		fputs("fi\n", fp);
+		fputs("isnum=0\n", fp);
+		fputs("expr \"$installed\" + 0 >/dev/null 2>&1 || isnum=$?", fp);
         	fputs("if test \"x$installed\" = \"x\"; then\n", fp);
 		fputs("	installed=0\n", fp);
-        	fputs("elif [ \"`expr \"$installed\" + 0 >/dev/null 2>&1; echo $?`\" -ne 0 ] ; then\n", fp);
+        	fputs("elif [ $isnum -ne 0 ] ; then\n", fp);
 		fputs("	installed=0\n", fp);
 		fputs("fi\n", fp);
 

@@ -142,7 +142,7 @@ list_cb(0,0);}
         xywh {145 10 780 285} labelfont 1 labelsize 18 labelcolor 4 align 21
       } {
         Fl_Help_View LicenseFile {
-          xywh {145 66 520 178} labelfont 1 align 133
+          xywh {145 66 520 178} labelfont 1 align 133 resizable
         }
         Fl_Group {} {open
           xywh {145 240 780 55}
@@ -160,12 +160,12 @@ list_cb(0,0);}
         }
         Fl_Choice Language {
           label {Select language:}
-          callback change_lang open selected
-          xywh {270 40 150 20} down_box BORDER_BOX resizable
+          callback change_lang open
+          xywh {270 40 150 20} down_box BORDER_BOX
         } {}
         Fl_Box {} {
-          label {License Agreement}
-          xywh {150 17 265 22} labelfont 1 align 20
+          label {License Agreement} selected
+          xywh {150 17 265 22} align 20
         }
       }
       Fl_Group {Pane[5]} {open

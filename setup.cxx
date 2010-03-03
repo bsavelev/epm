@@ -1970,6 +1970,7 @@ Fl_Double_Window* make_window() {
         { LicenseFile = new Fl_Help_View(145, 66, 520, 178);
           LicenseFile->labelfont(1);
           LicenseFile->align(133);
+          Fl_Group::current()->resizable(LicenseFile);
         } // Fl_Help_View* LicenseFile
         { Fl_Group* o = new Fl_Group(145, 240, 780, 55);
           { LicenseAccept = new Fl_Round_Button(160, 244, 505, 25, gettext("Accept and install"));
@@ -1988,10 +1989,8 @@ Fl_Double_Window* make_window() {
         { Language = new Fl_Choice(270, 40, 150, 20, gettext("Select language:"));
           Language->down_box(FL_BORDER_BOX);
           Language->callback((Fl_Callback*)change_lang);
-          Fl_Group::current()->resizable(Language);
         } // Fl_Choice* Language
         { Fl_Box* o = new Fl_Box(150, 17, 265, 22, gettext("License Agreement"));
-          o->labelfont(1);
           o->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
         } // Fl_Box* o
         Pane[4]->end();

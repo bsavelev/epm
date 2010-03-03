@@ -856,7 +856,7 @@ load_types(void)
 
   for (i = 0, dt = InstTypes; i < NumInstTypes; i ++, dt ++)
   {
-    if (dt->size <= 1024)
+    /*if (dt->size <= 1024)
       sprintf(dt->label + strlen(dt->label), gettext(" (%.1fMb disk space)"),
               dt->size / 1024.0);
     else if (dt->size < 0)
@@ -864,9 +864,11 @@ load_types(void)
     else if (dt->size >= 1024)
       sprintf(dt->label + strlen(dt->label), gettext(" (+%.1fMb disk space)"),
               dt->size / 1024.0);
-    else if (dt->size)
+    else if (dt->size = 0) */
+      sprintf(dt->label + strlen(dt->label), "");
+    /*else if (dt->size)
       sprintf(dt->label + strlen(dt->label), gettext(" (+%dKb disk space)"), dt->size);
-
+*/
     if ((lineptr = strchr(dt->label, '/')) != NULL)
       TypeButton[i]->label(lineptr + 1);
     else

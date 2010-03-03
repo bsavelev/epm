@@ -7,7 +7,6 @@ if [ -d ./locale ] ; then
 	TEXTDOMAINDIR=./locale
 else
 	TEXTDOMAINDIR="@datarootdir@/locale"
-	TEXTDOMAINDIR=/usr/share/locale
 fi
 
 TEXTDOMAIN=epm

@@ -98,6 +98,7 @@ int		licaccept = 0;
 FILE		*fdfile = NULL;
 int		skip_pane_select = 1;
 int		Verbosity = 0;
+int		InstallFailed = 1; //
 
 #define POSTIN_SCRIPT "./scripts/postinstall.sh"
 #define POSTIN_I_SCRIPT "./scripts/postinstall-i.sh"
@@ -1126,7 +1127,7 @@ void update_control(int from) {
       }
 
     InstallPercent->value(100.0);
-
+    InstallFailed = error;
     if (error) {
       InstallPercent->label(gettext("Installation failed"));
       CancelButton->label(gettext("Close"));
@@ -1148,7 +1149,12 @@ void update_control(int from) {
 
   if (Wizard->value() == Pane[PANE_POSTIN]) {
 
-   if (error) {
+    NextButton->deactivate();
+    PrevButton->deactivate();
+    CancelButton->activate();
+    CancelButton->label(gettext("Close"));
+    update_label();
+   if (InstallFailed) {
     PostinFile->value(gettext("<span>Installation failed. See install.log for details.</span>"));
    } else {
     // Show the licenses for each of the selected software packages...
@@ -1160,11 +1166,6 @@ void update_control(int from) {
       res = run_command(NULL, "%s", POSTIN_SCRIPT);
     if (CheckPostin->value() != 0)
       res = run_command(NULL, "%s", POSTIN_I_SCRIPT);
-    update_label();
-    NextButton->deactivate();
-    PrevButton->deactivate();
-    CancelButton->activate();
-    CancelButton->label(gettext("Close"));
     sprintf(postin, "POSTIN-MSG");
     if (!stat(postin, &postin_info))
     {

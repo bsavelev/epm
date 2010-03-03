@@ -1128,11 +1128,11 @@ void update_control(int from) {
     InstallPercent->value(100.0);
 
     if (error) {
-      InstallPercent->label(gettext("Installation Failed!"));
+      InstallPercent->label(gettext("Installation failed"));
       CancelButton->label(gettext("Close"));
-      NextButton->deactivate();
+      NextButton->activate();
     } else {
-      InstallPercent->label(gettext("Installation Complete"));
+      InstallPercent->label(gettext("Installation complete"));
       NextButton->activate();
       sprintf(postin_script, POSTIN_I_SCRIPT);
       if (!stat(postin_script, &postin_info))
@@ -1147,6 +1147,10 @@ void update_control(int from) {
   }
 
   if (Wizard->value() == Pane[PANE_POSTIN]) {
+
+   if (error) {
+    PostinFile->value(gettext("<span>Installation failed. See install.log for details.</span>"));
+   } else {
     // Show the licenses for each of the selected software packages...
     char		postin[1024];		// postin message filename
     int res;
@@ -1173,7 +1177,7 @@ void update_control(int from) {
     {
       PostinFile->value(gettext("<span>Installation complete</span>"));
     }
-
+   }
   }
 
 // else cannot be here. we maybe increase Wizard->value in prev check

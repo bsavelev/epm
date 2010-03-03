@@ -2293,7 +2293,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fprintf(scriptfile, "if test -d %s; then\n", SoftwareDir);
   fprintf(scriptfile, "	rm -f %s/%s.remove\n", SoftwareDir, prodfull);
   fputs("else\n", scriptfile);
-  fprintf(scriptfile, "	mkdir %s\n", SoftwareDir);
+  fprintf(scriptfile, "	mkdir -p %s\n", SoftwareDir);
   fputs("fi\n", scriptfile);
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)

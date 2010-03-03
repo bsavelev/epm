@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-03-03 12:48+0300\n"
+"POT-Creation-Date: 2010-03-03 14:37+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,15 +80,15 @@ msgstr ""
 msgid "Selected Software:"
 msgstr ""
 
-#: setup.cxx:1975
+#: setup.cxx:1976
 msgid "Accept and install"
 msgstr ""
 
-#: setup.cxx:1981
+#: setup.cxx:1982
 msgid "Cancel installation"
 msgstr ""
 
-#: setup.cxx:1988
+#: setup.cxx:1989
 msgid "Select language:"
 msgstr ""
 
@@ -96,27 +96,27 @@ msgstr ""
 msgid "License Agreement"
 msgstr ""
 
-#: setup.cxx:2005 uninst.cxx:1881
+#: setup.cxx:2004 uninst.cxx:1881
 msgid "Progress Label..."
 msgstr ""
 
-#: setup.cxx:2012
+#: setup.cxx:2011
 msgid "Run interactive postinstall script"
 msgstr ""
 
-#: setup.cxx:2023
+#: setup.cxx:2022
 msgid "Postinstall information:"
 msgstr ""
 
-#: setup.cxx:2035 uninst.cxx:1899
+#: setup.cxx:2034 uninst.cxx:1899
 msgid "@-2< Back"
 msgstr ""
 
-#: setup.cxx:2038 uninst.cxx:1902
+#: setup.cxx:2037 uninst.cxx:1902
 msgid "Next @-2>"
 msgstr ""
 
-#: setup.cxx:2041 setup2.cxx:1033 setup2.cxx:1104 setup2.cxx:1183
+#: setup.cxx:2040 setup2.cxx:1035 setup2.cxx:1106 setup2.cxx:1185
 #: uninst.cxx:1905 uninst2.cxx:425
 msgid "Cancel"
 msgstr ""
@@ -186,99 +186,79 @@ msgstr ""
 msgid "Dr.Web for Linux Workstations"
 msgstr ""
 
-#: setup2.cxx:860
-#, c-format
-msgid " (%.1fMb disk space)"
-msgstr ""
-
-#: setup2.cxx:863
-#, c-format
-msgid " (%dKb disk space)"
-msgstr ""
-
-#: setup2.cxx:865
-#, c-format
-msgid " (+%.1fMb disk space)"
-msgstr ""
-
-#: setup2.cxx:868
-#, c-format
-msgid " (+%dKb disk space)"
-msgstr ""
-
-#: setup2.cxx:1073
+#: setup2.cxx:1075
 #, c-format
 msgid "License is not accepted!"
 msgstr ""
 
-#: setup2.cxx:1092
+#: setup2.cxx:1094
 msgid "Installation canceled!"
 msgstr ""
 
-#: setup2.cxx:1094 setup2.cxx:1130 setup2.cxx:1161 uninst2.cxx:439
+#: setup2.cxx:1096 setup2.cxx:1132 setup2.cxx:1163 uninst2.cxx:439
 msgid "Close"
 msgstr ""
 
-#: setup2.cxx:1114
+#: setup2.cxx:1116
 #, c-format
 msgid "Installing %s v%s..."
 msgstr ""
 
-#: setup2.cxx:1129
+#: setup2.cxx:1131
 msgid "Installation Failed!"
 msgstr ""
 
-#: setup2.cxx:1133
+#: setup2.cxx:1135
 msgid "Installation Complete"
 msgstr ""
 
-#: setup2.cxx:1172
+#: setup2.cxx:1174
 msgid "<span>Installation complete</span>"
 msgstr ""
 
-#: setup2.cxx:1324 uninst2.cxx:720
+#: setup2.cxx:1326 uninst2.cxx:720
 #, c-format
 msgid "%+.1fMb required, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1328 uninst2.cxx:724
+#: setup2.cxx:1330 uninst2.cxx:724
 #, c-format
 msgid "%+dk required, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1332 uninst2.cxx:728
+#: setup2.cxx:1334 uninst2.cxx:728
 #, c-format
 msgid ""
 "%+.1fMb required on /, %dMb available,\n"
 "%+.1fMb required on /usr, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1337 uninst2.cxx:733
+#: setup2.cxx:1339 uninst2.cxx:733
 #, c-format
 msgid ""
 "%+.1fMb required on /, %dMb available,\n"
 "%+dk required on /usr, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1342 uninst2.cxx:738
+#: setup2.cxx:1344 uninst2.cxx:738
 #, c-format
 msgid ""
 "%+dk required on /, %dMb available,\n"
 "%+.1fMb required on /usr, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1347 uninst2.cxx:743
+#: setup2.cxx:1349 uninst2.cxx:743
 #, c-format
 msgid ""
 "%+dk required on /, %dMb available,\n"
 "%+dk required on /usr, %dMb available."
 msgstr ""
 
-#: setup2.cxx:1392
+#: setup2.cxx:1394
 msgid "English"
 msgstr ""
 
-#: setup2.cxx:1399
+#: setup2.cxx:1401
 msgid "Russian"
 msgstr ""
 
@@ -341,48 +321,48 @@ msgstr ""
 msgid "No software found to remove!"
 msgstr ""
 
-#: uninst.sh.in:24
+#: uninst.sh.in:33
 #, sh-format
 msgid "This script will help you remove Dr.Web packages"
 msgstr ""
 
-#: uninst.sh.in:27
+#: uninst.sh.in:36
 #, sh-format
 msgid "Do you wish to continue? [Yes] "
 msgstr ""
 
-#: uninst.sh.in:40
+#: uninst.sh.in:49
 #, sh-format
 msgid "Sorry, you must be root to remove Dr.Web software."
 msgstr ""
 
-#: uninst.sh.in:82 dummy/epm.install.sh:131 dummy/epm.install.sh:148
+#: uninst.sh.in:91 dummy/epm.install.sh:131 dummy/epm.install.sh:148
 #: dummy/epm.remove.sh:125
 #, sh-format
 msgid "Please enter yes or no."
 msgstr ""
 
-#: uninst.sh.in:169
+#: uninst.sh.in:178
 #, sh-format
 msgid "Select the software you want to remove:"
 msgstr ""
 
-#: uninst.sh.in:185
+#: uninst.sh.in:194
 #, sh-format
 msgid "A list of packages marked for removal:"
 msgstr ""
 
-#: uninst.sh.in:190
+#: uninst.sh.in:199
 #, sh-format
 msgid "Are you sure you want to remove the selected packages? [Yes] "
 msgstr ""
 
-#: uninst.sh.in:197 uninst.sh.in:205
+#: uninst.sh.in:206 uninst.sh.in:214
 #, sh-format
 msgid "Nothing to remove. Exiting..."
 msgstr ""
 
-#: uninst.sh.in:211
+#: uninst.sh.in:220
 #, sh-format
 msgid ""
 "To select a package you want to remove or deselect some previously\n"
@@ -395,12 +375,12 @@ msgid ""
 "All values are case insensitive.\\n"
 msgstr ""
 
-#: uninst.sh.in:218
+#: uninst.sh.in:227
 #, sh-format
 msgid "Select: "
 msgstr ""
 
-#: uninst.sh.in:248
+#: uninst.sh.in:257
 #, sh-format
 msgid "Software dir -- '%s' not found."
 msgstr ""

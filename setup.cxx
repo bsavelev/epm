@@ -2040,6 +2040,7 @@ Fl_Double_Window* make_window() {
     { CancelButton = new Fl_Button(562, 295, 83, 25, gettext("Cancel"));
       CancelButton->callback((Fl_Callback*)cb_CancelButton);
     } // Fl_Button* CancelButton
+    SetupWindow->size_range(680, 330);
     SetupWindow->end();
     SetupWindow->resizable(SetupWindow);
   } // Fl_Double_Window* SetupWindow

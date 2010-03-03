@@ -10,10 +10,10 @@ Function {make_window()} {open
   Fl_Window UninstallWindow {
     label Uninstall
     callback {if (CancelButton->active())
-  exit(0);} open
+  exit(0);} open selected
     xywh {19 296 640 310} type Double resizable
     code0 {\#include "gui-common.h"}
-    code1 {\#include "uninst2.h"} visible
+    code1 {\#include "uninst2.h"} size_range {640 310 0 0} visible
   } {
     Fl_Box {Title[0]} {
       label Welcome
@@ -54,7 +54,7 @@ Function {make_window()} {open
           xywh {170 83 440 127} type Multi box DOWN_BOX selection_color 7 labelfont 1 align 5 when 3 resizable
         }
         Fl_Box SoftwareSize {
-          label {0k marked for removal.} selected
+          label {0k marked for removal.}
           xywh {170 205 420 30} align 212
         }
         Fl_Button RemoveAllButton {

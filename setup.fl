@@ -10,10 +10,10 @@ Function {make_window()} {open
   Fl_Window SetupWindow {
     label Install
     callback {if (CancelButton->active())
-  exit(0);} open
+  exit(0);} open selected
     xywh {37 297 680 330} type Double resizable
     code0 {\#include "gui-common.h"}
-    code1 {\#include "setup2.h"} visible
+    code1 {\#include "setup2.h"} size_range {680 330 0 0} visible
   } {
     Fl_Box {Title[0]} {
       label Welcome
@@ -49,7 +49,7 @@ Function {make_window()} {open
       Fl_Group {Pane[0]} {open
         xywh {145 10 520 275} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
-        Fl_Help_View ReadmeFile {selected
+        Fl_Help_View ReadmeFile {
           xywh {150 30 515 235}
         }
       }

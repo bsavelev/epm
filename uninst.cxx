@@ -1905,6 +1905,7 @@ Fl_Double_Window* make_window() {
     { CancelButton = new Fl_Button(554, 275, 80, 25, gettext("Cancel"));
       CancelButton->callback((Fl_Callback*)cb_CancelButton);
     } // Fl_Button* CancelButton
+    UninstallWindow->size_range(640, 310);
     UninstallWindow->end();
   } // Fl_Double_Window* UninstallWindow
   return UninstallWindow;

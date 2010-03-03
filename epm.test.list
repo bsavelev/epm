@@ -53,6 +53,22 @@ i 0555 root sys epm epm
 c 0555 root sys ${bindir}/epminstall epminstall
 f 0555 root sys ${bindir}/mkepmlist mkepmlist
 
+%preinstall << EOF
+echo pre
+EOF
+
+%postinstall << EOF
+echo post
+EOF
+
+%preremove << EOF
+echo prerm
+EOF
+
+%postremove << EOF
+echo postrm
+EOF
+
 # Documentation
 %subpackage documentation
 %description Documentation

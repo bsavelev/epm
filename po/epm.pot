@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-03-03 14:37+0300\n"
+"POT-Creation-Date: 2010-03-03 15:05+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -321,48 +321,48 @@ msgstr ""
 msgid "No software found to remove!"
 msgstr ""
 
-#: uninst.sh.in:33
+#: uninst.sh.in:32
 #, sh-format
 msgid "This script will help you remove Dr.Web packages"
 msgstr ""
 
-#: uninst.sh.in:36
+#: uninst.sh.in:35
 #, sh-format
 msgid "Do you wish to continue? [Yes] "
 msgstr ""
 
-#: uninst.sh.in:49
+#: uninst.sh.in:48
 #, sh-format
 msgid "Sorry, you must be root to remove Dr.Web software."
 msgstr ""
 
-#: uninst.sh.in:91 dummy/epm.install.sh:131 dummy/epm.install.sh:148
+#: uninst.sh.in:90 dummy/epm.install.sh:131 dummy/epm.install.sh:148
 #: dummy/epm.remove.sh:125
 #, sh-format
 msgid "Please enter yes or no."
 msgstr ""
 
-#: uninst.sh.in:178
+#: uninst.sh.in:177
 #, sh-format
 msgid "Select the software you want to remove:"
 msgstr ""
 
-#: uninst.sh.in:194
+#: uninst.sh.in:193
 #, sh-format
 msgid "A list of packages marked for removal:"
 msgstr ""
 
-#: uninst.sh.in:199
+#: uninst.sh.in:198
 #, sh-format
 msgid "Are you sure you want to remove the selected packages? [Yes] "
 msgstr ""
 
-#: uninst.sh.in:206 uninst.sh.in:214
+#: uninst.sh.in:205 uninst.sh.in:213
 #, sh-format
 msgid "Nothing to remove. Exiting..."
 msgstr ""
 
-#: uninst.sh.in:220
+#: uninst.sh.in:219
 #, sh-format
 msgid ""
 "To select a package you want to remove or deselect some previously\n"
@@ -375,12 +375,12 @@ msgid ""
 "All values are case insensitive.\\n"
 msgstr ""
 
-#: uninst.sh.in:227
+#: uninst.sh.in:226
 #, sh-format
 msgid "Select: "
 msgstr ""
 
-#: uninst.sh.in:257
+#: uninst.sh.in:256
 #, sh-format
 msgid "Software dir -- '%s' not found."
 msgstr ""
@@ -470,56 +470,66 @@ msgstr ""
 
 #: dummy/epm.install.sh:249
 #, sh-format
+msgid "Running pre-install commands..."
+msgstr ""
+
+#: dummy/epm.install.sh:251
+#, sh-format
 msgid "Backing up old versions of files to be installed..."
 msgstr ""
 
-#: dummy/epm.install.sh:255 dummy/epm.install.sh:270 dummy/epm.remove.sh:186
-#: dummy/epm.remove.sh:191
+#: dummy/epm.install.sh:257 dummy/epm.install.sh:272 dummy/epm.remove.sh:188
+#: dummy/epm.remove.sh:193
 #, sh-format
 msgid "Error: Cannot write in %s."
 msgstr ""
 
-#: dummy/epm.install.sh:265
+#: dummy/epm.install.sh:267
 #, sh-format
 msgid "Creating installation directories..."
 msgstr ""
 
-#: dummy/epm.install.sh:275
+#: dummy/epm.install.sh:277
 #, sh-format
 msgid "Error: %s already exists as a regular file!"
 msgstr ""
 
-#: dummy/epm.install.sh:289
+#: dummy/epm.install.sh:291
 #, sh-format
 msgid "Installing software..."
 msgstr ""
 
-#: dummy/epm.install.sh:293 dummy/epm.remove.sh:195
+#: dummy/epm.install.sh:295 dummy/epm.remove.sh:197
 #, sh-format
 msgid "Checking configuration files..."
 msgstr ""
 
-#: dummy/epm.install.sh:300
+#: dummy/epm.install.sh:302
 #, sh-format
 msgid "Error: %%s already exists as a regular file!"
 msgstr ""
 
-#: dummy/epm.install.sh:307
+#: dummy/epm.install.sh:309
 #, sh-format
 msgid "Updating file permissions..."
 msgstr ""
 
-#: dummy/epm.install.sh:314
+#: dummy/epm.install.sh:316
 #, sh-format
 msgid "Setting up init scripts..."
 msgstr ""
 
-#: dummy/epm.install.sh:328 dummy/epm.remove.sh:146
+#: dummy/epm.install.sh:330 dummy/epm.remove.sh:148
 #, sh-format
 msgid "Unable to determine location of init scripts!"
 msgstr ""
 
-#: dummy/epm.install.sh:368
+#: dummy/epm.install.sh:369
+#, sh-format
+msgid "Running post-install commands..."
+msgstr ""
+
+#: dummy/epm.install.sh:372
 #, sh-format
 msgid "Installation %s is complete."
 msgstr ""
@@ -546,20 +556,30 @@ msgstr ""
 
 #: dummy/epm.remove.sh:133
 #, sh-format
+msgid "Running pre-remove commands..."
+msgstr ""
+
+#: dummy/epm.remove.sh:135
+#, sh-format
 msgid "Cleaning up init scripts..."
 msgstr ""
 
-#: dummy/epm.remove.sh:178
+#: dummy/epm.remove.sh:180
 #, sh-format
 msgid "Removing/restoring installed files..."
 msgstr ""
 
-#: dummy/epm.remove.sh:208
+#: dummy/epm.remove.sh:210
 #, sh-format
 msgid "Removing empty installation directories..."
 msgstr ""
 
 #: dummy/epm.remove.sh:218
+#, sh-format
+msgid "Running post-remove commands..."
+msgstr ""
+
+#: dummy/epm.remove.sh:222
 #, sh-format
 msgid "Removal %s is complete."
 msgstr ""

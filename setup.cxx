@@ -1860,7 +1860,7 @@ Fl_Double_Window* make_window() {
         Pane[0]->labelcolor((Fl_Color)4);
         Pane[0]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         Pane[0]->hide();
-        { ReadmeFile = new Fl_Help_View(145, 30, 520, 235);
+        { ReadmeFile = new Fl_Help_View(150, 30, 515, 235);
         } // Fl_Help_View* ReadmeFile
         Pane[0]->end();
       } // Fl_Group* Pane[0]
@@ -1967,7 +1967,7 @@ Fl_Double_Window* make_window() {
         Pane[4]->labelsize(18);
         Pane[4]->labelcolor((Fl_Color)4);
         Pane[4]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
-        { LicenseFile = new Fl_Help_View(145, 66, 520, 178);
+        { LicenseFile = new Fl_Help_View(150, 66, 515, 178);
           LicenseFile->labelfont(1);
           LicenseFile->align(133);
           Fl_Group::current()->resizable(LicenseFile);
@@ -2019,7 +2019,7 @@ Fl_Double_Window* make_window() {
         Pane[6]->labelcolor((Fl_Color)4);
         Pane[6]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         Pane[6]->hide();
-        { PostinFile = new Fl_Help_View(145, 48, 520, 194, gettext("Postinstall information:"));
+        { PostinFile = new Fl_Help_View(150, 48, 510, 194, gettext("Postinstall information:"));
           PostinFile->align(133);
           Fl_Group::current()->resizable(PostinFile);
         } // Fl_Help_View* PostinFile

@@ -2329,7 +2329,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	qprintf(scriptfile, "\t\tmkdir %s/possessed\n", SoftwareDir);
 	fputs("\tfi\n", scriptfile);
 	qprintf(scriptfile, "\tif [ ! -d %s/possessed%s ] ; then\n", SoftwareDir, file->dst);
-	qprintf(scriptfile, "\t\tmkdir %s/possessed%s\n", SoftwareDir, file->dst);
+	qprintf(scriptfile, "\t\tmkdir -p %s/possessed%s\n", SoftwareDir, file->dst);
 	fputs("\tfi\n", scriptfile);
 	qprintf(scriptfile, "	echo \"Placeholder. Do not remove.\" > %s/possessed%s/%s.placeholder\n", SoftwareDir, file->dst, prodfull);
 	fputs("fi\n", scriptfile);

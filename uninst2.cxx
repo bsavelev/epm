@@ -711,7 +711,7 @@ update_sizes(void)
                     1024.0 / 1024.0 + 0.5);
 
   // Display the results to the user...
-  if (rootfree == usrfree)
+/*  if (rootfree == usrfree)
   {
     rootsize += usrsize;
 
@@ -743,7 +743,8 @@ update_sizes(void)
              gettext("%+dk required on /, %dMb available,\n"
              "%+dk required on /usr, %dMb available."),
              rootsize, rootfree, usrsize, usrfree);
-
+*/
+  snprintf(sizelabel, sizeof(sizelabel), "");
   SoftwareSize->label(sizelabel);
   SoftwareSize->redraw();
 }

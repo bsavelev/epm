@@ -93,7 +93,7 @@ showyesno() {
 }
 
 initCustom(){
-list=`ls *.remove 2>/dev/null`
+list=`ls *.remove 2>/dev/null | sort 2>/dev/null`
 selectedCustom=""
 packageListLoop=true
 }

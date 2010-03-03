@@ -76,7 +76,7 @@ msgstr "Выбранные компоненты:"
 
 #: setup.cxx:1975
 msgid "Accept and install"
-msgstr "Принять соглашение и установить "
+msgstr "Принять лицензионное соглашение и установить программу"
 
 #: setup.cxx:1981
 msgid "Cancel installation"
@@ -187,7 +187,7 @@ msgstr "Выборочная установка"
 
 #: setup2.cxx:798
 msgid "Dr.Web for Linux Workstations"
-msgstr "Антивирус Др.Веб для рабочих станций Linux"
+msgstr "Антивирус Dr.Web для рабочих станций Linux"
 
 #: setup2.cxx:860
 #, c-format
@@ -225,7 +225,7 @@ msgstr "Закрыть"
 #: setup2.cxx:1114
 #, c-format
 msgid "Installing %s v%s..."
-msgstr "Устанавливаются %s v%s..."
+msgstr "Устанавливается %s v%s..."
 
 #: setup2.cxx:1129
 msgid "Installation Failed!"

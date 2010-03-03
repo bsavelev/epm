@@ -254,7 +254,7 @@ SOFTWAREDIR="@EPM_SOFTWARE@"
 if [ -d "$SOFTWAREDIR" ] ; then
     cd "$SOFTWAREDIR"
 else
-    printf "`eval_gettext \"Software dir -- '%s' not found.\"`" "$SOFTWAREDIR"
+    printf "`eval_gettext \"Software dir -- '%s' not found.\"`\n" "$SOFTWAREDIR"
     exit 1
 fi
 envInit

@@ -11,7 +11,7 @@ Function {make_window()} {open
     label Install
     callback {if (CancelButton->active())
   exit(0);} open
-    xywh {21 317 680 330} type Double resizable
+    xywh {99 296 680 330} type Double resizable
     code0 {\#include "gui-common.h"}
     code1 {\#include "setup2.h"} visible
   } {
@@ -142,7 +142,7 @@ list_cb(0,0);}
         xywh {145 10 780 285} labelfont 1 labelsize 18 labelcolor 4 align 21
       } {
         Fl_Help_View LicenseFile {
-          xywh {145 66 520 178} labelfont 1 align 133 resizable
+          xywh {145 66 520 178} labelfont 1 align 133
         }
         Fl_Group {} {open
           xywh {145 240 780 55}
@@ -159,13 +159,13 @@ list_cb(0,0);}
           }
         }
         Fl_Choice Language {
-          label {View in:}
-          callback change_lang open
-          xywh {210 40 115 20} down_box BORDER_BOX
+          label {Select language:}
+          callback change_lang open selected
+          xywh {270 40 150 20} down_box BORDER_BOX resizable
         } {}
         Fl_Box {} {
-          label {License Agreement} selected
-          xywh {150 19 145 22} align 20
+          label {License Agreement}
+          xywh {150 17 265 22} labelfont 1 align 20
         }
       }
       Fl_Group {Pane[5]} {open

@@ -32,7 +32,7 @@ echo ""
 echo "`eval_gettext \"This script will help you remove Dr.Web packages\"`"
 echo ""
 while true ; do
-    printf "`eval_gettext \"Do you wish to continue? [Yes] \"`"
+    printf "`eval_gettext \"Do you wish to continue? (YES/no) \"`"
     showyesno
 done
 }
@@ -195,7 +195,7 @@ if [ -n "$selectedCustom" ] ; then
 	printf "\t%s\n" "`basename "$f" .remove`"
     done
     while true ; do
-	printf "`eval_gettext \"Are you sure you want to remove the selected packages? [Yes] \"`"
+	printf "`eval_gettext \"Are you sure you want to remove the selected packages? (YES/no) \"`"
 	showyesno
     done
     for comp in $selectedCustom ; do

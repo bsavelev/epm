@@ -2169,7 +2169,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
           dist->version);
   fputs("	echo \"\"\n", scriptfile);
   fputs("	while true ; do\n", scriptfile);
-  fputs("		printf \"`eval_gettext \\\"Do you wish to continue? [Yes]\\\"`\"\n", scriptfile);
+  fputs("		printf \"`eval_gettext \\\"Do you wish to continue? (YES/no)\\\"`\"\n", scriptfile);
   fputs("		read yesno\n", scriptfile);
   fputs("		case \"$yesno\" in\n", scriptfile);
   fputs("			y | yes | Y | Yes | YES | \"\")\n", scriptfile);
@@ -2194,7 +2194,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     }
     fputs("	echo \"\"\n", scriptfile);
     fputs("	while test $USER_MUST_AGREE; do\n", scriptfile);
-    fputs("		printf \"`eval_gettext \\\"Do you agree with the terms of this license?\\\"`\"\n", scriptfile);
+    fputs("		printf \"`eval_gettext \\\"Do you agree with the terms of this license? (yes/no)\\\"`\"\n", scriptfile);
     fputs("		read yesno\n", scriptfile);
     fputs("		case \"$yesno\" in\n", scriptfile);
     fputs("			y | yes | Y | Yes | YES)\n", scriptfile);
@@ -3010,7 +3010,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
            dist->version);
   fputs("	echo \"\"\n", scriptfile);
   fputs("	while true ; do\n", scriptfile);
-  fputs("		printf \"`eval_gettext \\\"Do you wish to continue? [Yes]\\\"`\"\n", scriptfile);
+  fputs("		printf \"`eval_gettext \\\"Do you wish to continue? (YES/no)\\\"`\"\n", scriptfile);
   fputs("		read yesno\n", scriptfile);
   fputs("		case \"$yesno\" in\n", scriptfile);
   fputs("			y | yes | Y | Yes | YES | \"\")\n", scriptfile);

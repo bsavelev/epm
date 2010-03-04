@@ -2212,8 +2212,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   fputs("  fi\n", scriptfile);
   fputs("fi\n", scriptfile);
-  fprintf(scriptfile, "if test -x %s/%s.remove -a x$DEPEND_RUN = xno -a x$FORCE_INSTALL = xno; then\n", SoftwareDir, prodfull);
-  fprintf(scriptfile, "\tif [ \"`grep \"#%%fullversion\" %s/%s.remove | head -n1 | awk \'{print $2}\'`\" = \"$PACKAGE_VERSION\" ] ; then\n", SoftwareDir, prodfull);
+  fprintf(scriptfile, "if test -x %s/%s.remove -a x$DEPEND_RUN = xno ; then\n", SoftwareDir, prodfull);
+  fprintf(scriptfile, "\tif [ \"`grep \"#%%fullversion\" %s/%s.remove | head -n1 | awk \'{print $2}\'`\" = \"$PACKAGE_VERSION\" -a x$FORCE_INSTALL = xno ] ; then\n", SoftwareDir, prodfull);
   fprintf(scriptfile,"\t\tprintf \"`eval_gettext \\\"Package %%s is up-to-date.\\\"`\\n\" \"%s\"\n",prodfull);
   fputs("\t\texit 0\n",scriptfile);
   fputs("\telse\n",scriptfile);

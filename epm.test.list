@@ -44,8 +44,10 @@ $srcdir=.
 %description Universal software packaging tool for UNIX.
 %version 5.0.2
 %requires drweb-common 5.0.2
+%requires drweb-libs 5.0.2 5.0.2
+%requires drweb-libs32 5.0.2
+
 %release 1~linux
-%requires drweb-libs
 # Executables
 %system all
 f 0555 root sys ${bindir}/epm epm

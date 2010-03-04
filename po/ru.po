@@ -536,7 +536,7 @@ msgstr "Устанавливается компонент..."
 #: dummy/epm.install.sh:324 dummy/epm.remove.sh:198
 #, sh-format
 msgid "Checking configuration files..."
-msgstr "Проверяются конфигурационных файлов..."
+msgstr "Проверяются конфигурационные файлы..."
 
 #: dummy/epm.install.sh:331
 #, sh-format

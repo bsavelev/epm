@@ -1176,7 +1176,7 @@ void update_control(int from) {
     }
     else
     {
-      PostinFile->value(gettext("<span>Installation complete</span>"));
+      PostinFile->value(gettext("<span>Installation complete.</span>"));
     }
    }
   }

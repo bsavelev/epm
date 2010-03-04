@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 4.2\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-03-03 17:03+0300\n"
+"POT-Creation-Date: 2010-03-04 11:42+0300\n"
 "PO-Revision-Date: 2010-02-10 15:39+0300\n"
 "Last-Translator: Natalia Zdanova <n.zdanova@drweb.com>\n"
 "Language-Team: Natalia Zdanova <n.zdanova@drweb.com>\n"
@@ -222,8 +222,8 @@ msgstr ""
 "получения более подробной информации о возникшей ошибке.</span>"
 
 #: setup2.cxx:1179
-msgid "<span>Installation complete</span>"
-msgstr "<span>Установка завершена</span>"
+msgid "<span>Installation complete.</span>"
+msgstr "<span>Установка успешно завершена.</span>"
 
 #: setup2.cxx:1331
 #, c-format
@@ -480,88 +480,88 @@ msgstr "В системе установлена самая последняя �
 msgid "Removing old versions of %s software..."
 msgstr "Удаление старой версии компонента %s..."
 
-#: dummy/epm.install.sh:208 dummy/epm.install.sh:226
+#: dummy/epm.install.sh:208 dummy/epm.install.sh:237 dummy/epm.install.sh:255
 #, sh-format
 msgid "Installing required %s software..."
 msgstr "Установка требуемого компонента %s..."
 
-#: dummy/epm.install.sh:215
+#: dummy/epm.install.sh:215 dummy/epm.install.sh:244
 #, sh-format
 msgid "Sorry, you must first install '%s' version %s!"
 msgstr "Вы должны сперва установить версию '%s' компонента %s!"
 
-#: dummy/epm.install.sh:233
+#: dummy/epm.install.sh:262
 #, sh-format
 msgid "Sorry, you must first install '%s'!"
 msgstr "Вы должны сперва установить '%s'!"
 
-#: dummy/epm.install.sh:241
+#: dummy/epm.install.sh:270
 #, sh-format
 msgid "Dependency check failed! Full list of unmet dependencies:"
 msgstr "В ходе проверки зависимостей не были найдены следующие зависимости:"
 
-#: dummy/epm.install.sh:249
+#: dummy/epm.install.sh:278
 #, sh-format
 msgid "Running pre-install commands..."
 msgstr "Подготовка к установке..."
 
-#: dummy/epm.install.sh:251
+#: dummy/epm.install.sh:280
 #, sh-format
 msgid "Backing up old versions of files to be installed..."
 msgstr "Осуществляется резервное копирование старых версий файлов..."
 
-#: dummy/epm.install.sh:257 dummy/epm.install.sh:272 dummy/epm.remove.sh:188
-#: dummy/epm.remove.sh:193
+#: dummy/epm.install.sh:286 dummy/epm.install.sh:301 dummy/epm.remove.sh:189
+#: dummy/epm.remove.sh:194
 #, sh-format
 msgid "Error: Cannot write in %s."
 msgstr "Ошибка: невозможно осуществить запись файлов в директорию %s."
 
-#: dummy/epm.install.sh:267
+#: dummy/epm.install.sh:296
 #, sh-format
 msgid "Creating installation directories..."
 msgstr "Создаются установочные директории..."
 
-#: dummy/epm.install.sh:277
+#: dummy/epm.install.sh:306
 #, sh-format
 msgid "Error: %s already exists as a regular file!"
 msgstr "Ошибка: %s уже используется как имя существующего файла!"
 
-#: dummy/epm.install.sh:291
+#: dummy/epm.install.sh:320
 #, sh-format
 msgid "Installing software..."
 msgstr "Устанавливается компонент..."
 
-#: dummy/epm.install.sh:295 dummy/epm.remove.sh:197
+#: dummy/epm.install.sh:324 dummy/epm.remove.sh:198
 #, sh-format
 msgid "Checking configuration files..."
 msgstr "Проверяются конфигурационных файлов..."
 
-#: dummy/epm.install.sh:302
+#: dummy/epm.install.sh:331
 #, sh-format
 msgid "Error: %%s already exists as a regular file!"
 msgstr "Ошибка: %%s уже используется как имя существующего файла!"
 
-#: dummy/epm.install.sh:309
+#: dummy/epm.install.sh:338
 #, sh-format
 msgid "Updating file permissions..."
 msgstr "Обновляются права доступа к файлам..."
 
-#: dummy/epm.install.sh:316
+#: dummy/epm.install.sh:345
 #, sh-format
 msgid "Setting up init scripts..."
 msgstr "Запускается инициализационный скрипт..."
 
-#: dummy/epm.install.sh:330 dummy/epm.remove.sh:148
+#: dummy/epm.install.sh:359 dummy/epm.remove.sh:149
 #, sh-format
 msgid "Unable to determine location of init scripts!"
 msgstr "Невозможно определить местонахождение инициализационных скриптов!"
 
-#: dummy/epm.install.sh:369
+#: dummy/epm.install.sh:398
 #, sh-format
 msgid "Running post-install commands..."
 msgstr "Завершение установки..."
 
-#: dummy/epm.install.sh:372
+#: dummy/epm.install.sh:401
 #, sh-format
 msgid "Installation %s is complete."
 msgstr "Установка %s завершена."
@@ -586,32 +586,32 @@ msgstr "Данный скрипт удалит %s"
 msgid "software version %s from your system."
 msgstr "версии %s с вашего компьютера."
 
-#: dummy/epm.remove.sh:133
+#: dummy/epm.remove.sh:134
 #, sh-format
 msgid "Running pre-remove commands..."
 msgstr "Подготовка к удалению..."
 
-#: dummy/epm.remove.sh:135
+#: dummy/epm.remove.sh:136
 #, sh-format
 msgid "Cleaning up init scripts..."
 msgstr "Очищается автозагрузка и удаляются установочные скрипты..."
 
-#: dummy/epm.remove.sh:180
+#: dummy/epm.remove.sh:181
 #, sh-format
 msgid "Removing/restoring installed files..."
 msgstr "Удаляются/восстанавливаются установленные файлы..."
 
-#: dummy/epm.remove.sh:210
+#: dummy/epm.remove.sh:211
 #, sh-format
 msgid "Removing empty installation directories..."
 msgstr "Удаляются пустые установочные директории..."
 
-#: dummy/epm.remove.sh:218
+#: dummy/epm.remove.sh:219
 #, sh-format
 msgid "Running post-remove commands..."
 msgstr "Завершение удаления..."
 
-#: dummy/epm.remove.sh:222
+#: dummy/epm.remove.sh:223
 #, sh-format
 msgid "Removal %s is complete."
 msgstr "Удаление %s завершено."

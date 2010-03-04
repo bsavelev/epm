@@ -3,8 +3,8 @@
 if test "`dirname "$0"`" != "."; then
 	cd "`dirname "$0"`"
 fi
-if [ -d ./locale ] ; then
-	TEXTDOMAINDIR=./locale
+if [ -d `pwd`/locale ] ; then
+	TEXTDOMAINDIR=`pwd`/locale
 else
 	TEXTDOMAINDIR="@datarootdir@/locale"
 fi

@@ -43,7 +43,7 @@ Function {make_window()} {open
       label Finish
       xywh {5 160 130 25} labelfont 1 align 20 deactivate
     }
-    Fl_Wizard Wizard {open selected
+    Fl_Wizard Wizard {open
       xywh {150 10 538 285} box THIN_DOWN_BOX color 48
     } {
       Fl_Group {Pane[0]} {open
@@ -150,12 +150,12 @@ list_cb(0,0);}
           Fl_Round_Button LicenseAccept {
             label {Accept and install}
             callback {NextButton->activate();}
-            xywh {166 244 505 25} type Radio down_box ROUND_DOWN_BOX align 148
+            xywh {166 245 505 25} type Radio down_box ROUND_DOWN_BOX align 148
           }
           Fl_Round_Button LicenseDecline {
             label {Cancel installation}
-            callback {NextButton->activate();}
-            xywh {165 269 505 25} type Radio down_box ROUND_DOWN_BOX
+            callback {NextButton->activate();} selected
+            xywh {166 269 505 25} type Radio down_box ROUND_DOWN_BOX
           }
         }
         Fl_Choice Language {

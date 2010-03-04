@@ -1973,13 +1973,13 @@ Fl_Double_Window* make_window() {
           Fl_Group::current()->resizable(LicenseFile);
         } // Fl_Help_View* LicenseFile
         { Fl_Group* o = new Fl_Group(155, 240, 525, 55);
-          { LicenseAccept = new Fl_Round_Button(166, 244, 505, 25, gettext("Accept and install"));
+          { LicenseAccept = new Fl_Round_Button(166, 245, 505, 25, gettext("Accept and install"));
             LicenseAccept->type(102);
             LicenseAccept->down_box(FL_ROUND_DOWN_BOX);
             LicenseAccept->callback((Fl_Callback*)cb_LicenseAccept);
             LicenseAccept->align(132|FL_ALIGN_INSIDE);
           } // Fl_Round_Button* LicenseAccept
-          { LicenseDecline = new Fl_Round_Button(165, 269, 505, 25, gettext("Cancel installation"));
+          { LicenseDecline = new Fl_Round_Button(166, 269, 505, 25, gettext("Cancel installation"));
             LicenseDecline->type(102);
             LicenseDecline->down_box(FL_ROUND_DOWN_BOX);
             LicenseDecline->callback((Fl_Callback*)cb_LicenseDecline);

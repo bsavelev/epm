@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 4.2\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-03-03 16:19+0300\n"
+"POT-Creation-Date: 2010-03-03 17:03+0300\n"
 "PO-Revision-Date: 2010-02-10 15:39+0300\n"
 "Last-Translator: Natalia Zdanova <n.zdanova@drweb.com>\n"
 "Language-Team: Natalia Zdanova <n.zdanova@drweb.com>\n"
@@ -110,45 +110,45 @@ msgstr "@-2< Назад"
 msgid "Next @-2>"
 msgstr "Вперед @-2>"
 
-#: setup.cxx:2040 setup2.cxx:1035 setup2.cxx:1106 setup2.cxx:1189
+#: setup.cxx:2040 setup2.cxx:1036 setup2.cxx:1107 setup2.cxx:1190
 #: uninst.cxx:1905 uninst2.cxx:425
 msgid "Cancel"
 msgstr "Отменить"
 
-#: setup2.cxx:235
+#: setup2.cxx:236
 msgid "You must be logged in as root to run setup!"
 msgstr ""
 "Вы должны иметь привилегии администратора для запуска процесса установки!"
 
-#: setup2.cxx:405
+#: setup2.cxx:406
 msgid "No software found to install!"
 msgstr "Не обнаружено компонентов для установки!"
 
-#: setup2.cxx:419
+#: setup2.cxx:420
 msgid " (new)"
 msgstr "(новый)"
 
-#: setup2.cxx:424
+#: setup2.cxx:425
 msgid " (downgrade)"
 msgstr " (downgrade)"
 
-#: setup2.cxx:429
+#: setup2.cxx:430
 msgid " (installed)"
 msgstr " (установлен)"
 
-#: setup2.cxx:434
+#: setup2.cxx:435
 msgid " (upgrade)"
 msgstr " (upgrade)"
 
-#: setup2.cxx:481
+#: setup2.cxx:482
 msgid "Failed to execute install script!"
 msgstr "Не удалось запустить установочный скрипт!"
 
-#: setup2.cxx:514
+#: setup2.cxx:515
 msgid "Unable to install"
 msgstr "Невозможно установить"
 
-#: setup2.cxx:630
+#: setup2.cxx:631
 #, c-format
 msgid ""
 "%s requires %s to be installed, but it is not available for installation."
@@ -156,7 +156,7 @@ msgstr ""
 "Для установки %s должен быть предварительно установлен %s, однако он "
 "недоступен для установки."
 
-#: setup2.cxx:643
+#: setup2.cxx:644
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please remove it before installing this software."
@@ -164,7 +164,7 @@ msgstr ""
 "%s несовместим с %s. Пожалуйста, удалите его перед установкой данного "
 "компонента."
 
-#: setup2.cxx:660
+#: setup2.cxx:661
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please deselect it before installing this "
@@ -173,7 +173,7 @@ msgstr ""
 "%s несовместим с %s. Пожалуйста, снимите соответствующее выделение перед "
 "установкой данного компонента."
 
-#: setup2.cxx:724
+#: setup2.cxx:725
 msgid ""
 "This program allows you to install the following software:\n"
 "<ul>\n"
@@ -181,61 +181,61 @@ msgstr ""
 "Данная программа позволит вам установить следующие компоненты:\n"
 "<ul>\n"
 
-#: setup2.cxx:796
+#: setup2.cxx:797
 msgid "Custom Configuration"
 msgstr "Выборочная установка"
 
-#: setup2.cxx:798
+#: setup2.cxx:799
 msgid "Dr.Web for Linux Workstations"
 msgstr "Антивирус Dr.Web для рабочих станций Linux"
 
-#: setup2.cxx:1075
+#: setup2.cxx:1076
 #, c-format
 msgid "License is not accepted!"
 msgstr "Условия Лицензионного соглашения не приняты!"
 
-#: setup2.cxx:1094
+#: setup2.cxx:1095
 msgid "Installation canceled!"
 msgstr "Установка прекращена!"
 
-#: setup2.cxx:1096 setup2.cxx:1132 setup2.cxx:1167 uninst2.cxx:439
+#: setup2.cxx:1097 setup2.cxx:1133 setup2.cxx:1155 uninst2.cxx:439
 msgid "Close"
 msgstr "Закрыть"
 
-#: setup2.cxx:1116
+#: setup2.cxx:1117
 #, c-format
 msgid "Installing %s v%s..."
 msgstr "Устанавливается %s v%s..."
 
-#: setup2.cxx:1131
+#: setup2.cxx:1132
 msgid "Installation failed"
 msgstr "Не удалось произвести установку!"
 
-#: setup2.cxx:1135
+#: setup2.cxx:1136
 msgid "Installation complete"
 msgstr "Установка завершена"
 
-#: setup2.cxx:1152
+#: setup2.cxx:1158
 msgid "<span>Installation failed. See install.log for details.</span>"
 msgstr ""
 "<span>Не удалось установить программу. Обратитесь к install.log для "
 "получения более подробной информации о возникшей ошибке.</span>"
 
-#: setup2.cxx:1178
+#: setup2.cxx:1179
 msgid "<span>Installation complete</span>"
 msgstr "<span>Установка завершена</span>"
 
-#: setup2.cxx:1330 uninst2.cxx:720
+#: setup2.cxx:1331
 #, c-format
 msgid "%+.1fMb required, %dMb available."
 msgstr "%+.1fMb требуется, %dMb доступно."
 
-#: setup2.cxx:1334 uninst2.cxx:724
+#: setup2.cxx:1335
 #, c-format
 msgid "%+dk required, %dMb available."
 msgstr "%+dk требуется, %dMb доступно."
 
-#: setup2.cxx:1338 uninst2.cxx:728
+#: setup2.cxx:1339
 #, c-format
 msgid ""
 "%+.1fMb required on /, %dMb available,\n"
@@ -244,7 +244,7 @@ msgstr ""
 "%+.1fMb требуется в /, %dMb доступно,\n"
 "%+.1fMb требуется в /usr, %dMb доступно."
 
-#: setup2.cxx:1343 uninst2.cxx:733
+#: setup2.cxx:1344
 #, c-format
 msgid ""
 "%+.1fMb required on /, %dMb available,\n"
@@ -253,7 +253,7 @@ msgstr ""
 "%+.1fMb требуется в /, %dMb доступно,\n"
 "%+dk требуется в /usr, %dMb доступно."
 
-#: setup2.cxx:1348 uninst2.cxx:738
+#: setup2.cxx:1349
 #, c-format
 msgid ""
 "%+dk required on /, %dMb available,\n"
@@ -262,7 +262,7 @@ msgstr ""
 "%+dk требуется в /, %dMb доступно,\n"
 "%+.1fMb rтребуется в /usr, %dMb доступно."
 
-#: setup2.cxx:1353 uninst2.cxx:743
+#: setup2.cxx:1354
 #, c-format
 msgid ""
 "%+dk required on /, %dMb available,\n"
@@ -271,11 +271,11 @@ msgstr ""
 "%+dk требуется в /, %dMb доступно,\n"
 "%+dk требуется в /usr, %dMb доступно."
 
-#: setup2.cxx:1398
+#: setup2.cxx:1399
 msgid "English"
 msgstr "Английский"
 
-#: setup2.cxx:1405
+#: setup2.cxx:1406
 msgid "Russian"
 msgstr "Русский"
 

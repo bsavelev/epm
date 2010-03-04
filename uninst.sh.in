@@ -221,7 +221,7 @@ selected package - enter the corresponding package number and press Enter.
 
 You may enter A or All to select all the packages, and N or None to deselect all of them.
 Enter R or Remove to remove selected packages.\nEnter 0, Q or Quit to quit the dialog.
-All values are case insensitive.\n\"`"
+All values are case insensitive.\"`\n"
     usersel=0
     read -p "`eval_gettext \"Select: \"`" usersel
     case "$usersel" in

@@ -1394,7 +1394,7 @@ write_depends(const char *prodname,	/* I - Product name */
 		fputs("	installed=0\n", fp);
 		fputs("fi\n", fp);
 		if (get_vernumber(d->version[0]) == get_vernumber(d->version[1]))
-		  fputs("if test $installed -eq $required_version ; then\n", fp);
+		  fputs("if test $installed -ne $required_version ; then\n", fp);
 		else
 		  fputs("if test $installed -lt $required_version ; then\n", fp);
         	fprintf(fp, "	if test -x %s.install; then\n",

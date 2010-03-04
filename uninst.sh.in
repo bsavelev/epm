@@ -81,9 +81,11 @@ showyesno() {
     read yesno
     case "$yesno" in
         y | yes | Y | Yes | YES | "")
+	    echo "yes"
             break
         ;;
         n | no | N | No | NO)
+	    echo "no"
             exit 1
         ;;
         *)

@@ -133,17 +133,7 @@ main(int  argc,			// I - Number of command-line arguments
   Fl::background(230, 230, 230);
   Fl::scheme("gtk+");
 
-  setlocale(LC_ALL, "");
-  char localedir[1024];
-  sprintf(localedir,"%slocale", findMypath(argv[0]));
-  if (!access(findMypath(argv[0]),0))
-    chdir(findMypath(argv[0]));
-  if (!access(localedir,0))
-    bindtextdomain ("epm", localedir);
-  else
-    bindtextdomain ("epm", LOCALEDIR);
-  textdomain("epm");
-  bind_textdomain_codeset("epm","UTF-8");
+  set_gettext(argv);
 
 #ifdef __APPLE__
   // OSX passes an extra command-line option when run from the Finder.

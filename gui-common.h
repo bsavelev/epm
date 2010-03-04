@@ -104,6 +104,7 @@ void		gui_get_installed(void);
 void		gui_load_file(Fl_Help_View *hv, const char *filename);
 int		gui_sort_dists(const gui_dist_t *d0, const gui_dist_t *d1);
 char*		findMypath(const char* argv);
+void		set_gettext(char *argv[]);
 
 
 //

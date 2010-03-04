@@ -378,6 +378,18 @@ char* findMypath(const char* argv)
 	return path;
 }
 
+void set_gettext(char *argv[]) {
+  struct stat localedir_info;
+  setlocale(LC_ALL, "");
+  char localedir[1024];
+  sprintf(localedir,"%slocale", findMypath(argv[0]));
+  if ((!access(localedir,0))&&(!stat(localedir,&localedir_info)))
+    bindtextdomain ("epm", localedir);
+  else
+    bindtextdomain ("epm", LOCALEDIR);
+  textdomain("epm");
+  bind_textdomain_codeset("epm","UTF-8");
+}
 
 //
 // End of "$Id: gui-common.cxx,v 1.2.2.2 2009/09/30 12:59:35 bsavelev Exp $".

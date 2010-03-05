@@ -138,7 +138,7 @@ msgstr " (установлен)"
 
 #: setup2.cxx:425
 msgid " (upgrade)"
-msgstr " (upgrade)"
+msgstr " (обновление)"
 
 #: setup2.cxx:472
 msgid "Failed to execute install script!"

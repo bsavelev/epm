@@ -1815,7 +1815,7 @@ static void cb_CancelButton(Fl_Button*, void*) {
 }
 
 Fl_Double_Window* make_window() {
-  { SetupWindow = new Fl_Double_Window(690, 325, gettext("Install"));
+  { SetupWindow = new Fl_Double_Window(690, 330, gettext("Install"));
     SetupWindow->callback((Fl_Callback*)cb_SetupWindow);
     { Title[0] = new Fl_Box(5, 10, 130, 25, gettext("Welcome"));
       Title[0]->labelfont(1);
@@ -1939,10 +1939,10 @@ Fl_Double_Window* make_window() {
         { SoftwareSize = new Fl_Box(175, 225, 485, 30, gettext("0k marked for installation."));
           SoftwareSize->align(196|FL_ALIGN_INSIDE);
         } // Fl_Box* SoftwareSize
-        { InstallAllButton = new Fl_Button(326, 260, 130, 35, gettext("Select all"));
+        { InstallAllButton = new Fl_Button(326, 260, 130, 25, gettext("Select all"));
           InstallAllButton->callback((Fl_Callback*)cb_InstallAllButton);
         } // Fl_Button* InstallAllButton
-        { InstallNoneButton = new Fl_Button(475, 260, 160, 35, gettext("Select none"));
+        { InstallNoneButton = new Fl_Button(485, 260, 160, 25, gettext("Select none"));
           InstallNoneButton->callback((Fl_Callback*)cb_InstallNoneButton);
         } // Fl_Button* InstallNoneButton
         Pane[2]->end();
@@ -2031,16 +2031,16 @@ Fl_Double_Window* make_window() {
       WelcomeImage->image(image_install);
       WelcomeImage->align(FL_ALIGN_BOTTOM_LEFT|FL_ALIGN_INSIDE);
     } // Fl_Box* WelcomeImage
-    { PrevButton = new Fl_Button(366, 295, 83, 25, gettext("@-2< Back"));
+    { PrevButton = new Fl_Button(366, 300, 83, 25, gettext("@-2< Back"));
       PrevButton->callback((Fl_Callback*)cb_PrevButton);
     } // Fl_Button* PrevButton
-    { NextButton = new Fl_Button(463, 295, 87, 25, gettext("Next @-2>"));
+    { NextButton = new Fl_Button(463, 300, 87, 25, gettext("Next @-2>"));
       NextButton->callback((Fl_Callback*)next_cb);
     } // Fl_Button* NextButton
-    { CancelButton = new Fl_Button(562, 295, 83, 25, gettext("Cancel"));
+    { CancelButton = new Fl_Button(562, 300, 83, 25, gettext("Cancel"));
       CancelButton->callback((Fl_Callback*)cb_CancelButton);
     } // Fl_Button* CancelButton
-    SetupWindow->size_range(690, 325);
+    SetupWindow->size_range(690, 330);
     SetupWindow->end();
     SetupWindow->resizable(SetupWindow);
   } // Fl_Double_Window* SetupWindow

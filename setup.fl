@@ -10,10 +10,10 @@ Function {make_window()} {open
   Fl_Window SetupWindow {
     label Install
     callback {if (CancelButton->active())
-  exit(0);} open
-    xywh {32 292 690 325} type Double resizable
+  exit(0);} open selected
+    xywh {32 292 690 330} type Double resizable
     code0 {\#include "gui-common.h"}
-    code1 {\#include "setup2.h"} size_range {690 325 0 0} visible
+    code1 {\#include "setup2.h"} size_range {690 330 0 0} visible
   } {
     Fl_Box {Title[0]} {
       label Welcome
@@ -117,13 +117,13 @@ Function {make_window()} {open
           label {Select all}
           callback {SoftwareList->check_all();
 list_cb(0,0);}
-          xywh {326 260 130 35}
+          xywh {326 260 130 25}
         }
         Fl_Button InstallNoneButton {
           label {Select none}
           callback {SoftwareList->check_none();
 list_cb(0,0);}
-          xywh {475 260 160 35}
+          xywh {485 260 160 25}
         }
       }
       Fl_Group {Pane[3]} {open
@@ -154,7 +154,7 @@ list_cb(0,0);}
           }
           Fl_Round_Button LicenseDecline {
             label {Cancel installation}
-            callback {NextButton->activate();} selected
+            callback {NextButton->activate();}
             xywh {166 269 505 25} type Radio down_box ROUND_DOWN_BOX
           }
         }
@@ -199,17 +199,17 @@ list_cb(0,0);}
       label {@-2< Back}
       callback {Wizard->prev();
 update_control(0);}
-      xywh {366 295 83 25}
+      xywh {366 300 83 25}
     }
     Fl_Button NextButton {
       label {Next @-2>}
       callback next_cb
-      xywh {463 295 87 25}
+      xywh {463 300 87 25}
     }
     Fl_Button CancelButton {
       label Cancel
       callback {exit(0);}
-      xywh {562 295 83 25}
+      xywh {562 300 83 25}
     }
   }
 } 

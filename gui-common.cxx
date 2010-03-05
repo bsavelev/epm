@@ -379,11 +379,18 @@ char* findMypath(const char* argv)
 }
 
 void set_gettext(char *argv[]) {
-  struct stat localedir_info;
-  setlocale(LC_ALL, "");
+  struct stat stat_info;
   char localedir[1024];
+  char *cwd;
+
+  if ((cwd = getcwd ((char*) NULL, 512)) == NULL)
+    if (!stat(findMypath(argv[0]),&stat_info))
+      chdir(findMypath(argv[0]));
+
+  setlocale(LC_ALL, "");
   sprintf(localedir,"%slocale", findMypath(argv[0]));
-  if ((!access(localedir,0))&&(!stat(localedir,&localedir_info)))
+
+  if ((!access(localedir,0))&&(!stat(localedir,&stat_info)))
     bindtextdomain ("epm", localedir);
   else
     bindtextdomain ("epm", LOCALEDIR);

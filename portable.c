@@ -3212,7 +3212,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("		rm -f \"$file\"\n", scriptfile);
     fputs("	fi\n", scriptfile);
     qprintf(scriptfile, "	rm -f \"%s/conf/$file.N\"\n", SoftwareDir);
-    qprintf(scriptfile, "	cd \"%s\" && rmdir \"`dirname \"conf/$file.N\"`\" 2>/dev/null || true\n", SoftwareDir);
+    qprintf(scriptfile, "	cd \"%s\" && rmdir -p \"`dirname \"conf/$file.N\"`\" 2>/dev/null || true\n", SoftwareDir);
     fputs("done\n", scriptfile);
   }
 

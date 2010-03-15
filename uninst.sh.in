@@ -225,7 +225,8 @@ You may enter A or All to select all the packages, and N or None to deselect all
 Enter R or Remove to remove selected packages.\nEnter 0, Q or Quit to quit the dialog.
 All values are case insensitive.\"`\n"
     usersel=0
-    read -p "`eval_gettext \"Select: \"`" usersel
+    printf "`eval_gettext \"Select: \"`"
+    read usersel
     case "$usersel" in
 	0 | [qQ] | [qQ][uU][iI][tT])
 	    exit 0

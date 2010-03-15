@@ -150,8 +150,8 @@ fi
     while $REQ_CHECK_LOOP ; do
 	REQ_CHECK_LOOP=false
 	for f in $list ; do
-	  if ( ! isselectedCustom "$f" ) ; then
-	    crequires=`cat "./$f" | grep '#%requires' | awk '{print $2".remove"}' | sort | uniq`
+	  if [ `isselectedCustom "$f"; echo $?` -ne 0 ] ; then
+	    crequires=`cat "./$f" | grep '#%requires' | $AWK '{print $2".remove"}' | sort | uniq`
 	    if [ -n "$crequires" ] ; then
 		for l in $crequires ; do
 		  if ( isselectedCustom "$name" ) ; then

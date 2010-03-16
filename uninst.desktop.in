@@ -1,6 +1,6 @@
 [Desktop Entry]
 Exec=@bindir@/remove.sh
-Icon=@datarootdir@/img/icon_48.png
+Icon=@datarootdir@/share/icon_48.png
 Type=Application
 StartupNotify=true
 Name=Dr.Web Uninstaller

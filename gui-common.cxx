@@ -352,7 +352,7 @@ int					// O - Result of comparison
 gui_sort_dists(const gui_dist_t *d0,	// I - First distribution
                const gui_dist_t *d1)	// I - Second distribution
 {
-  return (strcmp(d0->name, d1->name));
+  return (strcmp(d0->product, d1->product));
 }
 
 

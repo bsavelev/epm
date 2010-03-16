@@ -1,0 +1,9 @@
+[Desktop Entry]
+Exec=@bindir@/remove.sh
+Icon=@datarootdir@/img/icon_48.png
+Type=Application
+StartupNotify=true
+Name=Dr.Web Uninstaller
+Name[ru]=Dr.Web деинсталятор
+
+Categories=Application;System;

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-03-04 15:57+0300\n"
+"POT-Creation-Date: 2010-03-10 12:16+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -340,33 +340,33 @@ msgstr ""
 msgid "Sorry, you must be root to remove Dr.Web software."
 msgstr ""
 
-#: uninst.sh.in:90 dummy/epm.install.sh:131 dummy/epm.install.sh:148
+#: uninst.sh.in:92 dummy/epm.install.sh:131 dummy/epm.install.sh:148
 #: dummy/epm.remove.sh:125
 #, sh-format
 msgid "Please enter yes or no."
 msgstr ""
 
-#: uninst.sh.in:177
+#: uninst.sh.in:179
 #, sh-format
 msgid "Select the software you want to remove:"
 msgstr ""
 
-#: uninst.sh.in:193
+#: uninst.sh.in:195
 #, sh-format
 msgid "A list of packages marked for removal:"
 msgstr ""
 
-#: uninst.sh.in:198
+#: uninst.sh.in:200
 #, sh-format
 msgid "Are you sure you want to remove the selected packages? (YES/no) "
 msgstr ""
 
-#: uninst.sh.in:205 uninst.sh.in:213
+#: uninst.sh.in:207 uninst.sh.in:215
 #, sh-format
 msgid "Nothing to remove. Exiting..."
 msgstr ""
 
-#: uninst.sh.in:219
+#: uninst.sh.in:221
 #, sh-format
 msgid ""
 "To select a package you want to remove or deselect some previously\n"
@@ -379,12 +379,12 @@ msgid ""
 "All values are case insensitive."
 msgstr ""
 
-#: uninst.sh.in:226
+#: uninst.sh.in:228
 #, sh-format
 msgid "Select: "
 msgstr ""
 
-#: uninst.sh.in:256
+#: uninst.sh.in:258
 #, sh-format
 msgid "Software dir -- '%s' not found."
 msgstr ""

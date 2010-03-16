@@ -8797,6 +8797,10 @@ ac_config_files="$ac_config_files epm.list"
 
 ac_config_files="$ac_config_files uninst.sh"
 
+ac_config_files="$ac_config_files remove.sh"
+
+ac_config_files="$ac_config_files uninst.desktop"
+
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -9531,6 +9535,8 @@ do
     "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
     "epm.list") CONFIG_FILES="$CONFIG_FILES epm.list" ;;
     "uninst.sh") CONFIG_FILES="$CONFIG_FILES uninst.sh" ;;
+    "remove.sh") CONFIG_FILES="$CONFIG_FILES remove.sh" ;;
+    "uninst.desktop") CONFIG_FILES="$CONFIG_FILES uninst.desktop" ;;
 
   *) as_fn_error "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

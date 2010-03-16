@@ -41,7 +41,8 @@ bin_PROGRAMS = epm$(EXEEXT) epminstall$(EXEEXT) mkepmlist$(EXEEXT) \
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(srcdir)/epm.list.in $(srcdir)/uninst.sh.in \
+	$(srcdir)/epm.list.in $(srcdir)/remove.sh.in \
+	$(srcdir)/uninst.desktop.in $(srcdir)/uninst.sh.in \
 	$(top_srcdir)/configure $(top_srcdir)/doc/Makefile.in COPYING \
 	config.guess config.rpath config.sub depcomp install-sh \
 	missing
@@ -53,7 +54,8 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = doc/Makefile epm.list uninst.sh
+CONFIG_CLEAN_FILES = doc/Makefile epm.list uninst.sh remove.sh \
+	uninst.desktop
 CONFIG_CLEAN_VPATH_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 libepm_a_AR = $(AR) $(ARFLAGS)
@@ -412,6 +414,10 @@ doc/Makefile: $(top_builddir)/config.status $(top_srcdir)/doc/Makefile.in
 epm.list: $(top_builddir)/config.status $(srcdir)/epm.list.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 uninst.sh: $(top_builddir)/config.status $(srcdir)/uninst.sh.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+remove.sh: $(top_builddir)/config.status $(srcdir)/remove.sh.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+uninst.desktop: $(top_builddir)/config.status $(srcdir)/uninst.desktop.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 clean-noinstLIBRARIES:

@@ -391,6 +391,8 @@ AC_CONFIG_FILES([po/Makefile.in])
 AC_CONFIG_FILES([doc/Makefile])
 AC_CONFIG_FILES([epm.list])
 AC_CONFIG_FILES([uninst.sh])
+AC_CONFIG_FILES([remove.sh])
+AC_CONFIG_FILES([uninst.desktop])
 
 AC_OUTPUT
 

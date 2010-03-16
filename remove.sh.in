@@ -1,0 +1,63 @@
+#!/bin/sh
+
+getCMD() {
+if [ -n "$DISPLAY" ] ; then
+    cmd=uninst
+else
+    cmd=uninst.sh
+    GUI_FAILED=yes
+fi
+cmd="@bindir@/$cmd"
+
+if [ `id | sed "s|uid=\([0-9]*\).*|\1|"` != "0" ]; then
+   echo "Escalating privileges."
+    if [ -n "$KDE_FULL_SESSION" -a -n "$DISPLAY" ]; then
+#       printf "KDE"
+       sulist='kdesu gksu su'
+    elif [ -n "$DISPLAY" ]; then
+#       printf "DISPLAY"
+       sulist='gksu kdesu su'
+    else
+#      printf "No DISPLAY"
+      sulist='su'
+    fi
+#   printf "`eval_gettext \" detected. *su candidates: %s\n\"`" "$sulist."
+   for i in $sulist; do
+      which $i >/dev/null 2>/dev/null && su=`which $i` && echo "$su" | grep -v "^no $i" && break
+   done
+   if [ -n $su ]; then
+      echo "Using $su."
+   else
+      echo "No *su candidate found."
+      exit 1
+   fi
+fi
+case `basename "$su"` in
+   gksu)
+      cmd="$su \"'$cmd'\""
+      ;;
+   kdesu)
+      cmd="$su -c \"'$cmd'\""
+      ;;
+   su)
+      cmd="$su root -c \"'$cmd'\""
+      ;;
+   '')
+      ;;
+esac
+}
+
+su=""
+
+for i in 1 2 ; do
+    getCMD
+    echo "$cmd"
+    if eval "$cmd"; then
+	break
+    elif [ -n "$DISPLAY" ] ; then
+	 DISPLAY=""
+    else
+	exit 1
+    fi
+done
+exit 0

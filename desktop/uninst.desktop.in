@@ -1,6 +1,6 @@
 [Desktop Entry]
 Exec=@bindir@/remove.sh
-Icon=@bindir@/share/icon_48.png
+Icon=@bindir@/share/uninstall-48.png
 Type=Application
 StartupNotify=true
 Name=Removal of Dr.Web® for Linux

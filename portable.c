@@ -1383,6 +1383,7 @@ write_depends(const char *prodname,	/* I - Product name */
 		* Do version number checking...
 		*/
 		fprintf(fp,"required_version=%d\n",get_vernumber(d->version[0]));
+		fputs("installed=0\n",fp);
 		fprintf(fp, "if [ -r \"%s/%s.remove\" ] ; then\n", SoftwareDir, product);
 		fprintf(fp,"\tinstalled=`grep \"#%%version\" %s/%s.remove | head -n1 | awk \'{print $3}\' 2>/dev/null`\n", SoftwareDir, product);
 		fputs("fi\n", fp);

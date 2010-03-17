@@ -2,4 +2,4 @@
 Encoding=UTF-8
 Type=Directory
 Name=Dr.Web
-Icon=@datarootdir@/share/icon_48.png
+Icon=@bindir@/share/icon_48.png

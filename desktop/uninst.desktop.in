@@ -3,7 +3,7 @@ Exec=@bindir@/remove.sh
 Icon=@datarootdir@/share/icon_48.png
 Type=Application
 StartupNotify=true
-Name=Dr.Web Uninstaller
-Name[ru]=Dr.Web деинсталятор
+Name=Removal of Dr.Web Antivirus
+Name[ru]=Удаление антивируса Dr.Web
 
 Categories=Application;System;

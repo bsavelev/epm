@@ -8799,7 +8799,9 @@ ac_config_files="$ac_config_files uninst.sh"
 
 ac_config_files="$ac_config_files remove.sh"
 
-ac_config_files="$ac_config_files uninst.desktop"
+ac_config_files="$ac_config_files desktop/uninst.desktop"
+
+ac_config_files="$ac_config_files desktop/drweb-drweb.directory"
 
 
 cat >confcache <<\_ACEOF
@@ -9536,7 +9538,8 @@ do
     "epm.list") CONFIG_FILES="$CONFIG_FILES epm.list" ;;
     "uninst.sh") CONFIG_FILES="$CONFIG_FILES uninst.sh" ;;
     "remove.sh") CONFIG_FILES="$CONFIG_FILES remove.sh" ;;
-    "uninst.desktop") CONFIG_FILES="$CONFIG_FILES uninst.desktop" ;;
+    "desktop/uninst.desktop") CONFIG_FILES="$CONFIG_FILES desktop/uninst.desktop" ;;
+    "desktop/drweb-drweb.directory") CONFIG_FILES="$CONFIG_FILES desktop/drweb-drweb.directory" ;;
 
   *) as_fn_error "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

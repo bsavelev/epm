@@ -42,10 +42,11 @@ subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	$(srcdir)/epm.list.in $(srcdir)/remove.sh.in \
-	$(srcdir)/uninst.desktop.in $(srcdir)/uninst.sh.in \
-	$(top_srcdir)/configure $(top_srcdir)/doc/Makefile.in COPYING \
-	config.guess config.rpath config.sub depcomp install-sh \
-	missing
+	$(srcdir)/uninst.sh.in $(top_srcdir)/configure \
+	$(top_srcdir)/desktop/drweb-drweb.directory.in \
+	$(top_srcdir)/desktop/uninst.desktop.in \
+	$(top_srcdir)/doc/Makefile.in COPYING config.guess \
+	config.rpath config.sub depcomp install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -55,7 +56,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES = doc/Makefile epm.list uninst.sh remove.sh \
-	uninst.desktop
+	desktop/uninst.desktop desktop/drweb-drweb.directory
 CONFIG_CLEAN_VPATH_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 libepm_a_AR = $(AR) $(ARFLAGS)
@@ -417,7 +418,9 @@ uninst.sh: $(top_builddir)/config.status $(srcdir)/uninst.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 remove.sh: $(top_builddir)/config.status $(srcdir)/remove.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-uninst.desktop: $(top_builddir)/config.status $(srcdir)/uninst.desktop.in
+desktop/uninst.desktop: $(top_builddir)/config.status $(top_srcdir)/desktop/uninst.desktop.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+desktop/drweb-drweb.directory: $(top_builddir)/config.status $(top_srcdir)/desktop/drweb-drweb.directory.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 clean-noinstLIBRARIES:

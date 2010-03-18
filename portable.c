@@ -3189,14 +3189,14 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 //     fputs("fi\n", scriptfile);
   }
 
-  fputs("echo \"`eval_gettext \\\"Checking configuration files...\\\"`\"\n", scriptfile);
-
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'c' && file->subpackage == subpackage)
       break;
 
   if (i)
   {
+    fputs("echo \"`eval_gettext \\\"Checking configuration files...\\\"`\"\n", scriptfile);
+
     col = fputs("for file in", scriptfile);
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'c' && file->subpackage == subpackage)

@@ -3,5 +3,6 @@ Exec=@bindir@/remove.sh
 Icon=@bindir@/share/uninstall-48.png
 Type=Application
 StartupNotify=true
+Terminal=1
 Name=Removal of Dr.Web® for Linux
 Name[ru]=Удаление антивируса Dr.Web® для Linux

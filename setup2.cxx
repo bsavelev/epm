@@ -1291,23 +1291,23 @@ update_sizes(void)
     }
 
   // Get the sizes of the root and /usr partition...
-#if defined(__sgi) || defined(__svr4__) || defined(__SVR4) || defined(M_XENIX)
+/*#if defined(__sgi) || defined(__svr4__) || defined(__SVR4) || defined(M_XENIX)
   if (statfs("/", &rootpart, sizeof(rootpart), 0))
 #else
   if (statfs("/", &rootpart))
 #endif // __sgi || __svr4__ || __SVR4 || M_XENIX
     rootfree = 1024;
-  else
+  else*/
     rootfree = (int)((double)rootpart.f_bfree * (double)rootpart.f_bsize /
                      1024.0 / 1024.0 + 0.5);
 
-#if defined(__sgi) || defined(__svr4__) || defined(__SVR4) || defined(M_XENIX)
+/*#if defined(__sgi) || defined(__svr4__) || defined(__SVR4) || defined(M_XENIX)
   if (statfs("/usr", &usrpart, sizeof(usrpart), 0))
 #else
   if (statfs("/usr", &usrpart))
 #endif // __sgi || __svr4__ || __SVR4 || M_XENIX
     usrfree = 1024;
-  else
+  else*/
     usrfree = (int)((double)usrpart.f_bfree * (double)usrpart.f_bsize /
                     1024.0 / 1024.0 + 0.5);
 

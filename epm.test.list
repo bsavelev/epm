@@ -46,6 +46,7 @@ $srcdir=.
 %requires drweb-common 5.0.2
 %requires drweb-libs 5.0.2 5.0.2
 %requires drweb-libs32
+%replaces epm5.0.2
 
 %release 1~linux
 # Executables

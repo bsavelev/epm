@@ -68,7 +68,7 @@ AM_CFLAGS = $(ARCHFLAGS) $(OPTIM) $(EPM_CFLAGS)
 AM_CXXFLAGS = $(ARCHFLAGS) $(OPTIM) $(EPM_CXXFLAGS)
 
 
-dummy: epm$(EXEEXT) epm.test.list
+dummy: all epm.test.list
 	rm -rf dummy
 	./epm$(EXEEXT) -m dummy -a i386 epm epm.test.list
 	cd dummy && gzip -dc *.tar.gz | tar -xpPF - || true

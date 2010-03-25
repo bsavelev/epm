@@ -62,6 +62,7 @@ changequote([,])dnl
     [$ac_dir/$ac_word --omit-header --copyright-holder= --msgid-bugs-address= /dev/null >&]AS_MESSAGE_LOG_FD[ 2>&1 &&
      (if $ac_dir/$ac_word --omit-header --copyright-holder= --msgid-bugs-address= /dev/null 2>&1 >/dev/null | grep usage >/dev/null; then exit 1; else exit 0; fi)],
     :)
+  AC_PATH_PROG(GXGETTEXT, gxgettext, $XGETTEXT)
   dnl Remove leftover from FreeBSD xgettext call.
   rm -f messages.po
 
@@ -77,6 +78,7 @@ changequote([,])dnl
   dnl Search for GNU msgmerge 0.11 or newer in the PATH.
   AM_PATH_PROG_WITH_TEST(MSGMERGE, msgmerge,
     [$ac_dir/$ac_word --update -q /dev/null /dev/null >&]AS_MESSAGE_LOG_FD[ 2>&1], :)
+  AC_PATH_PROG(GMSGMERGE, gmsgmerge, $MSGMERGE)
 
   dnl Installation directories.
   dnl Autoconf >= 2.60 defines localedir. For older versions of autoconf, we

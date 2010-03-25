@@ -22,7 +22,7 @@ autoconf --force && autoheader && automake --foreign --add-missing --copy --forc
 
 	rm -f ./install.sh  aclocal.m4
 	autoheader
-	aclocal
+	aclocal -Im4
 	autoconf
 	automake -a -c --foreign
 	touch po/remove-potcdate.sin

@@ -1345,8 +1345,8 @@ update_sizes(void)
              "%+dk required on /usr, %dMb available."),
              rootsize, rootfree, usrsize, usrfree);
 
-  SoftwareSize->label(sizelabel);
-  SoftwareSize->redraw();
+//   SoftwareSize->label(sizelabel);
+//   SoftwareSize->redraw();
 }
 
 void

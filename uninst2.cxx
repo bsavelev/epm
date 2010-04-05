@@ -682,6 +682,7 @@ update_sizes(void)
     }
 
   // Get the sizes of the root and /usr partition...
+/*
 #if defined(__sgi) || defined(__svr4__) || defined(__SVR4) || defined(M_XENIX)
   if (statfs("/", &rootpart, sizeof(rootpart), 0))
 #else
@@ -701,6 +702,7 @@ update_sizes(void)
   else
     usrfree = (int)((double)usrpart.f_bfree * (double)usrpart.f_bsize /
                     1024.0 / 1024.0 + 0.5);
+*/
 
   // Display the results to the user...
 /*  if (rootfree == usrfree)

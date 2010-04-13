@@ -459,7 +459,7 @@ msgstr "Автоматическое замешение '%s'"
 #: dummy/epm.install.sh:278
 #, sh-format
 msgid "Sorry, this software is incompatible with '%s'!"
-msgstr "Извините, данное ПО не совместимо с '%s'!"
+msgstr "Извините, данное ПО несовместимо с '%s'!"
 
 #: dummy/epm.install.sh:279 dummy/epm.install.sh:290 dummy/epm.install.sh:302
 #, sh-format
@@ -469,7 +469,7 @@ msgstr "Пожалуйста, удалите указанное ПО с помо
 #: dummy/epm.install.sh:289 dummy/epm.install.sh:301
 #, sh-format
 msgid "Sorry, this software is incompatible with '%s' version %s to %s!"
-msgstr "Извините, данное ПО не совместимо с '%s' следующих версий: %s - %s!"
+msgstr "Извините, данное ПО несовместимо с '%s' следующих версий: %s - %s!"
 
 #: dummy/epm.install.sh:307
 #, sh-format

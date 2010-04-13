@@ -1490,7 +1490,7 @@ write_depends(const char *prodname,	/* I - Product name */
 	      {
         	fprintf(fp, "	printf \"`eval_gettext \\\"Sorry, this software is incompatible with \\'%%s\\'!\\\"`\\n\" \"%s\"\n",
 	        	product);
-        	fprintf(fp, "	echo \"`eval_gettext \\\"Please remove it first by running \\'%%s/%%s.remove\\'.\\\"`\\n\" \"%s\" \"%s\"\n",
+        	fprintf(fp, "	printf \"`eval_gettext \\\"Please remove it first by running \\'%%s/%%s.remove\\'.\\\"`\\n\" \"%s\" \"%s\"\n",
 	        	SoftwareDir, product);
         	fputs("	exit 1\n", fp);
 	      }

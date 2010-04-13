@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-03-19 12:15+0300\n"
+"POT-Creation-Date: 2010-04-13 11:43+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -220,49 +220,11 @@ msgstr ""
 msgid "<span>Installation complete.</span>"
 msgstr ""
 
-#: setup2.cxx:1321
-#, c-format
-msgid "%+.1fMb required, %dMb available."
-msgstr ""
-
-#: setup2.cxx:1325
-#, c-format
-msgid "%+dk required, %dMb available."
-msgstr ""
-
-#: setup2.cxx:1329
-#, c-format
-msgid ""
-"%+.1fMb required on /, %dMb available,\n"
-"%+.1fMb required on /usr, %dMb available."
-msgstr ""
-
-#: setup2.cxx:1334
-#, c-format
-msgid ""
-"%+.1fMb required on /, %dMb available,\n"
-"%+dk required on /usr, %dMb available."
-msgstr ""
-
-#: setup2.cxx:1339
-#, c-format
-msgid ""
-"%+dk required on /, %dMb available,\n"
-"%+.1fMb required on /usr, %dMb available."
-msgstr ""
-
-#: setup2.cxx:1344
-#, c-format
-msgid ""
-"%+dk required on /, %dMb available,\n"
-"%+dk required on /usr, %dMb available."
-msgstr ""
-
-#: setup2.cxx:1389
+#: setup2.cxx:1390
 msgid "English"
 msgstr ""
 
-#: setup2.cxx:1396
+#: setup2.cxx:1397
 msgid "Russian"
 msgstr ""
 
@@ -472,73 +434,88 @@ msgstr ""
 msgid "Automatically replacing '%s'..."
 msgstr ""
 
-#: dummy/epm.install.sh:277
+#: dummy/epm.install.sh:278
+#, sh-format
+msgid "Sorry, this software is incompatible with '%s'!"
+msgstr ""
+
+#: dummy/epm.install.sh:279 dummy/epm.install.sh:290 dummy/epm.install.sh:302
+#, sh-format
+msgid "Please remove it first by running '%s/%s.remove'."
+msgstr ""
+
+#: dummy/epm.install.sh:289 dummy/epm.install.sh:301
+#, sh-format
+msgid "Sorry, this software is incompatible with '%s' version %s to %s!"
+msgstr ""
+
+#: dummy/epm.install.sh:307
 #, sh-format
 msgid "Dependency check failed! Full list of unmet dependencies:"
 msgstr ""
 
-#: dummy/epm.install.sh:285
+#: dummy/epm.install.sh:315
 #, sh-format
 msgid "Running pre-install commands..."
 msgstr ""
 
-#: dummy/epm.install.sh:287
+#: dummy/epm.install.sh:317
 #, sh-format
 msgid "Backing up old versions of files to be installed..."
 msgstr ""
 
-#: dummy/epm.install.sh:293 dummy/epm.install.sh:308 dummy/epm.remove.sh:190
-#: dummy/epm.remove.sh:195
+#: dummy/epm.install.sh:323 dummy/epm.install.sh:338 dummy/epm.remove.sh:193
+#: dummy/epm.remove.sh:198
 #, sh-format
 msgid "Error: Cannot write in %s."
 msgstr ""
 
-#: dummy/epm.install.sh:303
+#: dummy/epm.install.sh:333
 #, sh-format
 msgid "Creating installation directories..."
 msgstr ""
 
-#: dummy/epm.install.sh:313
+#: dummy/epm.install.sh:343
 #, sh-format
 msgid "Error: %s already exists as a regular file!"
 msgstr ""
 
-#: dummy/epm.install.sh:327
+#: dummy/epm.install.sh:357
 #, sh-format
 msgid "Installing software..."
 msgstr ""
 
-#: dummy/epm.install.sh:331 dummy/epm.remove.sh:199
+#: dummy/epm.install.sh:361 dummy/epm.remove.sh:202
 #, sh-format
 msgid "Checking configuration files..."
 msgstr ""
 
-#: dummy/epm.install.sh:338
+#: dummy/epm.install.sh:368
 #, sh-format
 msgid "Error: %%s already exists as a regular file!"
 msgstr ""
 
-#: dummy/epm.install.sh:345
+#: dummy/epm.install.sh:375
 #, sh-format
 msgid "Updating file permissions..."
 msgstr ""
 
-#: dummy/epm.install.sh:352
+#: dummy/epm.install.sh:382
 #, sh-format
 msgid "Setting up init scripts..."
 msgstr ""
 
-#: dummy/epm.install.sh:366 dummy/epm.remove.sh:150
+#: dummy/epm.install.sh:396 dummy/epm.remove.sh:153
 #, sh-format
 msgid "Unable to determine location of init scripts!"
 msgstr ""
 
-#: dummy/epm.install.sh:405
+#: dummy/epm.install.sh:435
 #, sh-format
 msgid "Running post-install commands..."
 msgstr ""
 
-#: dummy/epm.install.sh:408
+#: dummy/epm.install.sh:438
 #, sh-format
 msgid "Installation %s is complete."
 msgstr ""
@@ -563,32 +540,32 @@ msgstr ""
 msgid "software version %s from your system."
 msgstr ""
 
-#: dummy/epm.remove.sh:135
+#: dummy/epm.remove.sh:138
 #, sh-format
 msgid "Running pre-remove commands..."
 msgstr ""
 
-#: dummy/epm.remove.sh:137
+#: dummy/epm.remove.sh:140
 #, sh-format
 msgid "Cleaning up init scripts..."
 msgstr ""
 
-#: dummy/epm.remove.sh:182
+#: dummy/epm.remove.sh:185
 #, sh-format
 msgid "Removing/restoring installed files..."
 msgstr ""
 
-#: dummy/epm.remove.sh:212
+#: dummy/epm.remove.sh:215
 #, sh-format
 msgid "Removing empty installation directories..."
 msgstr ""
 
-#: dummy/epm.remove.sh:221
+#: dummy/epm.remove.sh:224
 #, sh-format
 msgid "Running post-remove commands..."
 msgstr ""
 
-#: dummy/epm.remove.sh:225
+#: dummy/epm.remove.sh:228
 #, sh-format
 msgid "Removal %s is complete."
 msgstr ""

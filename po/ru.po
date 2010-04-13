@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 4.2\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-03-19 12:15+0300\n"
+"POT-Creation-Date: 2010-04-13 11:43+0400\n"
 "PO-Revision-Date: 2010-02-10 15:39+0300\n"
 "Last-Translator: Natalia Zdanova <n.zdanova@drweb.com>\n"
 "Language-Team: Natalia Zdanova <n.zdanova@drweb.com>\n"
@@ -225,57 +225,11 @@ msgstr ""
 msgid "<span>Installation complete.</span>"
 msgstr "<span>Установка успешно завершена.</span>"
 
-#: setup2.cxx:1321
-#, c-format
-msgid "%+.1fMb required, %dMb available."
-msgstr "%+.1fMb требуется, %dMb доступно."
-
-#: setup2.cxx:1325
-#, c-format
-msgid "%+dk required, %dMb available."
-msgstr "%+dk требуется, %dMb доступно."
-
-#: setup2.cxx:1329
-#, c-format
-msgid ""
-"%+.1fMb required on /, %dMb available,\n"
-"%+.1fMb required on /usr, %dMb available."
-msgstr ""
-"%+.1fMb требуется в /, %dMb доступно,\n"
-"%+.1fMb требуется в /usr, %dMb доступно."
-
-#: setup2.cxx:1334
-#, c-format
-msgid ""
-"%+.1fMb required on /, %dMb available,\n"
-"%+dk required on /usr, %dMb available."
-msgstr ""
-"%+.1fMb требуется в /, %dMb доступно,\n"
-"%+dk требуется в /usr, %dMb доступно."
-
-#: setup2.cxx:1339
-#, c-format
-msgid ""
-"%+dk required on /, %dMb available,\n"
-"%+.1fMb required on /usr, %dMb available."
-msgstr ""
-"%+dk требуется в /, %dMb доступно,\n"
-"%+.1fMb rтребуется в /usr, %dMb доступно."
-
-#: setup2.cxx:1344
-#, c-format
-msgid ""
-"%+dk required on /, %dMb available,\n"
-"%+dk required on /usr, %dMb available."
-msgstr ""
-"%+dk требуется в /, %dMb доступно,\n"
-"%+dk требуется в /usr, %dMb доступно."
-
-#: setup2.cxx:1389
+#: setup2.cxx:1390
 msgid "English"
 msgstr "Английский"
 
-#: setup2.cxx:1396
+#: setup2.cxx:1397
 msgid "Russian"
 msgstr "Русский"
 
@@ -502,73 +456,88 @@ msgstr "Вы должны сперва установить '%s'!"
 msgid "Automatically replacing '%s'..."
 msgstr "Автоматическое замешение '%s'"
 
-#: dummy/epm.install.sh:277
+#: dummy/epm.install.sh:278
+#, sh-format
+msgid "Sorry, this software is incompatible with '%s'!"
+msgstr "Извините, данное ПО не совместимо с '%s'!"
+
+#: dummy/epm.install.sh:279 dummy/epm.install.sh:290 dummy/epm.install.sh:302
+#, sh-format
+msgid "Please remove it first by running '%s/%s.remove'."
+msgstr "Пожалуйста, удалите указанное ПО с помощью скрипта '%s/%s.remove'."
+
+#: dummy/epm.install.sh:289 dummy/epm.install.sh:301
+#, sh-format
+msgid "Sorry, this software is incompatible with '%s' version %s to %s!"
+msgstr "Извините, данное ПО не совместимо с '%s' следующих версий: %s - %s!"
+
+#: dummy/epm.install.sh:307
 #, sh-format
 msgid "Dependency check failed! Full list of unmet dependencies:"
 msgstr "В ходе проверки зависимостей не были найдены следующие зависимости:"
 
-#: dummy/epm.install.sh:285
+#: dummy/epm.install.sh:315
 #, sh-format
 msgid "Running pre-install commands..."
 msgstr "Подготовка к установке..."
 
-#: dummy/epm.install.sh:287
+#: dummy/epm.install.sh:317
 #, sh-format
 msgid "Backing up old versions of files to be installed..."
 msgstr "Осуществляется резервное копирование старых версий файлов..."
 
-#: dummy/epm.install.sh:293 dummy/epm.install.sh:308 dummy/epm.remove.sh:190
-#: dummy/epm.remove.sh:195
+#: dummy/epm.install.sh:323 dummy/epm.install.sh:338 dummy/epm.remove.sh:193
+#: dummy/epm.remove.sh:198
 #, sh-format
 msgid "Error: Cannot write in %s."
 msgstr "Ошибка: невозможно осуществить запись файлов в директорию %s."
 
-#: dummy/epm.install.sh:303
+#: dummy/epm.install.sh:333
 #, sh-format
 msgid "Creating installation directories..."
 msgstr "Создаются установочные директории..."
 
-#: dummy/epm.install.sh:313
+#: dummy/epm.install.sh:343
 #, sh-format
 msgid "Error: %s already exists as a regular file!"
 msgstr "Ошибка: %s уже используется как имя существующего файла!"
 
-#: dummy/epm.install.sh:327
+#: dummy/epm.install.sh:357
 #, sh-format
 msgid "Installing software..."
 msgstr "Устанавливается компонент..."
 
-#: dummy/epm.install.sh:331 dummy/epm.remove.sh:199
+#: dummy/epm.install.sh:361 dummy/epm.remove.sh:202
 #, sh-format
 msgid "Checking configuration files..."
 msgstr "Проверяются конфигурационные файлы..."
 
-#: dummy/epm.install.sh:338
+#: dummy/epm.install.sh:368
 #, sh-format
 msgid "Error: %%s already exists as a regular file!"
 msgstr "Ошибка: %%s уже используется как имя существующего файла!"
 
-#: dummy/epm.install.sh:345
+#: dummy/epm.install.sh:375
 #, sh-format
 msgid "Updating file permissions..."
 msgstr "Обновляются права доступа к файлам..."
 
-#: dummy/epm.install.sh:352
+#: dummy/epm.install.sh:382
 #, sh-format
 msgid "Setting up init scripts..."
 msgstr "Запускается инициализационный скрипт..."
 
-#: dummy/epm.install.sh:366 dummy/epm.remove.sh:150
+#: dummy/epm.install.sh:396 dummy/epm.remove.sh:153
 #, sh-format
 msgid "Unable to determine location of init scripts!"
 msgstr "Невозможно определить местонахождение инициализационных скриптов!"
 
-#: dummy/epm.install.sh:405
+#: dummy/epm.install.sh:435
 #, sh-format
 msgid "Running post-install commands..."
 msgstr "Завершение установки..."
 
-#: dummy/epm.install.sh:408
+#: dummy/epm.install.sh:438
 #, sh-format
 msgid "Installation %s is complete."
 msgstr "Установка %s завершена."
@@ -593,35 +562,69 @@ msgstr "Данный скрипт удалит %s"
 msgid "software version %s from your system."
 msgstr "версии %s с вашего компьютера."
 
-#: dummy/epm.remove.sh:135
+#: dummy/epm.remove.sh:138
 #, sh-format
 msgid "Running pre-remove commands..."
 msgstr "Подготовка к удалению..."
 
-#: dummy/epm.remove.sh:137
+#: dummy/epm.remove.sh:140
 #, sh-format
 msgid "Cleaning up init scripts..."
 msgstr "Очищается автозагрузка и удаляются установочные скрипты..."
 
-#: dummy/epm.remove.sh:182
+#: dummy/epm.remove.sh:185
 #, sh-format
 msgid "Removing/restoring installed files..."
 msgstr "Удаляются/восстанавливаются установленные файлы..."
 
-#: dummy/epm.remove.sh:212
+#: dummy/epm.remove.sh:215
 #, sh-format
 msgid "Removing empty installation directories..."
 msgstr "Удаляются пустые установочные директории..."
 
-#: dummy/epm.remove.sh:221
+#: dummy/epm.remove.sh:224
 #, sh-format
 msgid "Running post-remove commands..."
 msgstr "Завершение удаления..."
 
-#: dummy/epm.remove.sh:225
+#: dummy/epm.remove.sh:228
 #, sh-format
 msgid "Removal %s is complete."
 msgstr "Удаление %s завершено."
+
+#~ msgid "%+.1fMb required, %dMb available."
+#~ msgstr "%+.1fMb требуется, %dMb доступно."
+
+#~ msgid "%+dk required, %dMb available."
+#~ msgstr "%+dk требуется, %dMb доступно."
+
+#~ msgid ""
+#~ "%+.1fMb required on /, %dMb available,\n"
+#~ "%+.1fMb required on /usr, %dMb available."
+#~ msgstr ""
+#~ "%+.1fMb требуется в /, %dMb доступно,\n"
+#~ "%+.1fMb требуется в /usr, %dMb доступно."
+
+#~ msgid ""
+#~ "%+.1fMb required on /, %dMb available,\n"
+#~ "%+dk required on /usr, %dMb available."
+#~ msgstr ""
+#~ "%+.1fMb требуется в /, %dMb доступно,\n"
+#~ "%+dk требуется в /usr, %dMb доступно."
+
+#~ msgid ""
+#~ "%+dk required on /, %dMb available,\n"
+#~ "%+.1fMb required on /usr, %dMb available."
+#~ msgstr ""
+#~ "%+dk требуется в /, %dMb доступно,\n"
+#~ "%+.1fMb rтребуется в /usr, %dMb доступно."
+
+#~ msgid ""
+#~ "%+dk required on /, %dMb available,\n"
+#~ "%+dk required on /usr, %dMb available."
+#~ msgstr ""
+#~ "%+dk требуется в /, %dMb доступно,\n"
+#~ "%+dk требуется в /usr, %dMb доступно."
 
 #~ msgid " (%.1fMb disk space)"
 #~ msgstr " (%.1fMb дискового пространства)"

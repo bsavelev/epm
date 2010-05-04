@@ -98,7 +98,8 @@ int		licaccept = 0;
 FILE		*fdfile = NULL;
 int		skip_pane_select = 1;
 int		Verbosity = 0;
-int		InstallFailed = 1; //
+int		InstallFailed = 1;
+int		CustomType = 0;
 
 #define POSTIN_SCRIPT "./scripts/postinstall.sh"
 #define POSTIN_I_SCRIPT "./scripts/postinstall-i.sh"
@@ -575,6 +576,7 @@ list_cb(Fl_Check_Browser *, void *)
 		*dist2;
   gui_depend_t	*depend;
 
+  CustomType = 1;
 
   if (SoftwareList->nchecked() == 0)
   {
@@ -996,6 +998,13 @@ void update_control(int from) {
 
       if (NumInstTypes)
         PrevButton->activate();
+    // Last entry is Custom always
+   if ( CustomType == 1 )
+     for (i = (int)(sizeof(TypeButton) / sizeof(TypeButton[0])); i > 0 ; i --)
+       if ( TypeButton[i]->visible() && !(strcasecmp(TypeButton[i]->label(),"Custom Configuration"))) {
+         TypeButton[i]->setonly();
+       }
+
     // Figure out which type is chosen...
       for (i = 0; i < (int)(sizeof(TypeButton) / sizeof(TypeButton[0])); i ++)
         if (TypeButton[i]->value())

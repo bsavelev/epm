@@ -109,8 +109,8 @@ copy_file(const char *dst,		/* I - Destination file */
   fclose(srcfile);
   fclose(dstfile);
 
-  chmod(dst, mode);
   chown(dst, owner, group);
+  chmod(dst, mode);
 
   return (0);
 }

@@ -251,7 +251,23 @@ make_subpackage(const char     *prodname,
   else
     fprintf(fp, "Architecture: %s\n", platform->machine);
 
-  fprintf(fp, "Description: %s\n", dist->product);
+  fprintf(fp, "Description: %s", dist->product);
+  if (subpackage)
+  {
+    for (i = 0; i < dist->num_descriptions; i ++)
+      if (dist->descriptions[i].subpackage == subpackage)
+	break;
+
+    if (i < dist->num_descriptions)
+    {
+      strlcpy(line, dist->descriptions[i].description, sizeof(line));
+      if ((ptr = strchr(line, '\n')) != NULL)
+        *ptr = '\0';
+
+      fprintf(fp, " - %s", line);
+    }
+  }  
+  fputs("\n", fp);  
   fprintf(fp, " Copyright: %s\n", dist->copyright);
   for (i = 0; i < dist->num_descriptions; i ++)
     if (dist->descriptions[i].subpackage == subpackage)

@@ -82,6 +82,10 @@ make_subpackage(
   char		commentname[1024];	/* pkg comment filename */
   char		descrname[1024];	/* pkg descr filename */
   char		plistname[1024];	/* pkg plist filename */
+  char		preinstallname[1024];	/* pre-install script filename */
+  char		postinstallname[1024];	/* post-install script filename */
+  char		preremovename[1024];	/* pre-remove script filename */
+  char		postremovename[1024];	/* post-remove script filename */
   char		filename[1024];		/* Destination filename */
   char		*old_user,		/* Old owner UID */
 		*old_group;		/* Old group ID */
@@ -229,26 +233,6 @@ make_subpackage(
       putc('\n', fp);
   }
 
-  for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
-    if (c->subpackage == subpackage)
-      switch (c->type)
-      {
-	case COMMAND_PRE_INSTALL :
-            fputs("WARNING: Package contains pre-install commands which are not supported\n"
-	          "         by the BSD packager.\n", stderr);
-            break;
-	case COMMAND_POST_INSTALL :
-            fprintf(fp, "@exec %s\n", c->command);
-	    break;
-	case COMMAND_PRE_REMOVE :
-            fprintf(fp, "@unexec %s\n", c->command);
-	    break;
-	case COMMAND_POST_REMOVE :
-            fputs("WARNING: Package contains post-removal commands which are not supported\n"
-	          "         by the BSD packager.\n", stderr);
-            break;
-      }
-
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'd' && file->subpackage == subpackage)
     {
@@ -316,6 +300,69 @@ make_subpackage(
       qprintf(fp, "@dirrm %s\n", file->dst + 1);
 
   fclose(fp);
+
+ /*
+  * Write the pre/post install/remove scripts for pkg...
+  */
+
+  snprintf(preinstallname, sizeof(preinstallname), "%s/preinst", directory);
+  snprintf(postinstallname, sizeof(postinstallname), "%s/postinst", directory);
+  snprintf(preremovename, sizeof(preremovename), "%s/prerm", directory);
+  snprintf(postremovename, sizeof(postremovename), "%s/postrm", directory);
+
+  for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
+    if (c->subpackage == subpackage)
+      switch (c->type)
+      {
+        case COMMAND_PRE_INSTALL :
+            if (Verbosity)
+              printf("Creating %s file...\n", preinstallname);
+            if ((fp = fopen(preinstallname, "w")) == NULL)
+            {
+              fprintf(stderr, "epm: Unable to create pre-install script file \"%s\" - %s\n", preinstallname,
+                      strerror(errno));
+              return (1);
+            }
+            fputs(c->command, fp);
+            fclose(fp);
+            break;
+	case COMMAND_POST_INSTALL :
+            if (Verbosity)
+              printf("Creating %s file...\n", postinstallname);
+            if ((fp = fopen(postinstallname, "w")) == NULL)
+            {
+              fprintf(stderr, "epm: Unable to create post-install script file \"%s\" - %s\n", postinstallname,
+                      strerror(errno));
+              return (1);
+            }
+            fputs(c->command, fp);
+            fclose(fp);
+	    break;
+	case COMMAND_PRE_REMOVE :
+            if (Verbosity)
+              printf("Creating %s file...\n", preremovename);
+            if ((fp = fopen(preremovename, "w")) == NULL)
+            {
+              fprintf(stderr, "epm: Unable to create pre-remove script file \"%s\" - %s\n", preremovename,
+                      strerror(errno));
+              return (1);
+            }
+            fputs(c->command, fp);
+            fclose(fp);
+	    break;
+	case COMMAND_POST_REMOVE :
+            if (Verbosity)
+              printf("Creating %s file...\n", postremovename);
+            if ((fp = fopen(postremovename, "w")) == NULL)
+            {
+              fprintf(stderr, "epm: Unable to create post-remove script file \"%s\" - %s\n", postremovename,
+                      strerror(errno));
+              return (1);
+            }
+            fputs(c->command, fp);
+            fclose(fp);
+            break;
+      }
 
  /*
   * Copy the files over...
@@ -418,10 +465,18 @@ make_subpackage(
                         "-c %s "
 			"-d %s "
                         "-f %s "
+                        "-i %s "
+                        "-I %s "
+                        "-k %s "
+                        "-K %s "
 			"%s/%s.tbz",
 		  commentname,
 		  descrname,
 		  plistname,
+                  preinstallname,
+                  postinstallname,
+                  preremovename,
+                  postremovename,
 		  directory, name))
     return (1);
 #else

@@ -86,6 +86,10 @@ make_subpackage(
   char		postinstallname[1024];	/* post-install script filename */
   char		preremovename[1024];	/* pre-remove script filename */
   char		postremovename[1024];	/* post-remove script filename */
+  char		preinstall_opt[1024];	/* pkg_create option for pre-install */
+  char		postinstall_opt[1024];	/* pkg_create option for post-install */
+  char		preremove_opt[1024];	/* pkg_create option for pre-remove */
+  char		postremove_opt[1024];	/* pkg_create option for post-remove */
   char		filename[1024];		/* Destination filename */
   char		*old_user,		/* Old owner UID */
 		*old_group;		/* Old group ID */
@@ -325,6 +329,7 @@ make_subpackage(
             }
             fputs(c->command, fp);
             fclose(fp);
+            snprintf(preinstall_opt, sizeof(preinstall_opt), "-i %s ", preinstallname);
             break;
 	case COMMAND_POST_INSTALL :
             if (Verbosity)
@@ -337,6 +342,7 @@ make_subpackage(
             }
             fputs(c->command, fp);
             fclose(fp);
+            snprintf(postinstall_opt, sizeof(postinstall_opt), "-I %s ", postinstallname);
 	    break;
 	case COMMAND_PRE_REMOVE :
             if (Verbosity)
@@ -349,6 +355,7 @@ make_subpackage(
             }
             fputs(c->command, fp);
             fclose(fp);
+            snprintf(preremove_opt, sizeof(preremove_opt), "-k %s ", preremovename);
 	    break;
 	case COMMAND_POST_REMOVE :
             if (Verbosity)
@@ -361,6 +368,7 @@ make_subpackage(
             }
             fputs(c->command, fp);
             fclose(fp);
+            snprintf(postremove_opt, sizeof(postremove_opt), "-K %s ", postremovename);
             break;
       }
 
@@ -465,18 +473,15 @@ make_subpackage(
                         "-c %s "
 			"-d %s "
                         "-f %s "
-                        "-i %s "
-                        "-I %s "
-                        "-k %s "
-                        "-K %s "
+                        "%s %s %s %s "
 			"%s/%s.tbz",
 		  commentname,
 		  descrname,
 		  plistname,
-                  preinstallname,
-                  postinstallname,
-                  preremovename,
-                  postremovename,
+                  preinstall_opt,
+                  postinstall_opt,
+                  preremove_opt,
+                  postremove_opt,
 		  directory, name))
     return (1);
 #else

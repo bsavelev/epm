@@ -260,6 +260,9 @@ make_subpackage(const char     *prodname,
 
     if (i < dist->num_descriptions)
     {
+      char	line[1024],		/* First line of description... */
+		*ptr;			/* Pointer into line */
+
       strlcpy(line, dist->descriptions[i].description, sizeof(line));
       if ((ptr = strchr(line, '\n')) != NULL)
         *ptr = '\0';

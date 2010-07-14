@@ -115,16 +115,16 @@ make_subpackage(
   if (dist->release[0])
   {
     if (platname[0])
-      snprintf(name, sizeof(name), "%s-%s-%s-%s", prodfull, dist->version,
+      snprintf(name, sizeof(name), "%s_%s-%s_%s", prodfull, dist->version,
                dist->release, platname);
     else
-      snprintf(name, sizeof(name), "%s-%s-%s", prodfull, dist->version,
+      snprintf(name, sizeof(name), "%s_%s-%s", prodfull, dist->version,
                dist->release);
   }
   else if (platname[0])
-    snprintf(name, sizeof(name), "%s-%s-%s", prodfull, dist->version, platname);
+    snprintf(name, sizeof(name), "%s_%s_%s", prodfull, dist->version, platname);
   else
-    snprintf(name, sizeof(name), "%s-%s", prodfull, dist->version);
+    snprintf(name, sizeof(name), "%s_%s", prodfull, dist->version);
 
  /*
   * Write the descr file for pkg...

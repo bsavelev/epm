@@ -689,30 +689,10 @@ write_spec(int        format,		/* I - Subformat */
 
   if (i > 0)
   {
-    have_commands = 1;
     fprintf(fp, "%%pre%s\n", name);
     for (; i > 0; i --, c ++)
       if (c->type == COMMAND_PRE_INSTALL && c->subpackage == subpackage)
 	fprintf(fp, "%s\n", c->command);
-  } else
-    have_commands = 0;
-
-  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      break;
-
-  if (i)
-  {
-    if (!have_commands)
-      fprintf(fp, "%%pre%s\n", name);
-
-    fputs("if test \"x$1\" = x2; then\n", fp);
-    for (; i > 0; i --, file ++)
-      if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-      {
-	qprintf(fp, "\t/etc/init.d/%s stop || true\n", epm_basename(file->dst));
-      }
-      fputs("fi\n", fp);
   }
 
   for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
@@ -954,11 +934,31 @@ write_spec(int        format,		/* I - Subformat */
 
   if (i > 0)
   {
+    have_commands = 1;
     fprintf(fp, "%%postun%s\n", name);
     for (; i > 0; i --, c ++)
       if (c->type == COMMAND_POST_REMOVE && c->subpackage == subpackage)
 	fprintf(fp, "%s\n", c->command);
-  }
+  } else
+    have_commands = 0;
+
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
+    if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+      break;
+
+  if (i)
+  {
+    if (!have_commands)
+      fprintf(fp, "%%postun%s\n", name);
+
+    fputs("if test \"x$1\" = x1; then\n", fp);
+    for (; i > 0; i --, file ++)
+      if (tolower(file->type) == 'i' && file->subpackage == subpackage)
+      {
+       qprintf(fp, "\t/etc/init.d/%s condrestart || true\n", epm_basename(file->dst));
+      }
+      fputs("fi\n", fp);
+   }
 
  /*
   * Description...

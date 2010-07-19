@@ -323,8 +323,9 @@ make_subpackage(
       */
 
       fprintf(fp, "@exec mkdir -p %s\n", file->dst);
-      fprintf(fp, "@exec chown %s:%s %s\n", file->user, file->group,
-              file->dst);
+      if (strcmp(file->user, "root") != 0 || strcmp(file->group, "root") != 0)
+        fprintf(fp, "@exec chown %s:%s %s\n", file->user, file->group,
+                file->dst);
       fprintf(fp, "@exec chmod %04o %s\n", file->mode, file->dst);
     }
 

@@ -3177,13 +3177,11 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("			if test -w \"`dirname \"$file\"`\" ; then\n", scriptfile);
     fputs("				mv -f \"$file.O\" \"$file\"\n", scriptfile);
     fputs("			else\n", scriptfile);
-    fputs("				printf \"`eval_gettext \\\"Error: Cannot write in %s.\\\"`\\n\" \"`dirname \"$file\"`\"\n", scriptfile);
-    fputs("				exit 1\n", scriptfile);
+    fputs("				printf \"`eval_gettext \\\"Warning: Cannot write in %s.\\\"`\\n\" \"`dirname \"$file\"`\"\n", scriptfile);
     fputs("			fi\n", scriptfile);
     fputs("		fi\n", scriptfile);
     fputs("	else\n", scriptfile);
-    fputs("		printf \"`eval_gettext \\\"Error: Cannot write in %s.\\\"`\\n\" \"`dirname \"$file\"`\"\n", scriptfile);
-    fputs("		exit 1\n", scriptfile);
+    fputs("		printf \"`eval_gettext \\\"Warning: Cannot write in %s.\\\"`\\n\" \"`dirname \"$file\"`\"\n", scriptfile);
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
 //     fputs("fi\n", scriptfile);

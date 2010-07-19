@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-04-13 11:43+0400\n"
+"POT-Creation-Date: 2010-07-19 15:03+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,115 +116,115 @@ msgstr ""
 msgid "Next @-2>"
 msgstr ""
 
-#: setup.cxx:2040 setup2.cxx:1026 setup2.cxx:1097 setup2.cxx:1180
+#: setup.cxx:2040 setup2.cxx:1035 setup2.cxx:1106 setup2.cxx:1189
 #: uninst.cxx:1905 uninst2.cxx:417
 msgid "Cancel"
 msgstr ""
 
-#: setup2.cxx:226
+#: setup2.cxx:227
 msgid "You must be logged in as root to run setup!"
 msgstr ""
 
-#: setup2.cxx:396
+#: setup2.cxx:397
 msgid "No software found to install!"
 msgstr ""
 
-#: setup2.cxx:410
+#: setup2.cxx:411
 msgid " (new)"
 msgstr ""
 
-#: setup2.cxx:415
+#: setup2.cxx:416
 msgid " (downgrade)"
 msgstr ""
 
-#: setup2.cxx:420
+#: setup2.cxx:421
 msgid " (installed)"
 msgstr ""
 
-#: setup2.cxx:425
+#: setup2.cxx:426
 msgid " (upgrade)"
 msgstr ""
 
-#: setup2.cxx:472
+#: setup2.cxx:473
 msgid "Failed to execute install script!"
 msgstr ""
 
-#: setup2.cxx:505
+#: setup2.cxx:506
 msgid "Unable to install"
 msgstr ""
 
-#: setup2.cxx:621
+#: setup2.cxx:623
 #, c-format
 msgid ""
 "%s requires %s to be installed, but it is not available for installation."
 msgstr ""
 
-#: setup2.cxx:634
+#: setup2.cxx:636
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please remove it before installing this software."
 msgstr ""
 
-#: setup2.cxx:651
+#: setup2.cxx:653
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please deselect it before installing this "
 "software."
 msgstr ""
 
-#: setup2.cxx:715
+#: setup2.cxx:717
 msgid ""
 "This program allows you to install the following software:\n"
 "<ul>\n"
 msgstr ""
 
-#: setup2.cxx:787
+#: setup2.cxx:789
 msgid "Custom Configuration"
 msgstr ""
 
-#: setup2.cxx:789
+#: setup2.cxx:791
 msgid "Dr.Web for Linux Workstations"
 msgstr ""
 
-#: setup2.cxx:1066
+#: setup2.cxx:1075
 #, c-format
 msgid "License is not accepted!"
 msgstr ""
 
-#: setup2.cxx:1085
+#: setup2.cxx:1094
 msgid "Installation canceled!"
 msgstr ""
 
-#: setup2.cxx:1087 setup2.cxx:1123 setup2.cxx:1145 uninst2.cxx:431
+#: setup2.cxx:1096 setup2.cxx:1132 setup2.cxx:1154 uninst2.cxx:431
 msgid "Close"
 msgstr ""
 
-#: setup2.cxx:1107
+#: setup2.cxx:1116
 #, c-format
 msgid "Installing %s v%s..."
 msgstr ""
 
-#: setup2.cxx:1122
+#: setup2.cxx:1131
 msgid "Installation failed"
 msgstr ""
 
-#: setup2.cxx:1126
+#: setup2.cxx:1135
 msgid "Installation complete"
 msgstr ""
 
-#: setup2.cxx:1148
+#: setup2.cxx:1157
 msgid "<span>Installation failed. See install.log for details.</span>"
 msgstr ""
 
-#: setup2.cxx:1169
+#: setup2.cxx:1178
 msgid "<span>Installation complete.</span>"
 msgstr ""
 
-#: setup2.cxx:1390
+#: setup2.cxx:1399
 msgid "English"
 msgstr ""
 
-#: setup2.cxx:1397
+#: setup2.cxx:1406
 msgid "Russian"
 msgstr ""
 
@@ -464,8 +464,7 @@ msgstr ""
 msgid "Backing up old versions of files to be installed..."
 msgstr ""
 
-#: dummy/epm.install.sh:323 dummy/epm.install.sh:338 dummy/epm.remove.sh:193
-#: dummy/epm.remove.sh:198
+#: dummy/epm.install.sh:323 dummy/epm.install.sh:338
 #, sh-format
 msgid "Error: Cannot write in %s."
 msgstr ""
@@ -485,7 +484,7 @@ msgstr ""
 msgid "Installing software..."
 msgstr ""
 
-#: dummy/epm.install.sh:361 dummy/epm.remove.sh:202
+#: dummy/epm.install.sh:361 dummy/epm.remove.sh:200
 #, sh-format
 msgid "Checking configuration files..."
 msgstr ""
@@ -555,17 +554,22 @@ msgstr ""
 msgid "Removing/restoring installed files..."
 msgstr ""
 
-#: dummy/epm.remove.sh:215
+#: dummy/epm.remove.sh:193 dummy/epm.remove.sh:197
+#, sh-format
+msgid "Warning: Cannot write in %s."
+msgstr ""
+
+#: dummy/epm.remove.sh:213
 #, sh-format
 msgid "Removing empty installation directories..."
 msgstr ""
 
-#: dummy/epm.remove.sh:224
+#: dummy/epm.remove.sh:222
 #, sh-format
 msgid "Running post-remove commands..."
 msgstr ""
 
-#: dummy/epm.remove.sh:228
+#: dummy/epm.remove.sh:226
 #, sh-format
 msgid "Removal %s is complete."
 msgstr ""

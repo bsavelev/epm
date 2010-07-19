@@ -593,6 +593,10 @@ make_subpackage(
     unlink(plistname);
     unlink(commentname);
     unlink(descrname);
+    unlink(preinstallname);
+    unlink(postinstallname);
+    unlink(preremovename);
+    unlink(postremovename);
   }
 
   return (0);

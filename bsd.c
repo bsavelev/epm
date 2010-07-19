@@ -167,6 +167,7 @@ make_subpackage(
   char		postinstall_opt[1024];	/* pkg_create option for post-install */
   char		preremove_opt[1024];	/* pkg_create option for pre-remove */
   char		postremove_opt[1024];	/* pkg_create option for post-remove */
+  char		origin[1024];		/* Package origin */
   char		filename[1024];		/* Destination filename */
   char		*old_user,		/* Old owner UID */
 		*old_group;		/* Old group ID */
@@ -185,6 +186,8 @@ make_subpackage(
     snprintf(prodfull, sizeof(prodfull), "%s-%s", prodname, subpackage);
   else
     strlcpy(prodfull, prodname, sizeof(prodfull));
+
+  snprintf(origin, sizeof(origin), "security/%s",  prodfull);
 
   if (Verbosity)
     printf("Creating %s *BSD pkg distribution...\n", prodfull);
@@ -556,15 +559,17 @@ make_subpackage(
                         "-c %s "
 			"-d %s "
                         "-f %s "
+                        "-o %s "
                         "%s %s %s %s "
 			"%s/%s.tbz",
 		  commentname,
 		  descrname,
 		  plistname,
-                  preinstall_opt,
-                  postinstall_opt,
-                  preremove_opt,
-                  postremove_opt,
+		  origin,
+		  preinstall_opt,
+		  postinstall_opt,
+		  preremove_opt,
+		  postremove_opt,
 		  directory, name))
     return (1);
 #else

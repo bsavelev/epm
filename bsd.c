@@ -314,6 +314,11 @@ make_subpackage(
   snprintf(preremovename, sizeof(preremovename), "%s/prerm", directory);
   snprintf(postremovename, sizeof(postremovename), "%s/postrm", directory);
 
+  preinstall_opt[0]=0;
+  postinstall_opt[0]=0;
+  preremove_opt[0]=0;
+  postremove_opt[0]=0;
+
   for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
     if (c->subpackage == subpackage)
       switch (c->type)

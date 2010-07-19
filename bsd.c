@@ -242,22 +242,7 @@ make_subpackage(
             strerror(errno));
     return (1);
   }
-
-  fprintf(fp, "Summary: %s\n", dist->product);
-  fprintf(fp, "Name: %s\n", prodfull);
-  fprintf(fp, "Version: %s\n", dist->version);
-  fprintf(fp, "Release: %s\n", dist->release);
-  fprintf(fp, "Copyright: %s\n", dist->copyright);
-  fprintf(fp, "Packager: %s\n", dist->packager);
-  fprintf(fp, "Vendor: %s\n", dist->vendor);
-  fprintf(fp, "BuildRoot: %s/%s/%s.buildroot\n", current, directory, prodfull);
-  fputs("Group: Applications\n", fp);
-
-  fputs("Description:\n\n", fp);
-  for (i = 0; i < dist->num_descriptions; i ++)
-    if (dist->descriptions[i].subpackage == subpackage)
-      fprintf(fp, "%s\n", dist->descriptions[i].description);
-
+  fprintf(fp, "%s", prodfull);
   fclose(fp);
 
  /*

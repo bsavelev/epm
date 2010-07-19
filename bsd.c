@@ -49,6 +49,9 @@ make_bsd(const char     *prodname,	/* I - Product short name */
 	 struct utsname *platform)	/* I - Platform information */
 {
   int		i;			/* Looping var */
+  tarf_t	*tarfile;		/* Distribution tar file */
+  char		name[1024],		/* Product filename */
+		filename[1024];		/* Destination filename */
 
 
   if (make_subpackage(prodname, directory, platname, dist, NULL))
@@ -58,6 +61,80 @@ make_bsd(const char     *prodname,	/* I - Product short name */
     if (make_subpackage(prodname, directory, platname, dist,
                         dist->subpackages[i]))
       return (1);
+
+ /*
+  * Build a compressed tar file to hold all of the subpackages...
+  */
+
+  if (dist->num_subpackages)
+  {
+   /*
+    * Figure out the full name of the distribution...
+    */
+
+    if (dist->release[0])
+      snprintf(name, sizeof(name), "%s_%s-%s", prodname, dist->version,
+               dist->release);
+    else
+      snprintf(name, sizeof(name), "%s_%s", prodname, dist->version);
+
+    if (platname[0])
+    {
+      strlcat(name, "_", sizeof(name));
+      strlcat(name, platname, sizeof(name));
+    }
+
+   /*
+    * Create a compressed tar file...
+    */
+
+    snprintf(filename, sizeof(filename), "%s/%s.tgz.tgz", directory, name);
+
+    if ((tarfile = tar_open(filename, 1)) == NULL)
+      return (1);
+
+   /*
+    * Archive the main package and subpackages...
+    */
+
+    if (tar_package(tarfile, "tgz", prodname, directory, platname, dist, NULL))
+    {
+      tar_close(tarfile);
+      return (1);
+    }
+
+    for (i = 0; i < dist->num_subpackages; i ++)
+    {
+      if (tar_package(tarfile, "tgz", prodname, directory, platname, dist,
+                      dist->subpackages[i]))
+      {
+	tar_close(tarfile);
+	return (1);
+      }
+    }
+    
+    tar_close(tarfile);
+  }
+
+ /*
+  * Remove temporary files...
+  */
+
+  if (!KeepFiles && dist->num_subpackages)
+  {
+    if (Verbosity)
+      puts("Removing temporary distribution files...");
+
+   /*
+    * Remove .tgz files since they are now in a .tgz.tgz file...
+    */
+
+    unlink_package("tgz", prodname, directory, platname, dist, NULL);
+
+    for (i = 0; i < dist->num_subpackages; i ++)
+      unlink_package("tgz", prodname, directory, platname, dist,
+                     dist->subpackages[i]);
+  }
 
   return (0);
 }

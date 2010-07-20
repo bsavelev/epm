@@ -401,7 +401,11 @@ make_subpackage(const char     *prodname,
           fprintf(fp, " . stop %02d 0", get_stop(file, 0));
 
         fputs(" . >/dev/null\n", fp);
-        fprintf(fp, "/etc/init.d/%s start || true\n", file->dst);
+        fprintf(fp, "if which invoke-rc.d >/dev/null 2>&1; then\n");
+        fprintf(fp, "    invoke-rc.d %s start || true\n", file->dst);
+        fprintf(fp, "else\n");
+        fprintf(fp, "    /etc/init.d/%s start || true\n", file->dst);
+        fprintf(fp, "fi\n");
       }
 
     fclose(fp);
@@ -445,7 +449,13 @@ make_subpackage(const char     *prodname,
 
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
-        fprintf(fp, "/etc/init.d/%s stop\n", file->dst);
+      {
+        fprintf(fp, "if which invoke-rc.d >/dev/null 2>&1; then\n");
+        fprintf(fp, "    invoke-rc.d %s stop || true\n", file->dst);
+        fprintf(fp, "else\n");
+        fprintf(fp, "    /etc/init.d/%s stop || true\n", file->dst);
+        fprintf(fp, "fi\n");
+      }
 
     fclose(fp);
   }

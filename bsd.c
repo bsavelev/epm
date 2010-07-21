@@ -262,7 +262,7 @@ make_subpackage(
   }
 
   /* Declare our (non-standard) package name explicitly. */
-  fprintf(fp, "@name %s\n", name);
+  fprintf(fp, "@name %s-%s_%s", prodfull, dist->version, dist->release);
 
  /*
   * FreeBSD and NetBSD support both "source directory" and "preserve files"

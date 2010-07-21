@@ -552,7 +552,7 @@ if (!strcmp(ext,"rpm")) {
 
   if (platname[0])
   {
-    strlcat(name, "-", sizeof(name));
+    strlcat(name, "_", sizeof(name));
     strlcat(name, platname, sizeof(name));
   }
 

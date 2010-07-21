@@ -88,7 +88,7 @@ make_bsd(const char     *prodname,	/* I - Product short name */
     * Create a compressed tar file...
     */
 
-    snprintf(filename, sizeof(filename), "%s/%s.tgz.tgz", directory, name);
+    snprintf(filename, sizeof(filename), "%s/%s.tbz.tgz", directory, name);
 
     if ((tarfile = tar_open(filename, 1)) == NULL)
       return (1);
@@ -97,7 +97,7 @@ make_bsd(const char     *prodname,	/* I - Product short name */
     * Archive the main package and subpackages...
     */
 
-    if (tar_package(tarfile, "tgz", prodname, directory, platname, dist, NULL))
+    if (tar_package(tarfile, "tbz", prodname, directory, platname, dist, NULL))
     {
       tar_close(tarfile);
       return (1);
@@ -105,7 +105,7 @@ make_bsd(const char     *prodname,	/* I - Product short name */
 
     for (i = 0; i < dist->num_subpackages; i ++)
     {
-      if (tar_package(tarfile, "tgz", prodname, directory, platname, dist,
+      if (tar_package(tarfile, "tbz", prodname, directory, platname, dist,
                       dist->subpackages[i]))
       {
 	tar_close(tarfile);
@@ -126,7 +126,7 @@ make_bsd(const char     *prodname,	/* I - Product short name */
       puts("Removing temporary distribution files...");
 
    /*
-    * Remove .tgz files since they are now in a .tgz.tgz file...
+    * Remove .tgz files since they are now in a .tbz.tgz file...
     */
 
     unlink_package("tgz", prodname, directory, platname, dist, NULL);

@@ -352,7 +352,14 @@ make_subpackage(
     if (strcmp(file->user, old_user))
       fprintf(fp, "@owner %s\n", old_user = file->user);
     if (strcmp(file->group, old_group))
-      fprintf(fp, "@group %s\n", old_group = file->group);
+    {
+      if (!strcmp(file->group, "root"))
+          fprintf(fp, "@group %s\n", "wheel");
+      else
+          fprintf(fp, "@group %s\n", file->group);
+
+      old_group = file->group;
+    }
 
     switch (tolower(file->type))
     {

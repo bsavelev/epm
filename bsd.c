@@ -129,10 +129,10 @@ make_bsd(const char     *prodname,	/* I - Product short name */
     * Remove .tgz files since they are now in a .tbz.tgz file...
     */
 
-    unlink_package("tgz", prodname, directory, platname, dist, NULL);
+    unlink_package("tbz", prodname, directory, platname, dist, NULL);
 
     for (i = 0; i < dist->num_subpackages; i ++)
-      unlink_package("tgz", prodname, directory, platname, dist,
+      unlink_package("tbz", prodname, directory, platname, dist,
                      dist->subpackages[i]);
   }
 

@@ -400,14 +400,14 @@ if (!strcmp(ext,"rpm")) {
   strlcat(name, ext, sizeof(name));
 } else {
   if (dist->release[0])
-    snprintf(name, sizeof(name), "%s-%s-%s", prodfull, dist->version,
+    snprintf(name, sizeof(name), "%s_%s-%s", prodfull, dist->version,
              dist->release);
   else
-    snprintf(name, sizeof(name), "%s-%s", prodfull, dist->version);
+    snprintf(name, sizeof(name), "%s_%s", prodfull, dist->version);
 
   if (platname[0])
   {
-    strlcat(name, "-", sizeof(name));
+    strlcat(name, "_", sizeof(name));
     strlcat(name, platname, sizeof(name));
   }
 

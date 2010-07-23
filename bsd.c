@@ -126,7 +126,7 @@ make_bsd(const char     *prodname,	/* I - Product short name */
       puts("Removing temporary distribution files...");
 
    /*
-    * Remove .tgz files since they are now in a .tbz.tgz file...
+    * Remove .tbz files since they are now in a .tbz.tgz file...
     */
 
     unlink_package("tbz", prodname, directory, platname, dist, NULL);

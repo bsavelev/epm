@@ -222,7 +222,12 @@ make_subpackage(
     return (1);
   }
 
-  fprintf(fp, "%s\n", dist->product);
+  for (i = 0; i < dist->num_descriptions; i ++)
+    if (dist->descriptions[i].subpackage == subpackage)
+      break;
+
+  if (i < dist->num_descriptions)
+    fprintf(fp, "%s\n", dist->descriptions[i].description);
 
   fclose(fp);
 
@@ -242,7 +247,7 @@ make_subpackage(
             strerror(errno));
     return (1);
   }
-  fprintf(fp, "%s", prodfull);
+  fprintf(fp, "%s", dist->product);
   fclose(fp);
 
  /*

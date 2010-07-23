@@ -71,15 +71,15 @@ make_pkg(const char     *prodname,	/* I - Product short name */
   if (dist->release[0])
   {
     if (platname[0])
-      snprintf(name, sizeof(name), "%s-%s-%s-%s", prodname, dist->version, dist->release,
+      snprintf(name, sizeof(name), "%s_%s-%s_%s", prodname, dist->version, dist->release,
               platname);
     else
-      snprintf(name, sizeof(name), "%s-%s-%s", prodname, dist->version, dist->release);
+      snprintf(name, sizeof(name), "%s_%s-%s", prodname, dist->version, dist->release);
   }
   else if (platname[0])
-    snprintf(name, sizeof(name), "%s-%s-%s", prodname, dist->version, platname);
+    snprintf(name, sizeof(name), "%s_%s_%s", prodname, dist->version, platname);
   else
-    snprintf(name, sizeof(name), "%s-%s", prodname, dist->version);
+    snprintf(name, sizeof(name), "%s_%s", prodname, dist->version);
 
   getcwd(current, sizeof(current));
 

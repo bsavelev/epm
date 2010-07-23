@@ -247,7 +247,7 @@ make_subpackage(
             strerror(errno));
     return (1);
   }
-  fprintf(fp, "%s", dist->product);
+  fprintf(fp, "%s\n", dist->product);
   fclose(fp);
 
  /*

@@ -18,6 +18,7 @@
  * Contents:
  *
  *   make_pkg() - Make an AT&T software distribution package.
+ *   make_subpackage() - Create a subpackage...
  *   pkg_path() - Return an absolute path for the prototype file.
  */
 
@@ -32,6 +33,9 @@
  * Local functions...
  */
 
+static int	make_subpackage(const char *prodname, const char *directory,
+		                const char *platname, dist_t *dist,
+			        const char *subpackage);
 static const char	*pkg_path(const char *filename, const char *dirname);
 
 
@@ -45,6 +49,109 @@ make_pkg(const char     *prodname,	/* I - Product short name */
          const char     *platname,	/* I - Platform name */
          dist_t         *dist,		/* I - Distribution information */
 	 struct utsname *platform)	/* I - Platform information */
+{
+  int		i;			/* Looping var */
+  tarf_t	*tarfile;		/* Distribution tar file */
+  char		name[1024],		/* Product filename */
+		filename[1024];		/* Destination filename */
+
+
+  if (make_subpackage(prodname, directory, platname, dist, NULL))
+    return (1);
+
+  for (i = 0; i < dist->num_subpackages; i ++)
+    if (make_subpackage(prodname, directory, platname, dist,
+                        dist->subpackages[i]))
+      return (1);
+
+ /*
+  * Build a compressed tar file to hold all of the subpackages...
+  */
+
+  if (dist->num_subpackages)
+  {
+   /*
+    * Figure out the full name of the distribution...
+    */
+
+    if (dist->release[0])
+      snprintf(name, sizeof(name), "%s_%s-%s", prodname, dist->version,
+               dist->release);
+    else
+      snprintf(name, sizeof(name), "%s_%s", prodname, dist->version);
+
+    if (platname[0])
+    {
+      strlcat(name, "_", sizeof(name));
+      strlcat(name, platname, sizeof(name));
+    }
+
+   /*
+    * Create a compressed tar file...
+    */
+
+    snprintf(filename, sizeof(filename), "%s/%s.pkg.gz.tgz", directory, name);
+
+    if ((tarfile = tar_open(filename, 1)) == NULL)
+      return (1);
+
+   /*
+    * Archive the main package and subpackages...
+    */
+
+    if (tar_package(tarfile, "pkg.gz", prodname, directory, platname, dist, NULL))
+    {
+      tar_close(tarfile);
+      return (1);
+    }
+
+    for (i = 0; i < dist->num_subpackages; i ++)
+    {
+      if (tar_package(tarfile, "pkg.gz", prodname, directory, platname, dist,
+                      dist->subpackages[i]))
+      {
+	tar_close(tarfile);
+	return (1);
+      }
+    }
+    
+    tar_close(tarfile);
+  }
+
+ /*
+  * Remove temporary files...
+  */
+
+  if (!KeepFiles && dist->num_subpackages)
+  {
+    if (Verbosity)
+      puts("Removing temporary distribution files...");
+
+   /*
+    * Remove .pkg.gz files since they are now in a .pkg.gz.tgz file...
+    */
+
+    unlink_package("pkg.gz", prodname, directory, platname, dist, NULL);
+
+    for (i = 0; i < dist->num_subpackages; i ++)
+      unlink_package("pkg.gz", prodname, directory, platname, dist,
+                     dist->subpackages[i]);
+  }
+
+  return (0);
+}
+
+/*
+ * 'make_subpackage()' - Create a subpackage...
+ */
+
+static int				/* O - 0 = success, 1 = fail */
+make_subpackage(
+    const char     *prodname,		/* I - Product short name */
+    const char     *directory,		/* I - Directory for distribution files */
+    const char     *platname,		/* I - Platform name */
+    dist_t         *dist,		/* I - Distribution information */
+    const char     *subpackage)		/* I - Subpackage name */
 {
   int		i;			/* Looping var */
   FILE		*fp;			/* Control file */
@@ -114,10 +221,6 @@ make_pkg(const char     *prodname,	/* I - Product short name */
     fprintf(fp, "DESC=%s\n", dist->descriptions[0].description);
 
   fputs("CATEGORY=application\n", fp);
-  fputs("CLASSES=none", fp);
-  for (i = 0; i < dist->num_subpackages; i ++)
-    fprintf(fp, " %s", dist->subpackages[i]);
-  putc('\n', fp);
 
   fclose(fp);
 

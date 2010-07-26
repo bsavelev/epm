@@ -155,6 +155,7 @@ make_subpackage(
 {
   int		i;			/* Looping var */
   FILE		*fp;			/* Control file */
+  char		prodfull[1024];		/* Full subpackage name */
   char		name[1024];		/* Full product name */
   char		filename[1024],		/* Destination filename */
 		preinstall[1024],	/* Pre install script */
@@ -172,23 +173,29 @@ make_subpackage(
   const char	*runlevels;		/* Run levels */
 
 
+  getcwd(current, sizeof(current));
+
+  if (subpackage)
+    snprintf(prodfull, sizeof(prodfull), "%s-%s", prodname, subpackage);
+  else
+    strlcpy(prodfull, prodname, sizeof(prodfull));
+
   if (Verbosity)
     puts("Creating PKG distribution...");
 
   if (dist->release[0])
   {
     if (platname[0])
-      snprintf(name, sizeof(name), "%s_%s-%s_%s", prodname, dist->version, dist->release,
-              platname);
+      snprintf(name, sizeof(name), "%s_%s-%s_%s", prodfull, dist->version,
+               dist->release, platname);
     else
-      snprintf(name, sizeof(name), "%s_%s-%s", prodname, dist->version, dist->release);
+      snprintf(name, sizeof(name), "%s_%s-%s", prodfull, dist->version,
+               dist->release);
   }
   else if (platname[0])
-    snprintf(name, sizeof(name), "%s_%s_%s", prodname, dist->version, platname);
+    snprintf(name, sizeof(name), "%s_%s_%s", prodfull, dist->version, platname);
   else
-    snprintf(name, sizeof(name), "%s_%s", prodname, dist->version);
-
-  getcwd(current, sizeof(current));
+    snprintf(name, sizeof(name), "%s_%s", prodfull, dist->version);
 
  /*
   * Write the pkginfo file for pkgmk...
@@ -197,7 +204,7 @@ make_subpackage(
   if (Verbosity)
     puts("Creating package information file...");
 
-  snprintf(filename, sizeof(filename), "%s/%s.pkginfo", directory, prodname);
+  snprintf(filename, sizeof(filename), "%s/%s.pkginfo", directory, prodfull);
 
   if ((fp = fopen(filename, "w")) == NULL)
   {
@@ -209,7 +216,7 @@ make_subpackage(
   curtime = time(NULL);
   curdate = gmtime(&curtime);
 
-  fprintf(fp, "PKG=%s\n", prodname);
+  fprintf(fp, "PKG=%s\n", prodfull);
   fprintf(fp, "NAME=%s\n", dist->product);
   fprintf(fp, "VERSION=%s\n", dist->version);
   fprintf(fp, "VENDOR=%s\n", dist->vendor);
@@ -231,7 +238,7 @@ make_subpackage(
   if (Verbosity)
     puts("Creating package dependency file...");
 
-  snprintf(filename, sizeof(filename), "%s/%s.depend", directory, prodname);
+  snprintf(filename, sizeof(filename), "%s/%s.depend", directory, prodfull);
 
   if ((fp = fopen(filename, "w")) == NULL)
   {
@@ -268,7 +275,7 @@ make_subpackage(
       puts("Creating preinstall script...");
 
     snprintf(preinstall, sizeof(preinstall), "%s/%s.preinstall", directory,
-             prodname);
+             prodfull);
 
     if ((fp = fopen(preinstall, "w")) == NULL)
     {
@@ -314,7 +321,7 @@ make_subpackage(
       puts("Creating postinstall script...");
 
     snprintf(postinstall, sizeof(postinstall), "%s/%s.postinstall", directory,
-             prodname);
+             prodfull);
 
     if ((fp = fopen(postinstall, "w")) == NULL)
     {
@@ -363,7 +370,7 @@ make_subpackage(
     if (Verbosity)
       puts("Creating preremove script...");
 
-    snprintf(preremove, sizeof(preremove), "%s/%s.preremove", directory, prodname);
+    snprintf(preremove, sizeof(preremove), "%s/%s.preremove", directory, prodfull);
 
     if ((fp = fopen(preremove, "w")) == NULL)
     {
@@ -408,7 +415,7 @@ make_subpackage(
       puts("Creating postremove script...");
 
     snprintf(postremove, sizeof(postremove), "%s/%s.postremove", directory,
-             prodname);
+             prodfull);
 
     if ((fp = fopen(postremove, "w")) == NULL)
     {
@@ -449,7 +456,7 @@ make_subpackage(
       puts("Creating request script...");
 
     snprintf(request, sizeof(request), "%s/%s.request", directory,
-             prodname);
+             prodfull);
 
     if ((fp = fopen(request, "w")) == NULL)
     {
@@ -521,7 +528,7 @@ make_subpackage(
   if (Verbosity)
     puts("Creating prototype file...");
 
-  snprintf(filename, sizeof(filename), "%s/%s.prototype", directory, prodname);
+  snprintf(filename, sizeof(filename), "%s/%s.prototype", directory, prodfull);
 
   if ((fp = fopen(filename, "w")) == NULL)
   {
@@ -537,9 +544,9 @@ make_subpackage(
   if (dist->license[0])
     fprintf(fp, "i copyright=%s\n", pkg_path(dist->license, current));
 
-  fprintf(fp, "i depend=%s/%s.depend\n", pkg_path(directory, current), prodname);
+  fprintf(fp, "i depend=%s/%s.depend\n", pkg_path(directory, current), prodfull);
   fprintf(fp, "i pkginfo=%s/%s.pkginfo\n", pkg_path(directory, current),
-          prodname);
+          prodfull);
 
   if (preinstall[0])
     fprintf(fp, "i preinstall=%s\n", pkg_path(preinstall, current));
@@ -591,7 +598,7 @@ make_subpackage(
     puts("Building PKG binary distribution...");
 
   if (run_command(NULL, "pkgmk -o -f %s/%s.prototype -d %s/%s",
-                  directory, prodname, current, directory))
+                  directory, prodfull, current, directory))
     return (1);
 
  /*
@@ -624,7 +631,7 @@ make_subpackage(
     puts("Copying into package stream file...");
 
   if (run_command(directory, "pkgtrans -s %s/%s %s.pkg %s",
-                  current, directory, name, prodname))
+                  current, directory, name, prodfull))
     return (1);
 
  /*
@@ -646,11 +653,11 @@ make_subpackage(
     if (Verbosity)
       puts("Removing temporary distribution files...");
 
-    snprintf(filename, sizeof(filename), "%s/%s.pkginfo", directory, prodname);
+    snprintf(filename, sizeof(filename), "%s/%s.pkginfo", directory, prodfull);
     unlink(filename);
-    snprintf(filename, sizeof(filename), "%s/%s.depend", directory, prodname);
+    snprintf(filename, sizeof(filename), "%s/%s.depend", directory, prodfull);
     unlink(filename);
-    snprintf(filename, sizeof(filename), "%s/%s.prototype", directory, prodname);
+    snprintf(filename, sizeof(filename), "%s/%s.prototype", directory, prodfull);
     unlink(filename);
     if (preinstall[0])
       unlink(preinstall);

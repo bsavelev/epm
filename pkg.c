@@ -119,11 +119,6 @@ make_pkg(const char     *prodname,	/* I - Product short name */
     fprintf(fp, " %s", dist->subpackages[i]);
   putc('\n', fp);
 
-  if (strcmp(platform->machine, "intel") == 0)
-    fputs("ARCH=i86pc\n", fp);
-  else
-    fputs("ARCH=sparc\n", fp);
-
   fclose(fp);
 
  /*

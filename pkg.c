@@ -631,8 +631,7 @@ make_subpackage(
   * Compress the package stream file...
   */
 
-  snprintf(filename, sizeof(filename), "%s.pkg.gz", name);
-  unlink(filename);
+  unlink_package("pkg.gz", prodname, directory, platname, dist, NULL);
 
   if (run_command(directory, EPM_GZIP " -v9 %s.pkg", name))
     return (1);

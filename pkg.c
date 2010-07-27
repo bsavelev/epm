@@ -224,8 +224,12 @@ make_subpackage(
           curdate->tm_year + 1900, curdate->tm_mon + 1, curdate->tm_mday,
 	  curdate->tm_hour, curdate->tm_min, curdate->tm_sec);
 
-  if (dist->num_descriptions > 0)
-    fprintf(fp, "DESC=%s\n", dist->descriptions[0].description);
+  for (i = 0; i < dist->num_descriptions; i ++)
+    if (dist->descriptions[i].subpackage == subpackage)
+      break;
+
+  if (i < dist->num_descriptions)
+    fprintf(fp, "DESC=%s\n", dist->descriptions[i].description);
 
   fputs("CATEGORY=application\n", fp);
 
@@ -248,12 +252,17 @@ make_subpackage(
   }
 
   for (i = dist->num_depends, d = dist->depends; i > 0; i --, d ++)
+  {
+    if (d->subpackage != subpackage)
+      continue;
+
     if (!strcmp(d->product, "_self"))
       continue;
     else if (d->type == DEPEND_REQUIRES)
       fprintf(fp, "P %s\n", d->product);
     else
       fprintf(fp, "I %s\n", d->product);
+  }
 
   fclose(fp);
 
@@ -262,7 +271,7 @@ make_subpackage(
   */
 
   for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
-    if (c->type == COMMAND_PRE_INSTALL)
+    if (c->subpackage == subpackage && c->type == COMMAND_PRE_INSTALL)
       break;
 
   if (i)
@@ -290,7 +299,7 @@ make_subpackage(
     fputs("# " EPM_VERSION "\n", fp);
 
     for (; i > 0; i --, c ++)
-      if (c->type == COMMAND_PRE_INSTALL)
+      if (c->subpackage == subpackage && c->type == COMMAND_PRE_INSTALL)
         fprintf(fp, "%s\n", c->command);
 
     fclose(fp);
@@ -303,12 +312,12 @@ make_subpackage(
   */
 
   for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
-    if (c->type == COMMAND_POST_INSTALL)
+    if (c->subpackage == subpackage && c->type == COMMAND_POST_INSTALL)
       break;
 
   if (!i)
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-      if (tolower(file->type) == 'i')
+      if (file->subpackage == subpackage && tolower(file->type) == 'i')
         break;
 
   if (i)
@@ -336,11 +345,11 @@ make_subpackage(
     fputs("# " EPM_VERSION "\n", fp);
 
     for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
-      if (c->type == COMMAND_POST_INSTALL)
+      if (c->subpackage == subpackage && c->type == COMMAND_POST_INSTALL)
         fprintf(fp, "%s\n", c->command);
 
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-      if (tolower(file->type) == 'i')
+      if (file->subpackage == subpackage && tolower(file->type) == 'i')
 	qprintf(fp, "/etc/init.d/%s start\n", file->dst);
 
     fclose(fp);
@@ -353,12 +362,12 @@ make_subpackage(
   */
 
   for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
-    if (c->type == COMMAND_PRE_REMOVE)
+    if (c->subpackage == subpackage && c->type == COMMAND_PRE_REMOVE)
       break;
 
   if (!i)
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-      if (tolower(file->type) == 'i')
+      if (file->subpackage == subpackage && tolower(file->type) == 'i')
         break;
 
   if (i)
@@ -385,11 +394,11 @@ make_subpackage(
     fputs("# " EPM_VERSION "\n", fp);
 
     for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-      if (tolower(file->type) == 'i')
+      if (file->subpackage == subpackage && tolower(file->type) == 'i')
 	qprintf(fp, "/etc/init.d/%s stop\n", file->dst);
 
     for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
-      if (c->type == COMMAND_PRE_REMOVE)
+      if (c->subpackage == subpackage && c->type == COMMAND_PRE_REMOVE)
         fprintf(fp, "%s\n", c->command);
 
     fclose(fp);
@@ -402,7 +411,7 @@ make_subpackage(
   */
 
   for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
-    if (c->type == COMMAND_POST_REMOVE)
+    if (c->subpackage == subpackage && c->type == COMMAND_POST_REMOVE)
       break;
 
   if (i)
@@ -430,7 +439,7 @@ make_subpackage(
     fputs("# " EPM_VERSION "\n", fp);
 
     for (; i > 0; i --, c ++)
-      if (c->type == COMMAND_POST_REMOVE)
+      if (c->subpackage == subpackage && c->type == COMMAND_POST_REMOVE)
         fprintf(fp, "%s\n", c->command);
 
     fclose(fp);
@@ -443,7 +452,8 @@ make_subpackage(
   */
 
   for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
-    if (c->type == COMMAND_LITERAL && !strcmp(c->section, "request"))
+    if (c->subpackage == subpackage &&
+        c->type == COMMAND_LITERAL && !strcmp(c->section, "request"))
       break;
 
   if (i)
@@ -471,7 +481,8 @@ make_subpackage(
     fputs("# " EPM_VERSION "\n", fp);
 
     for (; i > 0; i --, c ++)
-      if (c->type == COMMAND_LITERAL && !strcmp(c->section, "request"))
+      if (c->subpackage == subpackage &&
+          c->type == COMMAND_LITERAL && !strcmp(c->section, "request"))
         fprintf(fp, "%s\n", c->command);
 
     fclose(fp);
@@ -484,7 +495,8 @@ make_subpackage(
   */
 
   for (i = 0; i < dist->num_files; i ++)
-    if (tolower(dist->files[i].type) == 'i')
+    if (dist->files[i].subpackage == subpackage &&
+        tolower(dist->files[i].type) == 'i')
     {
      /*
       * Make symlinks for all of the selected run levels...
@@ -561,7 +573,7 @@ make_subpackage(
 
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    switch (tolower(file->type))
+    switch (file->subpackage == subpackage && tolower(file->type))
     {
       case 'c' :
           qprintf(fp, "e %s %s=%s %04o %s %s\n",

@@ -167,7 +167,6 @@ make_subpackage(
   file_t	*file;			/* Current distribution file */
   command_t	*c;			/* Current command */
   depend_t	*d;			/* Current dependency */
-  tarf_t	*tarfile;		/* Distribution file */
   time_t	curtime;		/* Current time info */
   struct tm	*curdate;		/* Current date info */
   const char	*runlevels;		/* Run levels */
@@ -613,28 +612,6 @@ make_subpackage(
                   directory, prodfull, current, directory))
     return (1);
 
- /*
-  * Tar and compress the distribution...
-  */
-
-  /*if (Verbosity)
-    puts("Creating .pkg.tgz file for distribution...");
-
-  snprintf(filename, sizeof(filename), "%s/%s.pkg.tgz", directory, name);
-
-  if ((tarfile = tar_open(filename, 1)) == NULL)
-    return (1);
-
-  snprintf(filename, sizeof(filename), "%s/%s", directory, prodname);
-
-  if (tar_directory(tarfile, filename, prodname))
-  {
-    tar_close(tarfile);
-    return (1);
-  }
-
-  tar_close(tarfile);
-*/
  /*
   * Make a package stream file...
   */

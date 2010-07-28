@@ -572,8 +572,9 @@ make_subpackage(
 
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    switch (file->subpackage == subpackage && tolower(file->type))
-    {
+    if (file->subpackage == subpackage)
+      switch (tolower(file->type))
+      {
       case 'c' :
           qprintf(fp, "e %s %s=%s %04o %s %s\n",
 	          file->subpackage ? file->subpackage : "none",

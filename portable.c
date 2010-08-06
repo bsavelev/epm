@@ -3078,7 +3078,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 
 	fputs("	if test -x /sbin/chkconfig; then\n", scriptfile);
 	qprintf(scriptfile, "\t\t/sbin/chkconfig --del %s >/dev/null 2>&1 || true\n", file->dst);
-	fputs("	elif ( which update-rc.d >/dev/null 2>&1 ); then\n", scriptfile);
+	fputs("	elif ( test -x `which update-rc.d` >/dev/null 2>&1 ); then\n", scriptfile);
 	qprintf(scriptfile, "\t\tupdate-rc.d -f %s >/dev/null 2>&1 || true\n", file->dst);
 	fputs("	else\n", scriptfile);
 	for (runlevels = get_runlevels(dist->files + i, "0235");

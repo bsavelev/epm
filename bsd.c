@@ -270,16 +270,11 @@ make_subpackage(
   * Declare our (non-standard) package name explicitly.
   */
 
-  /* Remove platform name from the release string. */
-  char *rel=malloc(sizeof(dist->release));
-  strncpy(rel, dist->release, sizeof(dist->release));
-  char *end=strchr(rel, '~');
-  if (end)
-    *end=0;
+  /* Shorten version string to 5 symbols (x.y.z). */
+  char ver[4];
+  strncpy(ver, dist->version, 5);
 
-  fprintf(fp, "@name %s-%s_%s\n", prodfull, dist->version, rel);
-
-  free(rel);
+  fprintf(fp, "@name %s-%s\n", prodfull, ver);
 
  /*
   * FreeBSD and NetBSD support both "source directory" and "preserve files"

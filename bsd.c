@@ -247,7 +247,28 @@ make_subpackage(
             strerror(errno));
     return (1);
   }
-  fprintf(fp, "%s\n", dist->product);
+
+  fprintf(fp, "%s", dist->product);
+  if (subpackage)
+  {
+    for (i = 0; i < dist->num_descriptions; i ++)
+      if (dist->descriptions[i].subpackage == subpackage)
+	break;
+
+    if (i < dist->num_descriptions)
+    {
+      char	line[1024],		/* First line of description... */
+		*ptr;			/* Pointer into line */
+
+      strlcpy(line, dist->descriptions[i].description, sizeof(line));
+      if ((ptr = strchr(line, '\n')) != NULL)
+        *ptr = '\0';
+
+      fprintf(fp, " - %s", line);
+    }
+  }
+  fputc('\n', fp);
+
   fclose(fp);
 
  /*

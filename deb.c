@@ -269,7 +269,7 @@ make_subpackage(const char     *prodname,
 
       fprintf(fp, " - %s", line);
     }
-  }  
+  }
   fputs("\n", fp);  
   fprintf(fp, " Copyright: %s\n", dist->copyright);
   for (i = 0; i < dist->num_descriptions; i ++)

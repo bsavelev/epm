@@ -170,6 +170,7 @@ make_subpackage(
   time_t	curtime;		/* Current time info */
   struct tm	*curdate;		/* Current date info */
   const char	*runlevels;		/* Run levels */
+  const char	*class;			/* File class */
 
 
   getcwd(current, sizeof(current));
@@ -588,10 +589,15 @@ make_subpackage(
           break;
       case 'f' :
       case 'i' :
-          qprintf(fp, "f %s %s=%s %04o %s %s\n",
-	          file->subpackage ? file->subpackage : "none",
-	          file->dst, pkg_path(file->src, current),
-		  file->mode, file->user, file->group);
+          if (strstr(file->options, "manifest()") != NULL)
+              class="manifest";
+          else
+              class=file->subpackage ? file->subpackage : "none";
+
+          qprintf(fp, "f %s %s=%s %04o %s %s\n", class,
+                  file->dst, pkg_path(file->src, current),
+                  file->mode, file->user, file->group);
+
           break;
       case 'l' :
           qprintf(fp, "s %s %s=%s\n",

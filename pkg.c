@@ -228,8 +228,30 @@ make_subpackage(
     if (dist->descriptions[i].subpackage == subpackage)
       break;
 
-  if (i < dist->num_descriptions)
-    fprintf(fp, "DESC=%s\n", dist->descriptions[i].description);
+  if (subpackage)
+  {
+    fprintf(fp, "DESC=%s", dist->product);
+
+    for (i = 0; i < dist->num_descriptions; i ++)
+      if (dist->descriptions[i].subpackage == subpackage)
+	break;
+
+    if (i < dist->num_descriptions)
+    {
+      char	line[1024],		/* First line of description... */
+		*ptr;			/* Pointer into line */
+
+
+      strlcpy(line, dist->descriptions[i].description, sizeof(line));
+      if ((ptr = strchr(line, '\n')) != NULL)
+        *ptr = '\0';
+
+      fprintf(fp, " - %s", line);
+    }
+    fputs("\n", fp);
+  }
+  else
+    fprintf(fp, "DESC=%s\n", dist->product);
 
   fputs("CATEGORY=application\n", fp);
 

@@ -217,21 +217,9 @@ make_subpackage(
   curdate = gmtime(&curtime);
 
   fprintf(fp, "PKG=%s\n", prodfull);
-  fprintf(fp, "NAME=%s\n", dist->product);
-  fprintf(fp, "VERSION=%s\n", dist->version);
-  fprintf(fp, "VENDOR=%s\n", dist->vendor);
-  fprintf(fp, "PSTAMP=epm%04d%02d%02d%02d%02d%02d\n",
-          curdate->tm_year + 1900, curdate->tm_mon + 1, curdate->tm_mday,
-	  curdate->tm_hour, curdate->tm_min, curdate->tm_sec);
-
-  for (i = 0; i < dist->num_descriptions; i ++)
-    if (dist->descriptions[i].subpackage == subpackage)
-      break;
-
+  fprintf(fp, "NAME=%s", dist->product);
   if (subpackage)
   {
-    fprintf(fp, "DESC=%s", dist->product);
-
     for (i = 0; i < dist->num_descriptions; i ++)
       if (dist->descriptions[i].subpackage == subpackage)
 	break;
@@ -248,10 +236,13 @@ make_subpackage(
 
       fprintf(fp, " - %s", line);
     }
-    fputs("\n", fp);
   }
-  else
-    fprintf(fp, "DESC=%s\n", dist->product);
+  fputs("\n", fp);
+  fprintf(fp, "VERSION=%s\n", dist->version);
+  fprintf(fp, "VENDOR=%s\n", dist->vendor);
+  fprintf(fp, "PSTAMP=epm%04d%02d%02d%02d%02d%02d\n",
+          curdate->tm_year + 1900, curdate->tm_mon + 1, curdate->tm_mday,
+	  curdate->tm_hour, curdate->tm_min, curdate->tm_sec);
 
   fputs("CATEGORY=application\n", fp);
 

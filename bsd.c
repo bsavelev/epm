@@ -435,7 +435,7 @@ make_subpackage(
         case COMMAND_PRE_INSTALL :
             if (Verbosity)
               printf("Creating %s file...\n", preinstallname);
-            if ((fp = fopen(preinstallname, "w")) == NULL)
+            if ((fp = fopen(preinstallname, "a")) == NULL)
             {
               fprintf(stderr, "epm: Unable to create pre-install script file \"%s\" - %s\n", preinstallname,
                       strerror(errno));
@@ -448,7 +448,7 @@ make_subpackage(
 	case COMMAND_POST_INSTALL :
             if (Verbosity)
               printf("Creating %s file...\n", postinstallname);
-            if ((fp = fopen(postinstallname, "w")) == NULL)
+            if ((fp = fopen(postinstallname, "a")) == NULL)
             {
               fprintf(stderr, "epm: Unable to create post-install script file \"%s\" - %s\n", postinstallname,
                       strerror(errno));
@@ -461,7 +461,7 @@ make_subpackage(
 	case COMMAND_PRE_REMOVE :
             if (Verbosity)
               printf("Creating %s file...\n", preremovename);
-            if ((fp = fopen(preremovename, "w")) == NULL)
+            if ((fp = fopen(preremovename, "a")) == NULL)
             {
               fprintf(stderr, "epm: Unable to create pre-remove script file \"%s\" - %s\n", preremovename,
                       strerror(errno));
@@ -474,7 +474,7 @@ make_subpackage(
 	case COMMAND_POST_REMOVE :
             if (Verbosity)
               printf("Creating %s file...\n", postremovename);
-            if ((fp = fopen(postremovename, "w")) == NULL)
+            if ((fp = fopen(postremovename, "a")) == NULL)
             {
               fprintf(stderr, "epm: Unable to create post-remove script file \"%s\" - %s\n", postremovename,
                       strerror(errno));

@@ -428,6 +428,14 @@ make_subpackage(
   preremove_opt[0]=0;
   postremove_opt[0]=0;
 
+ /*
+  * Remove files so that appending would re-create them below.
+  */
+  unlink(preinstallname);
+  unlink(postinstallname);
+  unlink(preremovename);
+  unlink(postremovename);
+
   for (i = dist->num_commands, c = dist->commands; i > 0; i --, c ++)
     if (c->subpackage == subpackage)
       switch (c->type)

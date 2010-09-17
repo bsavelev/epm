@@ -434,53 +434,53 @@ make_subpackage(
       {
         case COMMAND_PRE_INSTALL :
             if (Verbosity)
-              printf("Creating %s file...\n", preinstallname);
+              printf("Writing to file %s...\n", preinstallname);
             if ((fp = fopen(preinstallname, "a")) == NULL)
             {
               fprintf(stderr, "epm: Unable to create pre-install script file \"%s\" - %s\n", preinstallname,
                       strerror(errno));
               return (1);
             }
-            fputs(c->command, fp);
+            fprintf(fp, "%s\n", c->command);
             fclose(fp);
             snprintf(preinstall_opt, sizeof(preinstall_opt), "-i %s ", preinstallname);
             break;
 	case COMMAND_POST_INSTALL :
             if (Verbosity)
-              printf("Creating %s file...\n", postinstallname);
+              printf("Writing to file %s...\n", postinstallname);
             if ((fp = fopen(postinstallname, "a")) == NULL)
             {
               fprintf(stderr, "epm: Unable to create post-install script file \"%s\" - %s\n", postinstallname,
                       strerror(errno));
               return (1);
             }
-            fputs(c->command, fp);
+            fprintf(fp, "%s\n", c->command);
             fclose(fp);
             snprintf(postinstall_opt, sizeof(postinstall_opt), "-I %s ", postinstallname);
 	    break;
 	case COMMAND_PRE_REMOVE :
             if (Verbosity)
-              printf("Creating %s file...\n", preremovename);
+              printf("Writing to file %s...\n", preremovename);
             if ((fp = fopen(preremovename, "a")) == NULL)
             {
               fprintf(stderr, "epm: Unable to create pre-remove script file \"%s\" - %s\n", preremovename,
                       strerror(errno));
               return (1);
             }
-            fputs(c->command, fp);
+            fprintf(fp, "%s\n", c->command);
             fclose(fp);
             snprintf(preremove_opt, sizeof(preremove_opt), "-k %s ", preremovename);
 	    break;
 	case COMMAND_POST_REMOVE :
             if (Verbosity)
-              printf("Creating %s file...\n", postremovename);
+              printf("Writing to file %s...\n", postremovename);
             if ((fp = fopen(postremovename, "a")) == NULL)
             {
               fprintf(stderr, "epm: Unable to create post-remove script file \"%s\" - %s\n", postremovename,
                       strerror(errno));
               return (1);
             }
-            fputs(c->command, fp);
+            fprintf(fp, "%s\n", c->command);
             fclose(fp);
             snprintf(postremove_opt, sizeof(postremove_opt), "-K %s ", postremovename);
             break;

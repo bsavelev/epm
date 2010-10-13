@@ -1130,6 +1130,7 @@ void update_control(int from) {
     if (error) {
       InstallPercent->label(gettext("Installation failed"));
       CancelButton->label(gettext("Close"));
+      CancelButton->activate();
       NextButton->activate();
     } else {
       InstallPercent->label(gettext("Installation complete"));

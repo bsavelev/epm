@@ -33,7 +33,7 @@ echo "`eval_gettext \"This script will help you remove Dr.Web packages\"`"
 echo ""
 while true ; do
     printf "`eval_gettext \"Do you wish to continue? (YES/no) \"`"
-    showyesno
+    showyesno && break
 done
 }
 
@@ -82,7 +82,7 @@ showyesno() {
     case "$yesno" in
         y | yes | Y | Yes | YES | "")
 	    echo "yes"
-            break
+            return 0
         ;;
         n | no | N | No | NO)
 	    echo "no"
@@ -198,7 +198,7 @@ if [ -n "$selectedCustom" ] ; then
     done
     while true ; do
 	printf "`eval_gettext \"Are you sure you want to remove the selected packages? (YES/no) \"`"
-	showyesno
+	showyesno && break
     done
     for comp in $selectedCustom ; do
 	./"$comp" now

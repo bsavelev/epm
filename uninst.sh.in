@@ -43,7 +43,7 @@ return $?
 }
 
 checkRoot() {
-if [ `id -u` != 0 ]; then
+if [ `id | sed "s|uid=\([0-9]*\).*|\1|"` != "0" ]; then
   echo
   echo "`eval_gettext \"Sorry, you must be root to remove Dr.Web software.\"`"
   echo

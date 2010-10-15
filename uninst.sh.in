@@ -182,7 +182,7 @@ for p in $list ; do
     flag=" "
     isselectedCustom "$p" && flag="X"
     product="`head "$p" | $GREP %product | $SED 's|^#%product ||'`"
-    ver="`head "$p" | $GREP %version | cut -d" " -f2`"
+    ver="`head "$p" | $GREP %version | cut -d' ' -f2`"
     printf "\t[%s] %d %s (%s)\n" "$flag" $k "$product" "$ver"
 done
 }

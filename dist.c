@@ -851,6 +851,13 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
                   strncmp(buf, "%if", 3) || strncmp(buf, "%elseif", 7));
 
      /*
+      * Trim trailing spaces...
+      */
+
+      for (temp = line + strlen(line) - 1; isspace(*temp & 255); temp--);
+      *(++temp) = '\0';
+
+     /*
       * Check line for config stuff...
       */
 

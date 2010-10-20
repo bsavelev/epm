@@ -2526,7 +2526,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       qprintf(scriptfile, "%s/init.d/%s start || true\n", SoftwareDir, file->dst);
 
-  fputs("printf \"`eval_gettext \\\"Installation %s is complete.\\\"`\\n\" \"$PACKAGE_NAME\"\n", scriptfile);
+  fputs("printf \"`eval_gettext \\\"Installation of %s is complete.\\\"`\\n\" \"$PACKAGE_NAME\"\n", scriptfile);
 
   fclose(scriptfile);
 
@@ -3267,7 +3267,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   fprintf(scriptfile, "rm -f %s/%s.remove\n", SoftwareDir, prodfull);
   fprintf(scriptfile, "if ( rmdir -p %s 2>/dev/null ) ; then true ; else true ; fi\n", SoftwareDir);
 
-  fputs("printf \"`eval_gettext \\\"Removal %s is complete.\\\"`\\n\" \"$PACKAGE_NAME\"\n", scriptfile);
+  fputs("printf \"`eval_gettext \\\"Removal of %s is complete.\\\"`\\n\" \"$PACKAGE_NAME\"\n", scriptfile);
 
   fclose(scriptfile);
 

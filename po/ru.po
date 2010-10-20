@@ -538,7 +538,7 @@ msgstr "Завершение установки..."
 
 #: dummy/epm.install.sh:438
 #, sh-format
-msgid "Installation %s is complete."
+msgid "Installation of %s is complete."
 msgstr "Установка %s завершена."
 
 #: dummy/epm.remove.sh:60 dummy/epm.remove.sh:70
@@ -593,7 +593,7 @@ msgstr "Завершение удаления..."
 
 #: dummy/epm.remove.sh:226
 #, sh-format
-msgid "Removal %s is complete."
+msgid "Removal of %s is complete."
 msgstr "Удаление %s завершено."
 
 #~ msgid "%+.1fMb required, %dMb available."

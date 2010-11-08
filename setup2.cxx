@@ -1138,6 +1138,7 @@ void update_control(int from) {
       sprintf(postin_script, POSTIN_I_SCRIPT);
       if (!stat(postin_script, &postin_info))
         CheckPostin->show();
+        CheckPostin->set();
     }
     Pane[PANE_INSTALL]->redraw();
 

@@ -659,7 +659,7 @@ write_liblpp(const char     *prodname,	/* I - Product short name */
   }
 
   fprintf(fp, "%s, %s\n%s\n%s\n", dist->product, aix_version(dist->version),
-          dist->vendor, dist->copyright);
+          dist->vendor, copyrights(dist));
 
   fclose(fp);
 

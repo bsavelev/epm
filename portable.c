@@ -486,10 +486,10 @@ write_combined(const char *title,	/* I - Title */
 		"    </dict>\n"
 		"</plist>\n",
             dist->version,
-	    dist->copyright,
+	    copyrights(dist),
 	    dist->product,
 	    dist->version,
-	    dist->version, dist->copyright);
+	    dist->version, copyrights(dist));
     fclose(fp);
 
     stat(filename, &srcstat);
@@ -798,10 +798,10 @@ write_combined(const char *title,	/* I - Title */
 		"    </dict>\n"
 		"</plist>\n",
             dist->version,
-	    dist->copyright,
+	    copyrights(dist),
 	    dist->product,
 	    dist->version,
-	    dist->version, dist->copyright);
+	    dist->version, copyrights(dist));
     fclose(fp);
 
     stat(filename, &srcstat);
@@ -1132,7 +1132,7 @@ write_common(dist_t     *dist,		/* I - Distribution */
   }
   fputs("\n", fp);
   fprintf(fp, "#%%vendor %s\n", dist->vendor);
-  fprintf(fp, "#%%copyright %s\n", dist->copyright);
+  fprintf(fp, "#%%copyright %s\n", copyrights(dist));
   fprintf(fp, "#%%version %s %s\n", dist->version, format_vernumber(dist->version));
   fprintf(fp, "#%%release %s\n", dist->release);
   fprintf(fp, "#%%fullversion %s\n", dist->fulver);
@@ -2132,7 +2132,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("  DEPEND_RUN=\"yes\"\n", scriptfile);
   fputs("  RECURSION=\"yes\"\n", scriptfile);
   fputs("else\n", scriptfile);
-  fprintf(scriptfile, "  printf \"`eval_gettext \\\"Copyright %%s\\\"`\\n\" \"%s\"\n", dist->copyright);
+  fprintf(scriptfile, "  printf \"`eval_gettext \\\"Copyright %%s\\\"`\\n\" \"%s\"\n", copyrights(dist));
   fputs("  DEPEND_RUN=\"no\"\n", scriptfile);
   fputs("  RECURSION=\"no\"\n", scriptfile);
   fputs("  ./\"`basename $0`\" --depend\n", scriptfile);
@@ -2983,7 +2983,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   fputs("\texit 1\n", scriptfile);
   fputs("fi\n", scriptfile);
 
-  fprintf(scriptfile, "printf \"`eval_gettext \\\"Copyright %%s\\\"`\\n\" \"%s\"\n", dist->copyright);
+  fprintf(scriptfile, "printf \"`eval_gettext \\\"Copyright %%s\\\"`\\n\" \"%s\"\n", copyrights(dist));
   fputs("if test ! \"$*\" = \"now\"; then\n", scriptfile);
   fputs("	echo \"\"\n", scriptfile);
 //boris 2009-03-13

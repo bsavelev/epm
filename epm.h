@@ -215,11 +215,12 @@ typedef struct				/**** Distribution Structure ****/
   char		product[256],		/* Product name */
 		version[256],		/* Product version string */
 		release[256],		/* Product release string */
-		copyright[256],		/* Product copyright */
 		vendor[256],		/* Vendor name */
 		packager[256],		/* Packager name */
 		license[256],		/* License file to copy */
 		readme[256];		/* README file to copy */
+  int		num_copyrights;		/* Number of copyrights */
+  char		**copyrights;		/* Product copyrights */
   char		fulver[256];		/* Full version */
   int		num_subpackages;	/* Number of subpackages */
   char		**subpackages;		/* Subpackage names */
@@ -342,6 +343,7 @@ extern int	unlink_package(const char *ext, const char *prodname,
 		               const char *directory, const char *platname,
 			       dist_t *dist, const char *subpackage);
 extern int	write_dist(const char *listname, dist_t *dist);
+extern char	*copyrights(dist_t  *dist);
 
 
 #  ifdef __cplusplus

@@ -825,7 +825,7 @@ write_rtf(dist_t     *dist,		/* I - Distribution  information */
 
   fputs("{\\rtf\n", fp);
   fprintf(fp, "\\par %s version %s\n", title, dist->version);
-  fprintf(fp, "\\par Copyright %s\n", dist->copyright);
+  fprintf(fp, "\\par Copyright %s\n", copyrights(dist));
 
   for (i = 0, newpar = 1; i < dist->num_descriptions; i ++)
     if (dist->descriptions[i].subpackage == subpackage)

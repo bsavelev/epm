@@ -22,7 +22,9 @@
  *   add_description()  - Add a description to the distribution.
  *   add_file()         - Add a file to the distribution.
  *   add_subpackage()   - Add a subpackage to the distribution.
+ *   add_copyright()    - Add a copyright to the distribution.
  *   find_subpackage()  - Find a subpackage in the distribution.
+ *   find_copyright()   - Find a copyright in the distribution.
  *   free_dist()        - Free memory used by a distribution.
  *   getoption()        - Get an option from a file.
  *   get_platform()     - Get the operating system information...
@@ -41,6 +43,8 @@
  *   get_string()       - Get a delimited string from a line.
  *   patmatch()         - Pattern matching...
  *   sort_subpackages() - Compare two subpackage names.
+ *   sort_copyrights()  - Compare two copyright strings.
+ *   copyrights()       - Concatenates all copyright strings.
  */
 
 /*
@@ -75,7 +79,8 @@ static char	*get_line(char *buffer, int size, FILE *fp,
 static char	*get_string(char **src, char *dst, size_t dstsize);
 static int	patmatch(const char *, const char *);
 static int	sort_subpackages(char **a, char **b);
-static int	subpackage_cmp(char *a, char *b);
+static int	sort_copyrights(char **a, char **b);
+static int	subpackage_cmp(const char *a, const char *b);
 
 
 /*
@@ -415,6 +420,45 @@ add_subpackage(dist_t     *dist,	/* I - Distribution */
 
 
 /*
+ * 'add_copyright()' - Add a copyright to the distribution.
+ */
+
+char *					/* O - Copyright pointer */
+add_copyright(dist_t     *dist,		/* I - Distribution */
+              const char *cpr)		/* I - Copyright string */
+{
+  char	**temp,				/* Temporary array pointer */
+	*s;				/* Copyright pointer */
+
+
+  if (dist->num_copyrights == 0)
+    temp = malloc(sizeof(char *));
+  else
+    temp = realloc(dist->copyrights,
+                   (dist->num_copyrights + 1) * sizeof(char *));
+
+  if (temp == NULL)
+    return (NULL);
+
+  dist->copyrights = temp;
+  temp             += dist->num_copyrights;
+  dist->num_copyrights ++;
+
+  *temp = s = strdup(cpr);
+
+  if (dist->num_copyrights > 1)
+    qsort(dist->copyrights, (size_t)dist->num_copyrights, sizeof(char *),
+          (int (*)(const void *, const void *))sort_copyrights);
+
+ /*
+  * Return the new string...
+  */
+
+  return (s);
+}
+
+
+/*
  * 'find_subpackage()' - Find a subpackage in the distribution.
  */
 
@@ -439,6 +483,34 @@ find_subpackage(dist_t     *dist,	/* I - Distribution */
     return (*match);
   else
     return (add_subpackage(dist, subpkg));
+}
+
+
+/*
+ * 'find_copyright()' - Find a copyright in the distribution.
+ */
+
+char *					/* O - Copyright pointer */
+find_copyright(dist_t     *dist,	/* I - Distribution */
+               const char *cpr)		/* I - Copyright string */
+{
+  char	**match;			/* Matching subpackage */
+
+
+  if (!cpr || !*cpr)
+    return (NULL);
+
+  if (dist->num_copyrights > 0)
+    match = bsearch(&cpr, dist->copyrights, (size_t)dist->num_copyrights,
+                    sizeof(char *),
+                    (int (*)(const void *, const void *))sort_copyrights);
+  else
+    match = NULL;
+
+  if (match != NULL)
+    return (*match);
+  else
+    return (add_copyright(dist, cpr));
 }
 
 
@@ -935,10 +1007,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	}
 	else if (!strcmp(line, "%copyright"))
 	{
-          if (!dist->copyright[0])
-            strcpy(dist->copyright, temp);
-	  else
-	    fputs("epm: Ignoring %copyright line in list file.\n", stderr);
+            find_copyright(dist, temp);
 	}
 	else if (!strcmp(line, "%vendor"))
 	{
@@ -1364,8 +1433,8 @@ write_dist(const char *listname,	/* I - File to write to */
     fprintf(listfile, "%%version %s %d\n", dist->version, dist->vernumber);
   if (dist->release[0])
     fprintf(listfile, "%%release %s\n", dist->release);
-  if (dist->copyright[0])
-    fprintf(listfile, "%%copyright %s\n", dist->copyright);
+  for (i = 0; i < dist->num_copyrights; i ++)
+    fprintf(listfile, "%%copyright %s\n", dist->copyrights[i]);
   if (dist->vendor[0])
     fprintf(listfile, "%%vendor %s\n", dist->vendor);
   if (dist->packager[0])
@@ -1710,7 +1779,7 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 {
   int		op,			/* Operation (0 = OR, 1 = AND) */
 		namelen,		/* Length of system name + version */
-		len,			/* Length of string */
+/* 		len,			/\* Length of string *\/ */
 		match;			/* 1 = match, 0 = not */
   char		*ptr,			/* Pointer into value */
 		*bufptr,		/* Pointer into buffer */
@@ -2370,9 +2439,46 @@ sort_subpackages(char **a,		/* I - First subpackage */
   return (strcmp(*a, *b));
 }
 
+
+/*
+ * 'sort_copyrights()' - Compare two copyright strings.
+ */
+
 static int				/* O - Result of comparison */
-subpackage_cmp(	char *a,		/* I - First subpackage */
-			char *b)		/* I - Second subpackage */
+sort_copyrights(char **a,		/* I - First copyright string */
+                char **b)		/* I - Second copyright string */
+{
+  return (strcmp(*a, *b));
+}
+
+
+/*
+ * 'copyrights()' - Concatenates all copyright strings.
+ */
+
+char *					/* O - Result of concatenation */
+copyrights(dist_t  *dist)		/* I - Distribution */
+{
+  int		i;			/* Looping var */
+  char		buf[2560];		/* Concatenated copyright string */
+
+  buf[0]=0;
+  for (i = 0; i < dist->num_copyrights; i ++)
+  {
+      if (i>0)
+          strncat(buf, "  ", 2560);
+
+      strncat(buf, "(c) ", 2560);
+      strncat(buf, dist->copyrights[i], 2560);
+  }
+
+  return buf[0] ? buf : (NULL);
+}
+
+
+static int				/* O - Result of comparison */
+subpackage_cmp(const char *a,		/* I - First subpackage */
+	       const char *b)		/* I - Second subpackage */
 {
   size_t stLen1 = 0;
 

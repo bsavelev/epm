@@ -502,11 +502,11 @@ main(int  argc,				/* I - Number of command-line args */
     return (1);
 
  /*
-  * Check that all requires info is present!
+  * Check that all required info is present!
   */
 
   if (!dist->product[0] ||
-      !dist->copyright[0] ||
+      !dist->num_copyrights ||
       !dist->vendor[0] ||
       /* (!dist->license[0] && !dist->readme[0]) || */
       !dist->version[0])

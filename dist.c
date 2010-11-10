@@ -2470,6 +2470,9 @@ copyrights(dist_t  *dist)		/* I - Distribution */
 
       strncat(buf, "(c) ", 2560);
       strncat(buf, dist->copyrights[i], 2560);
+
+      if (i<dist->num_copyrights-1)
+          strncat(buf, ";", 2560);
   }
 
   return buf[0] ? buf : (NULL);

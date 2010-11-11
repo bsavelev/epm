@@ -429,13 +429,15 @@ make_swinstall(const char     *prodname,/* I - Product short name */
   snprintf(filename, sizeof(filename), "%s/%s.desc", directory, prodname);
   if (!access(filename, 0))
     fprintf(fp, "  description < %s\n", filename);
-  if (dist->license[0])
-  {
-    if (strncmp(dist->license, "./", 2))
-      fprintf(fp, "  copyright < %s\n", dist->license);
-    else
-      fprintf(fp, "  copyright < %s\n", dist->license + 2);
-  }
+
+/* TODO: Put the license summary here, not the license text(s) itself. */
+/*   if (dist->license[0]) */
+/*   { */
+/*     if (strncmp(dist->license, "./", 2)) */
+/*       fprintf(fp, "  copyright < %s\n", dist->license); */
+/*     else */
+/*       fprintf(fp, "  copyright < %s\n", dist->license + 2); */
+/*   } */
   if (dist->readme[0])
   {
     if (strncmp(dist->readme, "./", 2))

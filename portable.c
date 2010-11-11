@@ -37,6 +37,7 @@
  */
 
 #include "epm.h"
+#include <libgen.h>
 
 
 /*
@@ -67,6 +68,7 @@ static int	write_install(dist_t *dist, const char *prodname,
 		              const char *directory,
 		              const char *subpackage);
 static int	write_instfiles(tarf_t *tarfile, const char *directory,
+                                dist_t *dist,
 		                const char *prodname, const char *platname,
 			        const char **files, const char *destdir,
 				const char *subpackage);
@@ -81,9 +83,6 @@ static int	write_remove(dist_t *dist, const char *prodname,
 static int	write_space_checks(const char *prodname, FILE *fp,
 		                   const char *sw, const char *ss,
 				   int rootsize, int usrsize);
-
-#define STATIC_LIC "LICENSE"
-int		isLic = 0;		/* Flag for lic already exist*/
 
 /*
  * 'make_portable()' - Make a portable software distribution package.
@@ -200,6 +199,7 @@ clean_distfiles(const char *directory,	/* I - Directory */
 {
   char		prodfull[255],		/* Full name of product */
 		filename[1024];		/* Name of temporary file */
+  int		i;			/* Looping var */
 
 
  /*
@@ -221,13 +221,18 @@ clean_distfiles(const char *directory,	/* I - Directory */
   snprintf(filename, sizeof(filename), "%s/%s.install", directory, prodfull);
   unlink(filename);
 
-  if (CustomLic)
+  for (i = 0; i < dist->num_licenses; i ++)
   {
-    snprintf(filename, sizeof(filename), "%s/%s", directory, STATIC_LIC);
-    unlink(filename);
-  } else {
-    snprintf(filename, sizeof(filename), "%s/%s.license", directory, prodfull);
-    unlink(filename);
+    char *license=basename(dist->licenses[i]);
+    if (CustomLic)
+    {
+      snprintf(filename, sizeof(filename), "%s/%s", directory, license);
+      unlink(filename);
+    } else {
+      snprintf(filename, sizeof(filename), "%s/%s.%s", directory, prodfull,
+               license);
+      unlink(filename);
+    }
   }
 
   snprintf(filename, sizeof(filename), "%s/%s.patch", directory, prodfull);
@@ -529,8 +534,8 @@ write_combined(const char *title,	/* I - Title */
   * Write installer files...
   */
 
-  if (write_instfiles(tarfile, directory, prodname, platname, files, destdir,
-                      NULL))
+  if (write_instfiles(tarfile, directory, dist, prodname, platname,
+                      files, destdir, NULL))
   {
     tar_close(tarfile);
     return (-1);
@@ -539,8 +544,8 @@ write_combined(const char *title,	/* I - Title */
   for (i = 0; i < dist->num_subpackages; i ++)
     if (strcmp(dist->subpackages[i],"dbg")) //dont pack dbg subpackage in main tarfile
     {
-      if (write_instfiles(tarfile, directory, prodname, platname, files, destdir,
-                	dist->subpackages[i]))
+      if (write_instfiles(tarfile, directory, dist, prodname, platname,
+                          files, destdir, dist->subpackages[i]))
       {
         tar_close(tarfile);
         return (-1);
@@ -548,8 +553,8 @@ write_combined(const char *title,	/* I - Title */
     }
     else
     {
-      if (write_instfiles(tarfile_dbg, directory, prodname, platname, files, destdir,
-                	dist->subpackages[i]))
+      if (write_instfiles(tarfile_dbg, directory, dist, prodname, platname,
+                          files, destdir, dist->subpackages[i]))
       {
         tar_close(tarfile_dbg);
         return (-1);
@@ -1641,15 +1646,17 @@ write_distfiles(const char *directory,	/* I - Directory */
   if (Verbosity)
     printf("Copying %s license and readme files...\n", prodfull);
 
-  if (dist->license[0])
+  for (i = 0; i < dist->num_licenses; i ++)
   {
+    char *license=basename(dist->licenses[i]);
     if (CustomLic)
     {
-      snprintf(filename, sizeof(filename), "%s/%s", directory, STATIC_LIC);
+      snprintf(filename, sizeof(filename), "%s/%s", directory, license);
     } else {
-      snprintf(filename, sizeof(filename), "%s/%s.license", directory, prodfull);
+        snprintf(filename, sizeof(filename), "%s/%s.%s", directory, prodfull,
+                 license);
     }
-    if (copy_file(filename, dist->license, 0444, getuid(), getgid()))
+    if (copy_file(filename, dist->licenses[i], 0444, getuid(), getgid()))
       return (1);
   }
 
@@ -2185,13 +2192,16 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("		esac\n", scriptfile);
   fputs("	done\n", scriptfile);
 
-//  if (dist->license[0])
-//  {
+  for (i = 0; i < dist->num_licenses; i ++)
+  {
+    char *license=basename(dist->licenses[i]);
     if (CustomLic)
     {
-      fprintf(scriptfile,"	test -f %s && more %s && USER_MUST_AGREE=1\n", STATIC_LIC, STATIC_LIC);
+      fprintf(scriptfile,"	test -f %s && more %s && USER_MUST_AGREE=1\n",
+              license, license);
     } else {
-      fprintf(scriptfile,"	test -f %s.license && more %s.license && USER_MUST_AGREE=1\n", prodfull, prodfull);
+      fprintf(scriptfile,"	test -f %s.%s && more %s.%s && USER_MUST_AGREE=1\n",
+              prodfull, license, prodfull, license);
     }
     fputs("	echo \"\"\n", scriptfile);
     fputs("	while test $USER_MUST_AGREE; do\n", scriptfile);
@@ -2209,7 +2219,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("			;;\n", scriptfile);
     fputs("		esac\n", scriptfile);
     fputs("	done\n", scriptfile);
-//  }
+  }
 
   fputs("  fi\n", scriptfile);
   fputs("fi\n", scriptfile);
@@ -2534,6 +2544,49 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 }
 
 
+#define WRITE_INSTFILES_HELPER                                          \
+  if (stat(srcname, &srcstat))                                          \
+  {                                                                     \
+    if (i==0)                                                           \
+      break;                                                            \
+    else                                                                \
+      continue;                                                         \
+  }                                                                     \
+                                                                        \
+  if (srcstat.st_size == 0)                                             \
+    continue;                                                           \
+                                                                        \
+  if (tar_header(tarfile, TAR_NORMAL, srcstat.st_mode & 07555,          \
+                 srcstat.st_size, srcstat.st_mtime, "root", "root",     \
+                 dstname, NULL) < 0)                                    \
+  {                                                                     \
+    fprintf(stderr, "epm: Error writing file header - %s\n",            \
+            strerror(errno));                                           \
+    return (-1);                                                        \
+  }                                                                     \
+                                                                        \
+  if (tar_file(tarfile, srcname) < 0)                                   \
+  {                                                                     \
+    fprintf(stderr, "epm: Error writing file data for %s -\n    %s\n",  \
+            dstname, strerror(errno));                                  \
+    return (-1);                                                        \
+  }                                                                     \
+                                                                        \
+  if (Verbosity) {                                                      \
+    if (i==1) {                                                         \
+      if (CustomLic) {                                                  \
+        printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0,    \
+               dist->licenses[j]);                                      \
+      } else {                                                          \
+        printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0, \
+               prodfull, dist->licenses[j]);                            \
+      }                                                                 \
+    } else {                                                            \
+      printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,   \
+             prodfull, files[i]);                                       \
+    }                                                                   \
+  }
+
 /*
  * 'write_instfiles()' - Write the installer files to the tar file...
  */
@@ -2541,13 +2594,15 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 static int				/* O - 0 = success, -1 on failure */
 write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
                 const char *directory,	/* I - Output directory */
+                dist_t     *dist,	/* I - Software distribution */
                 const char *prodname,	/* I - Base product name */
 	        const char *platname,	/* I - Platform name */
 	        const char **files,	/* I - Files */
 		const char *destdir,	/* I - Destination directory in tar file */
 	        const char *subpackage)	/* I - Subpackage */
 {
-  int		i;			/* Looping var */
+    int		i,			/* Looping vars */
+                j;
   char		srcname[1024],		/* Name of source file in distribution */
 		dstname[1024],		/* Name of destination file in distribution */
 		prodfull[255];		/* Full name of product */
@@ -2561,52 +2616,35 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
 
   for (i = 0; files[i] != NULL; i ++)
   {
+    if (i==1)
+    { /* Write license file(s). */
+      if (CustomLic)
+      {
+        for (j = 0; j < dist->num_licenses; j ++)
+        {
+          char *license=basename(dist->licenses[j]);
+          snprintf(srcname, sizeof(srcname), "%s/%s", directory, license);
+          snprintf(dstname, sizeof(dstname), "%s%s", destdir, license);
 
-    if ((CustomLic) && (i==1) && (!isLic))
-    {
-      snprintf(srcname, sizeof(srcname), "%s/%s", directory, STATIC_LIC);
-      snprintf(dstname, sizeof(dstname), "%s%s", destdir, STATIC_LIC);
-      isLic = 1;
+          WRITE_INSTFILES_HELPER;
+        }
+      } else {
+        for (j = 0; j < dist->num_licenses; j ++)
+        {
+          char *license=basename(dist->licenses[j]);
+          snprintf(srcname, sizeof(srcname),
+                   "%s/%s.%s", directory, prodfull, license);
+          snprintf(dstname, sizeof(dstname),
+                   "%s%s.%s", destdir, prodfull, license);
+
+          WRITE_INSTFILES_HELPER;
+        }
+      }
     } else {
       snprintf(srcname, sizeof(srcname), "%s/%s.%s", directory, prodfull, files[i]);
       snprintf(dstname, sizeof(dstname), "%s%s.%s", destdir, prodfull, files[i]);
-    }
-    if (stat(srcname, &srcstat))
-    {
-      if (!i)
-        break;
-      else
-        continue;
-    }
 
-    if (srcstat.st_size == 0)
-      continue;
-
-    if (tar_header(tarfile, TAR_NORMAL, srcstat.st_mode & 07555,
-                   srcstat.st_size, srcstat.st_mtime, "root", "root",
-		   dstname, NULL) < 0)
-    {
-      fprintf(stderr, "epm: Error writing file header - %s\n",
-	      strerror(errno));
-      return (-1);
-    }
-
-    if (tar_file(tarfile, srcname) < 0)
-    {
-      fprintf(stderr, "epm: Error writing file data for %s -\n    %s\n",
-	      dstname, strerror(errno));
-      return (-1);
-    }
-
-    if (Verbosity) {
-      if ((CustomLic) && (i==1))
-      {
-        printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0,
-	     STATIC_LIC);
-      } else {
-        printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,
-	     prodfull, files[i]);
-      }
+      WRITE_INSTFILES_HELPER;
     }
   }
 
@@ -2677,9 +2715,16 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
   fputs("		esac\n", scriptfile);
   fputs("	done\n", scriptfile);
 
-  if (dist->license[0])
+  for (i = 0; i < dist->num_licenses; i ++)
   {
-    fprintf(scriptfile, "	more %s.license\n", prodfull);
+    char *license=basename(dist->licenses[i]);
+    if (CustomLic)
+    {
+      fprintf(scriptfile,"	test -f %s && more %s\n", license, license);
+    } else {
+      fprintf(scriptfile,"	test -f %s.%s && more %s.%s\n",
+              prodfull, license, prodfull, license);
+    }
     fputs("	echo \"\"\n", scriptfile);
     fputs("	while true ; do\n", scriptfile);
     fputs("		echo $ac_n \"Do you agree with the terms of this license? $ac_c\"\n", scriptfile);

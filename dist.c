@@ -23,8 +23,10 @@
  *   add_file()         - Add a file to the distribution.
  *   add_subpackage()   - Add a subpackage to the distribution.
  *   add_copyright()    - Add a copyright to the distribution.
+ *   add_license()      - Add a license to the distribution.
  *   find_subpackage()  - Find a subpackage in the distribution.
  *   find_copyright()   - Find a copyright in the distribution.
+ *   find_license()     - Find a license in the distribution.
  *   free_dist()        - Free memory used by a distribution.
  *   getoption()        - Get an option from a file.
  *   get_platform()     - Get the operating system information...
@@ -44,6 +46,7 @@
  *   patmatch()         - Pattern matching...
  *   sort_subpackages() - Compare two subpackage names.
  *   sort_copyrights()  - Compare two copyright strings.
+ *   sort_licenses()    - Compare two license file names.
  *   copyrights()       - Concatenates all copyright strings.
  */
 
@@ -80,6 +83,7 @@ static char	*get_string(char **src, char *dst, size_t dstsize);
 static int	patmatch(const char *, const char *);
 static int	sort_subpackages(char **a, char **b);
 static int	sort_copyrights(char **a, char **b);
+static int	sort_licenses(char **a, char **b);
 static int	subpackage_cmp(const char *a, const char *b);
 
 
@@ -459,6 +463,45 @@ add_copyright(dist_t     *dist,		/* I - Distribution */
 
 
 /*
+ * 'add_license()' - Add a license to the distribution.
+ */
+
+char *					/* O - License pointer */
+add_license(dist_t     *dist,		/* I - Distribution */
+            const char *license)	/* I - License file name */
+{
+  char	**temp,				/* Temporary array pointer */
+	*s;				/* License file name pointer */
+
+
+  if (dist->num_licenses == 0)
+    temp = malloc(sizeof(char *));
+  else
+    temp = realloc(dist->licenses,
+                   (dist->num_licenses + 1) * sizeof(char *));
+
+  if (temp == NULL)
+    return (NULL);
+
+  dist->licenses = temp;
+  temp           += dist->num_licenses;
+  dist->num_licenses ++;
+
+  *temp = s = strdup(license);
+
+  if (dist->num_licenses > 1)
+    qsort(dist->licenses, (size_t)dist->num_licenses, sizeof(char *),
+          (int (*)(const void *, const void *))sort_licenses);
+
+ /*
+  * Return the new string...
+  */
+
+  return (s);
+}
+
+
+/*
  * 'find_subpackage()' - Find a subpackage in the distribution.
  */
 
@@ -494,7 +537,7 @@ char *					/* O - Copyright pointer */
 find_copyright(dist_t     *dist,	/* I - Distribution */
                const char *cpr)		/* I - Copyright string */
 {
-  char	**match;			/* Matching subpackage */
+  char	**match;			/* Matching string */
 
 
   if (!cpr || !*cpr)
@@ -511,6 +554,34 @@ find_copyright(dist_t     *dist,	/* I - Distribution */
     return (*match);
   else
     return (add_copyright(dist, cpr));
+}
+
+
+/*
+ * 'find_license()' - Find a license in the distribution.
+ */
+
+char *					/* O - License pointer */
+find_license(dist_t     *dist,		/* I - Distribution */
+             const char *license)	/* I - License file */
+{
+  char	**match;			/* Matching string */
+
+
+  if (!license || !*license)
+    return (NULL);
+
+  if (dist->num_licenses > 0)
+    match = bsearch(&license, dist->licenses, (size_t)dist->num_licenses,
+                    sizeof(char *),
+                    (int (*)(const void *, const void *))sort_licenses);
+  else
+    match = NULL;
+
+  if (match != NULL)
+    return (*match);
+  else
+    return (add_license(dist, license));
 }
 
 
@@ -1025,10 +1096,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	}
 	else if (!strcmp(line, "%license"))
 	{
-          if (!dist->license[0])
-            strcpy(dist->license, temp);
-	  else
-	    fputs("epm: Ignoring %license line in list file.\n", stderr);
+            find_license(dist, temp);
 	}
 	else if (!strcmp(line, "%readme"))
 	{
@@ -1439,8 +1507,8 @@ write_dist(const char *listname,	/* I - File to write to */
     fprintf(listfile, "%%vendor %s\n", dist->vendor);
   if (dist->packager[0])
     fprintf(listfile, "%%packager %s\n", dist->packager);
-  if (dist->license[0])
-    fprintf(listfile, "%%license %s\n", dist->license);
+  for (i = 0; i < dist->num_licenses; i ++)
+    fprintf(listfile, "%%license %s\n", dist->licenses[i]);
   if (dist->readme[0])
     fprintf(listfile, "%%readme %s\n", dist->readme);
 
@@ -2447,6 +2515,18 @@ sort_subpackages(char **a,		/* I - First subpackage */
 static int				/* O - Result of comparison */
 sort_copyrights(char **a,		/* I - First copyright string */
                 char **b)		/* I - Second copyright string */
+{
+  return (strcmp(*a, *b));
+}
+
+
+/*
+ * 'sort_licenses()' - Compare two license file names.
+ */
+
+static int				/* O - Result of comparison */
+sort_licenses(char **a,			/* I - First license file name */
+              char **b)			/* I - Second license file name */
 {
   return (strcmp(*a, *b));
 }

@@ -110,14 +110,14 @@ make_osx(const char     *prodname,	/* I - Product short name */
     snprintf(filename, sizeof(filename), "%s/MetaResources", directory);
     make_directory(filename, 0777, 0, 0);
 
-    if (dist->license[0])
+    for (i = 0; i < dist->num_licenses; i ++)
     {
-      if ((ext = strrchr(dist->license, '.')) == NULL || strcmp(ext, ".rtf"))
+      if ((ext = strrchr(dist->licenses[i], '.')) == NULL || strcmp(ext, ".rtf"))
 	ext = ".txt";
 
-      snprintf(filename, sizeof(filename), "%s/MetaResources/License%s",
-               directory, ext);
-      copy_file(filename, dist->license, 0644, 0, 0);
+      snprintf(filename, sizeof(filename), "%s/MetaResources/License%02d%s",
+               directory, i+1, ext);
+      copy_file(filename, dist->licenses[i], 0644, 0, 0);
     }
 
     if (dist->readme[0])
@@ -398,14 +398,14 @@ make_subpackage(const char *prodname,	/* I - Product short name */
   snprintf(filename, sizeof(filename), "%s/%s/Resources", directory, prodfull);
   make_directory(filename, 0777, 0, 0);
 
-  if (dist->license[0])
+  for (i = 0; i < dist->num_licenses; i ++)
   {
-    if ((ext = strrchr(dist->license, '.')) == NULL || strcmp(ext, ".rtf"))
+    if ((ext = strrchr(dist->licenses[i], '.')) == NULL || strcmp(ext, ".rtf"))
       ext = ".txt";
 
-    snprintf(filename, sizeof(filename), "%s/%s/Resources/License%s",
-             directory, prodfull, ext);
-    copy_file(filename, dist->license, 0644, 0, 0);
+    snprintf(filename, sizeof(filename), "%s/%s/Resources/License%02d%s",
+             directory, prodfull, i+1, ext);
+    copy_file(filename, dist->licenses[i], 0644, 0, 0);
   }
 
   if (dist->readme[0])

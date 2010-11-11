@@ -291,7 +291,7 @@ main(int  argc,				/* I - Number of command-line args */
 	    break;
 
 	case 'd' : /* debug package */
-	    if (strip =! 0)
+	    if (strip != 0)
 	      DebugPackage = 1;
             break;
 	case 'l' : /* CustomLic */
@@ -508,7 +508,7 @@ main(int  argc,				/* I - Number of command-line args */
   if (!dist->product[0] ||
       !dist->num_copyrights ||
       !dist->vendor[0] ||
-      /* (!dist->license[0] && !dist->readme[0]) || */
+      /* (!dist->num_licenses && !dist->readme[0]) || */
       !dist->version[0])
   {
     fputs("epm: Error - missing %product, %copyright, %vendor, %license,\n", stderr);

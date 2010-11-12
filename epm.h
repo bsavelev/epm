@@ -217,7 +217,8 @@ typedef struct				/**** Distribution Structure ****/
 		release[256],		/* Product release string */
 		vendor[256],		/* Vendor name */
 		packager[256],		/* Packager name */
-		readme[256];		/* README file to copy */
+		readme[256],		/* README file to copy */
+		copying[256];		/* License summary file to copy */
   int		num_copyrights;		/* Number of copyrights */
   char		**copyrights;		/* Product copyrights */
   int		num_licenses;		/* Number of license files to copy */

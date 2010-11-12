@@ -881,10 +881,9 @@ write_liblpp(const char     *prodname,	/* I - Product short name */
 
   snprintf(filename, sizeof(filename), "%s/lpp.README", directory);
 
-/* TODO: Put the license summary here, not the license text(s) itself. */
-/*   if (dist->license[0]) */
-/*     copy_file(filename, dist->license, 0644, 0, 0); */
-/*   else */ if (dist->readme[0])
+  if (dist->copying[0])
+    copy_file(filename, dist->copying, 0644, 0, 0);
+  else if (dist->readme[0])
     copy_file(filename, dist->readme, 0644, 0, 0);
   else if ((fp = fopen(filename, "w")) != NULL)
     fclose(fp);

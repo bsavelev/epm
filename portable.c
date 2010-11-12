@@ -109,6 +109,7 @@ make_portable(const char     *prodname,	/* I - Product short name */
 		  "remove",
 		  "ss",
 		  "sw",
+		  "copying",
 		  NULL
 		};
   static const char	*patchfiles[] =	/* Patch files */
@@ -119,6 +120,7 @@ make_portable(const char     *prodname,	/* I - Product short name */
 		  "psw",
 		  "readme",
 		  "remove",
+                  "copying",
 		  NULL
 		};
 
@@ -245,6 +247,9 @@ clean_distfiles(const char *directory,	/* I - Directory */
   unlink(filename);
 
   snprintf(filename, sizeof(filename), "%s/%s.readme", directory, prodfull);
+  unlink(filename);
+
+  snprintf(filename, sizeof(filename), "%s/COPYING", directory);
   unlink(filename);
 
   snprintf(filename, sizeof(filename), "%s/%s.remove", directory, prodfull);
@@ -1667,6 +1672,13 @@ write_distfiles(const char *directory,	/* I - Directory */
       return (1);
   }
 
+  if (dist->copying[0])
+  {
+    snprintf(filename, sizeof(filename), "%s/COPYING", directory);
+    if (copy_file(filename, dist->copying, 0444, getuid(), getgid()))
+      return (1);
+  }
+
  /*
   * Create the non-shared software distribution file...
   */
@@ -2192,6 +2204,16 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("		esac\n", scriptfile);
   fputs("	done\n", scriptfile);
 
+  if (dist->copying[0]) {
+    fputs("	if [ -f COPYING ]; then\n", scriptfile);
+    fputs("		echo\n", scriptfile);
+    fputs("		cat COPYING\n", scriptfile);
+    fputs("		echo\n", scriptfile);
+    fputs("		echo '<Press any key to proceed>'\n", scriptfile);
+    fputs("		read r\n", scriptfile);
+    fputs("	fi\n", scriptfile);
+  }
+
   for (i = 0; i < dist->num_licenses; i ++)
   {
     char *license=basename(dist->licenses[i]);
@@ -2581,6 +2603,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
         printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0, \
                prodfull, dist->licenses[j]);                            \
       }                                                                 \
+    } else if (i==6) {                                                  \
+      printf("    %7.0fk COPYING\n", (srcstat.st_size + 1023) / 1024.0); \
     } else {                                                            \
       printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,   \
              prodfull, files[i]);                                       \
@@ -2640,6 +2664,11 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
           WRITE_INSTFILES_HELPER;
         }
       }
+    } else if (i==6) {
+      snprintf(srcname, sizeof(srcname), "%s/COPYING", directory);
+      snprintf(dstname, sizeof(dstname), "%sCOPYING", destdir);
+
+      WRITE_INSTFILES_HELPER;
     } else {
       snprintf(srcname, sizeof(srcname), "%s/%s.%s", directory, prodfull, files[i]);
       snprintf(dstname, sizeof(dstname), "%s%s.%s", destdir, prodfull, files[i]);

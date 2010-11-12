@@ -566,9 +566,11 @@ make_subpackage(
   fprintf(fp, "!search %s\n", current);
 #endif /* 0 */
 
-/* TODO: Put the license summary here, not the license text(s) itself. */
-/*   if (dist->license[0]) */
-/*     fprintf(fp, "i copyright=%s\n", pkg_path(dist->license, current)); */
+  if (dist->copying[0])
+    fprintf(fp, "i copyright=%s\n", pkg_path(dist->copying, current));
+  else if (dist->num_licenses==1) {
+    fprintf(fp, "i copyright=%s\n", pkg_path(dist->licenses[0], current));
+  }
 
   fprintf(fp, "i depend=%s/%s.depend\n", pkg_path(directory, current), prodfull);
   fprintf(fp, "i pkginfo=%s/%s.pkginfo\n", pkg_path(directory, current),

@@ -511,8 +511,8 @@ main(int  argc,				/* I - Number of command-line args */
       /* (!dist->num_licenses && !dist->readme[0]) || */
       !dist->version[0])
   {
-    fputs("epm: Error - missing %product, %copyright, %vendor, %license,\n", stderr);
-    fputs("     %readme, or %version attributes in list file!\n", stderr);
+    fputs("epm: Error - missing %product, %copyright, %vendor,\n", stderr);
+    fputs("     or %version attributes in list file!\n", stderr);
 
     free_dist(dist);
 

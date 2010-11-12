@@ -883,6 +883,8 @@ write_liblpp(const char     *prodname,	/* I - Product short name */
 
   if (dist->copying[0])
     copy_file(filename, dist->copying, 0644, 0, 0);
+  else if (dist->num_licenses==1)
+    copy_file(filename, dist->licenses[0], 0644, 0, 0);
   else if (dist->readme[0])
     copy_file(filename, dist->readme, 0644, 0, 0);
   else if ((fp = fopen(filename, "w")) != NULL)

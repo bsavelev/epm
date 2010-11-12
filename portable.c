@@ -2611,6 +2611,9 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     }                                                                   \
   }
 
+/* Becames 1 as main package's tarball has been built. */
+int MainPackageComposed=0;
+
 /*
  * 'write_instfiles()' - Write the installer files to the tar file...
  */
@@ -2646,6 +2649,9 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
       {
         for (j = 0; j < dist->num_licenses; j ++)
         {
+          if (MainPackageComposed)
+            break;
+
           char *license=basename(dist->licenses[j]);
           snprintf(srcname, sizeof(srcname), "%s/%s", directory, license);
           snprintf(dstname, sizeof(dstname), "%s%s", destdir, license);
@@ -2665,10 +2671,12 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
         }
       }
     } else if (i==6) {
-      snprintf(srcname, sizeof(srcname), "%s/COPYING", directory);
-      snprintf(dstname, sizeof(dstname), "%sCOPYING", destdir);
+      if (!MainPackageComposed) {
+        snprintf(srcname, sizeof(srcname), "%s/COPYING", directory);
+        snprintf(dstname, sizeof(dstname), "%sCOPYING", destdir);
 
-      WRITE_INSTFILES_HELPER;
+        WRITE_INSTFILES_HELPER;
+      }
     } else {
       snprintf(srcname, sizeof(srcname), "%s/%s.%s", directory, prodfull, files[i]);
       snprintf(dstname, sizeof(dstname), "%s%s.%s", destdir, prodfull, files[i]);
@@ -2676,6 +2684,8 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
       WRITE_INSTFILES_HELPER;
     }
   }
+
+  MainPackageComposed=1;
 
   return (0);
 }

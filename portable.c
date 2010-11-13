@@ -2598,10 +2598,10 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     if (i==1) {                                                         \
       if (CustomLic) {                                                  \
         printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0,    \
-               dist->licenses[j]);                                      \
+               basename(dist->licenses[j]));                            \
       } else {                                                          \
         printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0, \
-               prodfull, dist->licenses[j]);                            \
+               prodfull, basename(dist->licenses[j]));                  \
       }                                                                 \
     } else if (i==6) {                                                  \
       printf("    %7.0fk COPYING\n", (srcstat.st_size + 1023) / 1024.0); \

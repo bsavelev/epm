@@ -249,7 +249,7 @@ clean_distfiles(const char *directory,	/* I - Directory */
   snprintf(filename, sizeof(filename), "%s/%s.readme", directory, prodfull);
   unlink(filename);
 
-  snprintf(filename, sizeof(filename), "%s/COPYING", directory);
+  snprintf(filename, sizeof(filename), "%s/%s.copying", directory, prodfull);
   unlink(filename);
 
   snprintf(filename, sizeof(filename), "%s/%s.remove", directory, prodfull);
@@ -1674,7 +1674,8 @@ write_distfiles(const char *directory,	/* I - Directory */
 
   if (dist->copying[0])
   {
-    snprintf(filename, sizeof(filename), "%s/COPYING", directory);
+      snprintf(filename, sizeof(filename),
+               "%s/%s.copying", directory, prodfull);
     if (copy_file(filename, dist->copying, 0444, getuid(), getgid()))
       return (1);
   }
@@ -2205,9 +2206,9 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("	done\n", scriptfile);
 
   if (dist->copying[0]) {
-    fputs("	if [ -f COPYING ]; then\n", scriptfile);
+    fprintf(scriptfile, "	if [ -f %s.copying ]; then\n", prodfull);
     fputs("		echo\n", scriptfile);
-    fputs("		cat COPYING\n", scriptfile);
+    fprintf(scriptfile, "		cat %s.copying\n", prodfull);
     fputs("		echo\n", scriptfile);
     fputs("		echo '<Press any key to proceed>'\n", scriptfile);
     fputs("		read r\n", scriptfile);
@@ -2603,8 +2604,6 @@ write_install(dist_t     *dist,		/* I - Software distribution */
         printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0, \
                prodfull, basename(dist->licenses[j]));                  \
       }                                                                 \
-    } else if (i==6) {                                                  \
-      printf("    %7.0fk COPYING\n", (srcstat.st_size + 1023) / 1024.0); \
     } else {                                                            \
       printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,   \
              prodfull, files[i]);                                       \
@@ -2669,13 +2668,6 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
 
           WRITE_INSTFILES_HELPER;
         }
-      }
-    } else if (i==6) {
-      if (!MainPackageComposed) {
-        snprintf(srcname, sizeof(srcname), "%s/COPYING", directory);
-        snprintf(dstname, sizeof(dstname), "%sCOPYING", destdir);
-
-        WRITE_INSTFILES_HELPER;
       }
     } else {
       snprintf(srcname, sizeof(srcname), "%s/%s.%s", directory, prodfull, files[i]);

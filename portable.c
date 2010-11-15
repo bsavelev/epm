@@ -109,7 +109,7 @@ make_portable(const char     *prodname,	/* I - Product short name */
 		  "remove",
 		  "ss",
 		  "sw",
-		  "copying",
+		  "COPYING",
 		  NULL
 		};
   static const char	*patchfiles[] =	/* Patch files */
@@ -120,7 +120,7 @@ make_portable(const char     *prodname,	/* I - Product short name */
 		  "psw",
 		  "readme",
 		  "remove",
-                  "copying",
+                  "COPYING",
 		  NULL
 		};
 
@@ -249,7 +249,7 @@ clean_distfiles(const char *directory,	/* I - Directory */
   snprintf(filename, sizeof(filename), "%s/%s.readme", directory, prodfull);
   unlink(filename);
 
-  snprintf(filename, sizeof(filename), "%s/%s.copying", directory, prodfull);
+  snprintf(filename, sizeof(filename), "%s/%s.COPYING", directory, prodfull);
   unlink(filename);
 
   snprintf(filename, sizeof(filename), "%s/%s.remove", directory, prodfull);
@@ -1675,7 +1675,7 @@ write_distfiles(const char *directory,	/* I - Directory */
   if (dist->copying[0])
   {
       snprintf(filename, sizeof(filename),
-               "%s/%s.copying", directory, prodfull);
+               "%s/%s.COPYING", directory, prodfull);
     if (copy_file(filename, dist->copying, 0444, getuid(), getgid()))
       return (1);
   }
@@ -2206,9 +2206,9 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("	done\n", scriptfile);
 
   if (dist->copying[0]) {
-    fprintf(scriptfile, "	if [ -f %s.copying ]; then\n", prodfull);
+    fprintf(scriptfile, "	if [ -f %s.COPYING ]; then\n", prodfull);
     fputs("		echo\n", scriptfile);
-    fprintf(scriptfile, "		cat %s.copying\n", prodfull);
+    fprintf(scriptfile, "		cat %s.COPYING\n", prodfull);
     fputs("		echo\n", scriptfile);
     fputs("		echo '<Press any key to proceed>'\n", scriptfile);
     fputs("		read r\n", scriptfile);

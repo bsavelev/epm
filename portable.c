@@ -1479,7 +1479,7 @@ write_depends(const char *prodname,	/* I - Product name */
 
 		fprintf(fp, "	if test $installed -ge %d -a $installed -le %d; then\n",
 	        	d->vernumber[0], d->vernumber[1]);
-        	fprintf(fp, "		printf \"`eval_gettext \\\"Sorry, this software is incompatible with \\'%%s\\' version %%s to %%s!\\\"`\\n\" \"%s\" \"%s\" \"%s\"\n",
+        	fprintf(fp, "		printf \"`eval_gettext \\\"Sorry, this software is incompatible with \\'%%s\\' version %%s to %%s!\\\"`\\n\" \"%s\" \"%d\" \"%d\"\n",
 	        	product, d->version[0], d->version[1]);
         	fprintf(fp, "		printf \"`eval_gettext \\\"Please remove it first by running \\'%%s/%%s.remove\\'.\\\"`\\n\" \"%s\" \"%s\"\n",
 	        	SoftwareDir, product);

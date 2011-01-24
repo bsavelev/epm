@@ -767,8 +767,8 @@ write_spec(int        format,		/* I - Subformat */
 	fputs("if test \"x$1\" = x1; then\n", fp);
 	fputs("\techo Setting up init scripts...\n", fp);
 	qprintf(fp, "\tchkconfig --add %s\n", epm_basename(file->dst));
+	qprintf(fp, "\t/etc/init.d/%s start || true\n", epm_basename(file->dst));
 	fputs("fi\n", fp);
-	qprintf(fp, "/etc/init.d/%s start || true\n", epm_basename(file->dst));
       }
     }
     else

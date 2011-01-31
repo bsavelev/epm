@@ -1790,6 +1790,7 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 	       *bufptr && !isspace(*bufptr & 255) &&
 	           ptr < (value + sizeof(value) - 1);
 	       *ptr++ = *bufptr++);
+          printf("%system DEBUG: Got \"%s\", remained \"%s\"\n", value, bufptr);
 
 	  *ptr = '\0';
 

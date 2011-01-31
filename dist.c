@@ -1790,9 +1790,9 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 	       *bufptr && !isspace(*bufptr & 255) &&
 	           ptr < (value + sizeof(value) - 1);
 	       *ptr++ = *bufptr++);
-          printf("%system DEBUG: Got \"%s\", remained \"%s\"\n", value, bufptr);
 
 	  *ptr = '\0';
+          printf("%system DEBUG: Got \"%s\", remained \"%s\"\n", value, bufptr);
 
           if (!strncmp(value, "dunix", 5))
 	    memcpy(value, "tru64", 5); /* Keep existing nul/version */

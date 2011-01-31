@@ -1792,7 +1792,7 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 	       *ptr++ = *bufptr++);
 
 	  *ptr = '\0';
-          printf("%system DEBUG: Got \"%s\", remained \"%s\"\n", value, bufptr);
+          printf("%%system DEBUG: Got \"%s\", remained \"%s\"\n", value, bufptr);
 
           if (!strncmp(value, "dunix", 5))
 	    memcpy(value, "tru64", 5); /* Keep existing nul/version */

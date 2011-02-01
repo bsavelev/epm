@@ -385,7 +385,7 @@ make_subpackage(
     switch (tolower(file->type))
     {
       case 'i' :
-          qprintf(fp, "usr/local/etc/rc.d/%s\n", file->dst);
+          qprintf(fp, "usr/local/etc/rc.d/%s.sh\n", file->dst);
           break;
       case 'c' :
       case 'f' :
@@ -536,7 +536,7 @@ make_subpackage(
           break;
       case 'i' :
           snprintf(filename, sizeof(filename),
-                   "%s/%s.buildroot/usr/local/etc/rc.d/%s", directory,
+                   "%s/%s.buildroot/usr/local/etc/rc.d/%s.sh", directory,
                    prodfull, file->dst);
 
 	  if (Verbosity > 1)

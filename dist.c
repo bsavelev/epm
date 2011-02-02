@@ -1709,7 +1709,6 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 	 int            *skip)		/* IO - Skip lines? */
 {
   int		op,			/* Operation (0 = OR, 1 = AND) */
-		namelen,		/* Length of system name + version */
 		len,			/* Length of string */
 		match;			/* 1 = match, 0 = not */
   char		*ptr,			/* Pointer into value */
@@ -1747,13 +1746,8 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 	  ptr = CustomPlatform;
 	  bufptr = malloc(strlen(ptr) * sizeof(char));
 	  while( *ptr && *ptr++ != '-') *bufptr++ = *ptr;
-	  if (bufptr)
-	    namelen = strlen(bufptr);
-	  else
-	    namelen = strlen(CustomPlatform);
 	  snprintf(namever, sizeof(namever), "%s",CustomPlatform);
 	} else {
-	  namelen = strlen(platform->sysname);
 	  //snprintf(namever, sizeof(namever), "%s-%s", platform->sysname,
 	         //platform->release);
 	  snprintf(namever, sizeof(namever), "%s-%s-%s", platform->sysname,
@@ -1834,18 +1828,6 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 		  }
 	      } else { match = 0; }
 	  } else { match = 0; }
-
-/*
-          if ((ptr = strchr(value, '-')) != NULL)
-	    len = ptr - value;
-	  else
-	    len = strlen(value);
-
-          if (len < namelen)
-	    match = 0;
-	  else
-	    match = strncasecmp(value, namever, strlen(value)) == 0 ? SKIP_SYSTEM : 0;
-*/
 
           if (op)
 	    *skip |= match;

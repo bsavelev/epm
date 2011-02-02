@@ -1785,7 +1785,6 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 	       *ptr++ = *bufptr++);
 
 	  *ptr = '\0';
-          printf("%%system DEBUG: Got \"%s\", remained \"%s\"\n", value, bufptr);
 
           if (!strncmp(value, "dunix", 5))
 	    memcpy(value, "tru64", 5); /* Keep existing nul/version */
@@ -1819,8 +1818,6 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 		    case 2: namever_m[i]=platform->machine;
 		  }
 		}
-          printf("plat: %s %s %s\n", plat[0], plat[1], plat[2]);
-          printf("namever_m: %s %s %s\n", namever_m[0], namever_m[1], namever_m[2]);
 	match = SKIP_SYSTEM;
 	if ((plat[0] != NULL) && (namever_m[0] != NULL))
 	  if (strncasecmp(plat[0], namever_m[0], strlen(plat[0])) == 0) {

@@ -1747,9 +1747,11 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 	  bufptr = malloc(strlen(ptr) * sizeof(char));
 	  while( *ptr && *ptr++ != '-') *bufptr++ = *ptr;
 	  snprintf(namever, sizeof(namever), "%s",CustomPlatform);
+          printf("1) namever: %s\n", namever);
 	} else {
 	  snprintf(namever, sizeof(namever), "%s-%s-%s", platform->sysname,
 	         platform->release,platform->machine);
+          printf("2) namever: %s\n", namever);
 	}
         bufptr  = buffer + 8;
 	while (isspace(*bufptr & 255))
@@ -1801,10 +1803,12 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 		  plat[i] = plat_buf;
 		  plat_buf = strtok(NULL,"-");
 		} else { plat[i] = NULL; }
+          printf("3) namever: %s\n", namever);
 	  plat_buf = strtok(namever,"-");
 	  for (i=0; i<3; i++)
 		if (plat_buf != NULL) {
 		  namever_m[i] = plat_buf;
+                  printf("1) namever_m[%d]: %s\n", i, namever);
 		  plat_buf = strtok(NULL,"-");
 		} else {
 		  switch(i) {
@@ -1812,6 +1816,7 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 		    case 1: namever_m[i]=platform->release;
 		    case 2: namever_m[i]=platform->machine;
 		  }
+                  printf("2) namever_m[%d]: %s\n", i, namever);
 		}
           printf("plat: %s %s %s\n", plat[0], plat[1], plat[2]);
           printf("namever_m: %s %s %s\n", namever_m[0], namever_m[1], namever_m[2]);

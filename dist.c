@@ -1748,8 +1748,6 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 	  while( *ptr && *ptr++ != '-') *bufptr++ = *ptr;
 	  snprintf(namever, sizeof(namever), "%s",CustomPlatform);
 	} else {
-	  //snprintf(namever, sizeof(namever), "%s-%s", platform->sysname,
-	         //platform->release);
 	  snprintf(namever, sizeof(namever), "%s-%s-%s", platform->sysname,
 	         platform->release,platform->machine);
 	}

@@ -3287,7 +3287,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("		rm -f \"$file\"\n", scriptfile);
     fputs("	fi\n", scriptfile);
     qprintf(scriptfile, "	rm -f \"%s/conf$file.N\"\n", SoftwareDir);
-    qprintf(scriptfile, "	cd \"%s\" && if ( rmdir -p \"`dirname \"conf$file.N\"`\" 2>/dev/null ) ; then true ; else true ; fi\n", SoftwareDir);
+    qprintf(scriptfile, "	cd \"%s\" && rmdir -p \"`dirname \"conf$file.N\"`\" 2>/dev/null || true\n", SoftwareDir);
     fputs("done\n", scriptfile);
   }
 
@@ -3330,7 +3330,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 	qprintf(scriptfile, "	rm -f \"%s/possessed%s/%s.placeholder\"\n", SoftwareDir, file->dst, prodfull);
 	qprintf(scriptfile, "\tif ( cd \"%s\" && rmdir \"possessed%s\" 2>/dev/null ) ; then\n", SoftwareDir, file->dst);
 	qprintf(scriptfile, "\t\trmdir \"%s\" 2>/dev/null || true\n",file->dst);
-	qprintf(scriptfile, "\t\tcd %s && if ( rmdir -p \"possessed`dirname %s`\" 2>/dev/null ) ; then true ; else true ; fi\n", SoftwareDir, file->dst);
+	qprintf(scriptfile, "\t\tcd %s && rmdir -p \"possessed`dirname %s`\" 2>/dev/null || true\n", SoftwareDir, file->dst);
 	fputs("\tfi\n", scriptfile);
 	fputs("fi\n", scriptfile);
       }
@@ -3341,7 +3341,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   write_commands(dist, scriptfile, COMMAND_POST_REMOVE, subpackage);
 
   fprintf(scriptfile, "rm -f %s/%s.remove\n", SoftwareDir, prodfull);
-  fprintf(scriptfile, "if ( rmdir -p %s 2>/dev/null ) ; then true ; else true ; fi\n", SoftwareDir);
+  fprintf(scriptfile, "rmdir -p %s 2>/dev/null || true\n", SoftwareDir);
 
   fputs("printf \"`eval_gettext \\\"Removal of %s is complete.\\\"`\\n\" \"$PACKAGE_NAME\"\n", scriptfile);
 

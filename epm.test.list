@@ -59,8 +59,11 @@ i 0555 root sys epm epm
 c 0555 root sys ${bindir}/epminstall epminstall
 f 0555 root sys ${bindir}/mkepmlist mkepmlist
 
+$todevnull=>/dev/null 2>/dev/null
+
+%preinstall < test
 %preinstall << EOF
-echo pre
+echo pre ${todevnull}
 EOF
 
 %postinstall << EOF
@@ -78,14 +81,16 @@ EOF
 # Documentation
 %subpackage documentation
 %description Documentation
-f 0444 root sys ${docdir}/README $srcdir/README
+$man=README
+f 0444 root sys ${docdir}/README $srcdir/${man}
 f 0444 root sys ${docdir}/COPYING $srcdir/COPYING
 f 0444 root sys ${docdir}/epm-book.html $srcdir/doc/epm-book.html
 
 # Man pages
 %subpackage man
 %description Man pages
-f 0444 root sys ${mandir}/man1/epm.1 $srcdir/doc/epm.man
+$man=man
+f 0444 root sys ${mandir}/man1/epm.1 $srcdir/doc/epm.${man}
 f 0444 root sys ${mandir}/man1/epminstall.1 $srcdir/doc/epminstall.man
 f 0444 root sys ${mandir}/man1/mkepmlist.1 $srcdir/doc/mkepmlist.man
 f 0444 root sys ${mandir}/man5/epm.list.5 $srcdir/doc/epm.list.man

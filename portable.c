@@ -1489,7 +1489,7 @@ write_depends(const char *prodname,	/* I - Product name */
 
 		fprintf(fp, "	if test $installed -ge %d -a $installed -le %d; then\n",
 	        	d->vernumber[0], d->vernumber[1]);
-        	fprintf(fp, "		printf \"`eval_gettext \\\"Sorry, this software is incompatible with \\'%%s\\' version %%s to %%s!\\\"`\\n\" \"%s\" \"%s\" \"%s\"\n",
+        	fprintf(fp, "		printf \"`eval_gettext \\\"Sorry, this software is incompatible with \\'%%s\\' version %%s to %%s!\\\"`\\n\" \"%s\" \"%d\" \"%d\"\n",
 	        	product, d->version[0], d->version[1]);
         	fprintf(fp, "		printf \"`eval_gettext \\\"Please remove it first by running \\'%%s/%%s.remove\\'.\\\"`\\n\" \"%s\" \"%s\"\n",
 	        	SoftwareDir, product);
@@ -3155,7 +3155,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
 	fputs("	if test -x /sbin/chkconfig; then\n", scriptfile);
 	qprintf(scriptfile, "\t\t/sbin/chkconfig --del %s >/dev/null 2>&1 || true\n", file->dst);
 	fputs("	elif ( test -x \"`which update-rc.d 2>/dev/null`\" >/dev/null 2>&1 ); then\n", scriptfile);
-	qprintf(scriptfile, "\t\tupdate-rc.d -f %s >/dev/null 2>&1 || true\n", file->dst);
+	qprintf(scriptfile, "\t\tupdate-rc.d -f %s remove >/dev/null 2>&1 || true\n", file->dst);
 	fputs("	else\n", scriptfile);
 	for (runlevels = get_runlevels(dist->files + i, "0235");
              isdigit(*runlevels & 255);

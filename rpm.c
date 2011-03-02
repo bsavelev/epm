@@ -749,7 +749,7 @@ write_spec(int        format,		/* I - Subformat */
      /*
       * Use LSB commands to install the init scripts...
       */
-      fputs("if test \"x$1\" = x1; then\n", fp);
+      fputs("if [ $1 -eq 1 ] ; then\n", fp);
       fputs("\techo Setting up init scripts...\n", fp);
       for (; i > 0; i --, file ++)
 	if (tolower(file->type) == 'i' && file->subpackage == subpackage)
@@ -764,11 +764,11 @@ write_spec(int        format,		/* I - Subformat */
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       {
-	fputs("if test \"x$1\" = x1; then\n", fp);
+	fputs("if [ $1 -eq 1 ] ; then\n", fp);
 	fputs("\techo Setting up init scripts...\n", fp);
 	qprintf(fp, "\tchkconfig --add %s\n", epm_basename(file->dst));
+	qprintf(fp, "\t/etc/init.d/%s start || true\n", epm_basename(file->dst));
 	fputs("fi\n", fp);
-	qprintf(fp, "/etc/init.d/%s start || true\n", epm_basename(file->dst));
       }
     }
     else
@@ -776,7 +776,7 @@ write_spec(int        format,		/* I - Subformat */
      /*
       * Find where the frigging init scripts go...
       */
-      fputs("if test \"x$1\" = x1; then\n", fp);
+      fputs("if [ $1 -eq 1 ] ; then\n", fp);
       fputs("\techo Setting up init scripts...\n", fp);
 
       fputs("	rcdir=\"\"\n", fp);
@@ -839,7 +839,7 @@ write_spec(int        format,		/* I - Subformat */
     have_commands = 1;
 
     fprintf(fp, "%%preun%s\n", name);
-    fputs("if test \"x$1\" = x0; then\n", fp);
+    fputs("if [ $1 -eq 0 ] ; then\n", fp);
     fputs("	echo Cleaning up init scripts...\n", fp);
 
     if (format == PACKAGE_LSB)
@@ -951,7 +951,7 @@ write_spec(int        format,		/* I - Subformat */
     if (!have_commands)
       fprintf(fp, "%%postun%s\n", name);
 
-    fputs("if test \"x$1\" = x1; then\n", fp);
+    fputs("if [ $1 -eq 1 ] ; then\n", fp);
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
       {

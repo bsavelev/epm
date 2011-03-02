@@ -939,7 +939,7 @@ int		j,k,m;
 gui_dist_t	*dist,*dist1;
 gui_depend_t	*depend;
 
-  InstallAllButton->deactivate();
+  InstallAllButton->activate();
   for (j = 0, dist = Dists; j < NumDists; j ++, dist ++ )
       for (k = 0, depend = dist->depends; k < dist->num_depends; k ++, depend ++ )
         if ( depend != NULL)

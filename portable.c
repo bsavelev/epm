@@ -1423,7 +1423,7 @@ write_depends(const char *prodname,	/* I - Product name */
 	        	product, d->version[0]);
         	fputs("		ERROR=1\n", fp);
         	fputs("\t	else\n", fp);
-        	fprintf(fp, "\t		echo %s >> .depend\n", product);
+        	fprintf(fp, "\t		echo %s %s >> .depend\n", product, d->version[0]);
         	fputs("\t	fi\n", fp);
         	fputs("	fi\n", fp);
         	fputs("fi\n", fp);
@@ -1441,7 +1441,7 @@ write_depends(const char *prodname,	/* I - Product name */
                 fprintf(fp, "\t\t\tprintf \"`eval_gettext \\\"Sorry, you must first install \\'%%s\\'!\\\"`\\n\" \"%s\"\n", product);
                 fputs("\t\t\tERROR=1\n", fp);
                 fputs("\t\telse\n", fp);
-                fprintf(fp, "\t\t\techo %s >> .depend\n", product);
+                fprintf(fp, "\t\t\techo %s %s >> .depend\n", product, d->version[0]);
                 fputs("\t\tfi\n", fp);
                 fputs("\tfi\n", fp);
                 fputs("fi\n", fp);

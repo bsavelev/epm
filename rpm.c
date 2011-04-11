@@ -1001,14 +1001,14 @@ write_spec(int        format,		/* I - Subformat */
             break;
 	case 'i' :
 	    if (format == PACKAGE_LSB)
-	      fprintf(fp, "%%attr(0555,root,root) \"/etc/init.d/%s\"\n",
-		      file->dst);
+	      fprintf(fp, "%%attr(%04o,%s,%s) \"/etc/init.d/%s\"\n",
+		    file->mode, file->user, file->group, file->dst);
 	    else if (format == PACKAGE_LSB_INIT)
-	      fprintf(fp, "%%attr(0555,root,root) \"/etc/init.d/%s\"\n",
-		      epm_basename(file->dst));
+	      fprintf(fp, "%%attr(%04o,%s,%s) \"/etc/init.d/%s\"\n",
+		    file->mode, file->user, file->group, epm_basename(file->dst));
             else
-	      fprintf(fp, "%%attr(0555,root,root) \"%s/init.d/%s\"\n",
-	              SoftwareDir, file->dst);
+	      fprintf(fp, "%%attr(%04o,%s,%s) \"%s/init.d/%s\"\n",
+	            file->mode, file->user, file->group, SoftwareDir, file->dst);
             break;
       }
 

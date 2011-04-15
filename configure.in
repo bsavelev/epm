@@ -16,8 +16,8 @@ dnl   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 dnl   GNU General Public License for more details.
 dnl
 
-VERSION=4.2
-VERNUMBER=420
+VERSION=6.0.2
+VERNUMBER=602
 
 AC_INIT(epm, 4.2, [b.savelev@drweb.com])
 AM_INIT_AUTOMAKE(epm, 4.2, [b.savelev@drweb.com])

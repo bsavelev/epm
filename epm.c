@@ -675,7 +675,8 @@ static void
 info(void)
 {
   puts(EPM_VERSION);
-  puts("Copyright 1999-2007 by Easy Software Products.");
+  puts("Copyright 1999-2009 by Easy Software Products.");
+  puts("Copyright 2009-2011 by Dr.Web.");
   puts("");
   puts("EPM is free software and comes with ABSOLUTELY NO WARRANTY; for details");
   puts("see the GNU General Public License in the file COPYING or at");

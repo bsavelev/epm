@@ -19,8 +19,8 @@ dnl
 VERSION=6.0.2
 VERNUMBER=602
 
-AC_INIT(epm, 4.2, [b.savelev@drweb.com])
-AM_INIT_AUTOMAKE(epm, 4.2, [b.savelev@drweb.com])
+AC_INIT(epm, 6.0.2, [b.savelev@drweb.com])
+AM_INIT_AUTOMAKE(epm, 6.0.2, [b.savelev@drweb.com])
 AC_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 

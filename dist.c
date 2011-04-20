@@ -1863,6 +1863,7 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 		namever[255],		/* Name + version */
 		namever_copy[255],	/* Copy of namever to feed strtok */
 		value[255];		/* Value string */
+		value_copy[255];	/* Copy of value to feed strtok */
   const char	*var;			/* Variable value */
 
 
@@ -1950,19 +1951,18 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 	  char *plat[3], *namever_m[3];
 	  int i;
 
-          /* strtok() will modify its first arg, so making a copy of it. */
-          strncpy(namever_copy, namever, sizeof(namever_copy)-sizeof(char));
-          namever_copy[sizeof(namever_copy)-1]='\0';
-
-	  plat_buf = strtok(namever_copy,"-");
-
-	  plat_buf = strtok(value,"-");
+          strncpy(value_copy, value, sizeof(value_copy)-sizeof(char));
+          value_copy[sizeof(value_copy)-1]='\0';
+	  plat_buf = strtok(value_copy,"-");
 	  for (i=0; i<3; i++)
 		if (plat_buf != NULL) {
 		  plat[i] = plat_buf;
 		  plat_buf = strtok(NULL,"-");
 		} else { plat[i] = NULL; }
-	  plat_buf = strtok(namever,"-");
+
+          strncpy(namever_copy, namever, sizeof(namever_copy)-sizeof(char));
+          namever_copy[sizeof(namever_copy)-1]='\0';
+	  plat_buf = strtok(namever_copy,"-");
 	  for (i=0; i<3; i++)
 		if (plat_buf != NULL) {
 		  namever_m[i] = plat_buf;

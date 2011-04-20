@@ -1862,7 +1862,7 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 		*bufptr,		/* Pointer into buffer */
 		namever[255],		/* Name + version */
 		namever_copy[255],	/* Copy of namever to feed strtok */
-		value[255];		/* Value string */
+		value[255],		/* Value string */
 		value_copy[255];	/* Copy of value to feed strtok */
   const char	*var;			/* Variable value */
 

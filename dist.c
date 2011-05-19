@@ -1300,8 +1300,11 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	    dir = opendir(src);
 
           if (dir == NULL)
+          {
 	    fprintf(stderr, "epm: Unable to open directory \"%s\" - %s\n",
 	            src, strerror(errno));
+            return (NULL);
+          }
           else
 	  {
 	   /*

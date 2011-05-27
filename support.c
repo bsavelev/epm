@@ -4,6 +4,7 @@
  *   Support functions for the ESP Package Manager (EPM).
  *
  *   Copyright 1999-2006 by Easy Software Products.
+ *   Copyright 2009-2010 by Dr.Web.
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by

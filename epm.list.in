@@ -6,6 +6,7 @@
 #   Please report problems and fixes to "epm@easysw.com".
 #
 #   Copyright 1999-2007 by Easy Software Products, all rights reserved.
+#   Copyright 2009 by Dr.Web.
 #
 #   These coded instructions, statements, and computer programs are the
 #   property of Easy Software Products and are protected by Federal
@@ -38,6 +39,7 @@ $srcdir=@srcdir@
 # Product information
 %product ESP Package Manager
 %copyright 1999-2007 by Easy Software Products, All Rights Reserved.
+%copyright 2009-2011 by Dr.Web.
 %vendor Easy Software Products
 %license ${srcdir}/COPYING
 %readme ${srcdir}/README

@@ -1551,7 +1551,7 @@ write_depends(const char *prodname,	/* I - Product name */
 
   fputs("if test x$RECURSION = xno -a -r .depend ; then \n", fp);
   fputs("\techo \"`eval_gettext \\\"Dependency check failed! Full list of unmet dependencies:\\\"`\"\n", fp);
-  fputs("\tcat .depend | uniq\n", fp);
+  fputs("\tcat .depend | sort | uniq\n", fp);
   fputs("\trm -f .depend\n", fp);
   fputs("\texit 1\n", fp);
   fputs("elif test x$DEPEND_RUN = xyes ; then\n", fp);

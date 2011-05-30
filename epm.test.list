@@ -57,7 +57,7 @@ $srcdir=.
 # Executables
 %system all
 f 0555 root sys ${bindir}/epm epm
-i 0555 root sys epm epm
+i 0555 root sys epm epm "start(25) stop(75)"
 c 0555 root sys ${bindir}/epminstall epminstall
 f 0555 root sys ${bindir}/mkepmlist mkepmlist
 

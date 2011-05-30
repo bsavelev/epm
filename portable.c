@@ -2514,7 +2514,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 	fputs("	if test -x /sbin/chkconfig; then\n", scriptfile);
 	qprintf(scriptfile, "\t\t/sbin/chkconfig --add %s >/dev/null 2>&1 || true\n", file->dst);
 	fputs("	elif ( test -x \"`which update-rc.d 2>/dev/null`\" >/dev/null 2>&1 ) ; then\n", scriptfile);
-	qprintf(scriptfile, "\t\tupdate-rc.d %s defaults >/dev/null 2>&1 || true\n", file->dst);
+	qprintf(scriptfile, "\t\tupdate-rc.d %s defaults %d %d >/dev/null 2>&1 || true\n", file->dst, get_start(file, 99), get_stop(file, 0));
 	fputs("	else\n", scriptfile);
 	for (runlevels = get_runlevels(dist->files + i, "0235");
              isdigit(*runlevels & 255);

@@ -882,8 +882,8 @@ write_liblpp(const char     *prodname,	/* I - Product short name */
 
   snprintf(filename, sizeof(filename), "%s/lpp.README", directory);
 
-  if (dist->copying[0])
-    copy_file(filename, dist->copying, 0644, 0, 0);
+  if (dist->copylist[0])
+    copy_file(filename, dist->copylist, 0644, 0, 0);
   else if (dist->num_licenses==1)
     copy_file(filename, dist->licenses[0], 0644, 0, 0);
   else if (dist->readme[0])

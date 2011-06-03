@@ -1673,11 +1673,11 @@ write_distfiles(const char *directory,	/* I - Directory */
       return (1);
   }
 
-  if (dist->copying[0])
+  if (dist->copylist[0])
   {
       snprintf(filename, sizeof(filename),
                "%s/%s.COPYRIGHTS", directory, prodfull);
-    if (copy_file(filename, dist->copying, 0444, getuid(), getgid()))
+    if (copy_file(filename, dist->copylist, 0444, getuid(), getgid()))
       return (1);
   }
 
@@ -2206,7 +2206,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("		esac\n", scriptfile);
   fputs("	done\n", scriptfile);
 
-  if (dist->copying[0]) {
+  if (dist->copylist[0]) {
     fprintf(scriptfile, "	if [ -f %s.COPYRIGHTS ]; then\n", prodfull);
     fputs("		echo\n", scriptfile);
     fprintf(scriptfile, "		cat %s.COPYRIGHTS\n", prodfull);

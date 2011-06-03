@@ -1106,12 +1106,12 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	  else
 	    fputs("epm: Ignoring %readme line in list file.\n", stderr);
 	}
-	else if (!strcmp(line, "%copying"))
+	else if (!strcmp(line, "%copylist"))
 	{
-          if (!dist->copying[0])
-            strcpy(dist->copying, temp);
+          if (!dist->copylist[0])
+            strcpy(dist->copylist, temp);
 	  else
-	    fputs("epm: Ignoring %copying line in list file.\n", stderr);
+	    fputs("epm: Ignoring %copylist line in list file.\n", stderr);
 	}
 	else if (!strcmp(line, "%subpackage"))
 	{
@@ -1522,8 +1522,8 @@ write_dist(const char *listname,	/* I - File to write to */
     fprintf(listfile, "%%license %s\n", dist->licenses[i]);
   if (dist->readme[0])
     fprintf(listfile, "%%readme %s\n", dist->readme);
-  if (dist->copying[0])
-    fprintf(listfile, "%%copying %s\n", dist->copying);
+  if (dist->copylist[0])
+    fprintf(listfile, "%%copylist %s\n", dist->copylist);
 
   subpkg = NULL;
   for (i = 0; i < dist->num_descriptions; i ++)

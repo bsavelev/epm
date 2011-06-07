@@ -567,9 +567,7 @@ make_subpackage(
   fprintf(fp, "!search %s\n", current);
 #endif /* 0 */
 
-  if (dist->copylist[0])
-    fprintf(fp, "i copyright=%s\n", pkg_path(dist->copylist, current));
-  else if (dist->num_licenses==1) {
+  if (dist->num_licenses==1) {
     fprintf(fp, "i copyright=%s\n", pkg_path(dist->licenses[0], current));
   }
 

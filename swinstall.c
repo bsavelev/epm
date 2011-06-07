@@ -431,19 +431,6 @@ make_swinstall(const char     *prodname,/* I - Product short name */
   if (!access(filename, 0))
     fprintf(fp, "  description < %s\n", filename);
 
-  if (dist->copylist[0])
-  {
-    if (strncmp(dist->copylist, "./", 2))
-      fprintf(fp, "  copyright < %s\n", dist->copylist);
-    else
-      fprintf(fp, "  copyright < %s\n", dist->copylist + 2);
-  } else if (dist->num_licenses==1) {
-    if (strncmp(dist->licenses[0], "./", 2))
-      fprintf(fp, "  copyright < %s\n", dist->licenses[0]);
-    else
-      fprintf(fp, "  copyright < %s\n", dist->licenses[0] + 2);
-  }
-
   if (dist->readme[0])
   {
     if (strncmp(dist->readme, "./", 2))

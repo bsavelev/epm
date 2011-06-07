@@ -1673,14 +1673,6 @@ write_distfiles(const char *directory,	/* I - Directory */
       return (1);
   }
 
-  if (dist->copylist[0])
-  {
-      snprintf(filename, sizeof(filename),
-               "%s/%s.COPYRIGHTS", directory, prodfull);
-    if (copy_file(filename, dist->copylist, 0444, getuid(), getgid()))
-      return (1);
-  }
-
  /*
   * Create the non-shared software distribution file...
   */
@@ -2205,16 +2197,6 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("			;;\n", scriptfile);
   fputs("		esac\n", scriptfile);
   fputs("	done\n", scriptfile);
-
-  if (dist->copylist[0]) {
-    fprintf(scriptfile, "	if [ -f %s.COPYRIGHTS ]; then\n", prodfull);
-    fputs("		echo\n", scriptfile);
-    fprintf(scriptfile, "		cat %s.COPYRIGHTS\n", prodfull);
-    fputs("		echo\n", scriptfile);
-    fputs("		echo '<Press any key to proceed>'\n", scriptfile);
-    fputs("		read r\n", scriptfile);
-    fputs("	fi\n", scriptfile);
-  }
 
   for (i = 0; i < dist->num_licenses; i ++)
   {

@@ -110,7 +110,6 @@ make_portable(const char     *prodname,	/* I - Product short name */
 		  "remove",
 		  "ss",
 		  "sw",
-		  "COPYRIGHTS",
 		  NULL
 		};
   static const char	*patchfiles[] =	/* Patch files */
@@ -121,7 +120,6 @@ make_portable(const char     *prodname,	/* I - Product short name */
 		  "psw",
 		  "readme",
 		  "remove",
-                  "COPYRIGHTS",
 		  NULL
 		};
 
@@ -248,9 +246,6 @@ clean_distfiles(const char *directory,	/* I - Directory */
   unlink(filename);
 
   snprintf(filename, sizeof(filename), "%s/%s.readme", directory, prodfull);
-  unlink(filename);
-
-  snprintf(filename, sizeof(filename), "%s/%s.COPYRIGHTS", directory, prodfull);
   unlink(filename);
 
   snprintf(filename, sizeof(filename), "%s/%s.remove", directory, prodfull);

@@ -35,3 +35,7 @@ doc/test/*.html
 stamp-*
 /po/Makefile.in
 dummy
+desktop/drweb-drweb.directory
+desktop/uninst.desktop
+po/POTFILES
+remove.sh

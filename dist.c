@@ -34,6 +34,8 @@
  *   get_runlevels()    - Get the run levels for the specified init script.
  *   get_start()        - Get the start number for an init script.
  *   get_stop()         - Get the stop number for an init script.
+ *   get_copyright_ext()- Get external copyright for the file.
+ *   get_license_ext()  - Get external license for the file.
  *   new_dist()         - Create a new, empty software distribution.
  *   read_dist()        - Read a software distribution.
  *   sort_dist_files()  - Sort the files in the distribution.
@@ -903,6 +905,40 @@ get_stop(file_t *file,			/* I - File */
     return (atoi(stop + 5));
   else
     return (defstop);
+}
+
+
+/*
+ * 'get_copyright_ext()' - Get external copyright for the file.
+ */
+
+const char *				/* O - Copyright text */
+get_copyright_ext(file_t *file)		/* I - File */
+{
+  const char	*c;			/* Pointer to a copyright */
+
+
+  if ((c = strstr(file->options, "copyright(")) != NULL)
+      return (c + 10);
+  else
+    return (0);
+}
+
+
+/*
+ * 'get_license_ext()' - Get external license for the file.
+ */
+
+const char *				/* O - Path to a license text file */
+get_license_ext(file_t *file)		/* I - File */
+{
+  const char	*p;			/* Pointer to a license path */
+
+
+  if ((p = strstr(file->options, "license(")) != NULL)
+    return (p + 8);
+  else
+    return (0);
 }
 
 

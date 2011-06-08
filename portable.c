@@ -2607,12 +2607,12 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
 		const char *destdir,	/* I - Destination directory in tar file */
 	        const char *subpackage)	/* I - Subpackage */
 {
-    int		i,			/* Looping vars */
-                j;
+  int		i, j, k;		/* Looping vars */
   char		srcname[1024],		/* Name of source file in distribution */
 		dstname[1024],		/* Name of destination file in distribution */
 		prodfull[255];		/* Full name of product */
   struct stat	srcstat;		/* Source file information */
+  file_t	*file;			/* Software file */
 
 
   if (subpackage)
@@ -2623,7 +2623,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
   for (i = 0; files[i] != NULL; i ++)
   {
     if (!strcmp(files[i], "license"))
-    { /* Write license file(s). */
+    { /* Write main license file(s). */
       if (CustomLic)
       {
         for (j = 0; j < dist->num_licenses; j ++)
@@ -2649,10 +2649,29 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
           WRITE_INSTFILES_HELPER;
         }
       }
-      // TODO: Put additional license files into the tarball here.
     } else if (!strcmp(files[i], "COPYRIGHTS"))
-    {
-      // TODO: Generate and save a "prodfull.COPYRIGHTS" file here.
+    { /* Write additional copyright and license files.  */
+      for (k = dist->num_files, file = dist->files; k > 0; k --, file ++) {
+        /* Skip files from other subpackages. */
+        if ((!subpackage && file->subpackage) ||
+            subpackage && strcmp(subpackage, file->subpackage))
+          continue;
+
+        if (file->copyright && file->license) {
+          /* TODO: copyright. */
+
+          snprintf(srcname, sizeof(srcname), "%s/%s", directory, file->license);
+          snprintf(dstname, sizeof(dstname), "%s%s", destdir, file->license);
+          printf("srcname: %s\n", srcname);
+          printf("dstname: %s\n", srcname);
+          WRITE_INSTFILES_HELPER;
+        } else if ((file->copyright && !file->license) ||
+                   (!file->copyright && file->license)) {
+          fputs("epm: Both copyright() and license() should be specified.\n",
+                stderr);
+          return (1);
+        }
+      }
     } else {
       snprintf(srcname, sizeof(srcname), "%s/%s.%s", directory, prodfull, files[i]);
       snprintf(dstname, sizeof(dstname), "%s%s.%s", destdir, prodfull, files[i]);

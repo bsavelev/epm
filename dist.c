@@ -980,7 +980,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 		user[32],		/* User */
 		group[32],		/* Group */
 		*temp,			/* Temporary pointer */
-		options[256];		/* File options */
+		options[10240];		/* File options */
   mode_t	mode;			/* File permissions */
   int		skip;			/* 1 = skip files, 0 = archive files */
   dist_t	*dist;			/* Distribution data */

@@ -186,6 +186,8 @@ typedef struct				/**** File to install ****/
 		dst[512],		/* Destination path */
 		options[256];		/* File options */
   const char	*subpackage;		/* Sub-package name */
+  const char	*copyright;		/* File copyright or 0 if common */
+  const char	*license;		/* File license or 0 if common */
 } file_t;
 
 typedef struct				/**** Install/Patch/Remove Commands ****/

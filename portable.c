@@ -110,6 +110,7 @@ make_portable(const char     *prodname,	/* I - Product short name */
 		  "remove",
 		  "ss",
 		  "sw",
+                  "COPYRIGHTS",
 		  NULL
 		};
   static const char	*patchfiles[] =	/* Patch files */
@@ -120,6 +121,7 @@ make_portable(const char     *prodname,	/* I - Product short name */
 		  "psw",
 		  "readme",
 		  "remove",
+                  "COPYRIGHTS",
 		  NULL
 		};
 
@@ -2620,7 +2622,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
 
   for (i = 0; files[i] != NULL; i ++)
   {
-    if (i==1)
+    if (!strcmp(files[i], "license"))
     { /* Write license file(s). */
       if (CustomLic)
       {
@@ -2647,6 +2649,10 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
           WRITE_INSTFILES_HELPER;
         }
       }
+      // TODO: Put additional license files into the tarball here.
+    } else if (!strcmp(files[i], "COPYRIGHTS"))
+    {
+      // TODO: Generate and save a "prodfull.COPYRIGHTS" file here.
     } else {
       snprintf(srcname, sizeof(srcname), "%s/%s.%s", directory, prodfull, files[i]);
       snprintf(dstname, sizeof(dstname), "%s%s.%s", destdir, prodfull, files[i]);

@@ -34,8 +34,8 @@
  *   get_runlevels()    - Get the run levels for the specified init script.
  *   get_start()        - Get the start number for an init script.
  *   get_stop()         - Get the stop number for an init script.
- *   get_copyright_ext()- Get external copyright for the file.
- *   get_license_ext()  - Get external license for the file.
+ *   get_copyright()    - Get custom copyright for the file.
+ *   get_license()      - Get custom license for the file.
  *   new_dist()         - Create a new, empty software distribution.
  *   read_dist()        - Read a software distribution.
  *   sort_dist_files()  - Sort the files in the distribution.
@@ -382,6 +382,9 @@ add_file(dist_t     *dist,		/* I - Distribution */
   dist->num_files ++;
 
   file->subpackage = subpkg;
+
+  file->copyright=0;
+  file->license=0;
 
   return (file);
 }
@@ -909,11 +912,11 @@ get_stop(file_t *file,			/* I - File */
 
 
 /*
- * 'get_copyright_ext()' - Get external copyright for the file.
+ * 'get_copyright()' - Get custom copyright for the file.
  */
 
 const char *				/* O - Copyright text */
-get_copyright_ext(file_t *file)		/* I - File */
+get_copyright(file_t *file)		/* I - File */
 {
   const char	*c;			/* Pointer to a copyright */
 
@@ -926,11 +929,11 @@ get_copyright_ext(file_t *file)		/* I - File */
 
 
 /*
- * 'get_license_ext()' - Get external license for the file.
+ * 'get_license()' - Get custom license for the file.
  */
 
 const char *				/* O - Path to a license text file */
-get_license_ext(file_t *file)		/* I - File */
+get_license(file_t *file)		/* I - File */
 {
   const char	*p;			/* Pointer to a license path */
 
@@ -1366,6 +1369,8 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	      strcpy(file->user, user);
 	      strcpy(file->group, group);
 	      strcpy(file->options, options);
+	      file->copyright=get_copyright(file);
+	      file->license=get_license(file);
 	    }
 
             closedir(dir);
@@ -1386,6 +1391,8 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	  strcpy(file->user, user);
 	  strcpy(file->group, group);
 	  strcpy(file->options, options);
+	  file->copyright=get_copyright(file);
+	  file->license=get_license(file);
 	}
       }
     }

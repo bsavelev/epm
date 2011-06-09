@@ -105,23 +105,19 @@ make_portable(const char     *prodname,	/* I - Product short name */
   static const char	*distfiles[] =	/* Distribution files */
 		{
 		  "install",
-		  "license",
 		  "readme",
 		  "remove",
 		  "ss",
 		  "sw",
-                  "COPYRIGHTS",
 		  NULL
 		};
   static const char	*patchfiles[] =	/* Patch files */
 		{
 		  "patch",
-		  "license",
 		  "pss",
 		  "psw",
 		  "readme",
 		  "remove",
-                  "COPYRIGHTS",
 		  NULL
 		};
 
@@ -2547,49 +2543,6 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 }
 
 
-#define WRITE_INSTFILES_HELPER                                          \
-  if (stat(srcname, &srcstat))                                          \
-  {                                                                     \
-    if (i==0)                                                           \
-      break;                                                            \
-    else                                                                \
-      continue;                                                         \
-  }                                                                     \
-                                                                        \
-  if (srcstat.st_size == 0)                                             \
-    continue;                                                           \
-                                                                        \
-  if (tar_header(tarfile, TAR_NORMAL, srcstat.st_mode & 07555,          \
-                 srcstat.st_size, srcstat.st_mtime, "root", "root",     \
-                 dstname, NULL) < 0)                                    \
-  {                                                                     \
-    fprintf(stderr, "epm: Error writing file header - %s\n",            \
-            strerror(errno));                                           \
-    return (-1);                                                        \
-  }                                                                     \
-                                                                        \
-  if (tar_file(tarfile, srcname) < 0)                                   \
-  {                                                                     \
-    fprintf(stderr, "epm: Error writing file data for %s -\n    %s\n",  \
-            dstname, strerror(errno));                                  \
-    return (-1);                                                        \
-  }                                                                     \
-                                                                        \
-  if (Verbosity) {                                                      \
-    if (i==1) {                                                         \
-      if (CustomLic) {                                                  \
-        printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0,    \
-               basename(dist->licenses[j]));                            \
-      } else {                                                          \
-        printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0, \
-               prodfull, basename(dist->licenses[j]));                  \
-      }                                                                 \
-    } else {                                                            \
-      printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,   \
-             prodfull, files[i]);                                       \
-    }                                                                   \
-  }
-
 /* Becames 1 as main package's tarball has been built. */
 int MainPackageComposed=0;
 
@@ -2607,7 +2560,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
 		const char *destdir,	/* I - Destination directory in tar file */
 	        const char *subpackage)	/* I - Subpackage */
 {
-  int		i, j, k;		/* Looping vars */
+  int		i;			/* Looping var */
   char		srcname[1024],		/* Name of source file in distribution */
 		dstname[1024],		/* Name of destination file in distribution */
 		prodfull[255];		/* Full name of product */
@@ -2622,61 +2575,134 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
 
   for (i = 0; files[i] != NULL; i ++)
   {
-    if (!strcmp(files[i], "license"))
-    { /* Write main license file(s). */
-      if (CustomLic)
-      {
-        for (j = 0; j < dist->num_licenses; j ++)
-        {
-          if (MainPackageComposed)
-            break;
+    snprintf(srcname, sizeof(srcname), "%s/%s.%s", directory, prodfull, files[i]);
+    snprintf(dstname, sizeof(dstname), "%s%s.%s", destdir, prodfull, files[i]);
 
-          char *license=basename(dist->licenses[j]);
-          snprintf(srcname, sizeof(srcname), "%s/%s", directory, license);
-          snprintf(dstname, sizeof(dstname), "%s%s", destdir, license);
+    if (stat(srcname, &srcstat))
+    {
+      if (!strcmp(files[i], "install"))
+        break;
+      else
+        continue;
+    }
 
-          WRITE_INSTFILES_HELPER;
-        }
-      } else {
-        for (j = 0; j < dist->num_licenses; j ++)
-        {
-          char *license=basename(dist->licenses[j]);
-          snprintf(srcname, sizeof(srcname),
-                   "%s/%s.%s", directory, prodfull, license);
-          snprintf(dstname, sizeof(dstname),
-                   "%s%s.%s", destdir, prodfull, license);
+    if (tar_header(tarfile, TAR_NORMAL, srcstat.st_mode & 07555,
+                   srcstat.st_size, srcstat.st_mtime, "root", "root",
+                   dstname, NULL) < 0)
+    {
+      fprintf(stderr, "epm: Error writing file header - %s\n",
+              strerror(errno));
+      return (-1);
+    }
 
-          WRITE_INSTFILES_HELPER;
-        }
-      }
-    } else if (!strcmp(files[i], "COPYRIGHTS"))
-    { /* Write additional copyright and license files.  */
-      for (k = dist->num_files, file = dist->files; k > 0; k --, file ++) {
-        /* Skip files from other subpackages. */
-        if ((!subpackage && file->subpackage) ||
-            subpackage && strcmp(subpackage, file->subpackage))
-          continue;
+    if (tar_file(tarfile, srcname) < 0)
+    {
+      fprintf(stderr, "epm: Error writing file data for %s -\n    %s\n",
+              dstname, strerror(errno));
+      return (-1);
+    }
 
-        if (file->copyright && file->license) {
-          /* TODO: copyright. */
+    if (Verbosity)
+      printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,
+             prodfull, files[i]);
+  }
 
-          snprintf(srcname, sizeof(srcname), "%s/%s", directory, file->license);
-          snprintf(dstname, sizeof(dstname), "%s%s", destdir, file->license);
-          printf("srcname: %s\n", srcname);
-          printf("dstname: %s\n", srcname);
-          WRITE_INSTFILES_HELPER;
-        } else if ((file->copyright && !file->license) ||
-                   (!file->copyright && file->license)) {
-          fputs("epm: Both copyright() and license() should be specified.\n",
-                stderr);
-          return (1);
-        }
-      }
+  /* Write main license file(s). */
+  for (i = 0; i < dist->num_licenses; i ++)
+  {
+    if (CustomLic && MainPackageComposed)
+      break;
+
+    char *license=basename(dist->licenses[i]);
+    if (CustomLic) {
+      snprintf(srcname, sizeof(srcname), "%s/%s", directory, license);
+      snprintf(dstname, sizeof(dstname), "%s%s", destdir, license);
+      printf("srcname: %s\n", srcname);
+      printf("dstname: %s\n", dstname);
     } else {
-      snprintf(srcname, sizeof(srcname), "%s/%s.%s", directory, prodfull, files[i]);
-      snprintf(dstname, sizeof(dstname), "%s%s.%s", destdir, prodfull, files[i]);
+      snprintf(srcname, sizeof(srcname),
+               "%s/%s.%s", directory, prodfull, license);
+      snprintf(dstname, sizeof(dstname),
+               "%s%s.%s", destdir, prodfull, license);
+    }
 
-      WRITE_INSTFILES_HELPER;
+    if (stat(srcname, &srcstat)) {
+      fprintf(stderr, "epm: Can't open %s -\n    %s\n",
+              srcname, strerror(errno));
+      return (-1);
+    }
+
+    if (tar_header(tarfile, TAR_NORMAL, srcstat.st_mode & 07555,
+                   srcstat.st_size, srcstat.st_mtime, "root", "root",
+                   dstname, NULL) < 0)
+    {
+      fprintf(stderr, "epm: Error writing file header - %s\n",
+              strerror(errno));
+      return (-1);
+    }
+
+    if (tar_file(tarfile, srcname) < 0)
+    {
+      fprintf(stderr, "epm: Error writing file data for %s -\n    %s\n",
+              dstname, strerror(errno));
+      return (-1);
+    }
+
+    if (Verbosity) {
+      if (CustomLic)
+        printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0, files[i]);
+      else
+        printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,
+               prodfull, files[i]);
+    }
+  }
+
+  /* Write additional copyright and license files.  */
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++) {
+    /* Skip files from other subpackages. */
+    if ((!subpackage && file->subpackage) ||
+        (subpackage && strcmp(subpackage, file->subpackage)))
+      continue;
+
+    if (file->copyright && file->license) {
+      /* TODO: copyright. */
+
+      snprintf(srcname, sizeof(srcname), "%s/%s", directory, file->license);
+      snprintf(dstname, sizeof(dstname), "%s%s", destdir, file->license);
+      printf("srcname: %s\n", srcname);
+      printf("dstname: %s\n", dstname);
+
+      if (stat(srcname, &srcstat)) {
+        fprintf(stderr, "epm: Can't open %s -\n    %s\n",
+                srcname, strerror(errno));
+        return (-1);
+      }
+
+      if (tar_header(tarfile, TAR_NORMAL, srcstat.st_mode & 07555,
+                     srcstat.st_size, srcstat.st_mtime, "root", "root",
+                     dstname, NULL) < 0)
+      {
+        fprintf(stderr, "epm: Error writing file header - %s\n",
+                strerror(errno));
+        return (-1);
+      }
+
+      if (tar_file(tarfile, srcname) < 0)
+      {
+        fprintf(stderr, "epm: Error writing file data for %s -\n    %s\n",
+                dstname, strerror(errno));
+        return (-1);
+      }
+
+      if (Verbosity)
+        printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,
+               prodfull, files[i]);
+
+    } else if ((file->copyright && !file->license) ||
+               (!file->copyright && file->license)) {
+      fputs("epm: Both copyright() and license() should be specified.\n",
+            stderr);
+      return (1);
     }
   }
 

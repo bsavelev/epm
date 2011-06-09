@@ -644,7 +644,7 @@ get_option(file_t     *file,		/* I - File */
 	   const char *defval)		/* I - Default value of option */
 {
   char		*ptr;			/* Pointer to option */
-  static char	option[256];		/* Copy of file option */
+  static char	option[10240];		/* Copy of file option */
 
 
  /*
@@ -908,40 +908,6 @@ get_stop(file_t *file,			/* I - File */
     return (atoi(stop + 5));
   else
     return (defstop);
-}
-
-
-/*
- * 'get_copyright()' - Get custom copyright for the file.
- */
-
-const char *				/* O - Copyright text */
-get_copyright(file_t *file)		/* I - File */
-{
-  const char	*c;			/* Pointer to a copyright */
-
-
-  if ((c = strstr(file->options, "copyright(")) != NULL)
-      return (c + 10);
-  else
-    return (0);
-}
-
-
-/*
- * 'get_license()' - Get custom license for the file.
- */
-
-const char *				/* O - Path to a license text file */
-get_license(file_t *file)		/* I - File */
-{
-  const char	*p;			/* Pointer to a license path */
-
-
-  if ((p = strstr(file->options, "license(")) != NULL)
-    return (p + 8);
-  else
-    return (0);
 }
 
 
@@ -1369,8 +1335,14 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	      strcpy(file->user, user);
 	      strcpy(file->group, group);
 	      strcpy(file->options, options);
-	      file->copyright=get_copyright(file);
-	      file->license=get_license(file);
+
+              const char *copyright=get_option(file, "copyright", 0);
+	      file->copyright=malloc(strlen(copyright)+1); /* FIXME: free() */
+              strcpy(file->copyright, copyright);
+
+              const char *license=get_option(file, "license", 0);
+	      file->license=malloc(strlen(license)+1); /* FIXME: free() */
+              strcpy(file->license, license);
 	    }
 
             closedir(dir);
@@ -1391,8 +1363,20 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	  strcpy(file->user, user);
 	  strcpy(file->group, group);
 	  strcpy(file->options, options);
-	  file->copyright=get_copyright(file);
-	  file->license=get_license(file);
+
+          const char *copyright=get_option(file, "copyright", 0);
+          if (copyright) {
+              file->copyright=malloc(strlen(copyright)+1); /* FIXME: free() */
+              strcpy(file->copyright, copyright);
+              printf("file->copyright: %s\n", file->copyright);
+          }
+
+          const char *license=get_option(file, "license", 0);
+          if (license) {
+              file->license=malloc(strlen(license)+1); /* FIXME: free() */
+              strcpy(file->license, license);
+              printf("file->license: %s\n", file->license);
+          }
 	}
       }
     }

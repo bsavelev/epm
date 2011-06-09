@@ -199,6 +199,7 @@ clean_distfiles(const char *directory,	/* I - Directory */
   char		prodfull[255],		/* Full name of product */
 		filename[1024];		/* Name of temporary file */
   int		i;			/* Looping var */
+  file_t	*file;			/* Software file */
 
 
  /*
@@ -255,9 +256,14 @@ clean_distfiles(const char *directory,	/* I - Directory */
   snprintf(filename, sizeof(filename), "%s/%s.sw", directory, prodfull);
   unlink(filename);
 
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
+    if (file->license) {
+      snprintf(filename, sizeof(filename), "%s/%s", directory, file->license);
+      unlink(filename);
+    }
+
   if (!KeepFiles)
     run_command(NULL, "/bin/rm -rf %s", TempDir);
-
 }
 
 
@@ -1665,6 +1671,21 @@ write_distfiles(const char *directory,	/* I - Directory */
     if (copy_file(filename, dist->readme, 0444, getuid(), getgid()))
       return (1);
   }
+
+ /*
+  * Copy additional license files...
+  */
+
+  if (Verbosity)
+    printf("Copying %s additional license files...\n", prodfull);
+
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
+    if (file->license) {
+      snprintf(filename, sizeof(filename), "%s/%s", directory, file->license);
+      if (copy_file(filename, file->license, 0444,
+                    getuid(), getgid()))
+        return (1);
+    }
 
  /*
   * Create the non-shared software distribution file...

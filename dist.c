@@ -37,6 +37,7 @@
  *   get_copyright()    - Get custom copyright for the file.
  *   get_license()      - Get custom license for the file.
  *   new_dist()         - Create a new, empty software distribution.
+ *   read_file_license()- Read "copyright()" and "license()" parameters.
  *   read_dist()        - Read a software distribution.
  *   sort_dist_files()  - Sort the files in the distribution.
  *   write_dist()       - Write a distribution list file...
@@ -633,9 +634,9 @@ free_dist(dist_t *dist)			/* I - Distribution to free */
   for (i = dist->num_files - 1, file = dist->files; i > 0; i --, file ++)
   {
       if (file->copyright)
-          free(file->copyright);
+          free((void *) file->copyright);
       if (file->license)
-          free(file->license);
+          free((void *) file->license);
   }
 
   free(dist);
@@ -932,6 +933,28 @@ new_dist(void)
   */
 
   return ((dist_t *)calloc(sizeof(dist_t), 1));
+}
+
+
+/*
+ * 'read_file_license() - Read "copyright()" and "license()" parameters.
+ */
+
+void
+read_file_license(file_t	*file,	/* I - Distribution file */
+                  dist_t	*dist)	/* I - Distribution data */
+{
+    char *copyright=get_option(file, "copyright", 0);
+    if (copyright) {
+        file->copyright=malloc(strlen(copyright)+1);
+        strcpy(file->copyright, copyright);
+    }
+
+    char *license=get_option(file, "license", 0);
+    if (license) {
+        file->license=malloc(strlen(license)+1);
+        strcpy(file->license, license);
+    }
 }
 
 
@@ -1345,13 +1368,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	      strcpy(file->group, group);
 	      strcpy(file->options, options);
 
-              const char *copyright=get_option(file, "copyright", 0);
-	      file->copyright=malloc(strlen(copyright)+1);
-              strcpy(file->copyright, copyright);
-
-              const char *license=get_option(file, "license", 0);
-	      file->license=malloc(strlen(license)+1);
-              strcpy(file->license, license);
+              read_file_license(file, dist);
 	    }
 
             closedir(dir);
@@ -1373,19 +1390,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	  strcpy(file->group, group);
 	  strcpy(file->options, options);
 
-          const char *copyright=get_option(file, "copyright", 0);
-          if (copyright) {
-              file->copyright=malloc(strlen(copyright)+1);
-              strcpy(file->copyright, copyright);
-              printf("file->copyright: %s\n", file->copyright);
-          }
-
-          const char *license=get_option(file, "license", 0);
-          if (license) {
-              file->license=malloc(strlen(license)+1);
-              strcpy(file->license, license);
-              printf("file->license: %s\n", file->license);
-          }
+          read_file_license(file, dist);
 	}
       }
     }

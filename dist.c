@@ -603,6 +603,14 @@ free_dist(dist_t *dist)			/* I - Distribution to free */
   file_t	*file;			/* File in distribution */
 
 
+  for (i = dist->num_files - 1, file = dist->files; i > 0; i --, file ++)
+  {
+      if (file->copyright)
+          free((void *) file->copyright);
+      if (file->license)
+          free((void *) file->license);
+  }
+
   if (dist->num_files > 0)
     free(dist->files);
 
@@ -630,14 +638,6 @@ free_dist(dist_t *dist)			/* I - Distribution to free */
 
   if (dist->num_depends)
     free(dist->depends);
-
-  for (i = dist->num_files - 1, file = dist->files; i > 0; i --, file ++)
-  {
-      if (file->copyright)
-          free((void *) file->copyright);
-      if (file->license)
-          free((void *) file->license);
-  }
 
   free(dist);
 }
@@ -941,8 +941,9 @@ new_dist(void)
  */
 
 void
-read_file_license(file_t	*file,	/* I - Distribution file */
-                  dist_t	*dist)	/* I - Distribution data */
+read_file_license(file_t	*file,		/* I - Distribution file */
+                  dist_t	*dist,		/* I - Distribution data */
+                  const char	*subpkg)	/* I - Subpackage */
 {
     char *copyright=get_option(file, "copyright", 0);
     if (copyright) {
@@ -954,6 +955,19 @@ read_file_license(file_t	*file,	/* I - Distribution file */
     if (license) {
         file->license=malloc(strlen(license)+1);
         strcpy(file->license, license);
+
+        file_t *new_file=add_file(dist, subpkg);
+
+        strncpy(new_file->src, file->license, 512);
+        char *docs="/opt/drweb/doc/"; /* Yes, it's hardcoded for now */
+        strncpy(new_file->dst, docs, 512);
+        strncpy(new_file->dst+strlen(docs), file->license,
+                512-strlen(new_file->dst));
+
+        new_file->type = 'f';
+        new_file->mode = (mode_t)0644;
+        strncpy(new_file->group, "root", sizeof(file->group));
+        strncpy(new_file->user, "root", sizeof(file->user));
     }
 }
 
@@ -1368,7 +1382,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	      strcpy(file->group, group);
 	      strcpy(file->options, options);
 
-              read_file_license(file, dist);
+              read_file_license(file, dist, subpkg);
 	    }
 
             closedir(dir);
@@ -1390,7 +1404,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	  strcpy(file->group, group);
 	  strcpy(file->options, options);
 
-          read_file_license(file, dist);
+          read_file_license(file, dist, subpkg);
 	}
       }
     }

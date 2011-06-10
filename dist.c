@@ -940,12 +940,24 @@ new_dist(void)
  * 'read_file_license() - Read "copyright()" and "license()" parameters.
  */
 
-void
+int						/* O - 0==success, 1==error */
 read_file_license(file_t	*file,		/* I - Distribution file */
                   dist_t	*dist,		/* I - Distribution data */
                   const char	*subpkg)	/* I - Subpackage */
 {
   char *copyright=get_option(file, "copyright", 0);
+  char *license=get_option(file, "license", 0);
+
+  if (!copyright && !license)
+    return (0);
+
+  if ((copyright && !license) ||
+      (!copyright && license)) {
+    fputs("epm: Both copyright() and license() should be specified.\n",
+          stderr);
+    return (1);
+  }
+
   if (copyright) {
     file->copyright=malloc(strlen(copyright)+1);
     strcpy(file->copyright, copyright);
@@ -953,7 +965,6 @@ read_file_license(file_t	*file,		/* I - Distribution file */
     /* TODO: Add copyright info into list. */
   }
 
-  char *license=get_option(file, "license", 0);
   if (license) {
     file->license=malloc(strlen(license)+1);
     strcpy(file->license, license);
@@ -971,6 +982,8 @@ read_file_license(file_t	*file,		/* I - Distribution file */
     strncpy(new_file->group, "root", sizeof(file->group));
     strncpy(new_file->user, "root", sizeof(file->user));
   }
+
+  return (0);
 }
 
 
@@ -1384,7 +1397,8 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	      strcpy(file->group, group);
 	      strcpy(file->options, options);
 
-              read_file_license(file, dist, subpkg);
+              if (read_file_license(file, dist, subpkg))
+                return (NULL);
 	    }
 
             closedir(dir);
@@ -1406,7 +1420,8 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	  strcpy(file->group, group);
 	  strcpy(file->options, options);
 
-          read_file_license(file, dist, subpkg);
+          if (read_file_license(file, dist, subpkg))
+            return (NULL);
 	}
       }
     }

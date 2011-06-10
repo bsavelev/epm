@@ -2716,12 +2716,6 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
       if (Verbosity)
         printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,
                prodfull, files[i]);
-
-    } else if ((file->copyright && !file->license) ||
-               (!file->copyright && file->license)) {
-      fputs("epm: Both copyright() and license() should be specified.\n",
-            stderr);
-      return (1);
     }
   }
 

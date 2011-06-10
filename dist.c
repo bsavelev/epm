@@ -958,30 +958,34 @@ read_file_license(file_t	*file,		/* I - Distribution file */
     return (1);
   }
 
-  if (copyright) {
-    file->copyright=malloc(strlen(copyright)+1);
-    strcpy(file->copyright, copyright);
+ /*
+  * Process copyright...
+  */
 
-    /* TODO: Add copyright info into list. */
-  }
+  file->copyright=malloc(strlen(copyright)+1);
+  strcpy(file->copyright, copyright);
 
-  if (license) {
-    file->license=malloc(strlen(license)+1);
-    strcpy(file->license, license);
+  /* TODO: Add copyright info into list. */
 
-    file_t *new_file=add_file(dist, subpkg);
+ /*
+  * Process license...
+  */
 
-    strncpy(new_file->src, file->license, 512);
-    char *docs="/opt/drweb/doc/"; /* FIXME: Do not hardcode it */
-    strncpy(new_file->dst, docs, 512);
-    strncpy(new_file->dst+strlen(docs), file->license,
-            512-strlen(new_file->dst));
+  file->license=malloc(strlen(license)+1);
+  strcpy(file->license, license);
 
-    new_file->type = 'f';
-    new_file->mode = (mode_t)0644;
-    strncpy(new_file->group, "root", sizeof(file->group));
-    strncpy(new_file->user, "root", sizeof(file->user));
-  }
+  file_t *new_file=add_file(dist, subpkg);
+
+  strncpy(new_file->src, file->license, 512);
+  char *docs="/opt/drweb/doc/"; /* FIXME: Do not hardcode it */
+  strncpy(new_file->dst, docs, 512);
+  strncpy(new_file->dst+strlen(docs), file->license,
+          512-strlen(new_file->dst));
+
+  new_file->type = 'f';
+  new_file->mode = (mode_t)0644;
+  strncpy(new_file->group, "root", sizeof(file->group));
+  strncpy(new_file->user, "root", sizeof(file->user));
 
   return (0);
 }

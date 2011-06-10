@@ -598,7 +598,8 @@ find_license(dist_t     *dist,		/* I - Distribution */
 void
 free_dist(dist_t *dist)			/* I - Distribution to free */
 {
-  int	i;				/* Looping var */
+  int		i;			/* Looping var */
+  file_t	*file;			/* File in distribution */
 
 
   if (dist->num_files > 0)
@@ -628,6 +629,14 @@ free_dist(dist_t *dist)			/* I - Distribution to free */
 
   if (dist->num_depends)
     free(dist->depends);
+
+  for (i = dist->num_files - 1, file = dist->files; i > 0; i --, file ++)
+  {
+      if (file->copyright)
+          free(file->copyright);
+      if (file->license)
+          free(file->license);
+  }
 
   free(dist);
 }
@@ -1337,11 +1346,11 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	      strcpy(file->options, options);
 
               const char *copyright=get_option(file, "copyright", 0);
-	      file->copyright=malloc(strlen(copyright)+1); /* FIXME: free() */
+	      file->copyright=malloc(strlen(copyright)+1);
               strcpy(file->copyright, copyright);
 
               const char *license=get_option(file, "license", 0);
-	      file->license=malloc(strlen(license)+1); /* FIXME: free() */
+	      file->license=malloc(strlen(license)+1);
               strcpy(file->license, license);
 	    }
 

@@ -1375,14 +1375,14 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 
           const char *copyright=get_option(file, "copyright", 0);
           if (copyright) {
-              file->copyright=malloc(strlen(copyright)+1); /* FIXME: free() */
+              file->copyright=malloc(strlen(copyright)+1);
               strcpy(file->copyright, copyright);
               printf("file->copyright: %s\n", file->copyright);
           }
 
           const char *license=get_option(file, "license", 0);
           if (license) {
-              file->license=malloc(strlen(license)+1); /* FIXME: free() */
+              file->license=malloc(strlen(license)+1);
               strcpy(file->license, license);
               printf("file->license: %s\n", file->license);
           }

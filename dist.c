@@ -945,30 +945,32 @@ read_file_license(file_t	*file,		/* I - Distribution file */
                   dist_t	*dist,		/* I - Distribution data */
                   const char	*subpkg)	/* I - Subpackage */
 {
-    char *copyright=get_option(file, "copyright", 0);
-    if (copyright) {
-        file->copyright=malloc(strlen(copyright)+1);
-        strcpy(file->copyright, copyright);
-    }
+  char *copyright=get_option(file, "copyright", 0);
+  if (copyright) {
+    file->copyright=malloc(strlen(copyright)+1);
+    strcpy(file->copyright, copyright);
 
-    char *license=get_option(file, "license", 0);
-    if (license) {
-        file->license=malloc(strlen(license)+1);
-        strcpy(file->license, license);
+    /* TODO: Add copyright info into list. */
+  }
 
-        file_t *new_file=add_file(dist, subpkg);
+  char *license=get_option(file, "license", 0);
+  if (license) {
+    file->license=malloc(strlen(license)+1);
+    strcpy(file->license, license);
 
-        strncpy(new_file->src, file->license, 512);
-        char *docs="/opt/drweb/doc/"; /* Yes, it's hardcoded for now */
-        strncpy(new_file->dst, docs, 512);
-        strncpy(new_file->dst+strlen(docs), file->license,
-                512-strlen(new_file->dst));
+    file_t *new_file=add_file(dist, subpkg);
 
-        new_file->type = 'f';
-        new_file->mode = (mode_t)0644;
-        strncpy(new_file->group, "root", sizeof(file->group));
-        strncpy(new_file->user, "root", sizeof(file->user));
-    }
+    strncpy(new_file->src, file->license, 512);
+    char *docs="/opt/drweb/doc/"; /* FIXME: Do not hardcode it */
+    strncpy(new_file->dst, docs, 512);
+    strncpy(new_file->dst+strlen(docs), file->license,
+            512-strlen(new_file->dst));
+
+    new_file->type = 'f';
+    new_file->mode = (mode_t)0644;
+    strncpy(new_file->group, "root", sizeof(file->group));
+    strncpy(new_file->user, "root", sizeof(file->user));
+  }
 }
 
 
@@ -1413,6 +1415,10 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
     listlevel --;
   }
   while (listlevel >= 0);
+
+  /* TODO: */
+  /* - Create *.COPYRIGHTS in the dir where additional licenses are located. */
+  /* - Put copyrights from the list into the <subpackage>.COPYRIGHTS files. */
 
   if (!dist->packager[0])
   {

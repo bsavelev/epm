@@ -961,8 +961,9 @@ add_file_copyright(file_t *file, const char *str)
       if (sep)
         *sep='\0';
 
-      file->copyrights[i]=malloc(strlen(str)+1);
-      strcpy(file->copyrights[i], str);
+      file->copyrights[i]=malloc(4+strlen(str)+1);
+      strcpy(file->copyrights[i], "    ");
+      strcat(file->copyrights[i], str);
 
       if (sep)
         str=sep+3;
@@ -1037,6 +1038,7 @@ read_file_license(file_t	*file,		/* I - Distribution file */
 int						/* O - 0==success, 1==error */
 write_copyrights_file(dist_t	*dist)		/* I - Distribution data */
 {
+  int i,j;
   char filename[512];
   filename[0]='\0';
   strncat(filename, dist->product, 511);
@@ -1044,18 +1046,32 @@ write_copyrights_file(dist_t	*dist)		/* I - Distribution data */
   FILE *fd;
   fd=fopen(filename, "w");
 
-  int i,j;
+  for (i=0; i<dist->num_copyrights; ++i) {
+    fprintf(fd, "\n    Copyright (c) %s\n", dist->copyrights[i]);
+    fprintf(fd, "    All rights reserved.\n", dist->copyrights[i]);
+    fprintf(fd, "    See file", dist->licenses);
+    if (dist->num_licenses>1)
+      fputs("s", fd);
+    for (j=0; j<dist->num_licenses; ++j)
+      fprintf(fd, " \"%s\"", dist->licenses[j]);
+    fputs(" for the license text.\n\n", fd);
+  }
+  fputs("Except the following files:\n\n", fd);
+
   file_t *file;
-  for (i=0, file=dist->files; i<dist->num_files; ++i, ++file)
-      for (j=0; j<256; ++j) {
-          if (file->copyrights[j]) {
-              fputs(file->copyrights[j], fd);
-              fputs("\n", fd);
-          } else {
-              fputs("\n", fd);
-              break;
-          }
+  for (i=0, file=dist->files; i<dist->num_files; ++i, ++file) {
+    for (j=0; j<256; ++j) {
+      if (file->copyrights[j]) {
+        fputs(file->copyrights[j], fd);
+        fputs("\n", fd);
+      } else {
+        break;
       }
+    }
+
+    if (file->license)
+      fprintf(fd, "    See file \"%s\" for the license text.\n\n", file->license);
+  }
 
   fclose(fd);
 

@@ -2685,7 +2685,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
         (subpackage && strcmp(subpackage, file->subpackage)))
       continue;
 
-    if (file->copyright && file->license) {
+    if (file->license) {
       snprintf(srcname, sizeof(srcname), "%s/%s", directory, file->license);
       snprintf(dstname, sizeof(dstname), "%s%s", destdir, file->license);
       printf("srcname: %s\n", srcname);

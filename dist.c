@@ -384,7 +384,7 @@ add_file(dist_t     *dist,		/* I - Distribution */
 
   file->subpackage = subpkg;
 
-  file->copyright=0;
+  memset(file->copyrights, 0, 256);
   file->license=0;
 
   return (file);
@@ -599,17 +599,20 @@ find_license(dist_t     *dist,		/* I - Distribution */
 void
 free_dist(dist_t *dist)			/* I - Distribution to free */
 {
-  int		i;			/* Looping var */
+  int		i, j;			/* Looping var */
   file_t	*file;			/* File in distribution */
 
 
   for (i = dist->num_files - 1, file = dist->files; i > 0; i --, file ++)
   {
-      if (file->copyright)
-          free((void *) file->copyright);
-      if (file->license)
-          free((void *) file->license);
+    for (j=0; j<256; j++)
+      if (file->copyrights[j])
+        free((void *) file->copyrights[j]);
+    if (file->license)
+      free((void *) file->license);
   }
+  memset(file->copyrights, 0, 256);
+  file->license=0;
 
   if (dist->num_files > 0)
     free(dist->files);
@@ -936,8 +939,47 @@ new_dist(void)
 }
 
 
+void
+add_file_copyright(file_t *file, const char *str)
+{
+  int added=0;
+
+  /* Split str by ";;;" if needed. */
+  unsigned int i;
+  for (i=0; i<256; i++) {
+    if (file->copyrights[i]==0) {
+      if (added==0) {
+        /* Add file name. */
+        file->copyrights[i]=malloc(strlen(file->dst)+2+1);
+        strcpy(file->copyrights[i], file->dst);
+        strcat(file->copyrights[i], " :");
+        added=1;
+        continue;
+      }
+
+      char *sep=strstr(str, ";;;");
+      if (sep)
+        *sep='\0';
+
+      file->copyrights[i]=malloc(strlen(str)+1);
+      strcpy(file->copyrights[i], str);
+
+      if (sep)
+        str=sep+3;
+      else {
+        break;
+      }
+    }
+  }
+
+  if (added==0) {
+    fputs("epm: Internal error: File copyright wasn't added.\n", stderr);
+  }
+}
+
+
 /*
- * 'read_file_license() - Read "copyright()" and "license()" parameters.
+ * 'read_file_license()' - Read "copyright()" and "license()" parameters.
  */
 
 int						/* O - 0==success, 1==error */
@@ -945,27 +987,19 @@ read_file_license(file_t	*file,		/* I - Distribution file */
                   dist_t	*dist,		/* I - Distribution data */
                   const char	*subpkg)	/* I - Subpackage */
 {
-  char *copyright=get_option(file, "copyright", 0);
-  char *license=get_option(file, "license", 0);
+  char copyright[10240];
+  char license[10240];
+  strncpy(copyright, get_option(file, "copyright", ""), 10240-1);
+  strncpy(license, get_option(file, "license", ""), 10240-1);
 
-  if (!copyright && !license)
+  if (!copyright[0] && !license[0])
     return (0);
 
-  if ((copyright && !license) ||
-      (!copyright && license)) {
-    fputs("epm: Both copyright() and license() should be specified.\n",
+  if ((!copyright[0] && license[0])) {
+    fputs("epm: copyright() should be specified with license().\n",
           stderr);
     return (1);
   }
-
- /*
-  * Process copyright...
-  */
-
-  file->copyright=malloc(strlen(copyright)+1);
-  strcpy(file->copyright, copyright);
-
-  /* TODO: Add copyright info into list. */
 
  /*
   * Process license...
@@ -986,6 +1020,44 @@ read_file_license(file_t	*file,		/* I - Distribution file */
   new_file->mode = (mode_t)0644;
   strncpy(new_file->group, "root", sizeof(file->group));
   strncpy(new_file->user, "root", sizeof(file->user));
+
+ /*
+  * Process copyright...
+  */
+
+  add_file_copyright(file, copyright);
+
+  return (0);
+}
+
+
+/*
+ * 'write_copyrights_file()' - Writes <package>.COPYRIGHTS file.
+ */
+
+int						/* O - 0==success, 1==error */
+write_copyrights_file(dist_t	*dist)		/* I - Distribution data */
+{
+  char filename[512];
+  filename[0]='\0';
+  strncat(filename, dist->product, 511);
+  strncat(filename, ".COPYRIGHTS", 511-12);
+  FILE *fd;
+  fd=fopen(filename, "w");
+
+  int i,j;
+  file_t *file;
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
+    for (j=0; j<256; ++j)
+      if (file->copyrights[j]) {
+        fputs(file->copyrights[j], fd);
+        fputs("\n", fd);
+      } else {
+        fputs("\n", fd);
+        break;
+      }
+
+  fclose(fd);
 
   return (0);
 }
@@ -1435,10 +1507,6 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
   }
   while (listlevel >= 0);
 
-  /* TODO: */
-  /* - Create *.COPYRIGHTS in the dir where additional licenses are located. */
-  /* - Put copyrights from the list into the <subpackage>.COPYRIGHTS files. */
-
   if (!dist->packager[0])
   {
    /*
@@ -1456,6 +1524,9 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
   }
 
   sort_dist_files(dist);
+
+  write_copyrights_file(dist);
+  /* TODO: Include COPYRIGHTS file into the package. */
 
   return (dist);
 }

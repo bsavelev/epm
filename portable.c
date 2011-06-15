@@ -2638,8 +2638,6 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
     if (CustomLic) {
       snprintf(srcname, sizeof(srcname), "%s/%s", directory, license);
       snprintf(dstname, sizeof(dstname), "%s%s", destdir, license);
-      printf("srcname: %s\n", srcname);
-      printf("dstname: %s\n", dstname);
     } else {
       snprintf(srcname, sizeof(srcname),
                "%s/%s.%s", directory, prodfull, license);
@@ -2688,8 +2686,6 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
     if (file->license) {
       snprintf(srcname, sizeof(srcname), "%s/%s", directory, file->license);
       snprintf(dstname, sizeof(dstname), "%s%s", destdir, file->license);
-      printf("srcname: %s\n", srcname);
-      printf("dstname: %s\n", dstname);
 
       if (stat(srcname, &srcstat)) {
         fprintf(stderr, "epm: Can't open %s -\n    %s\n",

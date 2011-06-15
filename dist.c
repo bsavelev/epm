@@ -967,9 +967,8 @@ add_file_copyright(file_t *file, const char *str)
 
       if (sep)
         str=sep+3;
-      else {
+      else
         break;
-      }
     }
   }
 
@@ -1046,16 +1045,16 @@ write_copyrights_file(dist_t	*dist)		/* I - Distribution data */
   FILE *fd;
   fd=fopen(filename, "w");
 
-  for (i=0; i<dist->num_copyrights; ++i) {
-    fprintf(fd, "\n    Copyright (c) %s\n", dist->copyrights[i]);
-    fprintf(fd, "    All rights reserved.\n", dist->copyrights[i]);
-    fprintf(fd, "    See file", dist->licenses);
-    if (dist->num_licenses>1)
-      fputs("s", fd);
-    for (j=0; j<dist->num_licenses; ++j)
-      fprintf(fd, " \"%s\"", dist->licenses[j]);
+  for (i=0; i<dist->num_copyrights; ++i)
+    fprintf(fd, "    Copyright (c) %s\n", dist->copyrights[i]);
+  fprintf(fd, "    All rights reserved.\n");
+  fprintf(fd, "    See file");
+  if (dist->num_licenses>1)
+    fputs("s", fd);
+  for (j=0; j<dist->num_licenses; ++j)
+    fprintf(fd, " \"%s\"", dist->licenses[j]);
     fputs(" for the license text.\n\n", fd);
-  }
+
   fputs("Except the following files:\n\n", fd);
 
   file_t *file;

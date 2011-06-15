@@ -942,38 +942,28 @@ new_dist(void)
 void
 add_file_copyright(file_t *file, const char *str)
 {
-  int added=0;
+  if (file->copyrights[0]==0) {
+    /* Add file name. */
+    file->copyrights[0]=malloc(strlen(file->dst)+2+1);
+    strcpy(file->copyrights[0], file->dst);
+    strcat(file->copyrights[0], " :");
+  }
 
   /* Split str by ";;;" if needed. */
   unsigned int i;
-  for (i=0; i<256; i++) {
-    if (file->copyrights[i]==0) {
-      if (added==0) {
-        /* Add file name. */
-        file->copyrights[i]=malloc(strlen(file->dst)+2+1);
-        strcpy(file->copyrights[i], file->dst);
-        strcat(file->copyrights[i], " :");
-        added=1;
-        continue;
-      }
+  for (i=1; i<256; i++) {
+    char *sep=strstr(str, ";;;");
+    if (sep)
+      *sep='\0';
 
-      char *sep=strstr(str, ";;;");
-      if (sep)
-        *sep='\0';
+    file->copyrights[i]=malloc(4+strlen(str)+1);
+    strcpy(file->copyrights[i], "    ");
+    strcat(file->copyrights[i], str);
 
-      file->copyrights[i]=malloc(4+strlen(str)+1);
-      strcpy(file->copyrights[i], "    ");
-      strcat(file->copyrights[i], str);
-
-      if (sep)
-        str=sep+3;
-      else
-        break;
-    }
-  }
-
-  if (added==0) {
-    fputs("epm: Internal error: File copyright wasn't added.\n", stderr);
+    if (sep)
+      str=sep+3;
+    else
+      break;
   }
 }
 

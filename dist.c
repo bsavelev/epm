@@ -1002,6 +1002,12 @@ read_file_license(file_t	*file,		/* I - Distribution file */
   }
 
  /*
+  * Process copyright...
+  */
+
+  add_file_copyright(file, copyright);
+
+ /*
   * Process license...
   */
 
@@ -1010,22 +1016,15 @@ read_file_license(file_t	*file,		/* I - Distribution file */
 
   file_t *new_file=add_file(dist, subpkg);
 
-  strncpy(new_file->src, file->license, 512);
+  strncpy(new_file->src, license, 512);
   char *docs="/opt/drweb/doc/"; /* FIXME: Do not hardcode it */
   strncpy(new_file->dst, docs, 512);
-  strncpy(new_file->dst+strlen(docs), file->license,
-          512-strlen(new_file->dst));
+  strncpy(new_file->dst+strlen(docs), license, 512-strlen(new_file->dst));
 
   new_file->type = 'f';
   new_file->mode = (mode_t)0644;
-  strncpy(new_file->group, "root", sizeof(file->group));
-  strncpy(new_file->user, "root", sizeof(file->user));
-
- /*
-  * Process copyright...
-  */
-
-  add_file_copyright(file, copyright);
+  strncpy(new_file->group, "root", sizeof(new_file->group));
+  strncpy(new_file->user, "root", sizeof(new_file->user));
 
   return (0);
 }
@@ -1047,14 +1046,15 @@ write_copyrights_file(dist_t	*dist)		/* I - Distribution data */
 
   int i,j;
   file_t *file;
-  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    for (j=0; j<256; ++j)
-      if (file->copyrights[j]) {
-        fputs(file->copyrights[j], fd);
-        fputs("\n", fd);
-      } else {
-        fputs("\n", fd);
-        break;
+  for (i=0, file=dist->files; i<dist->num_files; ++i, ++file)
+      for (j=0; j<256; ++j) {
+          if (file->copyrights[j]) {
+              fputs(file->copyrights[j], fd);
+              fputs("\n", fd);
+          } else {
+              fputs("\n", fd);
+              break;
+          }
       }
 
   fclose(fd);
@@ -1498,7 +1498,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 
           if (read_file_license(file, dist, subpkg))
             return (NULL);
-	}
+        }
       }
     }
 

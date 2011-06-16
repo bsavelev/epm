@@ -1051,12 +1051,14 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
     fprintf(fd, " \"%s\"", dist->licenses[j]);
   fputs(" for the license text.\n\n", fd);
 
-  if (dist->num_copyrights)
-    fputs("Except the following files:\n\n", fd);
-
+  int f=0;
   for (j=0, file=dist->files; j<dist->num_files; ++j, ++file)
     if ((file->subpackage && subpkg && (!strcmp(file->subpackage, subpkg))) ||
         (!subpkg && !file->subpackage)) {
+      if (!f && file->copyrights[0]) {
+        fputs("Except the following files:\n\n", fd);
+        f=1;
+      }
       k=0;
       while (file->copyrights[k])
         fprintf(fd, "%s\n", file->copyrights[k++]);

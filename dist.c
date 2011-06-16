@@ -950,8 +950,9 @@ add_file_copyright(file_t *file, const char *str)
 {
   if (file->copyrights[0]==0) {
     /* Add file name. */
-    file->copyrights[0]=malloc(strlen(file->dst)+2+1);
-    strcpy(file->copyrights[0], file->dst);
+    file->copyrights[0]=malloc(2+strlen(file->dst)+2+1);
+    strcpy(file->copyrights[0], "\n");
+    strcat(file->copyrights[0], file->dst);
     strcat(file->copyrights[0], " :");
   }
 
@@ -1049,21 +1050,21 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
     fputs("s", fd);
   for (j=0; j<dist->num_licenses; ++j)
     fprintf(fd, " \"%s\"", dist->licenses[j]);
-  fputs(" for the license text.\n\n", fd);
+  fputs(" for the license text.\n", fd);
 
   int f=0;
   for (j=0, file=dist->files; j<dist->num_files; ++j, ++file)
     if ((file->subpackage && subpkg && (!strcmp(file->subpackage, subpkg))) ||
         (!subpkg && !file->subpackage)) {
       if (!f && file->copyrights[0]) {
-        fputs("Except the following files:\n\n", fd);
+        fputs("\nExcept the following files:\n", fd);
         f=1;
       }
       k=0;
       while (file->copyrights[k])
         fprintf(fd, "%s\n", file->copyrights[k++]);
       if (file->license)
-        fprintf(fd, "    See file \"%s\" for the license text.\n\n",
+        fprintf(fd, "    See file \"%s\" for the license text.\n",
                 file->license);
     }
 

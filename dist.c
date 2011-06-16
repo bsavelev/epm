@@ -939,6 +939,11 @@ new_dist(void)
 }
 
 
+/*
+ * 'add_file_copyright()' - Adds copyright info to the file structure, taken
+ * from its "copyright()" option.
+ */
+
 void
 add_file_copyright(file_t *file, const char *str)
 {
@@ -969,13 +974,26 @@ add_file_copyright(file_t *file, const char *str)
 
 
 /*
- * 'read_file_license()' - Read "copyright()" and "license()" parameters.
+ * 'add_file_license()' - Adds license info to the file structure, taken
+ * from its "license()" option.
+ */
+
+void
+add_file_license(file_t *file, const char *str)
+{
+  file->license=malloc(strlen(str)+1);
+  strcpy(file->license, str);
+}
+
+
+/*
+ * 'read_file_legal_info()' - Read "copyright()" and "license()" parameters.
  */
 
 int						/* O - 0==success, 1==error */
-read_file_license(file_t	*file,		/* I - Distribution file */
-                  dist_t	*dist,		/* I - Distribution data */
-                  const char	*subpkg)	/* I - Subpackage */
+read_file_legal_info(file_t	*file,		/* I - Distribution file */
+                     dist_t	*dist,		/* I - Distribution data */
+                     const char	*subpkg)	/* I - Subpackage */
 {
   char copyright[10240];
   char license[10240];
@@ -991,30 +1009,8 @@ read_file_license(file_t	*file,		/* I - Distribution file */
     return (1);
   }
 
- /*
-  * Process copyright...
-  */
-
   add_file_copyright(file, copyright);
-
- /*
-  * Process license...
-  */
-
-  file->license=malloc(strlen(license)+1);
-  strcpy(file->license, license);
-
-  file_t *new_file=add_file(dist, subpkg);
-
-  strncpy(new_file->src, license, 512);
-  char *docs="/opt/drweb/doc/"; /* FIXME: Do not hardcode it */
-  strncpy(new_file->dst, docs, 512);
-  strncpy(new_file->dst+strlen(docs), license, 512-strlen(new_file->dst));
-
-  new_file->type = 'f';
-  new_file->mode = (mode_t)0644;
-  strncpy(new_file->group, "root", sizeof(new_file->group));
-  strncpy(new_file->user, "root", sizeof(new_file->user));
+  add_file_license(file, license);
 
   return (0);
 }
@@ -1478,7 +1474,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	      strcpy(file->group, group);
 	      strcpy(file->options, options);
 
-              if (read_file_license(file, dist, subpkg))
+              if (read_file_legal_info(file, dist, subpkg))
                 return (NULL);
 	    }
 
@@ -1501,7 +1497,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	  strcpy(file->group, group);
 	  strcpy(file->options, options);
 
-          if (read_file_license(file, dist, subpkg))
+          if (read_file_legal_info(file, dist, subpkg))
             return (NULL);
         }
       }

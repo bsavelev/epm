@@ -103,6 +103,7 @@ static int	subpackage_cmp(const char *a, const char *b);
 #define SKIP_MASK	7		/* Bits to look at */
 
 char		*CustomPlatform = NULL;
+char		ProductName[256];
 
 /*
  * 'add_command()' - Add a command to the distribution...
@@ -1016,20 +1017,29 @@ read_file_legal_info(file_t	*file,		/* I - Distribution file */
 }
 
 
-/*
- * 'write_copyrights_file()' - Writes <package>.COPYRIGHTS file.
- */
-
 int						/* O - 0==success, 1==error */
-write_copyrights_file(dist_t	*dist)		/* I - Distribution data */
+write_copyright_file(dist_t	*dist,		/* I - Distribution data */
+                     const char	*subpkg)	/* I - Subpackage or 0 */
 {
-  int i,j;
+  int i, j, k;
+
   char filename[512];
-  filename[0]='\0';
-  strncat(filename, dist->product, 511);
-  strncat(filename, ".COPYRIGHTS", 511-12);
+  strncpy(filename, ProductName, 511);
+  if (subpkg)
+  {
+    strncat(filename, "-", 511-strlen(filename)-1);
+    strncat(filename, subpkg, 511-strlen(filename)-1);
+  }
+  strncat(filename, ".COPYRIGHTS", 511-strlen(filename)-1);
   FILE *fd;
   fd=fopen(filename, "w");
+  if (fd==NULL) {
+    fprintf(stderr, "epm: Unable to write to file \"%s\" -\n     %s\n",
+            filename, strerror(errno));
+    return (1);
+  }
+
+  file_t *file;
 
   for (i=0; i<dist->num_copyrights; ++i)
     fprintf(fd, "    Copyright (c) %s\n", dist->copyrights[i]);
@@ -1039,26 +1049,43 @@ write_copyrights_file(dist_t	*dist)		/* I - Distribution data */
     fputs("s", fd);
   for (j=0; j<dist->num_licenses; ++j)
     fprintf(fd, " \"%s\"", dist->licenses[j]);
-    fputs(" for the license text.\n\n", fd);
+  fputs(" for the license text.\n\n", fd);
 
-  fputs("Except the following files:\n\n", fd);
+  if (dist->num_copyrights)
+    fputs("Except the following files:\n\n", fd);
 
-  file_t *file;
-  for (i=0, file=dist->files; i<dist->num_files; ++i, ++file) {
-    for (j=0; j<256; ++j) {
-      if (file->copyrights[j]) {
-        fputs(file->copyrights[j], fd);
-        fputs("\n", fd);
-      } else {
-        break;
-      }
+  for (j=0, file=dist->files; j<dist->num_files; ++j, ++file)
+    if ((file->subpackage && subpkg && (!strcmp(file->subpackage, subpkg))) ||
+        (!subpkg && !file->subpackage)) {
+      k=0;
+      while (file->copyrights[k])
+        fprintf(fd, "%s\n", file->copyrights[k++]);
+      if (file->license)
+        fprintf(fd, "    See file \"%s\" for the license text.\n\n",
+                file->license);
     }
 
-    if (file->license)
-      fprintf(fd, "    See file \"%s\" for the license text.\n\n", file->license);
-  }
-
   fclose(fd);
+
+  /* TODO: Include COPYRIGHTS file into the (sub)package. */
+
+  return (0);
+}
+
+/*
+ * 'write_copyrights_file()' - Writes <package>.COPYRIGHTS file.
+ */
+
+int						/* O - 0==success, 1==error */
+write_copyright_files(dist_t	*dist)		/* I - Distribution data */
+{
+  if (write_copyright_file(dist, 0) != 0)
+    return (1);
+
+  int i;
+  for (i=0; i<dist->num_subpackages; ++i)
+    if (write_copyright_file(dist, dist->subpackages[i]) != 0)
+      return (1);
 
   return (0);
 }
@@ -1095,6 +1122,9 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
   struct passwd	*pwd;			/* Password entry */
   const char	*subpkg;		/* Subpackage */
 
+
+  strncpy(ProductName, filename, 256);
+ strstr(ProductName, ".list")[0]='\0';
 
  /*
   * Create a new, blank distribution...
@@ -1526,8 +1556,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 
   sort_dist_files(dist);
 
-  write_copyrights_file(dist);
-  /* TODO: Include COPYRIGHTS file into the package. */
+  write_copyright_files(dist);
 
   return (dist);
 }

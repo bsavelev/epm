@@ -2680,7 +2680,9 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++) {
     /* Skip files from other subpackages. */
     if ((!subpackage && file->subpackage) ||
-        (subpackage && strcmp(subpackage, file->subpackage)))
+        (subpackage && !file->subpackage) ||
+        (subpackage && file->subpackage &&
+         strcmp(subpackage, file->subpackage)))
       continue;
 
     if (file->license) {

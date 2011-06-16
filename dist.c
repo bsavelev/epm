@@ -60,6 +60,7 @@
 
 #include "epm.h"
 #include <pwd.h>
+#include <libgen.h>
 
 
 /*
@@ -104,6 +105,8 @@ static int	subpackage_cmp(const char *a, const char *b);
 
 char		*CustomPlatform = NULL;
 char		ProductName[256];
+char		Copyrights3d[512];
+char		Licenses3d[512];
 
 /*
  * 'add_command()' - Add a command to the distribution...
@@ -1064,8 +1067,8 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
       while (file->copyrights[k])
         fprintf(fd, "%s\n", file->copyrights[k++]);
       if (file->license)
-        fprintf(fd, "    See file \"%s\" for the license text.\n",
-                file->license);
+        fprintf(fd, "    See file \"%s/%s\" for the license text.\n",
+                Licenses3d, basename(file->license));
     }
 
   fclose(fd);
@@ -1073,9 +1076,10 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   file_t *new_file=add_file(dist, subpkg);
 
   strncpy(new_file->src, filename, 511);
-  char *docs="/opt/drweb/doc/"; /* FIXME: Do not hardcode it */
-  strncpy(new_file->dst, docs, 511);
-  strcat(new_file->dst, filename);
+
+  strncpy(new_file->dst, Copyrights3d, 511);
+  strncat(new_file->dst, "/", 511-strlen(Copyrights3d)-1);
+  strncat(new_file->dst, filename, 511-strlen(Copyrights3d)-1-2);
 
   new_file->type = 'f';
   new_file->mode = (mode_t)0644;
@@ -1344,6 +1348,10 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	  add_depend(dist, DEPEND_REPLACES, temp, subpkg);
 	else if (!strcmp(line, "%requires"))
 	  add_depend(dist, DEPEND_REQUIRES, temp, subpkg);
+        else if (!strcmp(line, "%copyrights3d"))
+            strncpy(Copyrights3d, temp, 511);
+        else if (!strcmp(line, "%licenses3d"))
+            strncpy(Licenses3d, temp, 511);
 	else
 	{
 	  fprintf(stderr, "epm: Unknown directive \"%s\" ignored!\n", line);

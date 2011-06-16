@@ -1070,7 +1070,18 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
 
   fclose(fd);
 
-  /* TODO: Include COPYRIGHTS file into the (sub)package. */
+  file_t *new_file=add_file(dist, subpkg);
+
+  strncpy(new_file->src, filename, 511);
+  char *docs="/opt/drweb/doc/"; /* FIXME: Do not hardcode it */
+  strncpy(new_file->dst, docs, 511);
+  strcat(new_file->dst, filename);
+
+  new_file->type = 'f';
+  new_file->mode = (mode_t)0644;
+
+  strncpy(new_file->group, "root", sizeof(new_file->group));
+  strncpy(new_file->user, "root", sizeof(new_file->user));
 
   return (0);
 }

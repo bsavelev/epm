@@ -387,7 +387,7 @@ add_file(dist_t     *dist,		/* I - Distribution */
 
   file->subpackage = subpkg;
 
-  memset(file->copyrights, 0, 256);
+  memset(file->copyrights, 0, 256*sizeof(char *));
   file->license=0;
 
   return (file);

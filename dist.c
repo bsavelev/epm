@@ -959,6 +959,9 @@ add_file_copyright(file_t *file, const char *str)
     strcat(file->copyrights[0], " :");
   }
 
+  if (!str[0])
+    return;
+
   /* Split str by ";;;" if needed. */
   unsigned int i;
   for (i=1; i<256; i++) {
@@ -986,8 +989,10 @@ add_file_copyright(file_t *file, const char *str)
 void
 add_file_license(file_t *file, const char *str)
 {
-  file->license=malloc(strlen(str)+1);
-  strcpy(file->license, str);
+  if (str[0]) {
+    file->license=malloc(strlen(str)+1);
+    strcpy(file->license, str);
+  }
 }
 
 
@@ -1004,15 +1009,6 @@ read_file_legal_info(file_t	*file,		/* I - Distribution file */
   char license[10240];
   strncpy(copyright, get_option(file, "copyright", ""), 10240-1);
   strncpy(license, get_option(file, "license", ""), 10240-1);
-
-  if (!copyright[0] && !license[0])
-    return (0);
-
-  if ((!copyright[0] && license[0])) {
-    fputs("epm: copyright() should be specified with license().\n",
-          stderr);
-    return (1);
-  }
 
   add_file_copyright(file, copyright);
   add_file_license(file, license);
@@ -1059,7 +1055,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   for (j=0, file=dist->files; j<dist->num_files; ++j, ++file)
     if ((file->subpackage && subpkg && (!strcmp(file->subpackage, subpkg))) ||
         (!subpkg && !file->subpackage)) {
-      if (!f && file->copyrights[0]) {
+      if (!f && (file->copyrights[0] || file->license[0])) {
         fputs("\nExcept the following files:\n", fd);
         f=1;
       }

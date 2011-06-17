@@ -106,7 +106,6 @@ static int	subpackage_cmp(const char *a, const char *b);
 char		*CustomPlatform = NULL;
 char		ProductName[256];
 char		Copyrights3d[512];
-char		Licenses3d[512];
 
 /*
  * 'add_command()' - Add a command to the distribution...
@@ -1063,8 +1062,8 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
       while (file->copyrights[k])
         fprintf(fd, "%s\n", file->copyrights[k++]);
       if (file->license)
-        fprintf(fd, "    See file \"%s/%s\" for the license text.\n",
-                Licenses3d, basename(file->license));
+        fprintf(fd, "    See file \"%s\" for the license text.\n",
+                file->license);
     }
 
   fclose(fd);
@@ -1346,8 +1345,6 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 	  add_depend(dist, DEPEND_REQUIRES, temp, subpkg);
         else if (!strcmp(line, "%copyrights3d"))
             strncpy(Copyrights3d, temp, 511);
-        else if (!strcmp(line, "%licenses3d"))
-            strncpy(Licenses3d, temp, 511);
 	else
 	{
 	  fprintf(stderr, "epm: Unknown directive \"%s\" ignored!\n", line);

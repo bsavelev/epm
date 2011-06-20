@@ -89,7 +89,7 @@ static int	patmatch(const char *, const char *);
 static int	sort_subpackages(char **a, char **b);
 static int	sort_copyrights(char **a, char **b);
 static int	sort_licenses(char **a, char **b);
-static int	subpackage_cmp(const char *a, const char *b);
+static int	subpackage_cmp(char *a, char *b);
 
 
 /*
@@ -2773,8 +2773,8 @@ copyrights(dist_t  *dist)		/* I - Distribution */
 
 
 static int				/* O - Result of comparison */
-subpackage_cmp(const char *a,		/* I - First subpackage */
-	       const char *b)		/* I - Second subpackage */
+subpackage_cmp(char *a,		/* I - First subpackage */
+	       char *b)		/* I - Second subpackage */
 {
   size_t stLen1 = 0;
 

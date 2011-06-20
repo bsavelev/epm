@@ -1621,6 +1621,9 @@ sort_dist_files(dist_t *dist)		/* I - Distribution to sort */
  	file --;
       }
       else
+        printf("subpackage1: %s\n", file[0].subpackage);
+        printf("subpackage2: %s\n", file[1].subpackage);
+        printf("subpackage_cmp: %d\n", subpackage_cmp(file[0].subpackage, file[1].subpackage));
         fprintf(stderr, "epm: Duplicate destination path \"%s\" with different info!\n"
 	                "     \"%c %04o %s %s\" from source \"%s\"\n"
 			"     \"%c %04o %s %s\" from source \"%s\"\n",

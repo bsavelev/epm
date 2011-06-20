@@ -1621,6 +1621,7 @@ sort_dist_files(dist_t *dist)		/* I - Distribution to sort */
  	file --;
       }
       else
+      {
         printf("subpackage1: %s\n", file[0].subpackage);
         printf("subpackage2: %s\n", file[1].subpackage);
         printf("subpackage_cmp: %d\n", subpackage_cmp(file[0].subpackage, file[1].subpackage));
@@ -1630,6 +1631,7 @@ sort_dist_files(dist_t *dist)		/* I - Distribution to sort */
 	        file[0].dst,
 		file[0].type, file[0].mode, file[0].user, file[0].group, file[0].src,
 		file[1].type, file[1].mode, file[1].user, file[1].group, file[1].src);
+      }
     }
 }
 

@@ -1676,16 +1676,17 @@ write_distfiles(const char *directory,	/* I - Directory */
   * Copy additional license files...
   */
 
-  if (Verbosity)
-    printf("Copying %s additional license files...\n", prodfull);
+  /* if (Verbosity) */
+  /*   printf("Copying %s additional license files...\n", prodfull); */
 
-  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (file->license) {
-      snprintf(filename, sizeof(filename), "%s/%s", directory, file->license);
-      if (copy_file(filename, file->license, 0444,
-                    getuid(), getgid()))
-        return (1);
-    }
+  /* for (i = dist->num_files, file = dist->files; i > 0; i --, file ++) */
+  /*   if (file->license) { */
+  /*     snprintf(filename, sizeof(filename), "%s/%s", directory, */
+  /*              basename(file->license)); */
+  /*     if (copy_file(filename, file->license, 0444, */
+  /*                   getuid(), getgid())) */
+  /*       return (1); */
+  /*   } */
 
  /*
   * Create the non-shared software distribution file...
@@ -2676,7 +2677,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
     }
   }
 
-  /* Write additional copyright and license files.  */
+  /* Write additional license files.  */
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++) {
     /* Skip files from other subpackages. */
     if ((!subpackage && file->subpackage) ||
@@ -2686,8 +2687,8 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
       continue;
 
     if (file->license) {
-      snprintf(srcname, sizeof(srcname), "%s/%s", directory, file->license);
-      snprintf(dstname, sizeof(dstname), "%s%s", destdir, file->license);
+      snprintf(srcname, sizeof(srcname), "%s", file->license);
+      snprintf(dstname, sizeof(dstname), "%s%s", destdir, basename(file->license));
 
       if (stat(srcname, &srcstat)) {
         fprintf(stderr, "epm: Can't open %s -\n    %s\n",

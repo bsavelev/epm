@@ -1055,7 +1055,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
     if ((file->subpackage && subpkg && (!strcmp(file->subpackage, subpkg))) ||
         (!subpkg && !file->subpackage)) {
       if (!f && (file->copyrights[0] || file->license)) {
-        fputs("\nExcept the following files:\n", fd);
+        fputs("\nIndividual file notes.\n", fd);
         f=1;
       }
       k=0;

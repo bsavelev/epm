@@ -1001,16 +1001,16 @@ read_file_legal_info(file_t	*file,		/* I - Distribution file */
   strncpy(copyright, get_option(file, "copyright", ""), 10240-1);
   strncpy(license, get_option(file, "license", ""), 10240-1);
 
-  if (copyright[0] || license) {
+  if (copyright[0] || license[0]) {
     /* Add file name. */
     file->copyrights[0]=malloc(2+strlen(file->dst)+2+1);
     strcpy(file->copyrights[0], "\n");
     strcat(file->copyrights[0], file->dst);
     strcat(file->copyrights[0], " :");
-
-    add_file_copyright(file, copyright);
-    add_file_license(file, license);
   }
+
+  add_file_copyright(file, copyright);
+  add_file_license(file, license);
 
   return (0);
 }

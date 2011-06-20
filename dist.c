@@ -1009,7 +1009,7 @@ read_file_legal_info(file_t	*file,		/* I - Distribution file */
   strncpy(copyright, get_option(file, "copyright", ""), 10240-1);
   strncpy(license, get_option(file, "license", ""), 10240-1);
 
-  if (copyright[0] || license[0]) {
+  if (copyright[0] || license) {
     add_file_copyright(file, copyright);
     add_file_license(file, license);
   }
@@ -1056,7 +1056,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   for (j=0, file=dist->files; j<dist->num_files; ++j, ++file)
     if ((file->subpackage && subpkg && (!strcmp(file->subpackage, subpkg))) ||
         (!subpkg && !file->subpackage)) {
-      if (!f && (file->copyrights[0] || file->license[0])) {
+      if (!f && (file->copyrights[0] || file->license)) {
         fputs("\nExcept the following files:\n", fd);
         f=1;
       }
@@ -1621,17 +1621,12 @@ sort_dist_files(dist_t *dist)		/* I - Distribution to sort */
  	file --;
       }
       else
-      {
-        printf("subpackage1: %s\n", file[0].subpackage);
-        printf("subpackage2: %s\n", file[1].subpackage);
-        printf("subpackage_cmp: %d\n", subpackage_cmp(file[0].subpackage, file[1].subpackage));
         fprintf(stderr, "epm: Duplicate destination path \"%s\" with different info!\n"
 	                "     \"%c %04o %s %s\" from source \"%s\"\n"
 			"     \"%c %04o %s %s\" from source \"%s\"\n",
 	        file[0].dst,
 		file[0].type, file[0].mode, file[0].user, file[0].group, file[0].src,
 		file[1].type, file[1].mode, file[1].user, file[1].group, file[1].src);
-      }
     }
 }
 

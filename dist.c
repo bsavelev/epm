@@ -1074,7 +1074,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
 
   strncpy(new_file->dst, LegalDir, 511);
   strncat(new_file->dst, "/", 511-strlen(LegalDir)-1);
-  strncat(new_file->dst, filename, 511-strlen(LegalDir)-1-2);
+  strncat(new_file->dst, basename(filename), 511-strlen(LegalDir)-1-2);
 
   new_file->type = 'f';
   new_file->mode = (mode_t)0644;

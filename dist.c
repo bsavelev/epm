@@ -1025,6 +1025,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
 
   char filename[512];
   strcpy(filename, directory);
+  strcat(filename, "/");
   strcat(filename, ProductName);
   if (subpkg)
   {

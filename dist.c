@@ -1018,18 +1018,20 @@ read_file_legal_info(file_t	*file,		/* I - Distribution file */
 
 int						/* O - 0==success, 1==error */
 write_copyright_file(dist_t	*dist,		/* I - Distribution data */
-                     const char	*subpkg)	/* I - Subpackage or 0 */
+                     const char	*subpkg,	/* I - Subpackage or 0 */
+                     const char	*directory)	/* I - Directory for distribution files */
 {
   int i, j, k;
 
   char filename[512];
-  strncpy(filename, ProductName, 511);
+  strcpy(filename, directory);
+  strcat(filename, ProductName);
   if (subpkg)
   {
-    strncat(filename, "-", 511-strlen(filename)-1);
-    strncat(filename, subpkg, 511-strlen(filename)-1);
+    strcat(filename, "-");
+    strcat(filename, subpkg);
   }
-  strncat(filename, ".COPYRIGHTS", 511-strlen(filename)-1);
+  strcat(filename, ".COPYRIGHTS");
   FILE *fd;
   fd=fopen(filename, "w");
   if (fd==NULL) {
@@ -1090,14 +1092,15 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
  */
 
 int						/* O - 0==success, 1==error */
-add_copyright_files(dist_t	*dist)		/* I - Distribution data */
+add_copyright_files(dist_t	*dist,		/* I - Distribution data */
+                    const char	*directory)	/* I - Directory for distribution files */
 {
-  if (write_copyright_file(dist, 0) != 0)
+  if (write_copyright_file(dist, 0, directory) != 0)
     return (1);
 
   int i;
   for (i=0; i<dist->num_subpackages; ++i)
-    if (write_copyright_file(dist, dist->subpackages[i]) != 0)
+    if (write_copyright_file(dist, dist->subpackages[i], directory) != 0)
       return (1);
 
   return (0);
@@ -1111,7 +1114,8 @@ add_copyright_files(dist_t	*dist)		/* I - Distribution data */
 dist_t *				/* O - New distribution */
 read_dist(const char     *filename,	/* I - Main distribution list file */
           struct utsname *platform,	/* I - Platform information */
-          const char     *format)	/* I - Format of distribution */
+          const char     *format,	/* I - Format of distribution */
+          const char     *directory) /* I - Directory for distribution files */
 {
   FILE		*listfiles[10];		/* File lists */
   int		listlevel;		/* Level in file list */
@@ -1571,7 +1575,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 
   sort_dist_files(dist);
 
-  add_copyright_files(dist);
+  add_copyright_files(dist, directory);
 
   return (dist);
 }

@@ -116,7 +116,7 @@ make_rpm(int            format,		/* I - Subformat */
   if (dist->epoch)
     fprintf(fp, "Epoch: %d\n", dist->epoch);
   fprintf(fp, "Release: %s\n", release);
-//  fprintf(fp, "License: %s\n", copyrights(dist));
+  fprintf(fp, "License: %s\n", copyrights(dist));
   fprintf(fp, "Packager: %s\n", dist->packager);
   fprintf(fp, "Vendor: %s\n", dist->vendor);
   fprintf(fp, "BuildRoot: %s/buildroot\n", absdir);

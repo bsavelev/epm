@@ -1086,11 +1086,11 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
 }
 
 /*
- * 'write_copyrights_file()' - Writes <package>.COPYRIGHTS file.
+ * 'add_copyright_files()' - Adds <package>.COPYRIGHTS files to the package.
  */
 
 int						/* O - 0==success, 1==error */
-write_copyright_files(dist_t	*dist)		/* I - Distribution data */
+add_copyright_files(dist_t	*dist)		/* I - Distribution data */
 {
   if (write_copyright_file(dist, 0) != 0)
     return (1);
@@ -1571,7 +1571,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
 
   sort_dist_files(dist);
 
-  write_copyright_files(dist);
+  add_copyright_files(dist);
 
   return (dist);
 }

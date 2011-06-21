@@ -1048,8 +1048,10 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   fprintf(fd, "    See file");
   if (dist->num_licenses>1)
     fputs("s", fd);
-  for (j=0; j<dist->num_licenses; ++j)
-    fprintf(fd, " \"%s\"", dist->licenses[j]);
+  for (j=0; j<dist->num_licenses; ++j) {
+    sprintf(filename, "%s/%s", LegalDir, basename(dist->licenses[j]));
+    fprintf(fd, " \"%s\"", filename);
+  }
   fputs(" for the license text.\n", fd);
 
   int f=0;

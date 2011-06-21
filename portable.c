@@ -222,6 +222,9 @@ clean_distfiles(const char *directory,	/* I - Directory */
   snprintf(filename, sizeof(filename), "%s/%s.install", directory, prodfull);
   unlink(filename);
 
+  snprintf(filename, sizeof(filename), "%s/%s.COPYRIGHTS", directory, prodfull);
+  unlink(filename);
+
   for (i = 0; i < dist->num_licenses; i ++)
   {
     char *license=basename(dist->licenses[i]);
@@ -1673,6 +1676,18 @@ write_distfiles(const char *directory,	/* I - Directory */
     if (copy_file(filename, dist->readme, 0444, getuid(), getgid()))
       return (1);
   }
+
+ /*
+  * Copy .COPYRIGHTS file...
+  */
+
+  if (Verbosity)
+    printf("Copying %s.COPYRIGHTS file if any...\n", prodfull);
+
+  snprintf(filename, sizeof(filename), "%s/%s.COPYRIGHTS", directory, prodfull);
+  if (!stat(basename(filename), &srcstat))
+    if (copy_file(filename, basename(filename), 0444, getuid(), getgid()))
+      return (1);
 
  /*
   * Copy additional license files...

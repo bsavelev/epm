@@ -106,6 +106,7 @@ make_portable(const char     *prodname,	/* I - Product short name */
 		{
 		  "install",
 		  "readme",
+		  "COPYRIGHTS",
 		  "remove",
 		  "ss",
 		  "sw",
@@ -258,7 +259,8 @@ clean_distfiles(const char *directory,	/* I - Directory */
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (file->license) {
-      snprintf(filename, sizeof(filename), "%s/%s", directory, file->license);
+      snprintf(filename, sizeof(filename), "%s/%s", directory,
+               basename(file->license));
       unlink(filename);
     }
 
@@ -1676,17 +1678,17 @@ write_distfiles(const char *directory,	/* I - Directory */
   * Copy additional license files...
   */
 
-  /* if (Verbosity) */
-  /*   printf("Copying %s additional license files...\n", prodfull); */
+  if (Verbosity)
+    printf("Copying %s additional license files...\n", prodfull);
 
-  /* for (i = dist->num_files, file = dist->files; i > 0; i --, file ++) */
-  /*   if (file->license) { */
-  /*     snprintf(filename, sizeof(filename), "%s/%s", directory, */
-  /*              basename(file->license)); */
-  /*     if (copy_file(filename, file->license, 0444, */
-  /*                   getuid(), getgid())) */
-  /*       return (1); */
-  /*   } */
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
+    if (file->license) {
+      snprintf(filename, sizeof(filename), "%s/%s", directory,
+               basename(file->license));
+      if (copy_file(filename, file->license, 0444,
+                    getuid(), getgid()))
+        return (1);
+    }
 
  /*
   * Create the non-shared software distribution file...
@@ -2687,8 +2689,10 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
       continue;
 
     if (file->license) {
-      snprintf(srcname, sizeof(srcname), "%s", file->license);
-      snprintf(dstname, sizeof(dstname), "%s%s", destdir, basename(file->license));
+      snprintf(srcname, sizeof(srcname), "%s/%s", directory,
+               basename(file->license));
+      snprintf(dstname, sizeof(dstname), "%s%s", destdir,
+               basename(file->license));
 
       if (stat(srcname, &srcstat)) {
         fprintf(stderr, "epm: Can't open %s -\n    %s\n",
@@ -2713,8 +2717,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
       }
 
       if (Verbosity)
-        printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,
-               prodfull, files[i]);
+        printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0, dstname);
     }
   }
 

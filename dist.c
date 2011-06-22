@@ -1068,7 +1068,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
       while (file->copyrights[k])
         fprintf(fd, "%s\n", file->copyrights[k++]);
       if (file->license)
-        fprintf(fd, "    See file \"%s\" for the license text.\n",
+        fprintf(fd, "    See \"%s\" for the file license text.\n",
                 file->license);
     }
 

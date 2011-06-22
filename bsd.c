@@ -592,22 +592,26 @@ make_subpackage(
   if (run_command(NULL, "mv %s.tgz %s", name, directory))
     return (1);
 #elif defined(__FreeBSD__)
-  if (run_command(NULL, "/usr/sbin/pkg_create -p / "
-                        "-c %s "
-			"-d %s "
-                        "-f %s "
-                        "-o %s "
-                        "%s %s %s %s "
-			"%s/%s.tbz",
-		  commentname,
-		  descrname,
-		  plistname,
-		  origin,
-		  preinstall_opt,
-		  postinstall_opt,
-		  preremove_opt,
-		  postremove_opt,
-		  directory, name))
+  char pkg_create[512];
+  sprintf(pkg_create,
+          "/usr/sbin/pkg_create -p / "
+          "-c %s "
+          "-d %s "
+          "-f %s "
+          "-o %s "
+          "%s %s %s %s "
+          "%s/%s.tbz",
+          commentname,
+          descrname,
+          plistname,
+          origin,
+          preinstall_opt,
+          postinstall_opt,
+          preremove_opt,
+          postremove_opt,
+          directory, name);
+  puts(pkg_create);
+  if (run_command(NULL, pkg_create))
     return (1);
 #else
   if (run_command(NULL, "pkg_create -p / "

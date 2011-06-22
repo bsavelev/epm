@@ -182,12 +182,14 @@ make_subpackage(
 
 
   getcwd(current, sizeof(current));
+  printf("1) current=%s\n", current);
 
   if (subpackage)
     snprintf(prodfull, sizeof(prodfull), "%s-%s", prodname, subpackage);
   else
     strlcpy(prodfull, prodname, sizeof(prodfull));
 
+  printf("2) current=%s\n", current);
   snprintf(origin, sizeof(origin), "security/%s",  prodfull);
 
   if (Verbosity)
@@ -206,6 +208,7 @@ make_subpackage(
     snprintf(name, sizeof(name), "%s_%s_%s", prodfull, dist->version, platname);
   else
     snprintf(name, sizeof(name), "%s_%s", prodfull, dist->version);
+  printf("3) current=%s\n", current);
 
  /*
   * Write the descr file for pkg...
@@ -222,6 +225,7 @@ make_subpackage(
             strerror(errno));
     return (1);
   }
+  printf("4) current=%s\n", current);
 
   for (i = 0; i < dist->num_descriptions; i ++)
     if (dist->descriptions[i].subpackage == subpackage)
@@ -242,6 +246,7 @@ make_subpackage(
   snprintf(commentname, sizeof(commentname), "%s/%s.comment", directory,
            prodfull);
 
+  printf("5) current=%s\n", current);
   if ((fp = fopen(commentname, "w")) == NULL)
   {
     fprintf(stderr, "epm: Unable to create comment file \"%s\" - %s\n", commentname,
@@ -256,6 +261,7 @@ make_subpackage(
       if (dist->descriptions[i].subpackage == subpackage)
 	break;
 
+  printf("6) current=%s\n", current);
     if (i < dist->num_descriptions)
     {
       char	line[1024],		/* First line of description... */
@@ -270,6 +276,7 @@ make_subpackage(
   }
   fputc('\n', fp);
 
+  printf("7) current=%s\n", current);
   fclose(fp);
 
  /*
@@ -287,6 +294,7 @@ make_subpackage(
             strerror(errno));
     return (1);
   }
+  printf("8) current=%s\n", current);
 
  /*
   * Declare our (non-standard) package name explicitly.
@@ -302,6 +310,7 @@ make_subpackage(
   * FreeBSD and NetBSD support both "source directory" and "preserve files"
   * options, OpenBSD does not...
   */
+  printf("9) current=%s\n", current);
 
 #ifdef __FreeBSD__
   fprintf(fp, "@srcdir %s/%s/%s.buildroot\n", current, directory, prodfull);

@@ -1024,6 +1024,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   int i, j, k;
 
   char filename[512];
+  char filename_tmp[512];
   strcpy(filename, directory);
   strcat(filename, "/");
   strcat(filename, ProductName);
@@ -1050,8 +1051,8 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   if (dist->num_licenses>1)
     fputs("s", fd);
   for (j=0; j<dist->num_licenses; ++j) {
-    sprintf(filename, "%s/%s", LegalDir, basename(dist->licenses[j]));
-    fprintf(fd, " \"%s\"", filename);
+    sprintf(filename_tmp, "%s/%s", LegalDir, basename(dist->licenses[j]));
+    fprintf(fd, " \"%s\"", filename_tmp);
   }
   fputs(" for the license text.\n", fd);
 
@@ -1075,11 +1076,11 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
 
   file_t *new_file=add_file(dist, subpkg);
 
-  strncpy(new_file->src, filename, 511);
+  strcpy(new_file->src, filename);
 
-  strncpy(new_file->dst, LegalDir, 511);
-  strncat(new_file->dst, "/", 511-strlen(LegalDir)-1);
-  strncat(new_file->dst, basename(filename), 511-strlen(LegalDir)-1-2);
+  strcpy(new_file->dst, LegalDir);
+  strcat(new_file->dst, "/");
+  strcat(new_file->dst, basename(filename));
 
   new_file->type = 'f';
   new_file->mode = (mode_t)0644;

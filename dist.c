@@ -1143,6 +1143,7 @@ read_dist(const char     *filename,	/* I - Main distribution list file */
   const char	*subpkg;		/* Subpackage */
 
 
+  strncpy(ProductName, filename, 256);
   char *str=strdup(ProductName);
   strcpy(ProductName, basename(str));
   strstr(ProductName, ".list")[0]='\0';

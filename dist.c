@@ -1074,8 +1074,8 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
         /* The file have copyright(s) but no license;
            show default license(s) then. */
         fprintf(fd, "    See");
-        for (j=0; j<dist->num_copyrights; ++j)
-          fprintf(fd, " \"%s\"", dist->copyrights[j]);
+        for (j=0; j<dist->num_licenses; ++j)
+          fprintf(fd, " \"%s\"", dist->licenses[j]);
         fprintf(fd, " for the file license text.\n");
       }
     }

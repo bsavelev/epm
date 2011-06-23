@@ -1050,14 +1050,14 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   fprintf(fd, "    See file");
   if (dist->num_licenses>1)
     fputs("s", fd);
-  for (j=0; j<dist->num_licenses; ++j) {
-    sprintf(filename_tmp, "%s/%s", LegalDir, basename(dist->licenses[j]));
+  for (i=0; i<dist->num_licenses; ++i) {
+    sprintf(filename_tmp, "%s/%s", LegalDir, basename(dist->licenses[i]));
     fprintf(fd, " \"%s\"", filename_tmp);
   }
   fputs(" for the license text.\n", fd);
 
   int f=0;
-  for (j=0, file=dist->files; j<dist->num_files; ++j, ++file)
+  for (i=0, file=dist->files; i<dist->num_files; ++i, ++file)
     if ((file->subpackage && subpkg && (!strcmp(file->subpackage, subpkg))) ||
         (!subpkg && !file->subpackage)) {
       if (!f && (file->copyrights[0] || file->license)) {
@@ -1070,6 +1070,14 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
       if (file->license)
         fprintf(fd, "    See \"%s\" for the file license text.\n",
                 file->license);
+      else if (file->copyrights[0]) {
+        /* The file have copyright(s) but no license;
+           show default license(s) then. */
+        fprintf(fd, "    See");
+        for (j=0; j<dist->num_copyrights; ++j)
+          fprintf(fd, " \"%s\"", dist->copyrights[j]);
+        fprintf(fd, " for the file license text.\n");
+      }
     }
 
   fclose(fd);

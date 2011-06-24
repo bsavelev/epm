@@ -144,7 +144,7 @@ main(int  argc,			/* I - Number of command-line arguments */
 
   get_platform(&platform);
 
-  if ((dist = read_dist(listname, &platform, "", "./")) == NULL)
+  if ((dist = read_dist(listname, listname, &platform, "", "./")) == NULL)
   {
     fprintf(stderr, "epminstall: Unable to read list file \"%s\": %s\n",
             listname, strerror(errno));

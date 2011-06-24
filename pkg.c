@@ -630,8 +630,11 @@ make_subpackage(
   if (Verbosity)
     puts("Building PKG binary distribution...");
 
-  if (run_command(NULL, "pkgmk -o -f %s/%s.prototype -d %s/%s",
-                  directory, prodfull, current, directory))
+  char pkg_create[512];
+  sprintf(pkg_create, "pkgmk -o -f %s/%s.prototype -d %s/%s",
+          directory, prodfull, current, directory);
+  puts(pkg_create);
+  if (run_command(NULL, pkg_create))
     return (1);
 
  /*

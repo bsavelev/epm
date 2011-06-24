@@ -2685,13 +2685,8 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
       return (-1);
     }
 
-    if (Verbosity) {
-      if (CustomLic)
-        printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0, files[i]);
-      else
-        printf("    %7.0fk %s.%s\n", (srcstat.st_size + 1023) / 1024.0,
-               prodfull, files[i]);
-    }
+    if (Verbosity)
+      printf("    %7.0fk %s\n", (srcstat.st_size + 1023) / 1024.0, dstname);
   }
 
   /* Write additional license files.  */

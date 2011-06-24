@@ -1154,9 +1154,6 @@ read_dist(const char     *prodname,	/* I - Product name */
 
 
   strncpy(ProductName, prodname, 256);
-  char *str=strdup(ProductName);
-  strcpy(ProductName, basename(str));
-  strstr(ProductName, ".list")[0]='\0';
 
  /*
   * Create a new, blank distribution...

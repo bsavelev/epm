@@ -499,7 +499,8 @@ main(int  argc,				/* I - Number of command-line args */
   * Read the distribution...
   */
 
-  if ((dist=read_dist(listname, &platform, formats[format], directory))==NULL)
+  if ((dist=read_dist(prodname, listname, &platform, formats[format],
+                      directory))==NULL)
     return (1);
 
  /*

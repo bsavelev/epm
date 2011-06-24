@@ -322,8 +322,9 @@ extern int	make_swinstall(const char *prodname, const char *directory,
 			       struct utsname *platform);
 extern dist_t	*new_dist(void);
 extern int	qprintf(FILE *fp, const char *format, ...);
-extern dist_t	*read_dist(const char *filename, struct utsname *platform,
-		           const char *format, const char *directory);
+extern dist_t	*read_dist(const char *prodname, const char *filename,
+                           struct utsname *platform, const char *format,
+                           const char *directory);
 extern int	run_command(const char *directory, const char *command, ...)
 #    ifdef __GNUC__
 __attribute__ ((__format__ (__printf__, 2, 3)))

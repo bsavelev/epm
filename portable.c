@@ -2495,15 +2495,23 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
     fputs("if test \"$rcdir\" = \"\" ; then\n", scriptfile);
-    fputs("	if test -d /usr/local/etc/rc.d; then\n", scriptfile);
-    fputs("		for file in", scriptfile);
+    fputs("INIT_SCRIPTS=\"", scriptfile);
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
         qprintf(scriptfile, " %s", file->dst);
-    fputs("; do\n", scriptfile);
+    fputs("\"\n", scriptfile);
+    fputs("	if test -d /usr/local/etc/rc.d; then\n", scriptfile);
+    fputs("		for file in $INIT_SCRIPTS ; do\n", scriptfile);
     fputs("			rm -f /usr/local/etc/rc.d/$file.sh\n", scriptfile);
     qprintf(scriptfile, "			ln -s %s/init.d/$file "
                         "/usr/local/etc/rc.d/$file.sh\n",
+            SoftwareDir);
+    fputs("		done\n", scriptfile);
+    fputs("	elif test -d /etc/rc.d -a -e /etc/arch-release ; then\n", scriptfile);
+    fputs("		for file in $INIT_SCRIPTS ; do\n", scriptfile);
+    fputs("			rm -f /etc/rc.d/$file\n", scriptfile);
+    qprintf(scriptfile, "			ln -s %s/init.d/$file "
+                        "/etc/rc.d/$file\n",
             SoftwareDir);
     fputs("		done\n", scriptfile);
     fputs("	else\n", scriptfile);
@@ -3189,13 +3197,18 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
     fputs("	fi\n", scriptfile);
     fputs("done\n", scriptfile);
     fputs("if test \"$rcdir\" = \"\" ; then\n", scriptfile);
-    fputs("	if test -d /usr/local/etc/rc.d; then\n", scriptfile);
-    fputs("		for file in", scriptfile);
+    fputs("INIT_SCRIPTS=\"", scriptfile);
     for (; i > 0; i --, file ++)
       if (tolower(file->type) == 'i' && file->subpackage == subpackage)
         qprintf(scriptfile, " %s", file->dst);
-    fputs("; do\n", scriptfile);
+    fputs("\"\n", scriptfile);
+    fputs("	if test -d /usr/local/etc/rc.d; then\n", scriptfile);
+    fputs("		for file in $INIT_SCRIPTS ; do\n", scriptfile);
     fputs("			rm -f /usr/local/etc/rc.d/$file.sh\n", scriptfile);
+    fputs("		done\n", scriptfile);
+    fputs("	elif test -d /etc/rc.d -a -e /etc/arch-release ; then\n", scriptfile);
+    fputs("		for file in $INIT_SCRIPTS ; do\n", scriptfile);
+    fputs("			rm -f /etc/rc.d/$file\n", scriptfile);
     fputs("		done\n", scriptfile);
     fputs("	else\n", scriptfile);
     fputs("		echo \"`eval_gettext \\\"Unable to determine location of init scripts!\\\"`\"\n", scriptfile);

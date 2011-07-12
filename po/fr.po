@@ -1,0 +1,636 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 4.2\n"
+"Report-Msgid-Bugs-To: s.moryakhin@drweb.com\n"
+"POT-Creation-Date: 2010-03-19 12:15+0300\n"
+"PO-Revision-Date: 2010-02-10 15:39+0300\n"
+"Last-Translator: Alexander Malakhov <A.Malakhov@drweb.com>\n"
+"Language-Team: Alexander Malakhov <A.Malakhov@drweb.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: setup.cxx:1818
+msgid "Install"
+msgstr "Installation des composants"
+
+#: setup.cxx:1820 uninst.cxx:1798
+msgid "Welcome"
+msgstr "Bienvenue"
+
+#: setup.cxx:1824
+msgid "Install Type"
+msgstr "Type d'installation"
+
+#: setup.cxx:1829 uninst.cxx:1802
+msgid "Select Software"
+msgstr "Choix des paquets"
+        
+#: setup.cxx:1834 uninst.cxx:1807
+msgid "Confirm"
+msgstr "Confirmation"
+
+#: setup.cxx:1839
+msgid "License"
+msgstr "Licence"
+
+#: setup.cxx:1844
+msgid "Installing"
+msgstr "Installation"
+
+#: setup.cxx:1849
+msgid "Finish"
+msgstr "Fin"
+
+#: setup.cxx:1873
+msgid "Select the installation type:"
+msgstr "Sélectionnez le type d'installation :"
+
+#: setup.cxx:1927
+msgid "Select the software you want to install:"
+msgstr "Sélectionnez les composants à installer :"
+
+#: setup.cxx:1930
+msgid " Available Software:"
+msgstr "Composants disponibles :"
+
+#: setup.cxx:1939
+msgid "0k marked for installation."
+msgstr "0 Ko sélectionné pour installer."
+
+#: setup.cxx:1942 uninst.cxx:1853
+msgid "Select all"
+msgstr "Tout sélectionner"
+
+#: setup.cxx:1945 uninst.cxx:1856
+msgid "Select none"
+msgstr "Annuler la sélection"
+
+#: setup.cxx:1956
+msgid "Confirm your software selections below:"
+msgstr "Confirmer votre sélection :"
+
+#: setup.cxx:1959
+msgid "Selected Software:"
+msgstr "Composants sélectionnés :"
+
+#: setup.cxx:1976
+msgid "Accept and install"
+msgstr "Accepter le Contrat de licence et installer le programme"
+
+#: setup.cxx:1982
+msgid "Cancel installation"
+msgstr "Annuler l'installation"
+
+#: setup.cxx:1989
+msgid "Select language:"
+msgstr "Langue :"
+
+#: setup.cxx:1993
+msgid "License Agreement"
+msgstr "Contrat de licence"
+
+#: setup.cxx:2004 uninst.cxx:1881
+msgid "Progress Label..."
+msgstr "Barre de progression..."
+
+#: setup.cxx:2011
+msgid "Run interactive postinstall script"
+msgstr "Lancer le script d'installation interactif"
+
+#: setup.cxx:2022
+msgid "Postinstall information:"
+msgstr "Etape finale :"
+
+#: setup.cxx:2034 uninst.cxx:1899
+msgid "@-2< Back"
+msgstr "@-2< Revenir"
+
+#: setup.cxx:2037 uninst.cxx:1902
+msgid "Next @-2>"
+msgstr "Suivant @-2>"
+
+#: setup.cxx:2040 setup2.cxx:1026 setup2.cxx:1097 setup2.cxx:1180
+#: uninst.cxx:1905 uninst2.cxx:417
+msgid "Cancel"
+msgstr "Annuler"
+
+#: setup2.cxx:226
+msgid "You must be logged in as root to run setup!"
+msgstr ""
+"Pour lancer la procédure d'installation, vous devez disposez des droits d'administrateur !"
+
+#: setup2.cxx:396
+msgid "No software found to install!"
+msgstr "Aucun composant à installer !"
+
+#: setup2.cxx:410
+msgid " (new)"
+msgstr "(nouveau)"
+
+#: setup2.cxx:415
+msgid " (downgrade)"
+msgstr " (downgrade)"
+
+#: setup2.cxx:420
+msgid " (installed)"
+msgstr " (installé)"
+
+#: setup2.cxx:425
+msgid " (upgrade)"
+msgstr " (mise à jour)"
+
+#: setup2.cxx:472
+msgid "Failed to execute install script!"
+msgstr "Echec de lancement du script d'installation !"
+
+#: setup2.cxx:505
+msgid "Unable to install"
+msgstr "Impossible d'installer"
+
+#: setup2.cxx:621
+#, c-format
+msgid ""
+"%s requires %s to be installed, but it is not available for installation."
+msgstr ""
+"Pour installer %s, %s doit être précédemment installé, cependant "
+"il n'est pas disponible pour l'installation."
+
+#: setup2.cxx:634
+#, c-format
+msgid ""
+"%s is incompatible with %s. Please remove it before installing this software."
+msgstr ""
+"%s est incomptatible avec %s. Veuillez le supprimer avant de procéder à l'installation "
+"de ce composant."
+
+#: setup2.cxx:651
+#, c-format
+msgid ""
+"%s is incompatible with %s. Please deselect it before installing this "
+"software."
+msgstr ""
+"%s est incompatible avec %s. Veuillez désélectionner l'une de ces composants "
+"avant de procéder à l'installation."
+
+#: setup2.cxx:715
+msgid ""
+"This program allows you to install the following software:\n"
+"<ul>\n"
+msgstr ""
+"Ce programme vous permet d'installer les composants suivants :\n"
+"<ul>\n"
+
+#: setup2.cxx:787
+msgid "Custom Configuration"
+msgstr "Installation personnalisée"
+
+#: setup2.cxx:789
+msgid "Dr.Web for Linux Workstations"
+msgstr "Dr.Web Antivirus pour postes de travail Linux"
+
+#: setup2.cxx:1066
+#, c-format
+msgid "License is not accepted!"
+msgstr "Vous n'avez pas accepté les termes du Contrat de licence !"
+
+#: setup2.cxx:1085
+msgid "Installation canceled!"
+msgstr "Installation arrêtée !"
+
+#: setup2.cxx:1087 setup2.cxx:1123 setup2.cxx:1145 uninst2.cxx:431
+msgid "Close"
+msgstr "Fermer"
+
+#: setup2.cxx:1107
+#, c-format
+msgid "Installing %s v%s..."
+msgstr "Installation de %s v%s..."
+
+#: setup2.cxx:1122
+msgid "Installation failed"
+msgstr "Installation échouée !"
+
+#: setup2.cxx:1126
+msgid "Installation complete"
+msgstr "Installation terminée"
+
+#: setup2.cxx:1148
+msgid "<span>Installation failed. See install.log for details.</span>"
+msgstr ""
+"<span>Installation échouée. Pour plus d'information sur l'erreur survenue, "
+"consultez install.log.</span>"
+
+#: setup2.cxx:1169
+msgid "<span>Installation complete.</span>"
+msgstr "<span>Installation achevée avec succés.</span>"
+
+#: setup2.cxx:1321
+#, c-format
+msgid "%+.1fMb required, %dMb available."
+msgstr "%+.1fMo requis, %dMo disponibles."
+
+#: setup2.cxx:1325
+#, c-format
+msgid "%+dk required, %dMb available."
+msgstr "%+dKo requis, %dMo disponibles."
+
+#: setup2.cxx:1329
+#, c-format
+msgid ""
+"%+.1fMb required on /, %dMb available,\n"
+"%+.1fMb required on /usr, %dMb available."
+msgstr ""
+"%+.1fMo requis dans /, %dMo disponibles,\n"
+"%+.1fMo requis dans /usr, %dMo disponibles."
+
+#: setup2.cxx:1334
+#, c-format
+msgid ""
+"%+.1fMb required on /, %dMb available,\n"
+"%+dk required on /usr, %dMb available."
+msgstr ""
+"%+.1fMo requis dans /, %dMo disponibles,\n"
+"%+dKo requis dans /usr, %dMo disponibles."
+
+#: setup2.cxx:1339
+#, c-format
+msgid ""
+"%+dk required on /, %dMb available,\n"
+"%+.1fMb required on /usr, %dMb available."
+msgstr ""
+"%+dKo requis dans /, %dMo disponibles,\n"
+"%+.1fMo requis dans /usr, %dMo disponibles."
+
+#: setup2.cxx:1344
+#, c-format
+msgid ""
+"%+dk required on /, %dMb available,\n"
+"%+dk required on /usr, %dMb available."
+msgstr ""
+"%+dKo requis dans /, %dMo disponibles,\n"
+"%+dKo requis dans /usr, %dMo disponibles."
+
+#: setup2.cxx:1389
+msgid "English"
+msgstr "Anglais"
+
+#: setup2.cxx:1396
+msgid "Russian"
+msgstr "Russe"
+
+#: uninst.cxx:1796
+msgid "Uninstall"
+msgstr "Désinstallation des composants"
+
+#: uninst.cxx:1812
+msgid "Removing"
+msgstr "Suppression"
+
+#: uninst.cxx:1837
+msgid "Select the software to remove:"
+msgstr "Sélectionnez les composants à supprimer :"
+
+#: uninst.cxx:1840
+msgid " Installed Software:"
+msgstr "Composants installés :"
+
+#: uninst.cxx:1850
+msgid "0k marked for removal."
+msgstr "0 Ko sélectionné pour supprimer."
+
+#: uninst.cxx:1867
+msgid "Confirm software selected for removal:"
+msgstr "Confirmez la suppression des composants sélectionnés :"
+
+#: uninst.cxx:1870
+msgid "Software to Remove:"
+msgstr "Composants à supprimer :"
+
+#: uninst2.cxx:191
+msgid "You must be logged in as root to run uninstall!"
+msgstr ""
+"Pour lancer la procédure de désinstallation, vous devez disposer des droits d'administrateur ! "
+
+
+#: uninst2.cxx:315
+msgid ""
+"This program allows you to remove the following software:</p>\n"
+"<ul>\n"
+msgstr ""
+"Ce programme vous permet de désinstaller les composants suivants :</p>\n"
+"<ul>\n"
+
+#: uninst2.cxx:436
+#, c-format
+msgid "Removing %s v%s..."
+msgstr "Suppression de %s v%s..."
+
+#: uninst2.cxx:452
+msgid "Removal Failed!"
+msgstr "Echec de désinstallation !"
+
+#: uninst2.cxx:454
+msgid "Removal Complete"
+msgstr "Suppression terminée"
+
+#: uninst2.cxx:558
+msgid "Unable to remove"
+msgstr "Impossible de supprimer"
+
+#: uninst2.cxx:633
+msgid "No software found to remove!"
+msgstr "Aucun composant à supprimer !"
+
+#: uninst.sh.in:32
+#, sh-format
+msgid "This script will help you remove Dr.Web packages"
+msgstr "Ce script vous aidera à désinstaller les composants Dr.Web"
+
+#: uninst.sh.in:35
+#, sh-format
+msgid "Do you wish to continue? (YES/no) "
+msgstr "Vous voulez continuer ? (YES/no) "
+
+#: uninst.sh.in:48
+#, sh-format
+msgid "Sorry, you must be root to remove Dr.Web software."
+msgstr ""
+"Pour supprimer les composants Dr.Web, vous devez disposer des droits d'administrateur."
+
+#: uninst.sh.in:92 dummy/epm.install.sh:131 dummy/epm.install.sh:148
+#: dummy/epm.remove.sh:125
+#, sh-format
+msgid "Please enter yes or no."
+msgstr "Veuillez entrer yes ou no."
+
+#: uninst.sh.in:179
+#, sh-format
+msgid "Select the software you want to remove:"
+msgstr "Sélectionnez les composants à supprimer :"
+
+#: uninst.sh.in:195
+#, sh-format
+msgid "A list of packages marked for removal:"
+msgstr "Liste des composants sélectionnés pour supprimer :"
+
+#: uninst.sh.in:200
+#, sh-format
+msgid "Are you sure you want to remove the selected packages? (YES/no) "
+msgstr "Etes-vous certain de vouloir supprimer les composants sélectionnés ? (YES/no) "
+
+#: uninst.sh.in:207 uninst.sh.in:215
+#, sh-format
+msgid "Nothing to remove. Exiting..."
+msgstr "Aucun composant à supprimer n'est trouvé. Fin..."
+
+#: uninst.sh.in:221
+#, sh-format
+msgid ""
+"To select a package you want to remove or deselect some previously\n"
+"selected package - enter the corresponding package number and press Enter.\n"
+"\n"
+"You may enter A or All to select all the packages, and N or None to deselect "
+"all of them.\n"
+"Enter R or Remove to remove selected packages.\\nEnter 0, Q or Quit to quit "
+"the dialog.\n"
+"All values are case insensitive."
+msgstr ""
+"Pour sélectionner un paquet à installer ou désélectionner \n"
+"le paquet précédemment sélectionné, entrez le numéro du paquet et cliquez sur Enter.\n"
+"\n"
+"Entrez A ou All pour sélectionner tous les paquets, entrez N ou None pour \n"
+"désélectionner tous les paquets.\n"
+"Entrez R ou Remove pour supprimer les paquets sélectionnés.\n"
+"Entrez 0, Q ou Quit pour quitter le programme d'installation.\n"
+"Toutes les valeurs sont insensibles à la casse."
+
+#: uninst.sh.in:228
+#, sh-format
+msgid "Select: "
+msgstr "Sélectionner : "
+
+#: uninst.sh.in:259
+#, sh-format
+msgid "Software dir -- '%s' not found."
+msgstr "Le répertoire contenant les fichiers de composants -- '%s' n'a pas été trouvé."
+
+#: dummy/epm.install.sh:50 dummy/epm.remove.sh:50
+#, sh-format
+msgid ""
+"Package platform and running platform are different. Installation aborted"
+msgstr ""
+"Type d'OS pour lequel a été conçu ce composant ne correspond pas à celui "
+"de l'OS actuellement utilisé. Impossible de continuer l'installation."
+
+#: dummy/epm.install.sh:60 dummy/epm.remove.sh:60
+#, sh-format
+msgid "Sorry, you must have administrative privileges to %s this software."
+msgstr "Vous devez disposer des droits d'administrateur pour %s ce logiciel !"
+
+#: dummy/epm.install.sh:60 dummy/epm.install.sh:70
+#, sh-format
+msgid "install"
+msgstr "installer"
+
+#: dummy/epm.install.sh:70 dummy/epm.remove.sh:70
+#, sh-format
+msgid "Sorry, you must be root to %s this software."
+msgstr "Vous devez disposer des droits d'administrateur (root) pour %s ce logiciel."
+
+#: dummy/epm.install.sh:106 dummy/epm.remove.sh:108
+#, sh-format
+msgid "Copyright %s"
+msgstr "(C) %s"
+
+#: dummy/epm.install.sh:111 dummy/epm.install.sh:113
+#, sh-format
+msgid ""
+"By using this parameter you automatically confirm and accept the Software "
+"License Agreement."
+msgstr ""
+"En utilisant ce paramètre, vous acceptez le Contrat de licence. "
+
+
+#: dummy/epm.install.sh:117
+#, sh-format
+msgid "This installation script will install the %s"
+msgstr "Ce script d'installation vous aidera à installer %s"
+
+#: dummy/epm.install.sh:118
+#, sh-format
+msgid "software version %s on your system."
+msgstr "version de logiciel %s installé dans votre ordinateur. "
+
+#: dummy/epm.install.sh:121 dummy/epm.remove.sh:115
+#, sh-format
+msgid "Do you wish to continue? (YES/no)"
+msgstr "Vous voulez continuer ? (YES/no)"
+
+#: dummy/epm.install.sh:138
+#, sh-format
+msgid "Do you agree with the terms of this license? (yes/no)"
+msgstr "Vous accepter les termes du Contrant de licence ? (yes/no)"
+
+#: dummy/epm.install.sh:156
+#, sh-format
+msgid "Package %s is up-to-date."
+msgstr "La dernière version du composant %s est installée dans le système."
+
+#: dummy/epm.install.sh:159
+#, sh-format
+msgid "Removing old versions of %s software..."
+msgstr "Suppression de la version périmée du composant %s..."
+
+#: dummy/epm.install.sh:209 dummy/epm.install.sh:239 dummy/epm.install.sh:257
+#, sh-format
+msgid "Installing required %s software..."
+msgstr "Installation du composant nécessaire %s..."
+
+#: dummy/epm.install.sh:216 dummy/epm.install.sh:246
+#, sh-format
+msgid "Sorry, you must first install '%s' version %s!"
+msgstr "Vous devez d'abord installer la version '%s' du composant %s !"
+
+#: dummy/epm.install.sh:264
+#, sh-format
+msgid "Sorry, you must first install '%s'!"
+msgstr "Vous devez d'abord installer '%s' !"
+
+#: dummy/epm.install.sh:273
+#, sh-format
+msgid "Automatically replacing '%s'..."
+msgstr "Remplacement automatique '%s'"
+
+#: dummy/epm.install.sh:277
+#, sh-format
+msgid "Dependency check failed! Full list of unmet dependencies:"
+msgstr "Lors de la vérification des dépendances, les dépendances suivantes n'ont pas été trouvées :"
+
+#: dummy/epm.install.sh:285
+#, sh-format
+msgid "Running pre-install commands..."
+msgstr "Préparation de l'installation..."
+
+#: dummy/epm.install.sh:287
+#, sh-format
+msgid "Backing up old versions of files to be installed..."
+msgstr "Sauvegarde des versions périmées des fichiers..."
+
+#: dummy/epm.install.sh:293 dummy/epm.install.sh:308 dummy/epm.remove.sh:190
+#: dummy/epm.remove.sh:195
+#, sh-format
+msgid "Error: Cannot write in %s."
+msgstr "Erreur : impossible d'écrire les fichiers dans le répertoire %s."
+
+#: dummy/epm.install.sh:303
+#, sh-format
+msgid "Creating installation directories..."
+msgstr "Répertoires d'installation sont en cours de création..."
+
+#: dummy/epm.install.sh:313
+#, sh-format
+msgid "Error: %s already exists as a regular file!"
+msgstr "Erreur : %s est déjà utilisé en tant que nom du fichier existant !"
+
+#: dummy/epm.install.sh:327
+#, sh-format
+msgid "Installing software..."
+msgstr "Installation du composant en cours..."
+
+#: dummy/epm.install.sh:331 dummy/epm.remove.sh:199
+#, sh-format
+msgid "Checking configuration files..."
+msgstr "Vérification des fichiers de configuration en cours..."
+
+#: dummy/epm.install.sh:338
+#, sh-format
+msgid "Error: %%s already exists as a regular file!"
+msgstr "Erreur : %%s est déjà utilisé en tant que nom du fichier existant !"
+
+#: dummy/epm.install.sh:345
+#, sh-format
+msgid "Updating file permissions..."
+msgstr "Mise à jour des droits d'accès aux fichiers..."
+
+#: dummy/epm.install.sh:352
+#, sh-format
+msgid "Setting up init scripts..."
+msgstr "Démarrage du script d'initialisation..."
+
+#: dummy/epm.install.sh:366 dummy/epm.remove.sh:150
+#, sh-format
+msgid "Unable to determine location of init scripts!"
+msgstr "Impossible de déterminer l'emplacement des scripts d'initialisation !"
+
+#: dummy/epm.install.sh:405
+#, sh-format
+msgid "Running post-install commands..."
+msgstr "Fin d'installation..."
+
+#: dummy/epm.install.sh:408
+#, sh-format
+msgid "Installation %s is complete."
+msgstr "Installation de %s terminée."
+
+#: dummy/epm.remove.sh:60 dummy/epm.remove.sh:70
+#, sh-format
+msgid "remove"
+msgstr "supprimer"
+
+#: dummy/epm.remove.sh:105
+#, sh-format
+msgid "Package %s is not installed"
+msgstr "Composant %s n'est pas installé"
+
+#: dummy/epm.remove.sh:111
+#, sh-format
+msgid "This removal script will remove the %s"
+msgstr "Ce script va supprimer %s"
+
+#: dummy/epm.remove.sh:112
+#, sh-format
+msgid "software version %s from your system."
+msgstr "en version %s depuis votre ordinateur."
+
+#: dummy/epm.remove.sh:135
+#, sh-format
+msgid "Running pre-remove commands..."
+msgstr "Préparation de la suppression..."
+
+#: dummy/epm.remove.sh:137
+#, sh-format
+msgid "Cleaning up init scripts..."
+msgstr "Nettoyage de l'autodémarrage et suppression des scripts d'installation..."
+
+#: dummy/epm.remove.sh:182
+#, sh-format
+msgid "Removing/restoring installed files..."
+msgstr "Suppression/restauration des fichiers installés..."
+
+#: dummy/epm.remove.sh:212
+#, sh-format
+msgid "Removing empty installation directories..."
+msgstr "Suppression des répertoires d'installation vides..."
+
+#: dummy/epm.remove.sh:221
+#, sh-format
+msgid "Running post-remove commands..."
+msgstr "Fin de suppression..."
+
+#: dummy/epm.remove.sh:225
+#, sh-format
+msgid "Removal %s is complete."
+msgstr "Suppression de %s terminée."
+
+#~ msgid " (%.1fMb disk space)"
+#~ msgstr " (%.1fMo d'espace disque)"
+
+#~ msgid " (%dKb disk space)"
+#~ msgstr " (%dKo d'espace disque)"
+
+#~ msgid " (+%.1fMb disk space)"
+#~ msgstr " (+%.1fMo d'espace disque)"
+
+#~ msgid " (+%dKb disk space)"
+#~ msgstr " (+%dKo d'espace disque)"

@@ -49,8 +49,6 @@
  *   get_string()       - Get a delimited string from a line.
  *   patmatch()         - Pattern matching...
  *   sort_subpackages() - Compare two subpackage names.
- *   sort_copyrights()  - Compare two copyright strings.
- *   sort_licenses()    - Compare two license file names.
  *   copyrights()       - Concatenates all copyright strings.
  */
 
@@ -87,8 +85,6 @@ static char	*get_line(char *buffer, int size, FILE *fp,
 static char	*get_string(char **src, char *dst, size_t dstsize);
 static int	patmatch(const char *, const char *);
 static int	sort_subpackages(char **a, char **b);
-static int	sort_copyrights(char **a, char **b);
-static int	sort_licenses(char **a, char **b);
 static int	subpackage_cmp(char *a, char *b);
 
 
@@ -460,10 +456,6 @@ add_copyright(dist_t     *dist,		/* I - Distribution */
 
   *temp = s = strdup(cpr);
 
-  if (dist->num_copyrights > 1)
-    qsort(dist->copyrights, (size_t)dist->num_copyrights, sizeof(char *),
-          (int (*)(const void *, const void *))sort_copyrights);
-
  /*
   * Return the new string...
   */
@@ -498,10 +490,6 @@ add_license(dist_t     *dist,		/* I - Distribution */
   dist->num_licenses ++;
 
   *temp = s = strdup(license);
-
-  if (dist->num_licenses > 1)
-    qsort(dist->licenses, (size_t)dist->num_licenses, sizeof(char *),
-          (int (*)(const void *, const void *))sort_licenses);
 
  /*
   * Return the new string...
@@ -547,23 +535,17 @@ char *					/* O - Copyright pointer */
 find_copyright(dist_t     *dist,	/* I - Distribution */
                const char *cpr)		/* I - Copyright string */
 {
-  char	**match;			/* Matching string */
+  int i;
 
 
   if (!cpr || !*cpr)
     return (NULL);
 
-  if (dist->num_copyrights > 0)
-    match = bsearch(&cpr, dist->copyrights, (size_t)dist->num_copyrights,
-                    sizeof(char *),
-                    (int (*)(const void *, const void *))sort_copyrights);
-  else
-    match = NULL;
+  for (i=0; i<dist->num_copyrights; ++i)
+    if (strcmp(dist->copyrights[i], cpr)==0)
+      return cpr;
 
-  if (match != NULL)
-    return (*match);
-  else
-    return (add_copyright(dist, cpr));
+  return (add_copyright(dist, cpr));
 }
 
 
@@ -575,23 +557,17 @@ char *					/* O - License pointer */
 find_license(dist_t     *dist,		/* I - Distribution */
              const char *license)	/* I - License file */
 {
-  char	**match;			/* Matching string */
+  int i;
 
 
   if (!license || !*license)
     return (NULL);
 
-  if (dist->num_licenses > 0)
-    match = bsearch(&license, dist->licenses, (size_t)dist->num_licenses,
-                    sizeof(char *),
-                    (int (*)(const void *, const void *))sort_licenses);
-  else
-    match = NULL;
+  for (i=0; i<dist->num_licenses; ++i)
+    if (strcmp(dist->licenses[i], license)==0)
+      return license;
 
-  if (match != NULL)
-    return (*match);
-  else
-    return (add_license(dist, license));
+  return (add_license(dist, license));
 }
 
 
@@ -2756,30 +2732,6 @@ patmatch(const char *s,			/* I - String to match against */
 static int				/* O - Result of comparison */
 sort_subpackages(char **a,		/* I - First subpackage */
                  char **b)		/* I - Second subpackage */
-{
-  return (strcmp(*a, *b));
-}
-
-
-/*
- * 'sort_copyrights()' - Compare two copyright strings.
- */
-
-static int				/* O - Result of comparison */
-sort_copyrights(char **a,		/* I - First copyright string */
-                char **b)		/* I - Second copyright string */
-{
-  return (strcmp(*a, *b));
-}
-
-
-/*
- * 'sort_licenses()' - Compare two license file names.
- */
-
-static int				/* O - Result of comparison */
-sort_licenses(char **a,			/* I - First license file name */
-              char **b)			/* I - Second license file name */
 {
   return (strcmp(*a, *b));
 }

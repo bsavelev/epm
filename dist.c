@@ -1120,6 +1120,34 @@ add_copyright_files(dist_t	*dist,		/* I - Distribution data */
 
 
 /*
+ * 'add_license_files()' - Adds additional common license file(s) to the
+ *  package. The main common license file will *not* be added.
+ */
+
+int						/* O - 0==success, 1==error */
+add_license_files(dist_t	*dist)		/* I - Distribution data */
+{
+  int i;
+
+  for (i=1; i<dist->num_licenses; ++i) {
+    file_t *new_file=add_file(dist, 0);
+
+    strcpy(new_file->src, dist->licenses[i]);
+
+    strcpy(new_file->dst, LegalDir);
+    strcat(new_file->dst, "/");
+    strcat(new_file->dst, basename(dist->licenses[i]));
+
+    new_file->type = 'f';
+    new_file->mode = (mode_t)0644;
+
+    strncpy(new_file->group, "root", sizeof(new_file->group));
+    strncpy(new_file->user, "root", sizeof(new_file->user));
+  }
+}
+
+
+/*
  * 'read_dist()' - Read a software distribution.
  */
 
@@ -1588,6 +1616,7 @@ read_dist(const char     *prodname,	/* I - Product name */
   sort_dist_files(dist);
 
   add_copyright_files(dist, directory);
+  add_license_files(dist);
 
   return (dist);
 }

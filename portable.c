@@ -2709,7 +2709,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
     if (file->license) {
       snprintf(srcname, sizeof(srcname), "%s/%s", directory,
                basename(file->license));
-      snprintf(dstname, sizeof(dstname), "%slicenses/%s", destdir,
+      snprintf(dstname, sizeof(dstname), "%s%s", destdir,
                basename(file->license));
 
       if (stat(srcname, &srcstat)) {

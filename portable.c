@@ -1615,7 +1615,7 @@ write_distfiles(const char *directory,	/* I - Directory */
 		time_t     deftime,	/* I - Default file time */
 	        const char *subpackage)	/* I - Subpackage */
 {
-  int		i;			/* Looping var */
+  int		i, j;			/* Looping var */
   int		havepatchfiles;		/* 1 if we have patch files, 0 otherwise */
   tarf_t	*tarfile;		/* Distribution tar file */
   char		prodfull[255],		/* Full name of product */
@@ -1700,9 +1700,15 @@ write_distfiles(const char *directory,	/* I - Directory */
     if (file->license) {
       snprintf(filename, sizeof(filename), "%s/%s", directory,
                basename(file->license));
-      if (copy_file(filename, file->license, 0444,
-                    getuid(), getgid()))
-        return (1);
+
+      /* Find file license src by its dst. */
+      for (j=0; j<dist->num_files; ++j)
+        if (!strcmp(file->license, dist->files[j].dst))
+          if (copy_file(filename, dist->files[j].src, 0444,
+                        getuid(), getgid()))
+            return (1);
+          else
+            break;
     }
 
  /*

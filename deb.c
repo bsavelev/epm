@@ -524,6 +524,8 @@ make_subpackage(const char     *prodname,
     return (1);
   }
 
+  fchmod(fileno(fp), 0644);
+
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
     if (tolower(file->type) == 'c' && file->subpackage == subpackage)
       fprintf(fp, "%s\n", file->dst);

@@ -2724,6 +2724,8 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
         return (-1);
       }
 
+      /* TODO: Check if such license file was added already. */
+
       if (tar_header(tarfile, TAR_NORMAL, srcstat.st_mode & 07555,
                      srcstat.st_size, srcstat.st_mtime, "root", "root",
                      dstname, NULL) < 0)

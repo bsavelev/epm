@@ -238,7 +238,8 @@ make_subpackage(const char     *prodname,
     fprintf(fp, "Version: %s-%s\n", dist->version, dist->release);
   else
     fprintf(fp, "Version: %s\n", dist->version);
-  fprintf(fp, "Maintainer: %s\n", dist->vendor);
+  fprintf(fp, "Maintainer: %s\n", dist->packager);
+  fprintf(fp, "Origin: %s\n", dist->vendor);
 
  /*
   * The Architecture attribute needs to match the uname info

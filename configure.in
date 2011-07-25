@@ -355,7 +355,7 @@ fi
 EPM_SOFTWARE="$softwaredir"
 
 # Check for glib.
-PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.4.0)
+PKG_CHECK_MODULES(GLIB, glib >= 2.4.0)
 
 dnl Version number...
 AC_SUBST(VERSION)

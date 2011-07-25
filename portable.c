@@ -39,6 +39,7 @@
 
 #include "epm.h"
 #include <libgen.h>
+#include <glib.h>
 
 
 /*
@@ -2704,6 +2705,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
   }
 
   /* Write additional license files.  */
+  GList *list=NULL;
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++) {
     /* Skip files from other subpackages. */
     if ((!subpackage && file->subpackage) ||
@@ -2724,7 +2726,10 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
         return (-1);
       }
 
-      /* TODO: Check if such license file was added already. */
+      /* Don't add license files that were added already. */
+      if (g_slist_find(list, dstname))
+        continue;
+      list=g_slist_append(list, dstname);
 
       if (tar_header(tarfile, TAR_NORMAL, srcstat.st_mode & 07555,
                      srcstat.st_size, srcstat.st_mtime, "root", "root",

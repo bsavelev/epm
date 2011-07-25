@@ -54,7 +54,7 @@ uninst_CXXFLAGS = @EPM_GUI_CXXFLAGS@
 
 epm_SOURCES	=	epm.c
 
-epm_LDADD = libepm.a
+epm_LDADD = libepm.a $(GLIB_LIBS)
 
 epminstall_SOURCES =	epminstall.c
 
@@ -64,7 +64,7 @@ mkepmlist_SOURCES =	mkepmlist.c
 
 mkepmlist_LDADD = libepm.a
 
-AM_CFLAGS = $(ARCHFLAGS) $(OPTIM) $(EPM_CFLAGS)
+AM_CFLAGS = $(ARCHFLAGS) $(OPTIM) $(EPM_CFLAGS) $(GLIB_CFLAGS)
 AM_CXXFLAGS = $(ARCHFLAGS) $(OPTIM) $(EPM_CXXFLAGS)
 
 

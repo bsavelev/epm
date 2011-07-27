@@ -76,11 +76,14 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_epm_OBJECTS = epm.$(OBJEXT)
 epm_OBJECTS = $(am_epm_OBJECTS)
-am__DEPENDENCIES_1 =
-epm_DEPENDENCIES = libepm.a $(am__DEPENDENCIES_1)
+epm_DEPENDENCIES = libepm.a
+epm_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(epm_LDFLAGS) $(LDFLAGS) -o \
+	$@
 am_epminstall_OBJECTS = epminstall.$(OBJEXT)
 epminstall_OBJECTS = $(am_epminstall_OBJECTS)
 epminstall_DEPENDENCIES = libepm.a
+epminstall_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(epminstall_LDFLAGS) \
+	$(LDFLAGS) -o $@
 am_mkepmlist_OBJECTS = mkepmlist.$(OBJEXT)
 mkepmlist_OBJECTS = $(am_mkepmlist_OBJECTS)
 mkepmlist_DEPENDENCIES = libepm.a
@@ -355,9 +358,11 @@ uninst_SOURCES = uninst.cxx \
 uninst_LDADD = libepm.a @LIBINTL@ @GUILIBS@
 uninst_CXXFLAGS = @EPM_GUI_CXXFLAGS@
 epm_SOURCES = epm.c
-epm_LDADD = libepm.a $(GLIB_LIBS)
+epm_LDADD = libepm.a
+epm_LDFLAGS = $(GLIB_LIBS)
 epminstall_SOURCES = epminstall.c
 epminstall_LDADD = libepm.a
+epminstall_LDFLAGS = $(GLIB_LIBS)
 mkepmlist_SOURCES = mkepmlist.c
 mkepmlist_LDADD = libepm.a
 AM_CFLAGS = $(ARCHFLAGS) $(OPTIM) $(EPM_CFLAGS) $(GLIB_CFLAGS)
@@ -476,10 +481,10 @@ clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 epm$(EXEEXT): $(epm_OBJECTS) $(epm_DEPENDENCIES) 
 	@rm -f epm$(EXEEXT)
-	$(LINK) $(epm_OBJECTS) $(epm_LDADD) $(LIBS)
+	$(epm_LINK) $(epm_OBJECTS) $(epm_LDADD) $(LIBS)
 epminstall$(EXEEXT): $(epminstall_OBJECTS) $(epminstall_DEPENDENCIES) 
 	@rm -f epminstall$(EXEEXT)
-	$(LINK) $(epminstall_OBJECTS) $(epminstall_LDADD) $(LIBS)
+	$(epminstall_LINK) $(epminstall_OBJECTS) $(epminstall_LDADD) $(LIBS)
 mkepmlist$(EXEEXT): $(mkepmlist_OBJECTS) $(mkepmlist_DEPENDENCIES) 
 	@rm -f mkepmlist$(EXEEXT)
 	$(LINK) $(mkepmlist_OBJECTS) $(mkepmlist_LDADD) $(LIBS)

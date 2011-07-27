@@ -59,6 +59,7 @@
 #include "epm.h"
 #include <pwd.h>
 #include <libgen.h>
+#include <glib.h>
 
 
 /*
@@ -992,12 +993,24 @@ read_file_legal_info(file_t	*file,		/* I - Distribution file */
 }
 
 
+gint sort_by_license(gconstpointer *a, gconstpointer *b)
+{
+  const char *lica=((file_t *)a)->license;
+  const char *licb=((file_t *)b)->license;
+
+  return strcmp(lica, licb);
+}
+
+
 int						/* O - 0==success, 1==error */
 write_copyright_file(dist_t	*dist,		/* I - Distribution data */
                      const char	*subpkg,	/* I - Subpackage or 0 */
                      const char	*directory)	/* I - Directory for distribution files */
 {
   int i, j, k;
+  file_t *file;
+  GSList *it;
+  const char *prev_lic=0;
 
   char filename[512];
   char filename_tmp[512];
@@ -1018,8 +1031,6 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
     return (1);
   }
 
-  file_t *file;
-
   for (i=0; i<dist->num_copyrights; ++i)
     fprintf(fd, "Copyright (c) %s\n", dist->copyrights[i]);
   fprintf(fd, "All rights reserved.\n");
@@ -1032,8 +1043,15 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   }
   fputs(" for the license text.\n", fd);
 
-  int f=0;
+  /* Sort files by license. */
+  GSList *list=NULL;
   for (i=0, file=dist->files; i<dist->num_files; ++i, ++file)
+    g_slist_prepend(list, file);
+  list=g_slist_sort(list, sort_by_license);
+  int f=0;
+
+  for (it=list; it; it=it->next) {
+    file=it->data;
     if ((file->subpackage && subpkg && (!strcmp(file->subpackage, subpkg))) ||
         (!subpkg && !file->subpackage)) {
       if (!f && (file->copyrights[0] || file->license)) {
@@ -1055,6 +1073,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
         fprintf(fd, " for the file license text.\n");
       }
     }
+  }
 
   fclose(fd);
 

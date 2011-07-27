@@ -54,11 +54,15 @@ uninst_CXXFLAGS = @EPM_GUI_CXXFLAGS@
 
 epm_SOURCES	=	epm.c
 
-epm_LDADD = libepm.a $(GLIB_LIBS)
+epm_LDADD = libepm.a
+
+epm_LDFLAGS = $(GLIB_LIBS)
 
 epminstall_SOURCES =	epminstall.c
 
 epminstall_LDADD = libepm.a
+
+epminstall_LDFLAGS = $(GLIB_LIBS)
 
 mkepmlist_SOURCES =	mkepmlist.c
 

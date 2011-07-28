@@ -930,8 +930,6 @@ add_file_copyright(file_t *file, const char *str)
   if (!str[0])
     return;
 
-  strcat(file->copyrights[0], " (");
-
   /* Split str by ";;;" if needed. */
   unsigned int i;
   for (i=1; i<256; i++) {
@@ -948,8 +946,6 @@ add_file_copyright(file_t *file, const char *str)
     else
       break;
   }
-
-  strcat(file->copyrights[0], ")");
 }
 
 
@@ -987,8 +983,11 @@ read_file_legal_info(file_t	*file,		/* I - Distribution file */
     file->copyrights[0]=malloc(2+strlen(file->dst)+2+1);
     strcpy(file->copyrights[0], "\n");
     strcat(file->copyrights[0], file->dst);
-    add_file_copyright(file, copyright);
+    strcat(file->copyrights[0], " :");
   }
+
+  add_file_copyright(file, copyright);
+  add_file_license(file, license);
 
   return (0);
 }
@@ -1062,11 +1061,9 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
       k=0;
       while (file->copyrights[k])
         fprintf(fd, "%s\n", file->copyrights[k++]);
-      if (file->license) {
-        add_file_license(file, license);
+      if (file->license)
         fprintf(fd, "    See \"%s\" for the file license text.\n",
                 file->license);
-      }
       else if (file->copyrights[0]) {
         /* The file have copyright(s) but no license;
            show default license(s) then. */

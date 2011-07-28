@@ -112,8 +112,8 @@ void		set_gettext(char *argv[]);
 // License names
 //
 
-#define LIC_EN "license"
-#define LIC_RU "license.ru"
+#define LIC_EN "LICENSE"
+#define LIC_RU "LICENSE.ru"
 
 //
 // Panes...

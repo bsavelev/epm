@@ -113,7 +113,7 @@ void		set_gettext(char *argv[]);
 //
 
 #define LIC_EN "license"
-#define LIC_RU "license.ru"
+#define LIC_RU "license.rus"
 
 //
 // Panes...

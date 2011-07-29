@@ -29,6 +29,7 @@ extern Fl_Browser *ConfirmList;
 #include <FL/Fl_Tabs.H>
 extern Fl_Tabs *LicenseTabs;
 extern Fl_Help_View *LicenseFile;
+extern Fl_Help_View *LicenseFileOther;
 extern Fl_Round_Button *LicenseAccept;
 extern Fl_Round_Button *LicenseDecline;
 #include <FL/Fl_Choice.H>

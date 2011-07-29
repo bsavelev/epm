@@ -46,6 +46,12 @@ static void cb_LicenseFile(Fl_Help_View*, void*) {
   LicenseFile->label("Dr.Web License");
 }
 
+Fl_Help_View *LicenseFileOther=(Fl_Help_View *)0;
+
+static void cb_LicenseFileOther(Fl_Help_View*, void*) {
+  LicenseFile->label("Other Licenses");
+}
+
 Fl_Round_Button *LicenseAccept=(Fl_Round_Button *)0;
 
 static void cb_LicenseAccept(Fl_Round_Button*, void*) {
@@ -1973,12 +1979,17 @@ Fl_Double_Window* make_window() {
         Pane[4]->labelsize(18);
         Pane[4]->labelcolor((Fl_Color)4);
         Pane[4]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
-        { LicenseTabs = new Fl_Tabs(160, 73, 520, 174);
-          { LicenseFile = new Fl_Help_View(160, 93, 520, 154, gettext("License"));
+        { LicenseTabs = new Fl_Tabs(160, 73, 520, 171);
+          { LicenseFile = new Fl_Help_View(160, 93, 520, 151);
             LicenseFile->callback((Fl_Callback*)cb_LicenseFile);
             LicenseFile->align(133);
-            Fl_Group::current()->resizable(LicenseFile);
           } // Fl_Help_View* LicenseFile
+          { LicenseFileOther = new Fl_Help_View(160, 94, 520, 149);
+            LicenseFileOther->callback((Fl_Callback*)cb_LicenseFileOther);
+            LicenseFileOther->align(133);
+            LicenseFileOther->hide();
+            Fl_Group::current()->resizable(LicenseFileOther);
+          } // Fl_Help_View* LicenseFileOther
           LicenseTabs->end();
           Fl_Group::current()->resizable(LicenseTabs);
         } // Fl_Tabs* LicenseTabs

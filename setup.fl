@@ -1,17 +1,17 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0109 
+version 1.0110 
 i18n_type 1 
 i18n_include <libintl.h> 
 i18n_function gettext 
 header_name {.h} 
 code_name {.cxx}
-Function {make_window()} {open
+Function {make_window()} {open selected
 } {
   Fl_Window SetupWindow {
     label Install
     callback {if (CancelButton->active())
-  exit(0);} open selected
-    xywh {32 292 690 330} type Double resizable
+  exit(0);} open
+    xywh {387 301 690 330} type Double resizable
     code0 {\#include "gui-common.h"}
     code1 {\#include "setup2.h"} size_range {690 330 0 0} visible
   } {
@@ -139,10 +139,15 @@ list_cb(0,0);}
         }
       }
       Fl_Group {Pane[4]} {open
-        xywh {155 10 525 285} labelfont 1 labelsize 18 labelcolor 4 align 21
+        xywh {155 10 530 285} labelfont 1 labelsize 18 labelcolor 4 align 21
       } {
-        Fl_Help_View LicenseFile {
-          xywh {165 66 515 178} labelfont 1 align 133 resizable
+        Fl_Tabs LicenseTabs {open
+          xywh {160 73 520 174} resizable
+        } {
+          Fl_Help_View LicenseFile {
+            label License
+            xywh {160 93 520 154} align 133 resizable
+          }
         }
         Fl_Group {} {open
           xywh {155 240 525 55}

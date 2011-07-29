@@ -42,15 +42,7 @@ Fl_Tabs *LicenseTabs=(Fl_Tabs *)0;
 
 Fl_Help_View *LicenseFile=(Fl_Help_View *)0;
 
-static void cb_LicenseFile(Fl_Help_View*, void*) {
-  LicenseFile->label("Dr.Web License");
-}
-
 Fl_Help_View *LicenseFileOther=(Fl_Help_View *)0;
-
-static void cb_LicenseFileOther(Fl_Help_View*, void*) {
-  LicenseFileOther->label("Other Licenses");
-}
 
 Fl_Round_Button *LicenseAccept=(Fl_Round_Button *)0;
 
@@ -1981,18 +1973,15 @@ Fl_Double_Window* make_window() {
         Pane[4]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         { LicenseTabs = new Fl_Tabs(160, 73, 520, 171);
           { LicenseFile = new Fl_Help_View(160, 93, 520, 151);
-            LicenseFile->color((Fl_Color)FL_BACKGROUND_COLOR);
-            LicenseFile->selection_color((Fl_Color)FL_BACKGROUND2_COLOR);
-            LicenseFile->callback((Fl_Callback*)cb_LicenseFile);
+            LicenseFile->selection_color((Fl_Color)FL_BACKGROUND_COLOR);
             LicenseFile->align(133);
-            LicenseFile->hide();
+            LicenseFile->label("Dr.Web License");
           } // Fl_Help_View* LicenseFile
           { LicenseFileOther = new Fl_Help_View(160, 93, 520, 151);
-            LicenseFileOther->color((Fl_Color)FL_BACKGROUND_COLOR);
-            LicenseFileOther->selection_color((Fl_Color)FL_BACKGROUND2_COLOR);
-            LicenseFileOther->callback((Fl_Callback*)cb_LicenseFileOther);
+            LicenseFileOther->selection_color((Fl_Color)FL_BACKGROUND_COLOR);
             LicenseFileOther->align(133);
-            Fl_Group::current()->resizable(LicenseFileOther);
+            LicenseFileOther->hide();
+            LicenseFileOther->label("Other Licenses");
           } // Fl_Help_View* LicenseFileOther
           LicenseTabs->end();
           Fl_Group::current()->resizable(LicenseTabs);

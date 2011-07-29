@@ -146,11 +146,11 @@ list_cb(0,0);}
         } {
           Fl_Help_View LicenseFile {
             callback {LicenseFile->label("Dr.Web License");}
-            xywh {160 93 520 151} align 133
+            xywh {160 93 520 151} color 49 selection_color 7 align 133 hide
           }
           Fl_Help_View LicenseFileOther {
-            callback {LicenseFile->label("Other Licenses");}
-            xywh {160 93 520 151} align 133 hide resizable
+            callback {LicenseFileOther->label("Other Licenses");}
+            xywh {160 93 520 151} color 49 selection_color 7 align 133 resizable
           }
         }
         Fl_Group {} {open

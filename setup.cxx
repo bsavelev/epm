@@ -1972,16 +1972,14 @@ Fl_Double_Window* make_window() {
         Pane[4]->labelcolor((Fl_Color)4);
         Pane[4]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         { LicenseTabs = new Fl_Tabs(160, 73, 520, 171);
-          { LicenseFile = new Fl_Help_View(160, 93, 520, 151);
+          { LicenseFile = new Fl_Help_View(160, 93, 520, 151, gettext("Dr.Web License"));
             LicenseFile->selection_color((Fl_Color)FL_BACKGROUND_COLOR);
             LicenseFile->align(133);
-            LicenseFile->label("Dr.Web License");
           } // Fl_Help_View* LicenseFile
-          { LicenseFileOther = new Fl_Help_View(160, 93, 520, 151);
+          { LicenseFileOther = new Fl_Help_View(160, 93, 520, 151, gettext("Other Licenses"));
             LicenseFileOther->selection_color((Fl_Color)FL_BACKGROUND_COLOR);
             LicenseFileOther->align(133);
             LicenseFileOther->hide();
-            LicenseFileOther->label("Other Licenses");
           } // Fl_Help_View* LicenseFileOther
           LicenseTabs->end();
           Fl_Group::current()->resizable(LicenseTabs);

@@ -102,7 +102,7 @@ void		gui_add_depend(gui_dist_t *d, int type, const char *name,
 gui_dist_t	*gui_add_dist(int *num_d, gui_dist_t **d);
 gui_dist_t	*gui_find_dist(const char *name, int num_d, gui_dist_t *d);
 void		gui_get_installed(void);
-void		gui_load_file(Fl_Help_View *hv, const char *filename);
+void		gui_load_file(Fl_Help_View *hv, const char *filename, bool append=false);
 int		gui_sort_dists(const gui_dist_t *d0, const gui_dist_t *d1);
 char*		findMypath(const char* argv);
 void		set_gettext(char *argv[]);

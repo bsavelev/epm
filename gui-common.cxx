@@ -275,7 +275,7 @@ gui_get_installed(void)
 void
 gui_load_file(Fl_Help_View *hv,		 // I - Help widget
               const char   *filename,	 // I - File to load
-              bool         append=false) // I - Append file to the widget str
+              bool         append)	// I - Append file to the widget str
 {
   FILE		*fp;			// File pointer
   struct stat	info;			// Info about file

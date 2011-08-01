@@ -1048,7 +1048,7 @@ void update_control(int from) {
     licaccept = 0;
 
     // Set the title string...
-    LicenseFile->label(liclabel);
+//    LicenseFile->label(liclabel);
     // Load the license into the viewer...
     LicenseFile->textfont(FL_HELVETICA);
     LicenseFile->textsize(10);

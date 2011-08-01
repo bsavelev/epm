@@ -120,6 +120,7 @@ void	load_image(void);
 void	load_readme(void);
 void	load_types(void);
 void	load_license(void);
+void	load_more_licenses(void);
 void	log_cb(int fd, int *fdptr);
 void	update_sizes(void);
 

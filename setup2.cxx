@@ -1436,8 +1436,8 @@ load_more_licenses()
   // Clear the widget.
   LicenseFileOther->value(0);
 
-  // Build the list of files to load (*.COPYRIGHTS + license.*).
-  // TODO: Take in account the list of components selected.
+  // Merge subpackage copyrights and put them in a tab.
+  // TODO: Take in account the list of components selected?
   if ((num_files=fl_filename_list(".", &files))==0) {
     fputs("setup: No additinal software licenses found.\n", stderr);
     return;

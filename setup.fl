@@ -11,7 +11,7 @@ Function {make_window()} {open selected
     label Install
     callback {if (CancelButton->active())
   exit(0);} open
-    xywh {373 409 690 330} type Double resizable
+    xywh {374 409 690 330} type Double resizable
     code0 {\#include "gui-common.h"}
     code1 {\#include "setup2.h"} size_range {690 330 0 0} visible
   } {
@@ -146,11 +146,11 @@ list_cb(0,0);}
         } {
           Fl_Help_View LicenseFile {
             label {Dr.Web License}
-            xywh {160 93 520 151} selection_color 49 align 133
+            xywh {160 93 520 151} selection_color 49 align 133 hide
           }
           Fl_Help_View LicenseFileOther {
-            label {Other Licenses}
-            xywh {160 93 520 151} selection_color 49 align 133 hide
+            label Copyrights
+            xywh {160 93 520 151} selection_color 49 align 133
           }
         }
         Fl_Group {} {open

@@ -1975,11 +1975,11 @@ Fl_Double_Window* make_window() {
           { LicenseFile = new Fl_Help_View(160, 93, 520, 151, gettext("Dr.Web License"));
             LicenseFile->selection_color((Fl_Color)FL_BACKGROUND_COLOR);
             LicenseFile->align(133);
+            LicenseFile->hide();
           } // Fl_Help_View* LicenseFile
-          { LicenseFileOther = new Fl_Help_View(160, 93, 520, 151, gettext("Other Licenses"));
+          { LicenseFileOther = new Fl_Help_View(160, 93, 520, 151, gettext("Copyrights"));
             LicenseFileOther->selection_color((Fl_Color)FL_BACKGROUND_COLOR);
             LicenseFileOther->align(133);
-            LicenseFileOther->hide();
           } // Fl_Help_View* LicenseFileOther
           LicenseTabs->end();
           Fl_Group::current()->resizable(LicenseTabs);

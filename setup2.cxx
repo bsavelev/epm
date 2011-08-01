@@ -1431,7 +1431,7 @@ load_more_licenses()
   dirent **files;
   int num_files;
   int i;
-  string s;
+  string s, header;
 
   // Clear the widget.
   LicenseFileOther->value(0);
@@ -1444,9 +1444,14 @@ load_more_licenses()
   }
   for (i=0; i<num_files; ++i) {
     s=files[i]->d_name;
-    if (s.find(".COPYRIGHTS", s.size()-strlen(".COPYRIGHTS"))!=string::npos ||
-        (s!="license.rus" && s.rfind("license.", 0)!=string::npos))
+    if (s.find(".COPYRIGHTS", s.size()-strlen(".COPYRIGHTS"))!=string::npos) {
+      header="---------------------------------------------------------\n";
+      header+="Subpackage: ";
+      header+=s.substr(0, s.find(".COPYRIGHTS"));
+      header+="\n\n";
+      LicenseFileOther->value((LicenseFileOther->value()+header).c_str());
       gui_load_file(LicenseFileOther, s.c_str(), true);
+    }
   }
 
   // Free file list.

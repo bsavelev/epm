@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2010-07-19 15:03+0400\n"
+"POT-Creation-Date: 2011-08-01 18:53+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,215 +16,223 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: setup.cxx:1818
+#: setup.cxx:1822
 msgid "Install"
 msgstr ""
 
-#: setup.cxx:1820 uninst.cxx:1798
+#: setup.cxx:1824 uninst.cxx:1798
 msgid "Welcome"
 msgstr ""
 
-#: setup.cxx:1824
+#: setup.cxx:1828
 msgid "Install Type"
 msgstr ""
 
-#: setup.cxx:1829 uninst.cxx:1802
+#: setup.cxx:1833 uninst.cxx:1802
 msgid "Select Software"
 msgstr ""
 
-#: setup.cxx:1834 uninst.cxx:1807
+#: setup.cxx:1838 uninst.cxx:1807
 msgid "Confirm"
 msgstr ""
 
-#: setup.cxx:1839
+#: setup.cxx:1843
 msgid "License"
 msgstr ""
 
-#: setup.cxx:1844
+#: setup.cxx:1848
 msgid "Installing"
 msgstr ""
 
-#: setup.cxx:1849
+#: setup.cxx:1853
 msgid "Finish"
 msgstr ""
 
-#: setup.cxx:1873
+#: setup.cxx:1877
 msgid "Select the installation type:"
 msgstr ""
 
-#: setup.cxx:1927
+#: setup.cxx:1931
 msgid "Select the software you want to install:"
 msgstr ""
 
-#: setup.cxx:1930
+#: setup.cxx:1934
 msgid " Available Software:"
 msgstr ""
 
-#: setup.cxx:1939
+#: setup.cxx:1943
 msgid "0k marked for installation."
 msgstr ""
 
-#: setup.cxx:1942 uninst.cxx:1853
+#: setup.cxx:1946 uninst.cxx:1853
 msgid "Select all"
 msgstr ""
 
-#: setup.cxx:1945 uninst.cxx:1856
+#: setup.cxx:1949 uninst.cxx:1856
 msgid "Select none"
 msgstr ""
 
-#: setup.cxx:1956
+#: setup.cxx:1960
 msgid "Confirm your software selections below:"
 msgstr ""
 
-#: setup.cxx:1959
+#: setup.cxx:1963
 msgid "Selected Software:"
 msgstr ""
 
-#: setup.cxx:1976
-msgid "Accept and install"
+#: setup.cxx:1975
+msgid "Dr.Web License"
 msgstr ""
 
-#: setup.cxx:1982
-msgid "Cancel installation"
+#: setup.cxx:1980
+msgid "Copyrights"
 msgstr ""
 
 #: setup.cxx:1989
+msgid "Accept and install"
+msgstr ""
+
+#: setup.cxx:1995
+msgid "Cancel installation"
+msgstr ""
+
+#: setup.cxx:2002
 msgid "Select language:"
 msgstr ""
 
-#: setup.cxx:1993
+#: setup.cxx:2006
 msgid "License Agreement"
 msgstr ""
 
-#: setup.cxx:2004 uninst.cxx:1881
+#: setup.cxx:2017 uninst.cxx:1881
 msgid "Progress Label..."
 msgstr ""
 
-#: setup.cxx:2011
+#: setup.cxx:2024
 msgid "Run interactive postinstall script"
 msgstr ""
 
-#: setup.cxx:2022
+#: setup.cxx:2035
 msgid "Postinstall information:"
 msgstr ""
 
-#: setup.cxx:2034 uninst.cxx:1899
+#: setup.cxx:2047 uninst.cxx:1899
 msgid "@-2< Back"
 msgstr ""
 
-#: setup.cxx:2037 uninst.cxx:1902
+#: setup.cxx:2050 uninst.cxx:1902
 msgid "Next @-2>"
 msgstr ""
 
-#: setup.cxx:2040 setup2.cxx:1035 setup2.cxx:1106 setup2.cxx:1189
-#: uninst.cxx:1905 uninst2.cxx:417
+#: setup.cxx:2053 setup2.cxx:1042 setup2.cxx:1113 setup2.cxx:1198
+#: uninst.cxx:1905 uninst2.cxx:418
 msgid "Cancel"
 msgstr ""
 
-#: setup2.cxx:227
+#: setup2.cxx:234
 msgid "You must be logged in as root to run setup!"
 msgstr ""
 
-#: setup2.cxx:397
+#: setup2.cxx:404
 msgid "No software found to install!"
 msgstr ""
 
-#: setup2.cxx:411
+#: setup2.cxx:418
 msgid " (new)"
 msgstr ""
 
-#: setup2.cxx:416
+#: setup2.cxx:423
 msgid " (downgrade)"
 msgstr ""
 
-#: setup2.cxx:421
+#: setup2.cxx:428
 msgid " (installed)"
 msgstr ""
 
-#: setup2.cxx:426
+#: setup2.cxx:433
 msgid " (upgrade)"
 msgstr ""
 
-#: setup2.cxx:473
+#: setup2.cxx:480
 msgid "Failed to execute install script!"
 msgstr ""
 
-#: setup2.cxx:506
+#: setup2.cxx:513
 msgid "Unable to install"
 msgstr ""
 
-#: setup2.cxx:623
+#: setup2.cxx:630
 #, c-format
 msgid ""
 "%s requires %s to be installed, but it is not available for installation."
 msgstr ""
 
-#: setup2.cxx:636
+#: setup2.cxx:643
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please remove it before installing this software."
 msgstr ""
 
-#: setup2.cxx:653
+#: setup2.cxx:660
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please deselect it before installing this "
 "software."
 msgstr ""
 
-#: setup2.cxx:717
+#: setup2.cxx:724
 msgid ""
 "This program allows you to install the following software:\n"
 "<ul>\n"
 msgstr ""
 
-#: setup2.cxx:789
+#: setup2.cxx:796
 msgid "Custom Configuration"
 msgstr ""
 
-#: setup2.cxx:791
+#: setup2.cxx:798
 msgid "Dr.Web for Linux Workstations"
 msgstr ""
 
-#: setup2.cxx:1075
+#: setup2.cxx:1082
 #, c-format
 msgid "License is not accepted!"
 msgstr ""
 
-#: setup2.cxx:1094
+#: setup2.cxx:1101
 msgid "Installation canceled!"
 msgstr ""
 
-#: setup2.cxx:1096 setup2.cxx:1132 setup2.cxx:1154 uninst2.cxx:431
+#: setup2.cxx:1103 setup2.cxx:1139 setup2.cxx:1163 uninst2.cxx:432
 msgid "Close"
 msgstr ""
 
-#: setup2.cxx:1116
+#: setup2.cxx:1123
 #, c-format
 msgid "Installing %s v%s..."
 msgstr ""
 
-#: setup2.cxx:1131
+#: setup2.cxx:1138
 msgid "Installation failed"
 msgstr ""
 
-#: setup2.cxx:1135
+#: setup2.cxx:1143
 msgid "Installation complete"
 msgstr ""
 
-#: setup2.cxx:1157
+#: setup2.cxx:1166
 msgid "<span>Installation failed. See install.log for details.</span>"
 msgstr ""
 
-#: setup2.cxx:1178
+#: setup2.cxx:1187
 msgid "<span>Installation complete.</span>"
 msgstr ""
 
-#: setup2.cxx:1399
+#: setup2.cxx:1408
 msgid "English"
 msgstr ""
 
-#: setup2.cxx:1406
+#: setup2.cxx:1415
 msgid "Russian"
 msgstr ""
 
@@ -256,34 +264,34 @@ msgstr ""
 msgid "Software to Remove:"
 msgstr ""
 
-#: uninst2.cxx:191
+#: uninst2.cxx:192
 msgid "You must be logged in as root to run uninstall!"
 msgstr ""
 
-#: uninst2.cxx:315
+#: uninst2.cxx:316
 msgid ""
 "This program allows you to remove the following software:</p>\n"
 "<ul>\n"
 msgstr ""
 
-#: uninst2.cxx:436
+#: uninst2.cxx:437
 #, c-format
 msgid "Removing %s v%s..."
 msgstr ""
 
-#: uninst2.cxx:452
+#: uninst2.cxx:453
 msgid "Removal Failed!"
 msgstr ""
 
-#: uninst2.cxx:454
+#: uninst2.cxx:455
 msgid "Removal Complete"
 msgstr ""
 
-#: uninst2.cxx:558
+#: uninst2.cxx:559
 msgid "Unable to remove"
 msgstr ""
 
-#: uninst2.cxx:633
+#: uninst2.cxx:634
 msgid "No software found to remove!"
 msgstr ""
 
@@ -302,8 +310,7 @@ msgstr ""
 msgid "Sorry, you must be root to remove Dr.Web software."
 msgstr ""
 
-#: uninst.sh.in:92 dummy/epm.install.sh:131 dummy/epm.install.sh:148
-#: dummy/epm.remove.sh:125
+#: uninst.sh.in:92
 #, sh-format
 msgid "Please enter yes or no."
 msgstr ""
@@ -349,227 +356,4 @@ msgstr ""
 #: uninst.sh.in:259
 #, sh-format
 msgid "Software dir -- '%s' not found."
-msgstr ""
-
-#: dummy/epm.install.sh:50 dummy/epm.remove.sh:50
-#, sh-format
-msgid ""
-"Package platform and running platform are different. Installation aborted"
-msgstr ""
-
-#: dummy/epm.install.sh:60 dummy/epm.remove.sh:60
-#, sh-format
-msgid "Sorry, you must have administrative privileges to %s this software."
-msgstr ""
-
-#: dummy/epm.install.sh:60 dummy/epm.install.sh:70
-#, sh-format
-msgid "install"
-msgstr ""
-
-#: dummy/epm.install.sh:70 dummy/epm.remove.sh:70
-#, sh-format
-msgid "Sorry, you must be root to %s this software."
-msgstr ""
-
-#: dummy/epm.install.sh:106 dummy/epm.remove.sh:108
-#, sh-format
-msgid "Copyright %s"
-msgstr ""
-
-#: dummy/epm.install.sh:111 dummy/epm.install.sh:113
-#, sh-format
-msgid ""
-"By using this parameter you automatically confirm and accept the Software "
-"License Agreement."
-msgstr ""
-
-#: dummy/epm.install.sh:117
-#, sh-format
-msgid "This installation script will install the %s"
-msgstr ""
-
-#: dummy/epm.install.sh:118
-#, sh-format
-msgid "software version %s on your system."
-msgstr ""
-
-#: dummy/epm.install.sh:121 dummy/epm.remove.sh:115
-#, sh-format
-msgid "Do you wish to continue? (YES/no)"
-msgstr ""
-
-#: dummy/epm.install.sh:138
-#, sh-format
-msgid "Do you agree with the terms of this license? (yes/no)"
-msgstr ""
-
-#: dummy/epm.install.sh:156
-#, sh-format
-msgid "Package %s is up-to-date."
-msgstr ""
-
-#: dummy/epm.install.sh:159
-#, sh-format
-msgid "Removing old versions of %s software..."
-msgstr ""
-
-#: dummy/epm.install.sh:209 dummy/epm.install.sh:239 dummy/epm.install.sh:257
-#, sh-format
-msgid "Installing required %s software..."
-msgstr ""
-
-#: dummy/epm.install.sh:216 dummy/epm.install.sh:246
-#, sh-format
-msgid "Sorry, you must first install '%s' version %s!"
-msgstr ""
-
-#: dummy/epm.install.sh:264
-#, sh-format
-msgid "Sorry, you must first install '%s'!"
-msgstr ""
-
-#: dummy/epm.install.sh:273
-#, sh-format
-msgid "Automatically replacing '%s'..."
-msgstr ""
-
-#: dummy/epm.install.sh:278
-#, sh-format
-msgid "Sorry, this software is incompatible with '%s'!"
-msgstr ""
-
-#: dummy/epm.install.sh:279 dummy/epm.install.sh:290 dummy/epm.install.sh:302
-#, sh-format
-msgid "Please remove it first by running '%s/%s.remove'."
-msgstr ""
-
-#: dummy/epm.install.sh:289 dummy/epm.install.sh:301
-#, sh-format
-msgid "Sorry, this software is incompatible with '%s' version %s to %s!"
-msgstr ""
-
-#: dummy/epm.install.sh:307
-#, sh-format
-msgid "Dependency check failed! Full list of unmet dependencies:"
-msgstr ""
-
-#: dummy/epm.install.sh:315
-#, sh-format
-msgid "Running pre-install commands..."
-msgstr ""
-
-#: dummy/epm.install.sh:317
-#, sh-format
-msgid "Backing up old versions of files to be installed..."
-msgstr ""
-
-#: dummy/epm.install.sh:323 dummy/epm.install.sh:338
-#, sh-format
-msgid "Error: Cannot write in %s."
-msgstr ""
-
-#: dummy/epm.install.sh:333
-#, sh-format
-msgid "Creating installation directories..."
-msgstr ""
-
-#: dummy/epm.install.sh:343
-#, sh-format
-msgid "Error: %s already exists as a regular file!"
-msgstr ""
-
-#: dummy/epm.install.sh:357
-#, sh-format
-msgid "Installing software..."
-msgstr ""
-
-#: dummy/epm.install.sh:361 dummy/epm.remove.sh:200
-#, sh-format
-msgid "Checking configuration files..."
-msgstr ""
-
-#: dummy/epm.install.sh:368
-#, sh-format
-msgid "Error: %%s already exists as a regular file!"
-msgstr ""
-
-#: dummy/epm.install.sh:375
-#, sh-format
-msgid "Updating file permissions..."
-msgstr ""
-
-#: dummy/epm.install.sh:382
-#, sh-format
-msgid "Setting up init scripts..."
-msgstr ""
-
-#: dummy/epm.install.sh:396 dummy/epm.remove.sh:153
-#, sh-format
-msgid "Unable to determine location of init scripts!"
-msgstr ""
-
-#: dummy/epm.install.sh:435
-#, sh-format
-msgid "Running post-install commands..."
-msgstr ""
-
-#: dummy/epm.install.sh:438
-#, sh-format
-msgid "Installation of %s is complete."
-msgstr ""
-
-#: dummy/epm.remove.sh:60 dummy/epm.remove.sh:70
-#, sh-format
-msgid "remove"
-msgstr ""
-
-#: dummy/epm.remove.sh:105
-#, sh-format
-msgid "Package %s is not installed"
-msgstr ""
-
-#: dummy/epm.remove.sh:111
-#, sh-format
-msgid "This removal script will remove the %s"
-msgstr ""
-
-#: dummy/epm.remove.sh:112
-#, sh-format
-msgid "software version %s from your system."
-msgstr ""
-
-#: dummy/epm.remove.sh:138
-#, sh-format
-msgid "Running pre-remove commands..."
-msgstr ""
-
-#: dummy/epm.remove.sh:140
-#, sh-format
-msgid "Cleaning up init scripts..."
-msgstr ""
-
-#: dummy/epm.remove.sh:185
-#, sh-format
-msgid "Removing/restoring installed files..."
-msgstr ""
-
-#: dummy/epm.remove.sh:193 dummy/epm.remove.sh:197
-#, sh-format
-msgid "Warning: Cannot write in %s."
-msgstr ""
-
-#: dummy/epm.remove.sh:213
-#, sh-format
-msgid "Removing empty installation directories..."
-msgstr ""
-
-#: dummy/epm.remove.sh:222
-#, sh-format
-msgid "Running post-remove commands..."
-msgstr ""
-
-#: dummy/epm.remove.sh:226
-#, sh-format
-msgid "Removal of %s is complete."
 msgstr ""

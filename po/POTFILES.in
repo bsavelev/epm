@@ -3,5 +3,3 @@ setup2.cxx
 uninst.cxx
 uninst2.cxx
 uninst.sh.in
-dummy/epm.install.sh
-dummy/epm.remove.sh

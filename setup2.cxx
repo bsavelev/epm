@@ -48,6 +48,10 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
+#include <string>
+#include <list>
+using namespace std;
+
 #ifdef HAVE_SYS_PARAM_H
 #  include <sys/param.h>
 #endif // HAVE_SYS_PARAM_H
@@ -190,6 +194,7 @@ main(int  argc,			// I - Number of command-line arguments
   load_readme();
   load_types();
   load_license();
+  load_more_licenses();
 
   w->show();
 
@@ -1417,6 +1422,36 @@ load_license()
           gui_load_file(LicenseFile, licfile_ru);
         }
     }
+}
+
+void
+load_more_licenses()
+{
+  dirent **files;
+  int num_files;
+  int i;
+  string s;
+
+  // Clear the widget.
+  LicenseFileOther->value(0);
+
+  // Build the list of files to load (*.COPYRIGHTS + license.*).
+  // TODO: Take in account the list of components selected.
+  if ((num_files=fl_filename_list(".", &files))==0) {
+    fputs("setup: No additinal software licenses found.\n", stderr);
+    return;
+  }
+  for (i=0; i<num_files; ++i) {
+    s=files[i]->d_name;
+    if (s.find(".COPYRIGHTS", s.size()-strlen(".COPYRIGHTS"))!=string::npos ||
+        (s!="license.rus" && s.rfind("license.", 0)!=string::npos))
+      gui_load_file(LicenseFileOther, s.c_str(), true);
+  }
+
+  // Free file list.
+  for (i=num_files; i>0;)
+    free((void *)(files[--i]));
+  free((void *)files);
 }
 
 //

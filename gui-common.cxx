@@ -36,6 +36,9 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
+#include <string>
+using namespace std;
+
 
 //
 // 'gui_add_depend()' - Add a dependency to a distribution.
@@ -270,8 +273,9 @@ gui_get_installed(void)
 //
 
 void
-gui_load_file(Fl_Help_View *hv,		// I - Help widget
-              const char   *filename)	// I - File to load
+gui_load_file(Fl_Help_View *hv,		 // I - Help widget
+              const char   *filename,	 // I - File to load
+              bool         append=false) // I - Append file to the widget str
 {
   FILE		*fp;			// File pointer
   struct stat	info;			// Info about file
@@ -336,8 +340,12 @@ gui_load_file(Fl_Help_View *hv,		// I - Help widget
     hv->textsize(10);
   }
 
+  string text=buffer;
+  if (append && hv->value())
+      text=hv->value()+text;
+
   // Save the loaded buffer to the help widget...
-  hv->value(buffer);
+  hv->value(text.c_str());
 
   // Free memory and close the file...
   delete[] buffer;

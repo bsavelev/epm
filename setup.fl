@@ -143,6 +143,7 @@ list_cb(0,0);}
       } {
         Fl_Tabs LicenseTabs {open
           xywh {160 73 520 171} resizable
+          code0 {LicenseTabs->value(LicenseFile);}
         } {
           Fl_Help_View LicenseFile {
             label {Dr.Web License}

@@ -1981,6 +1981,7 @@ Fl_Double_Window* make_window() {
             LicenseFileOther->selection_color((Fl_Color)FL_BACKGROUND_COLOR);
             LicenseFileOther->align(133);
           } // Fl_Help_View* LicenseFileOther
+          LicenseTabs->value(LicenseFile);
           LicenseTabs->end();
           Fl_Group::current()->resizable(LicenseTabs);
         } // Fl_Tabs* LicenseTabs

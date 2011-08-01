@@ -1445,7 +1445,7 @@ load_more_licenses()
   for (i=0; i<num_files; ++i) {
     s=files[i]->d_name;
     if (s.find(".COPYRIGHTS", s.size()-strlen(".COPYRIGHTS"))!=string::npos) {
-      header="---------------------------------------------------------\n";
+      header="---------------------------------------------------------\n\n";
       header+="Subpackage: ";
       header+=s.substr(0, s.find(".COPYRIGHTS"));
       header+="\n\n";

@@ -572,6 +572,32 @@ find_license(dist_t     *dist,		/* I - Distribution */
 }
 
 
+void
+free_copyrights(dist_t *dist)			/* I - Distribution to free */
+{
+  int i;
+
+  for (i = 0; i < dist->num_copyrights; i ++)
+    free(dist->copyrights[i]);
+  if (dist->num_copyrights)
+    free(dist->copyrights);
+  dist->num_copyrights=0;
+}
+
+
+void
+free_licenses(dist_t *dist)			/* I - Distribution to free */
+{
+  int i;
+
+  for (i = 0; i < dist->num_licenses; i ++)
+    free(dist->licenses[i]);
+  if (dist->num_licenses)
+    free(dist->licenses);
+  dist->num_licenses=0;
+}
+
+
 /*
  * 'free_dist()' - Free memory used by a distribution.
  */
@@ -609,17 +635,9 @@ free_dist(dist_t *dist)			/* I - Distribution to free */
   if (dist->num_subpackages)
     free(dist->subpackages);
 
-  for (i = 0; i < dist->num_copyrights; i ++)
-    free(dist->copyrights[i]);
+  free_copyrights(dist);
 
-  if (dist->num_copyrights)
-    free(dist->copyrights);
-
-  for (i = 0; i < dist->num_licenses; i ++)
-    free(dist->licenses[i]);
-
-  if (dist->num_licenses)
-    free(dist->licenses);
+  free_licenses(dist);
 
   for (i = 0; i < dist->num_commands; i ++)
   {
@@ -636,7 +654,6 @@ free_dist(dist_t *dist)			/* I - Distribution to free */
 
   free(dist);
 }
-
 
 
 /*
@@ -1316,7 +1333,12 @@ read_dist(const char     *prodname,	/* I - Product name */
 	}
 	else if (!strcmp(line, "%copyright"))
 	{
-            find_copyright(dist, temp);
+          free_copyrights(dist);
+          add_copyright(dist, temp);
+	}
+	else if (!strcmp(line, "%add_copyright"))
+	{
+          find_copyright(dist, temp);
 	}
 	else if (!strcmp(line, "%vendor"))
 	{
@@ -1333,6 +1355,11 @@ read_dist(const char     *prodname,	/* I - Product name */
 	    fputs("epm: Ignoring %packager line in list file.\n", stderr);
 	}
 	else if (!strcmp(line, "%license"))
+	{
+          free_licenses(dist);
+          find_license(dist, temp);
+	}
+	else if (!strcmp(line, "%add_license"))
 	{
             find_license(dist, temp);
 	}
@@ -1754,7 +1781,7 @@ write_dist(const char *listname,	/* I - File to write to */
   if (dist->release[0])
     fprintf(listfile, "%%release %s\n", dist->release);
   for (i = 0; i < dist->num_copyrights; i ++)
-    fprintf(listfile, "%%copyright %s\n", dist->copyrights[i]);
+    fprintf(listfile, "%%add_copyright %s\n", dist->copyrights[i]);
   if (dist->vendor[0])
     fprintf(listfile, "%%vendor %s\n", dist->vendor);
   if (dist->packager[0])

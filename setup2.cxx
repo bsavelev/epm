@@ -1445,10 +1445,10 @@ load_more_licenses()
   for (i=0; i<num_files; ++i) {
     s=files[i]->d_name;
     if (s.find(".COPYRIGHTS", s.size()-strlen(".COPYRIGHTS"))!=string::npos) {
-      header="---------------------------------------------------------\n\n";
+      header="<pre>---------------------------------------------------\n";
       header+="Subpackage: ";
       header+=s.substr(0, s.find(".COPYRIGHTS"));
-      header+="\n\n";
+      header+="\n</pre>";
       if (LicenseFileOther->value())
         header=LicenseFileOther->value()+header;
       LicenseFileOther->value(header.c_str());

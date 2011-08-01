@@ -609,6 +609,18 @@ free_dist(dist_t *dist)			/* I - Distribution to free */
   if (dist->num_subpackages)
     free(dist->subpackages);
 
+  for (i = 0; i < dist->num_copyrights; i ++)
+    free(dist->copyrights[i]);
+
+  if (dist->num_copyrights)
+    free(dist->copyrights);
+
+  for (i = 0; i < dist->num_licenses; i ++)
+    free(dist->licenses[i]);
+
+  if (dist->num_licenses)
+    free(dist->licenses);
+
   for (i = 0; i < dist->num_commands; i ++)
   {
     free(dist->commands[i].command);

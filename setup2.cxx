@@ -1449,7 +1449,9 @@ load_more_licenses()
       header+="Subpackage: ";
       header+=s.substr(0, s.find(".COPYRIGHTS"));
       header+="\n\n";
-      LicenseFileOther->value((LicenseFileOther->value()+header).c_str());
+      if (LicenseFileOther->value())
+        header=LicenseFileOther->value()+header;
+      LicenseFileOther->value(header.c_str());
       gui_load_file(LicenseFileOther, s.c_str(), true);
     }
   }

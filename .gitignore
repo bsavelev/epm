@@ -39,3 +39,4 @@ desktop/drweb-drweb.directory
 desktop/uninst.desktop
 po/POTFILES
 remove.sh
+po/remove-potcdate.sed

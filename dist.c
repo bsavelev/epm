@@ -1075,7 +1075,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   /* Sort files by license. */
   GSList *list=NULL;
   for (i=0, file=dist->files; i<dist->num_files; ++i, ++file)
-    g_slist_prepend(list, file);
+    list=g_slist_prepend(list, file);
   list=g_slist_sort(list, sort_by_license);
   int f=0;
 

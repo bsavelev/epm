@@ -1027,6 +1027,11 @@ gint sort_by_license(gconstpointer *a, gconstpointer *b)
   const char *lica=((file_t *)a)->license;
   const char *licb=((file_t *)b)->license;
 
+  if (!lica && !licb)
+    return 0;
+  else if (!lica || !licb)
+    return (int)a > (int)b;
+
   return strcmp(lica, licb);
 }
 

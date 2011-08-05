@@ -2237,7 +2237,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("		esac\n", scriptfile);
   fputs("	done\n", scriptfile);
 
-  for (i = 0; i < 1 /* dist->num_licenses */; i ++)
+  for (i = 0; i < dist->num_licenses; i ++)
   {
     char *license=basename(dist->licenses[i]);
     if (CustomLic)
@@ -2821,7 +2821,7 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
   fputs("		esac\n", scriptfile);
   fputs("	done\n", scriptfile);
 
-  for (i = 0; i < 1 /* dist->num_licenses */; i ++)
+  for (i = 0; i < dist->num_licenses; i ++)
   {
     char *license=basename(dist->licenses[i]);
     if (CustomLic)

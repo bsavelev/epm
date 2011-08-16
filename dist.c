@@ -1066,7 +1066,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   }
 
   for (i=0; i<dist->num_copyrights; ++i)
-    fprintf(fd, "Copyright (c) %s\n", dist->copyrights[i]);
+    fprintf(fd, "Copyright © %s\n", dist->copyrights[i]);
   fprintf(fd, "All rights reserved.\n");
   fprintf(fd, "See file");
   if (dist->num_licenses>1)

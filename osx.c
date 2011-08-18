@@ -113,12 +113,12 @@ make_osx(const char     *prodname,	/* I - Product short name */
 
     for (i = 0; i < dist->num_licenses; i ++)
     {
-      if ((ext = strrchr(dist->licenses[i], '.')) == NULL || strcmp(ext, ".rtf"))
+      if ((ext = strrchr(dist->licenses[i].src, '.')) == NULL || strcmp(ext, ".rtf"))
 	ext = ".txt";
 
       snprintf(filename, sizeof(filename), "%s/MetaResources/License%02d%s",
                directory, i+1, ext);
-      copy_file(filename, dist->licenses[i], 0644, 0, 0);
+      copy_file(filename, dist->licenses[i].src, 0644, 0, 0);
     }
 
     if (dist->readme[0])
@@ -401,12 +401,12 @@ make_subpackage(const char *prodname,	/* I - Product short name */
 
   for (i = 0; i < dist->num_licenses; i ++)
   {
-    if ((ext = strrchr(dist->licenses[i], '.')) == NULL || strcmp(ext, ".rtf"))
+    if ((ext = strrchr(dist->licenses[i].src, '.')) == NULL || strcmp(ext, ".rtf"))
       ext = ".txt";
 
     snprintf(filename, sizeof(filename), "%s/%s/Resources/License%02d%s",
              directory, prodfull, i+1, ext);
-    copy_file(filename, dist->licenses[i], 0644, 0, 0);
+    copy_file(filename, dist->licenses[i].src, 0644, 0, 0);
   }
 
   if (dist->readme[0])

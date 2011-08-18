@@ -176,6 +176,14 @@ typedef struct				/**** TAR file ****/
 		compressed;		/* Compressed output? */
 } tarf_t;
 
+typedef struct				/* License file */
+{
+  char		src[512];		/* Source path */
+  char		dst[512];		/* Destination path */
+  int		noinst;			/* Don't include into package if
+                                           not 0; ignored for file licenses */
+} licf_t;
+
 typedef struct				/**** File to install ****/
 {
   int		type;			/* Type of file */
@@ -186,7 +194,7 @@ typedef struct				/**** File to install ****/
 		dst[512],		/* Destination path */
 		options[10240];		/* File options */
   const char	*subpackage;		/* Sub-package name */
-  char		*license;		/* Path to license or 0 if common */
+  licf_t	license;		/* Path to license or 0 if common */
   char		*copyrights[256];	/* Sequence of copyright notices */
 } file_t;
 
@@ -224,7 +232,7 @@ typedef struct				/**** Distribution Structure ****/
   int		num_copyrights;		/* Number of copyrights */
   char		**copyrights;		/* Product copyrights */
   int		num_licenses;		/* Number of license files to copy */
-  char		**licenses;		/* License files to copy */
+  licf_t	licenses[256];		/* License files to copy */
   char		fulver[256];		/* Full version */
   int		num_subpackages;	/* Number of subpackages */
   char		**subpackages;		/* Subpackage names */

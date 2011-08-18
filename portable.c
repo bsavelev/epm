@@ -228,7 +228,7 @@ clean_distfiles(const char *directory,	/* I - Directory */
 
   for (i = 0; i < dist->num_licenses; i ++)
   {
-    char *license=basename(dist->licenses[i]);
+    char *license=basename(dist->licenses[i].src);
     if (CustomLic)
     {
       snprintf(filename, sizeof(filename), "%s/%s", directory, license);
@@ -262,9 +262,9 @@ clean_distfiles(const char *directory,	/* I - Directory */
   unlink(filename);
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (file->license) {
+    if (strlen(file->license.src)) {
       snprintf(filename, sizeof(filename), "%s/%s", directory,
-               basename(file->license));
+               basename(file->license.src));
       unlink(filename);
     }
 
@@ -1659,7 +1659,7 @@ write_distfiles(const char *directory,	/* I - Directory */
 
   for (i = 0; i < dist->num_licenses; i ++)
   {
-    char *license=basename(dist->licenses[i]);
+    char *license=basename(dist->licenses[i].src);
     if (CustomLic)
     {
       snprintf(filename, sizeof(filename), "%s/%s", directory, license);
@@ -1667,7 +1667,7 @@ write_distfiles(const char *directory,	/* I - Directory */
         snprintf(filename, sizeof(filename), "%s/%s.%s", directory, prodfull,
                  license);
     }
-    if (copy_file(filename, dist->licenses[i], 0444, getuid(), getgid()))
+    if (copy_file(filename, dist->licenses[i].src, 0444, getuid(), getgid()))
       return (1);
   }
 
@@ -1683,7 +1683,7 @@ write_distfiles(const char *directory,	/* I - Directory */
   */
 
   if (Verbosity)
-    printf("Copying %s.COPYRIGHTS file if any...\n", prodfull);
+    printf("Copying %s.COPYRIGHTS file...\n", prodfull);
 
   snprintf(filename, sizeof(filename), "%s/%s.COPYRIGHTS", directory, prodfull);
   if (!stat(basename(filename), &srcstat))
@@ -1697,20 +1697,14 @@ write_distfiles(const char *directory,	/* I - Directory */
   if (Verbosity)
     printf("Copying %s additional license files...\n", prodfull);
 
-  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++)
-    if (file->license) {
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++) {
+    if (strlen(file->license.src)) {
       snprintf(filename, sizeof(filename), "%s/%s", directory,
-               basename(file->license));
-
-      /* Find file license src by its dst. */
-      for (j=0; j<dist->num_files; ++j)
-        if (!strcmp(file->license, dist->files[j].dst))
-          if (copy_file(filename, dist->files[j].src, 0444,
-                        getuid(), getgid()))
-            return (1);
-          else
-            break;
+               basename(file->license.src));
+      if (copy_file(filename, file->license.src, 0444, getuid(), getgid()))
+        return (1);
     }
+  }
 
  /*
   * Create the non-shared software distribution file...
@@ -2239,7 +2233,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
 
   for (i = 0; i < dist->num_licenses; i ++)
   {
-    char *license=basename(dist->licenses[i]);
+    char *license=basename(dist->licenses[i].src);
     if (CustomLic)
     {
       fprintf(scriptfile,"	test -f %s && more %s && USER_MUST_AGREE=1\n",
@@ -2667,7 +2661,10 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
     if (CustomLic && MainPackageComposed)
       break;
 
-    char *license=basename(dist->licenses[i]);
+    if (dist->licenses[i].noinst)
+      continue;
+
+    char *license=basename(dist->licenses[i].src);
     if (CustomLic) {
       snprintf(srcname, sizeof(srcname), "%s/%s", directory, license);
       snprintf(dstname, sizeof(dstname), "%s%s", destdir, license);
@@ -2714,11 +2711,11 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
          strcmp(subpackage, file->subpackage)))
       continue;
 
-    if (file->license) {
+    if (strlen(file->license.src)) {
       snprintf(srcname, sizeof(srcname), "%s/%s", directory,
-               basename(file->license));
+               basename(file->license.src));
       snprintf(dstname, sizeof(dstname), "%s%s", destdir,
-               basename(file->license));
+               basename(file->license.src));
 
       if (stat(srcname, &srcstat)) {
         fprintf(stderr, "epm: Can't open %s -\n    %s\n",
@@ -2823,7 +2820,7 @@ write_patch(dist_t     *dist,		/* I - Software distribution */
 
   for (i = 0; i < dist->num_licenses; i ++)
   {
-    char *license=basename(dist->licenses[i]);
+    char *license=basename(dist->licenses[i].src);
     if (CustomLic)
     {
       fprintf(scriptfile,"	test -f %s && more %s\n", license, license);

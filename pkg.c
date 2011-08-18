@@ -568,7 +568,7 @@ make_subpackage(
 #endif /* 0 */
 
   if (dist->num_licenses==1) {
-    fprintf(fp, "i copyright=%s\n", pkg_path(dist->licenses[0], current));
+    fprintf(fp, "i copyright=%s\n", pkg_path(dist->licenses[0].src, current));
   }
 
   fprintf(fp, "i depend=%s/%s.depend\n", pkg_path(directory, current), prodfull);

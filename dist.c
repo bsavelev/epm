@@ -26,8 +26,6 @@
  *   add_copyright()    - Add a copyright to the distribution.
  *   add_license()      - Add a license to the distribution.
  *   find_subpackage()  - Find a subpackage in the distribution.
- *   find_copyright()   - Find a copyright in the distribution.
- *   find_license()     - Find a license in the distribution.
  *   free_dist()        - Free memory used by a distribution.
  *   getoption()        - Get an option from a file.
  *   get_platform()     - Get the operating system information...
@@ -385,7 +383,8 @@ add_file(dist_t     *dist,		/* I - Distribution */
   file->subpackage = subpkg;
 
   memset(file->copyrights, 0, 256*sizeof(char *));
-  file->license=0;
+  file->license.src[0]=0;
+  file->license.dst[0]=0;
 
   return (file);
 }
@@ -438,9 +437,17 @@ char *					/* O - Copyright pointer */
 add_copyright(dist_t     *dist,		/* I - Distribution */
               const char *cpr)		/* I - Copyright string */
 {
+  int	i;
   char	**temp,				/* Temporary array pointer */
 	*s;				/* Copyright pointer */
 
+
+  if (!cpr || !*cpr)
+    return (NULL);
+
+  for (i=0; i<dist->num_copyrights; ++i)
+    if (strcmp(dist->copyrights[i], cpr)==0)
+      return cpr;
 
   if (dist->num_copyrights == 0)
     temp = malloc(sizeof(char *));
@@ -466,37 +473,36 @@ add_copyright(dist_t     *dist,		/* I - Distribution */
 
 
 /*
- * 'add_license()' - Add a license to the distribution.
+ * 'add_license()' - Add a common license to the distribution.
  */
 
 char *					/* O - License pointer */
 add_license(dist_t     *dist,		/* I - Distribution */
-            const char *license)	/* I - License file name */
+            const char *license,	/* I - License file name */
+            int		noinst)		/* I - Don't install if not 0 */
 {
-  char	**temp,				/* Temporary array pointer */
-	*s;				/* License file name pointer */
-
-
-  if (dist->num_licenses == 0)
-    temp = malloc(sizeof(char *));
-  else
-    temp = realloc(dist->licenses,
-                   (dist->num_licenses + 1) * sizeof(char *));
-
-  if (temp == NULL)
+  if (!license || !*license)
     return (NULL);
 
-  dist->licenses = temp;
-  temp           += dist->num_licenses;
-  dist->num_licenses ++;
+  if (!strlen(LegalDir)) {
+    fputs("epm: Can't add license, %legaldir wasn't set.\n", stderr);
+    return (NULL);
+  }
 
-  *temp = s = strdup(license);
+  int i;
+  for (i=0; i<dist->num_licenses; ++i)
+    if (strcmp(dist->licenses[i].src, license)==0)
+      return dist->licenses[i].src;
 
- /*
-  * Return the new string...
-  */
+  int ind=dist->num_licenses;
+  strncpy(dist->licenses[ind].src, license, 255);
+  strncpy(dist->licenses[ind].dst, LegalDir, 255);
+  strcat(dist->licenses[ind].dst, "/");
+  strcat(dist->licenses[ind].dst, basename(license));
+  dist->licenses[ind].noinst=noinst;
+  dist->num_licenses++;
 
-  return (s);
+  return dist->licenses[i].src;
 }
 
 
@@ -528,50 +534,6 @@ find_subpackage(dist_t     *dist,	/* I - Distribution */
 }
 
 
-/*
- * 'find_copyright()' - Find a copyright in the distribution.
- */
-
-char *					/* O - Copyright pointer */
-find_copyright(dist_t     *dist,	/* I - Distribution */
-               const char *cpr)		/* I - Copyright string */
-{
-  int i;
-
-
-  if (!cpr || !*cpr)
-    return (NULL);
-
-  for (i=0; i<dist->num_copyrights; ++i)
-    if (strcmp(dist->copyrights[i], cpr)==0)
-      return cpr;
-
-  return (add_copyright(dist, cpr));
-}
-
-
-/*
- * 'find_license()' - Find a license in the distribution.
- */
-
-char *					/* O - License pointer */
-find_license(dist_t     *dist,		/* I - Distribution */
-             const char *license)	/* I - License file */
-{
-  int i;
-
-
-  if (!license || !*license)
-    return (NULL);
-
-  for (i=0; i<dist->num_licenses; ++i)
-    if (strcmp(dist->licenses[i], license)==0)
-      return license;
-
-  return (add_license(dist, license));
-}
-
-
 void
 free_copyrights(dist_t *dist)			/* I - Distribution to free */
 {
@@ -588,12 +550,6 @@ free_copyrights(dist_t *dist)			/* I - Distribution to free */
 void
 free_licenses(dist_t *dist)			/* I - Distribution to free */
 {
-  int i;
-
-  for (i = 0; i < dist->num_licenses; i ++)
-    free(dist->licenses[i]);
-  if (dist->num_licenses)
-    free(dist->licenses);
   dist->num_licenses=0;
 }
 
@@ -614,11 +570,10 @@ free_dist(dist_t *dist)			/* I - Distribution to free */
     for (j=0; j<256; j++)
       if (file->copyrights[j])
         free((void *) file->copyrights[j]);
-    if (file->license)
-      free((void *) file->license);
+    file->license.src[0]=0;
+    file->license.dst[0]=0;
   }
   memset(file->copyrights, 0, 256);
-  file->license=0;
 
   if (dist->num_files > 0)
     free(dist->files);
@@ -987,8 +942,11 @@ void
 add_file_license(file_t *file, const char *str)
 {
   if (str[0]) {
-    file->license=malloc(strlen(str)+1);
-    strcpy(file->license, str);
+    strcpy(file->license.src, str);
+
+    strcpy(file->license.dst, LegalDir);
+    strcat(file->license.dst, "/");
+    strcat(file->license.dst, basename(str));
   }
 }
 
@@ -1024,8 +982,8 @@ read_file_legal_info(file_t	*file,		/* I - Distribution file */
 
 gint sort_by_license(gconstpointer *a, gconstpointer *b)
 {
-  const char *lica=((file_t *)a)->license;
-  const char *licb=((file_t *)b)->license;
+  const char *lica=((file_t *)a)->license.dst;
+  const char *licb=((file_t *)b)->license.dst;
 
   if (!lica && !licb)
     return 0;
@@ -1033,6 +991,19 @@ gint sort_by_license(gconstpointer *a, gconstpointer *b)
     return (int)a > (int)b;
 
   return strcmp(lica, licb);
+}
+
+gint sort_by_filename(gconstpointer *a, gconstpointer *b)
+{
+  const char *fnamea=basename(((file_t *)a)->dst);
+  const char *fnameb=basename(((file_t *)b)->dst);
+
+  if (!fnamea && !fnameb)
+    return 0;
+  else if (!fnamea || !fnameb)
+    return (int)a > (int)b;
+
+  return strcmp(fnamea, fnameb);
 }
 
 
@@ -1072,38 +1043,37 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   if (dist->num_licenses>1)
     fputs("s", fd);
   for (i=0; i<dist->num_licenses; ++i) {
-    sprintf(filename_tmp, "%s/%s", LegalDir, basename(dist->licenses[i]));
-    fprintf(fd, " \"%s\"", filename_tmp);
+    fprintf(fd, " \"%s\"", dist->licenses[i].dst);
   }
   fputs(" for the license text.\n", fd);
 
-  /* Sort files by license. */
+  /* Sort files by filename. */
   GSList *list=NULL;
   for (i=0, file=dist->files; i<dist->num_files; ++i, ++file)
     list=g_slist_prepend(list, file);
-  list=g_slist_sort(list, sort_by_license);
+  list=g_slist_sort(list, sort_by_filename);
   int f=0;
 
   for (it=list; it; it=it->next) {
     file=it->data;
     if ((file->subpackage && subpkg && (!strcmp(file->subpackage, subpkg))) ||
         (!subpkg && !file->subpackage)) {
-      if (!f && (file->copyrights[0] || file->license)) {
+      if (!f && (file->copyrights[0] || strlen(file->license.dst))) {
         fputs("\nIndividual file notes.\n", fd);
         f=1;
       }
       k=0;
       while (file->copyrights[k])
         fprintf(fd, "%s\n", file->copyrights[k++]);
-      if (file->license)
+      if (strlen(file->license.dst))
         fprintf(fd, "    See \"%s\" for the file license text.\n",
-                file->license);
+                file->license.dst);
       else if (file->copyrights[0]) {
         /* The file have copyright(s) but no license;
            show default license(s) then. */
         fprintf(fd, "    See");
         for (j=0; j<dist->num_licenses; ++j)
-          fprintf(fd, " \"%s/%s\"", LegalDir, basename(dist->licenses[j]));
+          fprintf(fd, " \"%s\"", dist->licenses[j].dst);
         fprintf(fd, " for the file license text.\n");
       }
     }
@@ -1149,29 +1119,59 @@ add_copyright_files(dist_t	*dist,		/* I - Distribution data */
 
 
 /*
- * 'add_license_files()' - Adds additional common license file(s) to the
- *  package. The main common license file will *not* be added.
+ * 'add_license_files()' - Adds common and file licenses to the package.
  */
 
 int						/* O - 0==success, 1==error */
 add_license_files(dist_t	*dist)		/* I - Distribution data */
 {
-  int i;
+  int		i, j;			/* Looping var */
+  file_t	*file, *file2;		/* File in distribution */
+  int		f;			/* Flag variable */
+//  GSList	*list=NULL;		/* List of file licenses */
 
-  for (i=1; i<dist->num_licenses; ++i) {
-    file_t *new_file=add_file(dist, 0);
 
-    strcpy(new_file->src, dist->licenses[i]);
+  /* Add common licenses to the package. */
+  for (i=0; i<dist->num_licenses; ++i) {
+    if (strlen(dist->licenses[i].src) && strlen(dist->licenses[i].dst) &&
+        !dist->licenses[i].noinst) {
+      file_t *new_file=add_file(dist, 0);
 
-    strcpy(new_file->dst, LegalDir);
-    strcat(new_file->dst, "/");
-    strcat(new_file->dst, basename(dist->licenses[i]));
+      strcpy(new_file->src, dist->licenses[i].src);
+      strcpy(new_file->dst, dist->licenses[i].dst);
 
-    new_file->type = 'f';
-    new_file->mode = (mode_t)0644;
+      new_file->type = 'f';
+      new_file->mode = (mode_t)0644;
 
-    strncpy(new_file->group, "root", sizeof(new_file->group));
-    strncpy(new_file->user, "root", sizeof(new_file->user));
+      strncpy(new_file->group, "root", sizeof(new_file->group));
+      strncpy(new_file->user, "root", sizeof(new_file->user));
+    }
+  }
+
+  /* Collect file licenses. */
+  for (i=0, file=dist->files; i<dist->num_files; ++i, ++file) {
+    if (strlen(file->license.src) && strlen(file->license.dst)) {
+      // Exclude the same license with the same destination.
+      f=0;
+      for (j=i+1, file2=file+1; j<dist->num_files; ++j, ++file2)
+        if (strcmp(file2->license.dst, file->license.dst)==0) {
+          f=1;
+          break;
+        }
+
+      if (!f) {
+        file_t *new_file=add_file(dist, file->subpackage);
+
+        strcpy(new_file->src, file->license.src);
+        strcpy(new_file->dst, file->license.dst);
+
+        new_file->type = 'f';
+        new_file->mode = (mode_t)0644;
+
+        strncpy(new_file->group, "root", sizeof(new_file->group));
+        strncpy(new_file->user, "root", sizeof(new_file->user));
+      }
+    }
   }
 }
 
@@ -1343,7 +1343,7 @@ read_dist(const char     *prodname,	/* I - Product name */
 	}
 	else if (!strcmp(line, "%add_copyright"))
 	{
-          find_copyright(dist, temp);
+          add_copyright(dist, temp);
 	}
 	else if (!strcmp(line, "%vendor"))
 	{
@@ -1362,11 +1362,16 @@ read_dist(const char     *prodname,	/* I - Product name */
 	else if (!strcmp(line, "%license"))
 	{
           free_licenses(dist);
-          find_license(dist, temp);
+          add_license(dist, temp, 0);
 	}
 	else if (!strcmp(line, "%add_license"))
 	{
-            find_license(dist, temp);
+          add_license(dist, temp, 0);
+	}
+	else if (!strcmp(line, "%noinst_license"))
+	{
+          free_licenses(dist);
+          add_license(dist, temp, 1);
 	}
 	else if (!strcmp(line, "%readme"))
 	{

@@ -496,6 +496,12 @@ main(int  argc,				/* I - Number of command-line args */
     info();
 
  /*
+  * Make build directory...
+  */
+
+  make_directory(directory, 0777, getuid(), getgid());
+
+ /*
   * Read the distribution...
   */
 
@@ -554,12 +560,6 @@ main(int  argc,				/* I - Number of command-line args */
 
     strip_execs(dist);
   }
-
- /*
-  * Make build directory...
-  */
-
-  make_directory(directory, 0777, getuid(), getgid());
 
  /*
   * Make the distribution in the correct format...

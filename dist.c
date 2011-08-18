@@ -100,7 +100,6 @@ static int	subpackage_cmp(char *a, char *b);
 
 char		*CustomPlatform = NULL;
 char		ProductName[256];
-char		LegalDir[512];
 
 /*
  * 'add_command()' - Add a command to the distribution...
@@ -479,12 +478,13 @@ add_copyright(dist_t     *dist,		/* I - Distribution */
 char *					/* O - License pointer */
 add_license(dist_t     *dist,		/* I - Distribution */
             const char *license,	/* I - License file name */
+            const char *legaldir,	/* I - Dest dir for the license */
             int		noinst)		/* I - Don't install if not 0 */
 {
   if (!license || !*license)
     return (NULL);
 
-  if (!strlen(LegalDir)) {
+  if (!strlen(legaldir)) {
     fputs("epm: Can't add license, %legaldir wasn't set.\n", stderr);
     return (NULL);
   }
@@ -496,7 +496,7 @@ add_license(dist_t     *dist,		/* I - Distribution */
 
   int ind=dist->num_licenses;
   strncpy(dist->licenses[ind].src, license, 255);
-  strncpy(dist->licenses[ind].dst, LegalDir, 255);
+  strncpy(dist->licenses[ind].dst, legaldir, 255);
   strcat(dist->licenses[ind].dst, "/");
   strcat(dist->licenses[ind].dst, basename(license));
   dist->licenses[ind].noinst=noinst;
@@ -939,12 +939,12 @@ add_file_copyright(file_t *file, const char *str)
  */
 
 void
-add_file_license(file_t *file, const char *str)
+add_file_license(file_t *file, const char *str, const char *legaldir)
 {
   if (str[0]) {
     strcpy(file->license.src, str);
 
-    strcpy(file->license.dst, LegalDir);
+    strcpy(file->license.dst, legaldir);
     strcat(file->license.dst, "/");
     strcat(file->license.dst, basename(str));
   }
@@ -958,7 +958,8 @@ add_file_license(file_t *file, const char *str)
 int						/* O - 0==success, 1==error */
 read_file_legal_info(file_t	*file,		/* I - Distribution file */
                      dist_t	*dist,		/* I - Distribution data */
-                     const char	*subpkg)	/* I - Subpackage */
+                     const char	*subpkg,	/* I - Subpackage */
+                     const char *legaldir)	/* I - Dir for legal files */
 {
   char copyright[10240];
   char license[10240];
@@ -974,7 +975,7 @@ read_file_legal_info(file_t	*file,		/* I - Distribution file */
   }
 
   add_file_copyright(file, copyright);
-  add_file_license(file, license);
+  add_file_license(file, license, legaldir);
 
   return (0);
 }
@@ -1010,6 +1011,7 @@ gint sort_by_filename(gconstpointer *a, gconstpointer *b)
 int						/* O - 0==success, 1==error */
 write_copyright_file(dist_t	*dist,		/* I - Distribution data */
                      const char	*subpkg,	/* I - Subpackage or 0 */
+                     const char *legaldir,	/* I - Copyright file dest */
                      const char	*directory)	/* I - Directory for distribution files */
 {
   int i, j, k;
@@ -1085,7 +1087,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
 
   strcpy(new_file->src, filename);
 
-  strcpy(new_file->dst, LegalDir);
+  strcpy(new_file->dst, legaldir);
   strcat(new_file->dst, "/");
   strcat(new_file->dst, basename(filename));
 
@@ -1104,14 +1106,16 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
 
 int						/* O - 0==success, 1==error */
 add_copyright_files(dist_t	*dist,		/* I - Distribution data */
+                    const char	*legaldir,	/* I - Copyright files dest */
                     const char	*directory)	/* I - Directory for distribution files */
 {
-  if (write_copyright_file(dist, 0, directory) != 0)
+  if (write_copyright_file(dist, 0, legaldir, directory) != 0)
     return (1);
 
   int i;
   for (i=0; i<dist->num_subpackages; ++i)
-    if (write_copyright_file(dist, dist->subpackages[i], directory) != 0)
+    if (write_copyright_file(dist, dist->subpackages[i],
+                             legaldir, directory) != 0)
       return (1);
 
   return (0);
@@ -1227,6 +1231,8 @@ read_dist(const char     *prodname,	/* I - Product name */
             filename, strerror(errno));
     return (NULL);
   }
+
+  GHashTable *subp_legal_dirs=g_hash_table_new(g_str_hash, g_str_equal);
 
  /*
   * Find any product descriptions, etc. in the list file...
@@ -1361,16 +1367,22 @@ read_dist(const char     *prodname,	/* I - Product name */
 	else if (!strcmp(line, "%license"))
 	{
           free_licenses(dist);
-          add_license(dist, temp, 0);
+          const char *legaldir=
+            g_hash_table_lookup(subp_legal_dirs, subpkg ? subpkg : "");
+          add_license(dist, temp, legaldir, 0);
 	}
 	else if (!strcmp(line, "%add_license"))
 	{
-          add_license(dist, temp, 0);
+          const char *legaldir=
+            g_hash_table_lookup(subp_legal_dirs, subpkg ? subpkg : "");
+          add_license(dist, temp, legaldir, 0);
 	}
 	else if (!strcmp(line, "%noinst_license"))
 	{
           free_licenses(dist);
-          add_license(dist, temp, 1);
+          const char *legaldir=
+            g_hash_table_lookup(subp_legal_dirs, subpkg ? subpkg : "");
+          add_license(dist, temp, legaldir, 1);
 	}
 	else if (!strcmp(line, "%readme"))
 	{
@@ -1431,7 +1443,8 @@ read_dist(const char     *prodname,	/* I - Product name */
 	else if (!strcmp(line, "%requires"))
 	  add_depend(dist, DEPEND_REQUIRES, temp, subpkg);
         else if (!strcmp(line, "%legaldir"))
-            strncpy(LegalDir, temp, 511);
+          g_hash_table_insert(subp_legal_dirs, subpkg ? strdup(subpkg) : "",
+                              strdup(temp));
 	else
 	{
 	  fprintf(stderr, "epm: Unknown directive \"%s\" ignored!\n", line);
@@ -1606,7 +1619,9 @@ read_dist(const char     *prodname,	/* I - Product name */
 	      strcpy(file->group, group);
 	      strcpy(file->options, options);
 
-              if (read_file_legal_info(file, dist, subpkg))
+              if (read_file_legal_info(file, dist, subpkg,
+                                       g_hash_table_lookup(subp_legal_dirs,
+                                                           subpkg ? subpkg : "")))
                 return (NULL);
 	    }
 
@@ -1629,7 +1644,9 @@ read_dist(const char     *prodname,	/* I - Product name */
 	  strcpy(file->group, group);
 	  strcpy(file->options, options);
 
-          if (read_file_legal_info(file, dist, subpkg))
+          if (read_file_legal_info(file, dist, subpkg,
+                                   g_hash_table_lookup(subp_legal_dirs,
+                                                       subpkg ? subpkg : "")))
             return (NULL);
         }
       }
@@ -1658,8 +1675,13 @@ read_dist(const char     *prodname,	/* I - Product name */
 
   sort_dist_files(dist);
 
-  add_copyright_files(dist, directory);
+  add_copyright_files(dist,
+                      g_hash_table_lookup(subp_legal_dirs,
+                                          subpkg ? subpkg : ""), directory);
   add_license_files(dist);
+
+  /* FIXME: Free all keys/values first. */
+  g_hash_table_destroy(subp_legal_dirs);
 
   return (dist);
 }

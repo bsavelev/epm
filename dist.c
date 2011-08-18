@@ -1128,7 +1128,6 @@ add_license_files(dist_t	*dist)		/* I - Distribution data */
   int		i, j;			/* Looping var */
   file_t	*file, *file2;		/* File in distribution */
   int		f;			/* Flag variable */
-//  GSList	*list=NULL;		/* List of file licenses */
 
 
   /* Add common licenses to the package. */

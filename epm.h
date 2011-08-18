@@ -182,6 +182,8 @@ typedef struct				/* License file */
   char		dst[512];		/* Destination path */
   int		noinst;			/* Don't include into package if
                                            not 0; ignored for file licenses */
+  char		*subpkg;		/* Put license into this subpkg;
+                                           ignored for file licenses */
 } licf_t;
 
 typedef struct				/**** File to install ****/

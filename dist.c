@@ -478,16 +478,12 @@ add_copyright(dist_t     *dist,		/* I - Distribution */
 char *					/* O - License pointer */
 add_license(dist_t     *dist,		/* I - Distribution */
             const char *license,	/* I - License file name */
+            const char *subpkg,		/* I - Put license file in this sbpk */
             const char *legaldir,	/* I - Dest dir for the license */
             int		noinst)		/* I - Don't install if not 0 */
 {
   if (!license || !*license)
     return (NULL);
-
-  if (!strlen(legaldir)) {
-    fputs("epm: Can't add license, %legaldir wasn't set.\n", stderr);
-    return (NULL);
-  }
 
   int i;
   for (i=0; i<dist->num_licenses; ++i)
@@ -500,6 +496,14 @@ add_license(dist_t     *dist,		/* I - Distribution */
   strcat(dist->licenses[ind].dst, "/");
   strcat(dist->licenses[ind].dst, basename(license));
   dist->licenses[ind].noinst=noinst;
+  if (subpkg) {
+    /* FIXME: Need to free it up later. */
+    dist->licenses[ind].subpkg=malloc(strlen(subpkg)+1);
+    memcpy(dist->licenses[ind].subpkg, subpkg, strlen(subpkg)+1);
+  } else {
+    dist->licenses[ind].subpkg=0;
+  }
+
   dist->num_licenses++;
 
   return dist->licenses[i].src;
@@ -1138,7 +1142,7 @@ add_license_files(dist_t	*dist)		/* I - Distribution data */
   for (i=0; i<dist->num_licenses; ++i) {
     if (strlen(dist->licenses[i].src) && strlen(dist->licenses[i].dst) &&
         !dist->licenses[i].noinst) {
-      file_t *new_file=add_file(dist, 0);
+      file_t *new_file=add_file(dist, dist->licenses[i].subpkg);
 
       strcpy(new_file->src, dist->licenses[i].src);
       strcpy(new_file->dst, dist->licenses[i].dst);
@@ -1369,20 +1373,20 @@ read_dist(const char     *prodname,	/* I - Product name */
           free_licenses(dist);
           const char *legaldir=
             g_hash_table_lookup(subp_legal_dirs, subpkg ? subpkg : "");
-          add_license(dist, temp, legaldir, 0);
+          add_license(dist, temp, subpkg, legaldir, 0);
 	}
 	else if (!strcmp(line, "%add_license"))
 	{
           const char *legaldir=
             g_hash_table_lookup(subp_legal_dirs, subpkg ? subpkg : "");
-          add_license(dist, temp, legaldir, 0);
+          add_license(dist, temp, subpkg, legaldir, 0);
 	}
 	else if (!strcmp(line, "%noinst_license"))
 	{
           free_licenses(dist);
           const char *legaldir=
             g_hash_table_lookup(subp_legal_dirs, subpkg ? subpkg : "");
-          add_license(dist, temp, legaldir, 1);
+          add_license(dist, temp, subpkg, legaldir, 1);
 	}
 	else if (!strcmp(line, "%readme"))
 	{

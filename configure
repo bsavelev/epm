@@ -5571,6 +5571,7 @@ fi
 if test "${enable_debug+set}" = set; then :
   enableval=$enable_debug; if eval "test x$enable_debug = xyes"; then
  	OPTIM="-g $OPTIM"
+        CFLAGS="$CFLAGS -O0"
 else
 	EPM_LDFLAGS="-s"
 fi

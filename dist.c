@@ -1196,7 +1196,7 @@ add_license_files(dist_t	*dist)		/* I - Distribution data */
       const char *legaldir=get_legal_dir(dist->licenses[i].subpkg);
       strcpy(new_file->dst, legaldir);
       strcat(new_file->dst, "/");
-      strcat(new_file->dst, dist->licenses[i].dst);
+      strcat(new_file->dst, basename(dist->licenses[i].src));
 
       new_file->type = 'f';
       new_file->mode = (mode_t)0644;

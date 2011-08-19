@@ -977,16 +977,24 @@ add_file_copyright(file_t *file, const char *str)
  * from its "license()" option.
  */
 
-void
+int
 add_file_license(file_t *file, const char *str, const char *subpkg)
 {
+  const char *legaldir=get_legal_dir(subpkg);
+  if (!legaldir) {
+    fputs("epm: Adding file license before %legaldir.\n", stderr);
+    return (0);
+  }
+
   if (str[0]) {
     strcpy(file->license.src, str);
 
-    strcpy(file->license.dst, get_legal_dir(subpkg));
+    strcpy(file->license.dst, legaldir);
     strcat(file->license.dst, "/");
     strcat(file->license.dst, basename(str));
   }
+
+  return (1);
 }
 
 
@@ -1013,13 +1021,8 @@ read_file_legal_info(file_t	*file,		/* I - Distribution file */
   }
 
   add_file_copyright(file, copyright);
-
-  const char *legaldir=get_legal_dir(subpkg);
-  if (!legaldir) {
-    fputs("epm: Adding file license before %legaldir.\n", stderr);
+  if (!add_file_license(file, license, subpkg))
     return (0);
-  }
-  add_file_license(file, license, subpkg);
 
   return (1);
 }
@@ -1095,7 +1098,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   if (dist->num_licenses>1)
     fputs("s", fd);
   for (i=0; i<dist->num_licenses; ++i) {
-    fprintf(fd, " \"%s\"", dist->licenses[i].dst);
+    fprintf(fd, " \"%s/%s\"", legaldir, basename(dist->licenses[i].src));
   }
   fputs(" for the license text.\n", fd);
 
@@ -1189,7 +1192,11 @@ add_license_files(dist_t	*dist)		/* I - Distribution data */
       file_t *new_file=add_file(dist, dist->licenses[i].subpkg);
 
       strcpy(new_file->src, dist->licenses[i].src);
-      strcpy(new_file->dst, dist->licenses[i].dst);
+
+      const char *legaldir=get_legal_dir(dist->licenses[i].subpkg);
+      strcpy(new_file->dst, legaldir);
+      strcat(new_file->dst, "/");
+      strcat(new_file->dst, dist->licenses[i].dst);
 
       new_file->type = 'f';
       new_file->mode = (mode_t)0644;

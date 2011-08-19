@@ -1187,22 +1187,27 @@ add_license_files(dist_t	*dist)		/* I - Distribution data */
 
   /* Add common licenses to the package. */
   for (i=0; i<dist->num_licenses; ++i) {
-    if (strlen(dist->licenses[i].src) && strlen(dist->licenses[i].dst) &&
-        !dist->licenses[i].noinst) {
-      file_t *new_file=add_file(dist, dist->licenses[i].subpkg);
+    if (!dist->licenses[i].noinst) {
+      for (j=-1; j<dist->num_subpackages; ++j) {
+        const char *subpkg=0;
+        if (j!=-1)
+          subpkg=dist->subpackages[j];
 
-      strcpy(new_file->src, dist->licenses[i].src);
+        file_t *new_file=add_file(dist, subpkg);
 
-      const char *legaldir=get_legal_dir(dist->licenses[i].subpkg);
-      strcpy(new_file->dst, legaldir);
-      strcat(new_file->dst, "/");
-      strcat(new_file->dst, basename(dist->licenses[i].src));
+        strcpy(new_file->src, dist->licenses[i].src);
 
-      new_file->type = 'f';
-      new_file->mode = (mode_t)0644;
+        const char *legaldir=get_legal_dir(subpkg);
+        strcpy(new_file->dst, legaldir);
+        strcat(new_file->dst, "/");
+        strcat(new_file->dst, basename(dist->licenses[i].src));
 
-      strncpy(new_file->group, "root", sizeof(new_file->group));
-      strncpy(new_file->user, "root", sizeof(new_file->user));
+        new_file->type = 'f';
+        new_file->mode = (mode_t)0644;
+
+        strncpy(new_file->group, "root", sizeof(new_file->group));
+        strncpy(new_file->user, "root", sizeof(new_file->user));
+      }
     }
   }
 

@@ -531,13 +531,6 @@ add_license(dist_t     *dist,		/* I - Distribution */
   strcat(dist->licenses[ind].dst, "/");
   strcat(dist->licenses[ind].dst, basename(license));
   dist->licenses[ind].noinst=noinst;
-  if (subpkg) {
-    /* FIXME: Need to free it up later. */
-    dist->licenses[ind].subpkg=malloc(strlen(subpkg)+1);
-    memcpy(dist->licenses[ind].subpkg, subpkg, strlen(subpkg)+1);
-  } else {
-    dist->licenses[ind].subpkg=0;
-  }
 
   dist->num_licenses++;
 

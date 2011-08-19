@@ -179,7 +179,7 @@ typedef struct				/**** TAR file ****/
 typedef struct				/* License file */
 {
   char		src[512];		/* Source path */
-  char		dst[512];		/* Destination path */
+  char		dst[512];		/* Destination path (noinst licenses) */
   int		noinst;			/* Don't include into package if
                                            not 0; ignored for file licenses */
   char		*subpkg;		/* Put license into this subpkg;

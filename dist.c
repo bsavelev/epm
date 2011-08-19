@@ -1064,6 +1064,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   file_t *file;
   GSList *it;
   const char *prev_lic=0;
+  char buf[512];
 
 
   const char *legaldir=get_legal_dir(subpkg);
@@ -1098,7 +1099,11 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   if (dist->num_licenses>1)
     fputs("s", fd);
   for (i=0; i<dist->num_licenses; ++i) {
-    fprintf(fd, " \"%s/%s\"", legaldir, basename(dist->licenses[i].src));
+    if (dist->licenses[i].noinst)
+      sprintf(buf, "%s", dist->licenses[i].dst);
+    else
+      sprintf(buf, "%s/%s", legaldir, basename(dist->licenses[i].src));
+    fprintf(fd, " \"%s\"", buf);
   }
   fputs(" for the license text.\n", fd);
 

@@ -988,9 +988,14 @@ read_file_legal_info(file_t	*file,		/* I - Distribution file */
   }
 
   add_file_copyright(file, copyright);
+
+  if (!legaldir) {
+    fputs("epm: Adding file license before %legaldir.\n", stderr);
+    return (0);
+  }
   add_file_license(file, license, legaldir);
 
-  return (0);
+  return (1);
 }
 
 
@@ -1642,9 +1647,9 @@ read_dist(const char     *prodname,	/* I - Product name */
 	      strcpy(file->group, group);
 	      strcpy(file->options, options);
 
-              if (read_file_legal_info(file, dist, subpkg,
-                                       g_hash_table_lookup(subp_legal_dirs,
-                                                           subpkg ? subpkg : "")))
+              if (!read_file_legal_info(file, dist, subpkg,
+                                        g_hash_table_lookup(subp_legal_dirs,
+                                                            subpkg ? subpkg : "")))
                 return (NULL);
 	    }
 
@@ -1667,9 +1672,9 @@ read_dist(const char     *prodname,	/* I - Product name */
 	  strcpy(file->group, group);
 	  strcpy(file->options, options);
 
-          if (read_file_legal_info(file, dist, subpkg,
-                                   g_hash_table_lookup(subp_legal_dirs,
-                                                       subpkg ? subpkg : "")))
+          if (!read_file_legal_info(file, dist, subpkg,
+                                    g_hash_table_lookup(subp_legal_dirs,
+                                                        subpkg ? subpkg : "")))
             return (NULL);
         }
       }

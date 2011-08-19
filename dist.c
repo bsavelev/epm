@@ -441,8 +441,10 @@ add_copyright(dist_t     *dist,		/* I - Distribution */
 	*s;				/* Copyright pointer */
 
 
-  if (!cpr || !*cpr)
+  if (!cpr || !*cpr) {
+    fputs("epm: Adding empty copyright.\n", stderr);
     return (NULL);
+  }
 
   for (i=0; i<dist->num_copyrights; ++i)
     if (strcmp(dist->copyrights[i], cpr)==0)
@@ -454,8 +456,10 @@ add_copyright(dist_t     *dist,		/* I - Distribution */
     temp = realloc(dist->copyrights,
                    (dist->num_copyrights + 1) * sizeof(char *));
 
-  if (temp == NULL)
+  if (temp == NULL) {
+    fputs("epm: Can't allocate memory for copyright.\n", stderr);
     return (NULL);
+  }
 
   dist->copyrights = temp;
   temp             += dist->num_copyrights;
@@ -482,6 +486,11 @@ add_license(dist_t     *dist,		/* I - Distribution */
             const char *legaldir,	/* I - Dest dir for the license */
             int		noinst)		/* I - Don't install if not 0 */
 {
+  if (!legaldir) {
+    fputs("epm: Adding license before %legaldir.\n", stderr);
+    return (NULL);
+  }
+
   if (!license || !*license)
     return (NULL);
 
@@ -1113,6 +1122,11 @@ add_copyright_files(dist_t	*dist,		/* I - Distribution data */
                     const char	*legaldir,	/* I - Copyright files dest */
                     const char	*directory)	/* I - Directory for distribution files */
 {
+  if (!legaldir) {
+    fputs("epm: Adding copyright before %legaldir.\n", stderr);
+    return (NULL);
+  }
+
   if (write_copyright_file(dist, 0, legaldir, directory) != 0)
     return (1);
 
@@ -1348,11 +1362,13 @@ read_dist(const char     *prodname,	/* I - Product name */
 	else if (!strcmp(line, "%copyright"))
 	{
           free_copyrights(dist);
-          add_copyright(dist, temp);
+          if (!add_copyright(dist, temp))
+            return (NULL);
 	}
 	else if (!strcmp(line, "%add_copyright"))
 	{
-          add_copyright(dist, temp);
+          if (!add_copyright(dist, temp))
+            return (NULL);
 	}
 	else if (!strcmp(line, "%vendor"))
 	{
@@ -1373,20 +1389,23 @@ read_dist(const char     *prodname,	/* I - Product name */
           free_licenses(dist);
           const char *legaldir=
             g_hash_table_lookup(subp_legal_dirs, subpkg ? subpkg : "");
-          add_license(dist, temp, subpkg, legaldir, 0);
+          if (!add_license(dist, temp, subpkg, legaldir, 0))
+            return (NULL);
 	}
 	else if (!strcmp(line, "%add_license"))
 	{
           const char *legaldir=
             g_hash_table_lookup(subp_legal_dirs, subpkg ? subpkg : "");
-          add_license(dist, temp, subpkg, legaldir, 0);
+          if (!add_license(dist, temp, subpkg, legaldir, 0))
+            return (NULL);
 	}
 	else if (!strcmp(line, "%noinst_license"))
 	{
           free_licenses(dist);
           const char *legaldir=
             g_hash_table_lookup(subp_legal_dirs, subpkg ? subpkg : "");
-          add_license(dist, temp, subpkg, legaldir, 1);
+          if (!add_license(dist, temp, subpkg, legaldir, 1))
+            return (NULL);
 	}
 	else if (!strcmp(line, "%readme"))
 	{

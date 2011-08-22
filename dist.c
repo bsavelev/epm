@@ -1210,7 +1210,9 @@ add_license_files(dist_t	*dist)		/* I - Distribution data */
   }
 
   /* Collect file licenses. */
-  for (i=0, file=dist->files; i<dist->num_files; ++i, ++file) {
+  for (i=0; i<dist->num_files; ++i) {
+    file=&(dist->files[i]);
+
     if (strlen(file->license.src) && strlen(file->license.dst)) {
       // Exclude the same license with the same destination.
       f=0;
@@ -1221,10 +1223,16 @@ add_license_files(dist_t	*dist)		/* I - Distribution data */
         }
 
       if (!f) {
+        /* Store file license's src and dst because their memory will be
+           reallocated in add_file(). */
+        char lic_src[512], lic_dst[512];
+        strncpy(lic_src, file->license.src, 512-1);
+        strncpy(lic_dst, file->license.dst, 512-1);
+
         file_t *new_file=add_file(dist, file->subpackage);
 
-        strcpy(new_file->src, file->license.src);
-        strcpy(new_file->dst, file->license.dst);
+        strcpy(new_file->src, lic_src);
+        strcpy(new_file->dst, lic_dst);
 
         new_file->type = 'f';
         new_file->mode = (mode_t)0644;

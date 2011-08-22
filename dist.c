@@ -106,13 +106,15 @@ GHashTable	*SubpLegalDirs=NULL;
 int
 set_legal_dir(const char *subpkg, const char *legaldir)
 {
-  if (g_hash_table_lookup_extended(SubpLegalDirs, subpkg, NULL, NULL)==TRUE) {
-    fprintf(stderr, "epm: %legaldir appears more than once "
-            "in '%s' subpackage\n", subpkg);
+  const char *subpkg_str=subpkg ? subpkg : "";
+
+  if (g_hash_table_lookup(SubpLegalDirs, subpkg_str)) {
+    fprintf(stderr, "epm: %%legaldir appears more than once "
+            "in '%s' subpackage\n", subpkg_str);
     return (0);
   }
 
-  g_hash_table_insert(SubpLegalDirs, subpkg ? strdup(subpkg) : "",
+  g_hash_table_insert(SubpLegalDirs, subpkg_str ? strdup(subpkg_str) : "",
                       strdup(legaldir));
 
   int r;

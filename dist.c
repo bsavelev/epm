@@ -513,7 +513,8 @@ add_license(dist_t     *dist,		/* I - Distribution */
   const char *legaldir=get_legal_dir(subpkg);
 
   if (!legaldir) {
-    fputs("epm: Adding license before %legaldir.\n", stderr);
+    fprintf(stderr, "epm: Adding license '%s' before %%legaldir, "
+            "in subpackage '%s'.\n", license, subpkg);
     return (NULL);
   }
 
@@ -1064,7 +1065,8 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
 
   const char *legaldir=get_legal_dir(subpkg);
   if (!legaldir) {
-    fputs("epm: Adding copyright before %legaldir.\n", stderr);
+    fprintf(stderr, "epm: Adding copyright before %%legaldir, "
+            "in subpackage '%s'.\n", subpkg);
     return (NULL);
   }
 

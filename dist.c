@@ -103,11 +103,26 @@ char		ProductName[256];
 GHashTable	*SubpLegalDirs=NULL;
 
 
-void
+int
 set_legal_dir(const char *subpkg, const char *legaldir)
 {
+  if (g_hash_table_lookup_extended(SubpLegalDirs, subpkg, NULL, NULL)==TRUE) {
+    fprintf(stderr, "epm: %legaldir appears more than once "
+            "in '%s' subpackage\n", subpkg);
+    return (0);
+  }
+
   g_hash_table_insert(SubpLegalDirs, subpkg ? strdup(subpkg) : "",
                       strdup(legaldir));
+
+  int r;
+  if ((r=setenv("legaldir", legaldir, 1))!=0) {
+    fprintf(stderr, "epm: Can't set $legaldir variable: %s.\n",
+            strerror(errno));
+    return (0);
+  }
+
+  return (1);
 }
 
 
@@ -967,27 +982,27 @@ add_file_copyright(file_t *file, const char *str)
 
 
 /*
- * 'add_file_license()' - Adds license info to the file structure, taken
- * from its "license()" option.
+ * 'add_file_license()' - Adds license info, taken from "license()" option,
+ * to the file structure.
  */
 
 int
-add_file_license(file_t *file, const char *str, const char *subpkg)
+add_file_license(file_t *file, const char *licsrc, const char *subpkg)
 {
   const char *legaldir=get_legal_dir(subpkg);
   if (!legaldir) {
     fprintf(stderr,
             "epm: Adding license '%s' to the file '%s' before %%legaldir, "
-            "in subpackage '%s'.\n", str, file->src, subpkg);
+            "in subpackage '%s'.\n", licsrc, file->src, subpkg);
     return (0);
   }
 
-  if (str[0]) {
-    strcpy(file->license.src, str);
+  if (licsrc[0]) {
+    strcpy(file->license.src, licsrc);
 
     strcpy(file->license.dst, legaldir);
     strcat(file->license.dst, "/");
-    strcat(file->license.dst, basename(str));
+    strcat(file->license.dst, basename(licsrc));
   }
 
   return (1);
@@ -1198,11 +1213,7 @@ add_license_files(dist_t	*dist)		/* I - Distribution data */
         file_t *new_file=add_file(dist, subpkg);
 
         strcpy(new_file->src, dist->licenses[i].src);
-
-        const char *legaldir=get_legal_dir(subpkg);
-        strcpy(new_file->dst, legaldir);
-        strcat(new_file->dst, "/");
-        strcat(new_file->dst, basename(dist->licenses[i].src));
+        strcpy(new_file->dst, dist->licenses[i].dst);
 
         new_file->type = 'f';
         new_file->mode = (mode_t)0644;
@@ -1218,7 +1229,7 @@ add_license_files(dist_t	*dist)		/* I - Distribution data */
     file=&(dist->files[i]);
 
     if (strlen(file->license.src) && strlen(file->license.dst)) {
-      // Exclude the same license with the same destination.
+      /* Exclude the same license with the same destination. */
       f=0;
       for (j=i+1, file2=file+1; j<dist->num_files; ++j, ++file2)
         if (strcmp(file2->license.dst, file->license.dst)==0) {
@@ -1511,8 +1522,10 @@ read_dist(const char     *prodname,	/* I - Product name */
 	  add_depend(dist, DEPEND_REPLACES, temp, subpkg);
 	else if (!strcmp(line, "%requires"))
 	  add_depend(dist, DEPEND_REQUIRES, temp, subpkg);
-        else if (!strcmp(line, "%legaldir"))
-          set_legal_dir(subpkg, temp);
+        else if (!strcmp(line, "%legaldir")) {
+          if (!set_legal_dir(subpkg, temp))
+            return 0;
+        }
 	else
 	{
 	  fprintf(stderr, "epm: Unknown directive \"%s\" ignored!\n", line);

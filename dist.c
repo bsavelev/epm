@@ -976,7 +976,7 @@ add_file_license(file_t *file, const char *str, const char *subpkg)
   const char *legaldir=get_legal_dir(subpkg);
   if (!legaldir) {
     fprintf(stderr,
-            "epm: Adding license '%s' to the file '%s' before %legaldir, "
+            "epm: Adding license '%s' to the file '%s' before %%legaldir, "
             "in subpackage '%s'.\n", str, file->src, subpkg);
     return (0);
   }

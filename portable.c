@@ -1700,13 +1700,16 @@ write_distfiles(const char *directory,	/* I - Directory */
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++) {
     int lic=get_option(file, "lic", 0) ? 1 : 0;
     if (strlen(file->license.src) || lic) {
-      snprintf(filename, sizeof(filename), "%s/%s", directory,
-               basename(file->license.src));
       int r;
-      if (lic)
+      if (lic) {
+        snprintf(filename, sizeof(filename), "%s/%s", directory,
+                 basename(file->src));
         r=copy_file(filename, file->src, 0444, getuid(), getgid());
-      else
+      } else {
+        snprintf(filename, sizeof(filename), "%s/%s", directory,
+                 basename(file->license.src));
         r=copy_file(filename, file->license.src, 0444, getuid(), getgid());
+      }
       if (r)
         return (1);
     }
@@ -1741,7 +1744,7 @@ write_distfiles(const char *directory,	/* I - Directory */
 	case 'c' : /* Config file */
 	case 'i' : /* Init script */
             if (stat(file->src, &srcstat))
-	    {
+	     {
 	      fprintf(stderr, "epm: Cannot stat %s - %s\n", file->src,
 	              strerror(errno));
 	      tar_close(tarfile);

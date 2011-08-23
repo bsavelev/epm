@@ -2711,11 +2711,18 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
          strcmp(subpackage, file->subpackage)))
       continue;
 
-    if (strlen(file->license.src) || get_option(file, "lic", 0)) {
-      snprintf(srcname, sizeof(srcname), "%s/%s", directory,
-               basename(file->license.src));
-      snprintf(dstname, sizeof(dstname), "%s%s", destdir,
-               basename(file->license.src));
+    int lic=get_option(file, "lic", 0) ? 1 : 0;
+
+    if (strlen(file->license.src) || lic) {
+      if (lic) {
+        strncpy(srcname, file->src, 511);
+        strncpy(dstname, file->dst, 511);
+      } else {
+        snprintf(srcname, sizeof(srcname), "%s/%s", directory,
+                 basename(file->license.src));
+        snprintf(dstname, sizeof(dstname), "%s%s", destdir,
+                 basename(file->license.src));
+      }
 
       if (stat(srcname, &srcstat)) {
         fprintf(stderr, "epm: Can't open %s -\n    %s\n",

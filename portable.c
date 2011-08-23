@@ -2711,7 +2711,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
   }
 
   /* Write additional license files.  */
-  GList *list=NULL;
+  GSList *list=NULL;
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++) {
     /* Skip files from other subpackages. */
     if ((!subpackage && file->subpackage) ||
@@ -2742,9 +2742,10 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
       }
 
       /* Don't add license files that were added already. */
-      if (g_slist_find(list, dstname))
+      if (g_slist_find_custom(list, dstname, (GCompareFunc)strcmp))
         continue;
-      list=g_slist_append(list, strdup(dstname)); /* FIXME: Free this later */
+      /* FIXME: Free this later. */
+      list=g_slist_append(list, strdup(dstname));
 
       if (tar_header(tarfile, TAR_NORMAL, srcstat.st_mode & 07555,
                      srcstat.st_size, srcstat.st_mtime, "root", "root",

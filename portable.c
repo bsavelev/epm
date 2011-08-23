@@ -2711,7 +2711,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
          strcmp(subpackage, file->subpackage)))
       continue;
 
-    if (strlen(file->license.src)) {
+    if (strlen(file->license.src) || get_option(file, "lic", 0)) {
       snprintf(srcname, sizeof(srcname), "%s/%s", directory,
                basename(file->license.src));
       snprintf(dstname, sizeof(dstname), "%s%s", destdir,

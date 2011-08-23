@@ -2744,7 +2744,7 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
       /* Don't add license files that were added already. */
       if (g_slist_find(list, dstname))
         continue;
-      list=g_slist_append(list, dstname);
+      list=g_slist_append(list, strdup(dstname)); /* FIXME: Free this later */
 
       if (tar_header(tarfile, TAR_NORMAL, srcstat.st_mode & 07555,
                      srcstat.st_size, srcstat.st_mtime, "root", "root",

@@ -954,12 +954,12 @@ new_dist(void)
 
 
 /*
- * 'add_file_copyright()' - Adds copyright info to the file structure, taken
+ * 'set_file_copyright()' - Sets copyright info to the file structure, taken
  * from its "copyright()" option.
  */
 
 void
-add_file_copyright(file_t *file, const char *str)
+set_file_copyright(file_t *file, const char *str)
 {
   if (!str || !str[0])
     return;
@@ -984,12 +984,12 @@ add_file_copyright(file_t *file, const char *str)
 
 
 /*
- * 'add_file_license()' - Adds license info, taken from "license()" option,
- * to the file structure.
+ * 'set_file_license()' - Sets license to the file, taken
+ * from from its "license()" option.
  */
 
 int
-add_file_license(file_t *file, const char *licsrc, const char *subpkg)
+set_file_license(file_t *file, const char *licsrc, const char *subpkg)
 {
   if (!licsrc || !licsrc[0])
     return (1);
@@ -1034,8 +1034,8 @@ read_file_legal_info(file_t	*file,		/* I - Distribution file */
     strcat(file->copyrights[0], " :");
   }
 
-  add_file_copyright(file, copyright);
-  if (!add_file_license(file, license, subpkg))
+  set_file_copyright(file, copyright);
+  if (!set_file_license(file, license, subpkg))
     return (0);
 
   return (1);

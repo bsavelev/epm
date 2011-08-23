@@ -2715,8 +2715,10 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
 
     if (strlen(file->license.src) || lic) {
       if (lic) {
-        strncpy(srcname, file->src, 511);
-        strncpy(dstname, file->dst, 511);
+        snprintf(srcname, sizeof(srcname), "%s/%s", directory,
+                 basename(file->src));
+        snprintf(dstname, sizeof(dstname), "%s%s", destdir,
+                 basename(file->src));
       } else {
         snprintf(srcname, sizeof(srcname), "%s/%s", directory,
                  basename(file->license.src));

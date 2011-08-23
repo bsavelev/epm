@@ -1698,10 +1698,16 @@ write_distfiles(const char *directory,	/* I - Directory */
     printf("Copying %s additional license files...\n", prodfull);
 
   for (i = dist->num_files, file = dist->files; i > 0; i --, file ++) {
-    if (strlen(file->license.src)) {
+    int lic=get_option(file, "lic", 0) ? 1 : 0;
+    if (strlen(file->license.src) || lic) {
       snprintf(filename, sizeof(filename), "%s/%s", directory,
                basename(file->license.src));
-      if (copy_file(filename, file->license.src, 0444, getuid(), getgid()))
+      int r;
+      if (lic)
+        r=copy_file(filename, file->src, 0444, getuid(), getgid());
+      else
+        r=copy_file(filename, file->license.src, 0444, getuid(), getgid());
+      if (r)
         return (1);
     }
   }

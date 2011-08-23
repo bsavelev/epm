@@ -961,7 +961,7 @@ new_dist(void)
 void
 add_file_copyright(file_t *file, const char *str)
 {
-  if (!str[0])
+  if (!str || !str[0])
     return;
 
   /* Split str by ";;;" if needed. */
@@ -991,6 +991,9 @@ add_file_copyright(file_t *file, const char *str)
 int
 add_file_license(file_t *file, const char *licsrc, const char *subpkg)
 {
+  if (!licsrc || !licsrc[0])
+    return (1);
+
   const char *legaldir=get_legal_dir(subpkg);
   if (!legaldir) {
     fprintf(stderr,
@@ -999,13 +1002,11 @@ add_file_license(file_t *file, const char *licsrc, const char *subpkg)
     return (0);
   }
 
-  if (licsrc[0]) {
-    strcpy(file->license.src, licsrc);
+  strcpy(file->license.src, licsrc);
 
-    strcpy(file->license.dst, legaldir);
-    strcat(file->license.dst, "/");
-    strcat(file->license.dst, basename(licsrc));
-  }
+  strcpy(file->license.dst, legaldir);
+  strcat(file->license.dst, "/");
+  strcat(file->license.dst, basename(licsrc));
 
   return (1);
 }

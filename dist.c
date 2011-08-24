@@ -128,6 +128,14 @@ set_legal_dir(const char *subpkg, const char *legaldir)
 }
 
 
+void
+unset_legal_dir(const char *subpkg)
+{
+  const char *subpkg_str=subpkg ? subpkg : "";
+  g_hash_table_remove(SubpLegalDirs, subpkg);
+}
+
+
 const char *
 get_legal_dir(const char *subpkg)
 {
@@ -1420,9 +1428,10 @@ read_dist(const char     *prodname,	/* I - Product name */
         }
         else if (!strcmp(line, "%product"))
 	{
-          if (!dist->product[0])
+          if (!dist->product[0]) {
             strcpy(dist->product, temp);
-	  else
+            unset_legal_dir(subpkg);
+          } else
 	    fputs("epm: Ignoring %product line in list file.\n", stderr);
 	}
 	else if (!strcmp(line, "%copyright"))

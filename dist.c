@@ -132,7 +132,7 @@ void
 unset_legal_dir(const char *subpkg)
 {
   const char *subpkg_str=subpkg ? subpkg : "";
-  g_hash_table_remove(SubpLegalDirs, subpkg);
+  g_hash_table_remove(SubpLegalDirs, subpkg_str);
 }
 
 

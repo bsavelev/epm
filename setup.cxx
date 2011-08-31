@@ -16,6 +16,8 @@ Fl_Wizard *Wizard=(Fl_Wizard *)0;
 
 Fl_Help_View *ReadmeFile=(Fl_Help_View *)0;
 
+Fl_Box *inst_type_label=(Fl_Box *)0;
+
 Fl_Round_Button *TypeButton[8]={(Fl_Round_Button *)0};
 
 Fl_Check_Browser *SoftwareList=(Fl_Check_Browser *)0;
@@ -1874,9 +1876,9 @@ Fl_Double_Window* make_window() {
         Pane[1]->labelcolor((Fl_Color)4);
         Pane[1]->align(FL_ALIGN_TOP_LEFT|FL_ALIGN_INSIDE);
         Pane[1]->hide();
-        { Fl_Box* o = new Fl_Box(175, 30, 440, 25, gettext("Select the installation type:"));
-          o->align(132|FL_ALIGN_INSIDE);
-        } // Fl_Box* o
+        { inst_type_label = new Fl_Box(175, 30, 440, 25, gettext("Select the installation type:"));
+          inst_type_label->align(132|FL_ALIGN_INSIDE);
+        } // Fl_Box* inst_type_label
         { Fl_Group* o = new Fl_Group(175, 65, 440, 200);
           { TypeButton[0] = new Fl_Round_Button(175, 65, 440, 25);
             TypeButton[0]->type(102);

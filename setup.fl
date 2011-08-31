@@ -56,7 +56,7 @@ Function {make_window()} {open selected
       Fl_Group {Pane[1]} {open
         xywh {155 10 525 285} labelfont 1 labelsize 18 labelcolor 4 align 21 hide
       } {
-        Fl_Box {} {
+        Fl_Box inst_type_label {
           label {Select the installation type:}
           xywh {175 30 440 25} align 148
         }

@@ -14,6 +14,7 @@ extern Fl_Wizard *Wizard;
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Help_View.H>
 extern Fl_Help_View *ReadmeFile;
+extern Fl_Box *inst_type_label;
 #include <FL/Fl_Round_Button.H>
 extern void type_cb(Fl_Round_Button*, void*);
 extern Fl_Round_Button *TypeButton[8];

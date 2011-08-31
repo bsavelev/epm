@@ -880,6 +880,18 @@ load_types(void)
   for (; i < (int)(sizeof(TypeButton) / sizeof(TypeButton[0])); i ++)
     TypeButton[i]->hide();
 
+  // Replace round button by a plain label if only 1 option available.
+  if (NumInstTypes==1) {
+    inst_type_label->label(gettext("The installation type:"));
+    TypeButton[0]->hide();
+    TypeButton[0]->parent()->begin();
+    Fl_Box *box=new Fl_Box(TypeButton[0]->x(), TypeButton[0]->y(),
+                           TypeButton[0]->w(), TypeButton[0]->h(),
+                           TypeButton[0]->label());
+    box->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
+    TypeButton[0]->parent()->end();
+  }
+
   TypeButton[0]->setonly();
   TypeButton[0]->do_callback();
 }

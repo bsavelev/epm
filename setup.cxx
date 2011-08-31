@@ -1948,7 +1948,7 @@ Fl_Double_Window* make_window() {
         { InstallAllButton = new Fl_Button(326, 260, 130, 25, gettext("Select all"));
           InstallAllButton->callback((Fl_Callback*)cb_InstallAllButton);
         } // Fl_Button* InstallAllButton
-        { InstallNoneButton = new Fl_Button(485, 260, 160, 25, gettext("Select none"));
+        { InstallNoneButton = new Fl_Button(485, 260, 180, 25, gettext("Select none"));
           InstallNoneButton->callback((Fl_Callback*)cb_InstallNoneButton);
         } // Fl_Button* InstallNoneButton
         Pane[2]->end();

@@ -123,7 +123,7 @@ list_cb(0,0);}
           label {Select none}
           callback {SoftwareList->check_none();
 list_cb(0,0);}
-          xywh {485 260 160 25}
+          xywh {485 260 180 25}
         }
       }
       Fl_Group {Pane[3]} {open

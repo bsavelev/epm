@@ -2269,15 +2269,16 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("	done\n", scriptfile);
   }
 
+  fputs("	clear\n", scriptfile);
   fputs("	sc_name=`basename $0`\n", scriptfile);
   fputs("	cfile=`mktemp /tmp/$sc_name.XXXXXXXXXX`\n", scriptfile);
   fputs("	chmod 644 $cfile\n", scriptfile);
   fputs("	echo >> $cfile\n", scriptfile);
   fputs("	echo ' List of Copyrights' >> $cfile\n", scriptfile);
   fputs("	echo >> $cfile\n", scriptfile);
-  fprintf(scriptfile, "	f=%s.COPYRIGHTS ; do\n", prodfull);
+  fprintf(scriptfile, "	f=%s\n", prodfull);
   fputs("	echo '---------------------------------------------------' >> $cfile\n", scriptfile);
-  fprintf(scriptfile, "	echo Subpackage: %s.COPYRIGHTS >> $cfile", prodfull);
+  fprintf(scriptfile, "	echo Subpackage: %s.COPYRIGHTS >> $cfile\n", prodfull);
   fputs("	cat $f >> $cfile\n", scriptfile);
   fputs("	echo >> $cfile\n", scriptfile);
   fputs("	echo ' Press Enter to continue the installation. ' >> $cfile\n", scriptfile);

@@ -2276,9 +2276,9 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("	echo >> $cfile\n", scriptfile);
   fputs("	echo ' List of Copyrights' >> $cfile\n", scriptfile);
   fputs("	echo >> $cfile\n", scriptfile);
-  fprintf(scriptfile, "	f=%s\n", prodfull);
+  fprintf(scriptfile, "	f=%s.COPYRIGHTS\n", prodfull);
   fputs("	echo '---------------------------------------------------' >> $cfile\n", scriptfile);
-  fprintf(scriptfile, "	echo Subpackage: %s.COPYRIGHTS >> $cfile\n", prodfull);
+  fprintf(scriptfile, "	echo Subpackage: %s >> $cfile\n", prodfull);
   fputs("	cat $f >> $cfile\n", scriptfile);
   fputs("	echo >> $cfile\n", scriptfile);
   fputs("	echo ' Press Enter to continue the installation. ' >> $cfile\n", scriptfile);

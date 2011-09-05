@@ -2670,9 +2670,6 @@ write_instfiles(tarf_t     *tarfile,	/* I - Distribution tar file */
     if (CustomLic && MainPackageComposed)
       break;
 
-    if (dist->licenses[i].noinst)
-      continue;
-
     char *license=basename(dist->licenses[i].src);
     if (CustomLic) {
       snprintf(srcname, sizeof(srcname), "%s/%s", directory, license);

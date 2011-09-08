@@ -305,7 +305,7 @@ gui_load_file(Fl_Help_View *hv,		 // I - Help widget
   {
     // Yes, just read it in...
     buffer[0] = ch;
-    fread(buffer + 1, 1, info.st_size - 1, fp);
+    size_t r=fread(buffer + 1, 1, info.st_size - 1, fp);
     buffer[info.st_size] = '\0';
   }
   else
@@ -394,7 +394,7 @@ void set_gettext(char *argv[]) {
 
   if ((cwd = getcwd ((char*) NULL, 512)) == NULL)
     if (!stat(findMypath(argv[0]),&stat_info))
-      chdir(findMypath(argv[0]));
+      int r=chdir(findMypath(argv[0]));
 
   setlocale(LC_ALL, "");
   sprintf(localedir,"%slocale", findMypath(argv[0]));

@@ -88,6 +88,18 @@ AuthorizationRef SetupAuthorizationRef;
 #define LANG_RU	1
 
 //
+// Panes...
+//
+
+#define PANE_WELCOME	0
+#define PANE_TYPE	1
+#define PANE_SELECT	2
+#define PANE_CONFIRM	3
+#define PANE_LICENSE	4
+#define PANE_INSTALL	5
+#define PANE_POSTIN	6
+
+//
 // Define a C API function type for comparisons...
 //
 

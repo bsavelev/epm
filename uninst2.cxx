@@ -530,15 +530,27 @@ remove_dist(const gui_dist_t *dist)	// I - Distribution to remove
   fds[0] = fileno(fp);
 #else
   // Fork the command and redirect errors and info to stdout...
-  pipe(fds);
+  if (pipe(fds)==-1)
+  {
+    fprintf(stderr, "epm: Unable to pipe - %s\n", strerror(errno));
+    return (1);
+  }
 
   if ((pid = fork()) == 0)
   {
     // Child comes here; start by redirecting stdout and stderr...
     close(1);
     close(2);
-    dup(fds[1]);
-    dup(fds[1]);
+    if (dup(fds[1])==-1)
+    {
+      fprintf(stderr, "epm: Unable to dup - %s\n", strerror(errno));
+      return (1);
+    }
+    if (dup(fds[1])==-1)
+    {
+      fprintf(stderr, "epm: Unable to dup - %s\n", strerror(errno));
+      return (1);
+    }
 
     // Close the original pipes...
     close(fds[0]);

@@ -282,7 +282,7 @@ strip_execs(dist_t *dist)		/* I - Distribution to strip... */
       strcat(debug_src,basename(file_name));
       dir_name = strdup(debug_src);
       run_command(NULL, "mkdir -p %s", dirname(dir_name));
-      copy_file(debug_src,file->src,0600,(uid_t)file->user,(uid_t)file->group);
+      copy_file(debug_src,file->src,0600,(long)file->user,(long)file->group);
       strcpy(file->src,debug_src);
 
       if (Verbosity > 1)

@@ -634,7 +634,7 @@ make_subpackage(
   sprintf(pkg_create, "pkgmk -o -f %s/%s.prototype -d %s/%s",
           directory, prodfull, current, directory);
   puts(pkg_create);
-  if (run_command(NULL, pkg_create))
+  if (run_command(NULL, "%s", pkg_create))
     return (1);
 
  /*

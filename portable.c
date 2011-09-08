@@ -1496,7 +1496,7 @@ write_depends(const char *prodname,	/* I - Product name */
 		fprintf(fp, "	if test $installed -ge %d -a $installed -le %d; then\n",
 	        	d->vernumber[0], d->vernumber[1]);
         	fprintf(fp, "		printf \"`eval_gettext \\\"Sorry, this software is incompatible with \\'%%s\\' version %%s to %%s!\\\"`\\n\" \"%s\" \"%d\" \"%d\"\n",
-	        	product, d->version[0], d->version[1]);
+                        product, d->vernumber[0], d->vernumber[1]);
         	fprintf(fp, "		printf \"`eval_gettext \\\"Please remove it first by running \\'%%s/%%s.remove\\'.\\\"`\\n\" \"%s\" \"%s\"\n",
 	        	SoftwareDir, product);
         	fputs("		exit 1\n", fp);
@@ -1616,7 +1616,7 @@ write_distfiles(const char *directory,	/* I - Directory */
 		time_t     deftime,	/* I - Default file time */
 	        const char *subpackage)	/* I - Subpackage */
 {
-  int		i, j;			/* Looping var */
+  int		i/*, j*/;			/* Looping var */
   int		havepatchfiles;		/* 1 if we have patch files, 0 otherwise */
   tarf_t	*tarfile;		/* Distribution tar file */
   char		prodfull[255],		/* Full name of product */
@@ -1849,7 +1849,7 @@ write_distfiles(const char *directory,	/* I - Directory */
        i --, file ++)
     if (strncmp(file->dst, "/usr", 4) == 0 && file->subpackage == subpackage)
       switch (tolower(file->type))
-      {
+      {*/
 //	case 'f' : /* Regular file */
 //	case 'c' : /* Config file */
 //	case 'i' : /* Init script */
@@ -1865,7 +1865,7 @@ write_distfiles(const char *directory,	/* I - Directory */
 
             if (isupper(file->type & 255))
               pusrsize += (srcstat.st_size + 1023) / 1024;
-
+*/
            /*
 	    * Configuration files are extracted to the config file name with
 	    * .N appended; add a bit of script magic to check if the config
@@ -1902,7 +1902,7 @@ write_distfiles(const char *directory,	/* I - Directory */
 	      return (1);
 	    }
 	    break;
-
+*/
 //	case 'd' : /* Create directory */
 /*            if (Verbosity > 1)
 	      printf("%s...\n", file->dst);
@@ -1912,7 +1912,7 @@ write_distfiles(const char *directory,	/* I - Directory */
             if (isupper(file->type & 255))
               pusrsize ++;
 	    break;
-
+*/
 //	case 'l' : /* Link file */
 /*            if (Verbosity > 1)
 	      printf("%s -> %s...\n", file->src, file->dst);

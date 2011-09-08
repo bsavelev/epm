@@ -192,7 +192,7 @@ gui_get_installed(void)
 	  if (!strncmp(line, "#%product ", 10))
 	    strncpy(temp->name, line + 10, sizeof(temp->name) - 1);
 	  else if (!strncmp(line, "#%version ", 10))
-	    sscanf(line + 10, "%31s%s", temp->version, &(temp->fulver));
+	    sscanf(line + 10, "%31s%s", temp->version, temp->fulver);
 	  else if (!strncmp(line, "#%rootsize ", 11))
 	    temp->rootsize = atoi(line + 11);
 	  else if (!strncmp(line, "#%usrsize ", 10))

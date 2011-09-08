@@ -318,7 +318,7 @@ get_dists(const char *d)	// I - Directory to look in
 	if (strncmp(line, "#%product ", 10) == 0)
 	  strncpy(temp->name, line + 10, sizeof(temp->name) - 1);
 	else if (strncmp(line, "#%version ", 10) == 0)
-	  sscanf(line + 10, "%31s%s", temp->version, &(temp->fulver));
+	  sscanf(line + 10, "%31s%s", temp->version, temp->fulver);
 	else if (strncmp(line, "#%rootsize ", 11) == 0)
 	  temp->rootsize = atoi(line + 11);
 	else if (strncmp(line, "#%usrsize ", 10) == 0)
@@ -453,7 +453,6 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
   int		pid;			// Process ID
 #endif // !__APPLE__
 
-
   fdfile = fopen("install.log", "a+");
   sprintf(command, "**** %s ****", dist->name);
   InstallLog->add(command);
@@ -484,15 +483,27 @@ install_dist(const gui_dist_t *dist)	// I - Distribution to install
   fds[0] = fileno(fp);
 #else
   // Fork the command and redirect errors and info to stdout...
-  pipe(fds);
+  if (pipe(fds)==-1)
+  {
+    fprintf(stderr, "epm: Unable to pipe - %s\n", strerror(errno));
+    return (1);
+  }
 
   if ((pid = fork()) == 0)
   {
     // Child comes here; start by redirecting stdout and stderr...
     close(1);
     close(2);
-    dup(fds[1]);
-    dup(fds[1]);
+    if (dup(fds[1])==-1)
+    {
+      fprintf(stderr, "epm: Unable to dup - %s\n", strerror(errno));
+      return (1);
+    }
+    if (dup(fds[1])==-1)
+    {
+      fprintf(stderr, "epm: Unable to dup - %s\n", strerror(errno));
+      return (1);
+    }
 
     // Close the original pipes...
     close(fds[0]);

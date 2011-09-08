@@ -193,7 +193,7 @@ typedef struct				/**** File to install ****/
 		src[512],		/* Source path */
 		dst[512],		/* Destination path */
 		options[10240];		/* File options */
-  const char	*subpackage;		/* Sub-package name */
+  char		*subpackage;		/* Sub-package name */
   licf_t	license;		/* Path to license or 0 if common */
   char		*copyrights[256];	/* Sequence of copyright notices */
 } file_t;
@@ -357,6 +357,7 @@ extern int	unlink_package(const char *ext, const char *prodname,
 			       dist_t *dist, const char *subpackage);
 extern int	write_dist(const char *listname, dist_t *dist);
 extern char	*copyrights(dist_t  *dist);
+char*		old_format_vernumber(const char *version);
 
 
 #  ifdef __cplusplus

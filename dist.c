@@ -429,7 +429,7 @@ add_file(dist_t     *dist,		/* I - Distribution */
   file = dist->files + dist->num_files;
   dist->num_files ++;
 
-  file->subpackage = subpkg;
+  file->subpackage = (char *)subpkg;
 
   memset(file->copyrights, 0, 256*sizeof(char *));
   file->license.src[0]=0;
@@ -482,7 +482,7 @@ add_subpackage(dist_t     *dist,	/* I - Distribution */
  * 'add_copyright()' - Add a copyright to the distribution.
  */
 
-char *					/* O - Copyright pointer */
+const char *				/* O - Copyright pointer */
 add_copyright(dist_t     *dist,		/* I - Distribution */
               const char *cpr)		/* I - Copyright string */
 {
@@ -555,7 +555,7 @@ add_license(dist_t     *dist,		/* I - Distribution */
   strncpy(dist->licenses[ind].src, license, 255);
   strncpy(dist->licenses[ind].dst, legaldir, 255);
   strcat(dist->licenses[ind].dst, "/");
-  strcat(dist->licenses[ind].dst, basename(license));
+  strcat(dist->licenses[ind].dst, basename((char *)license));
   dist->licenses[ind].noinst=noinst;
 
   dist->num_licenses++;
@@ -1006,7 +1006,7 @@ set_file_license(file_t *file, const char *licsrc, const char *subpkg)
   if (!legaldir) {
     fprintf(stderr,
             "epm: Adding license '%s' to the file '%s' before %%legaldir, "
-            "in subpackage '%s'.\n", licsrc, file->src, subpkg);
+            "in subpackage '%s'.\n", (char *)licsrc, file->src, subpkg);
     return (0);
   }
 
@@ -1014,7 +1014,7 @@ set_file_license(file_t *file, const char *licsrc, const char *subpkg)
 
   strcpy(file->license.dst, legaldir);
   strcat(file->license.dst, "/");
-  strcat(file->license.dst, basename(licsrc));
+  strcat(file->license.dst, basename((char *)licsrc));
 
   return (1);
 }
@@ -1058,7 +1058,7 @@ gint sort_by_license(gconstpointer *a, gconstpointer *b)
   if (!lica && !licb)
     return 0;
   else if (!lica || !licb)
-    return (int)a > (int)b;
+    return (long)a > (long)b;
 
   return strcmp(lica, licb);
 }
@@ -1071,7 +1071,7 @@ gint sort_by_filename(gconstpointer *a, gconstpointer *b)
   if (!fnamea && !fnameb)
     return 0;
   else if (!fnamea || !fnameb)
-    return (int)a > (int)b;
+    return (long)a > (long)b;
 
   return strcmp(fnamea, fnameb);
 }
@@ -1085,7 +1085,6 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   int i, j, k;
   file_t *file;
   GSList *it;
-  const char *prev_lic=0;
   char buf[512];
 
 
@@ -1093,11 +1092,10 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   if (!legaldir) {
     fprintf(stderr, "epm: Adding copyright before %%legaldir, "
             "in subpackage '%s'.\n", subpkg);
-    return (NULL);
+    return (0);
   }
 
   char filename[512];
-  char filename_tmp[512];
   strcpy(filename, directory);
   strcat(filename, "/");
   strcat(filename, ProductName);
@@ -1134,7 +1132,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   GSList *list=NULL;
   for (i=0, file=dist->files; i<dist->num_files; ++i, ++file)
     list=g_slist_prepend(list, file);
-  list=g_slist_sort(list, sort_by_filename);
+  list=g_slist_sort(list, (GCompareFunc)sort_by_filename);
   int f=0;
 
   for (it=list; it; it=it->next) {
@@ -1205,7 +1203,7 @@ add_copyright_files(dist_t	*dist,		/* I - Distribution data */
  * 'add_license_files()' - Adds common and file licenses to the package.
  */
 
-int						/* O - 0==success, 1==error */
+void
 add_license_files(dist_t	*dist)		/* I - Distribution data */
 {
   int		i, j;			/* Looping var */
@@ -1906,7 +1904,7 @@ write_dist(const char *listname,	/* I - File to write to */
   if (dist->packager[0])
     fprintf(listfile, "%%packager %s\n", dist->packager);
   for (i = 0; i < dist->num_licenses; i ++)
-    fprintf(listfile, "%%license %s\n", dist->licenses[i]);
+    fprintf(listfile, "%%license %s\n", dist->licenses[i].src);
   if (dist->readme[0])
     fprintf(listfile, "%%readme %s\n", dist->readme);
 
@@ -2364,16 +2362,19 @@ get_line(char           *buffer,	/* I - Buffer to read into */
 		  }
 		}
 	match = SKIP_SYSTEM;
-	if ((plat[0] != NULL) && (namever_m[0] != NULL))
+	if ((plat[0] != NULL) && (namever_m[0] != NULL)) {
 	  if (strncasecmp(plat[0], namever_m[0], strlen(plat[0])) == 0) {
-	    if ((plat[1] != NULL) && (namever_m[1] != NULL))
+	    if ((plat[1] != NULL) && (namever_m[1] != NULL)) {
 	      if (strncasecmp(plat[1], namever_m[1], strlen(plat[1])) == 0) {
-		if ((plat[2] != NULL) && (namever_m[2] != NULL))
-		  if (strncasecmp(plat[2], namever_m[2], strlen(plat[2])) != 0) {
+		if ((plat[2] != NULL) && (namever_m[2] != NULL)) {
+		  if (strncasecmp(plat[2], namever_m[2], strlen(plat[2]))!=0) {
 		    match = 0;
 		  }
+                }
 	      } else { match = 0; }
+            }
 	  } else { match = 0; }
+        }
 
 /*
           if ((ptr = strchr(value, '-')) != NULL)

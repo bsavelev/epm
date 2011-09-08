@@ -2268,24 +2268,15 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("		esac\n", scriptfile);
     fputs("	done\n", scriptfile);
   }
-
   fputs("	clear\n", scriptfile);
-  fputs("	sc_name=`basename $0`\n", scriptfile);
-  fputs("	cfile=`mktemp /tmp/$sc_name.XXXXXXXXXX`\n", scriptfile);
-  fputs("	chmod 644 $cfile\n", scriptfile);
-  fputs("	echo >> $cfile\n", scriptfile);
-  fputs("	echo ' List of Copyrights' >> $cfile\n", scriptfile);
-  fputs("	echo >> $cfile\n", scriptfile);
-  fprintf(scriptfile, "	f=%s.COPYRIGHTS\n", prodfull);
+  fputs("	echo\n", scriptfile);
+  fputs("	echo ' List of Copyrights'\n", scriptfile);
+  fputs("	echo\n", scriptfile);
   fputs("	echo '---------------------------------------------------' >> $cfile\n", scriptfile);
-  fprintf(scriptfile, "	echo Subpackage: %s >> $cfile\n", prodfull);
-  fputs("	cat $f >> $cfile\n", scriptfile);
-  fputs("	echo >> $cfile\n", scriptfile);
-  fputs("	echo ' Press Enter to continue the installation. ' >> $cfile\n", scriptfile);
-  fputs("	more $cfile\n", scriptfile);
-  fputs("	read n\n", scriptfile);
-  fputs("	rm -f $cfile\n", scriptfile);
-
+  fputs("	echo\n", scriptfile);
+  fprintf(scriptfile, "	echo Subpackage: %s\n", prodfull);
+  fprintf(scriptfile, "	cat %s.COPYRIGHTS\n", prodfull);
+  fputs("	echo '---------------------------------------------------' >> $cfile\n", scriptfile);
   fputs("  fi\n", scriptfile);
   fputs("fi\n", scriptfile);
   fprintf(scriptfile, "if test -x %s/%s.remove -a x$DEPEND_RUN = xno ; then\n", SoftwareDir, prodfull);

@@ -2269,12 +2269,8 @@ write_install(dist_t     *dist,		/* I - Software distribution */
     fputs("	done\n", scriptfile);
   }
   fputs("	clear\n", scriptfile);
-  fputs("	echo\n", scriptfile);
   fputs("	echo ' List of Copyrights'\n", scriptfile);
-  fputs("	echo\n", scriptfile);
   fputs("	echo '---------------------------------------------------' >> $cfile\n", scriptfile);
-  fputs("	echo\n", scriptfile);
-  fprintf(scriptfile, "	echo Subpackage: %s\n", prodfull);
   fprintf(scriptfile, "	cat %s.COPYRIGHTS\n", prodfull);
   fputs("	echo '---------------------------------------------------' >> $cfile\n", scriptfile);
   fputs("  fi\n", scriptfile);

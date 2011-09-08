@@ -484,7 +484,7 @@ write_combined(const char *title,	/* I - Title */
 		"	<key>CFBundleDevelopmentRegion</key>\n"
 		"	<string>English</string>\n"
 		"	<key>NSHumanReadableCopyright</key>\n"
-		"	<string>Copyright %s</string>\n"
+		"	<string>%s</string>\n"
 		"	<key>CFAppleHelpAnchor</key>\n"
 		"	<string>help</string>\n"
 		"	<key>CFBundleName</key>\n"
@@ -498,7 +498,7 @@ write_combined(const char *title,	/* I - Title */
 		"	<key>CFBundleShortVersionString</key>\n"
 		"	<string>%s</string>\n"
 		"	<key>CFBundleGetInfoString</key>\n"
-		"	<string>%s, Copyright %s</string>\n"
+		"	<string>%s, %s</string>\n"
 		"    </dict>\n"
 		"</plist>\n",
             dist->version,
@@ -796,7 +796,7 @@ write_combined(const char *title,	/* I - Title */
 		"	<key>CFBundleDevelopmentRegion</key>\n"
 		"	<string>English</string>\n"
 		"	<key>NSHumanReadableCopyright</key>\n"
-		"	<string>Copyright %s</string>\n"
+		"	<string>%s</string>\n"
 		"	<key>CFAppleHelpAnchor</key>\n"
 		"	<string>help</string>\n"
 		"	<key>CFBundleName</key>\n"
@@ -810,7 +810,7 @@ write_combined(const char *title,	/* I - Title */
 		"	<key>CFBundleShortVersionString</key>\n"
 		"	<string>%s</string>\n"
 		"	<key>CFBundleGetInfoString</key>\n"
-		"	<string>%s, Copyright %s</string>\n"
+		"	<string>%s, %s</string>\n"
 		"    </dict>\n"
 		"</plist>\n",
             dist->version,
@@ -2187,7 +2187,7 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   fputs("  DEPEND_RUN=\"yes\"\n", scriptfile);
   fputs("  RECURSION=\"yes\"\n", scriptfile);
   fputs("else\n", scriptfile);
-  fprintf(scriptfile, "  printf \"`eval_gettext \\\"Copyright %%s\\\"`\\n\" \"%s\"\n", copyrights(dist));
+  fprintf(scriptfile, "  printf \"`eval_gettext \\\"%%s\\\"`\\n\" \"%s\"\n", copyrights(dist));
   fputs("  DEPEND_RUN=\"no\"\n", scriptfile);
   fputs("  RECURSION=\"no\"\n", scriptfile);
   fputs("  ./\"`basename $0`\" --depend\n", scriptfile);
@@ -3151,7 +3151,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   fputs("\texit 1\n", scriptfile);
   fputs("fi\n", scriptfile);
 
-  fprintf(scriptfile, "printf \"`eval_gettext \\\"Copyright %%s\\\"`\\n\" \"%s\"\n", copyrights(dist));
+  fprintf(scriptfile, "printf \"`eval_gettext \\\"%%s\\\"`\\n\" \"%s\"\n", copyrights(dist));
   fputs("if test ! \"$*\" = \"now\"; then\n", scriptfile);
   fputs("	echo \"\"\n", scriptfile);
 //boris 2009-03-13

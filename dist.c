@@ -1116,7 +1116,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
   }
 
   for (i=0; i<dist->num_copyrights; ++i)
-    fprintf(fd, "Copyright © %s\n", dist->copyrights[i]);
+    fprintf(fd, "%s\n", dist->copyrights[i]);
   fprintf(fd, "All rights reserved.\n");
   fprintf(fd, "See file");
   if (dist->num_licenses>1)
@@ -2928,13 +2928,13 @@ copyrights(dist_t  *dist)		/* I - Distribution */
   for (i = 0; i < dist->num_copyrights; i ++)
   {
       if (i>0)
-          strncat(buf, "  ", 2560);
+          strcat(buf, "  ");
 
-      strncat(buf, "(c) ", 2560);
-      strncat(buf, dist->copyrights[i], 2560);
+      strcat(buf, "Copyright ");
+      strcat(buf, dist->copyrights[i]);
 
       if (i<dist->num_copyrights-1)
-          strncat(buf, ";", 2560);
+          strcat(buf, "; ");
   }
 
   return buf[0] ? buf : (NULL);

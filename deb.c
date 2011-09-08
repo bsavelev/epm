@@ -273,7 +273,7 @@ make_subpackage(const char     *prodname,
     }
   }
   fputs("\n", fp);  
-//  fprintf(fp, " Copyright: %s\n", copyrights(dist));
+//  fprintf(fp, " %s\n", copyrights(dist));
   for (i = 0; i < dist->num_descriptions; i ++)
     if (dist->descriptions[i].subpackage == subpackage)
       fprintf(fp, " %s\n", dist->descriptions[i].description);

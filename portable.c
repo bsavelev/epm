@@ -240,6 +240,16 @@ clean_distfiles(const char *directory,	/* I - Directory */
     }
   }
 
+  /* Remove additional licenses (marked by lic()). */
+  for (i = dist->num_files, file = dist->files; i > 0; i --, file ++) {
+    int lic=get_option(file, "lic", 0) ? 1 : 0;
+    if (lic) {
+      snprintf(filename, sizeof(filename), "%s/%s", directory,
+               basename(file->src));
+      unlink(filename);
+    }
+  }
+
   snprintf(filename, sizeof(filename), "%s/%s.patch", directory, prodfull);
   unlink(filename);
 

@@ -644,6 +644,10 @@ make_subpackage(
     unlink(postinstallname);
     unlink(preremovename);
     unlink(postremovename);
+
+    snprintf(filename, sizeof(filename), "%s/%s.COPYRIGHTS",
+             directory, prodfull);
+    unlink(filename);
   }
 
   return (0);

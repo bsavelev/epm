@@ -501,6 +501,15 @@ make_rpm(int            format,		/* I - Subformat */
 	unlink_package("rpm", prodname, directory, platname, dist,
                        dist->subpackages[i]);
     }
+
+    snprintf(filename, sizeof(filename), "%s/%s.COPYRIGHTS",
+             directory, prodname);
+    unlink(filename);
+    for (i = 0; i < dist->num_subpackages; i ++) {
+      snprintf(filename, sizeof(filename), "%s/%s.COPYRIGHTS",
+               directory, dist->subpackages[i]);
+      unlink(filename);
+    }
   }
 
   return (0);

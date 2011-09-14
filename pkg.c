@@ -683,6 +683,10 @@ make_subpackage(
       unlink(postremove);
     if (request[0])
       unlink(request);
+
+    snprintf(filename, sizeof(filename), "%s/%s.COPYRIGHTS",
+             directory, prodfull);
+    unlink(filename);
   }
 
   return (0);

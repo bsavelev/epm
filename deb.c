@@ -121,24 +121,36 @@ make_deb(const char     *prodname,	/* I - Product short name */
   * Remove temporary files...
   */
 
-  if (!KeepFiles && dist->num_subpackages)
+  if (!KeepFiles)
   {
     if (Verbosity)
       puts("Removing temporary distribution files...");
 
-   /*
-    * Remove .deb files since they are now in a .tgz file...
-    */
+    if (dist->num_subpackages)
+    {
+      /*
+       * Remove .deb files since they are now in a .tgz file...
+       */
 
-    unlink_package("deb", prodname, directory, platname, dist, NULL);
+      unlink_package("deb", prodname, directory, platname, dist, NULL);
 
+      for (i = 0; i < dist->num_subpackages; i ++)
+        unlink_package("deb", prodname, directory, platname, dist,
+                       dist->subpackages[i]);
+    }
+
+    snprintf(filename, sizeof(filename), "%s/%s.COPYRIGHTS",
+             directory, prodname);
+    unlink(filename);
     for (i = 0; i < dist->num_subpackages; i ++)
-      unlink_package("deb", prodname, directory, platname, dist,
-                     dist->subpackages[i]);
-  }
+    {
+      snprintf(filename, sizeof(filename), "%s/%s.COPYRIGHTS",
+               directory, dist->subpackages[i]);
+      unlink(filename);
+    }
 
-  if (!KeepFiles)
     run_command(NULL, "/bin/rm -rf %s", TempDir);
+  }
 
   return (0);
 }

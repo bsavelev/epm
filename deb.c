@@ -144,8 +144,8 @@ make_deb(const char     *prodname,	/* I - Product short name */
     unlink(filename);
     for (i = 0; i < dist->num_subpackages; i ++)
     {
-      snprintf(filename, sizeof(filename), "%s/%s.COPYRIGHTS",
-               directory, dist->subpackages[i]);
+      snprintf(filename, sizeof(filename), "%s/%s-%s.COPYRIGHTS",
+               directory, prodname, dist->subpackages[i]);
       unlink(filename);
     }
 

@@ -2280,9 +2280,9 @@ write_install(dist_t     *dist,		/* I - Software distribution */
   }
   fputs("	clear\n", scriptfile);
   fputs("	echo ' List of Copyrights'\n", scriptfile);
-  fputs("	echo '---------------------------------------------------", scriptfile);
+  fputs("	echo '---------------------------------------------------'\n", scriptfile);
   fprintf(scriptfile, "	cat %s.COPYRIGHTS\n", prodfull);
-  fputs("	echo '---------------------------------------------------", scriptfile);
+  fputs("	echo '---------------------------------------------------'\n", scriptfile);
   fputs("  fi\n", scriptfile);
   fputs("fi\n", scriptfile);
   fprintf(scriptfile, "if test -x %s/%s.remove -a x$DEPEND_RUN = xno ; then\n", SoftwareDir, prodfull);

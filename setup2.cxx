@@ -1208,7 +1208,17 @@ void update_control(int from) {
     if (!stat(postin_script, &postin_info))
       res = run_command(NULL, "%s", POSTIN_SCRIPT);
     if (CheckPostin->value() != 0)
+    {
       res = run_command(NULL, "%s", POSTIN_I_SCRIPT);
+      if (res==100) {
+        const int strlength=1024;
+        char fname[strlength];
+        fl_filename_absolute(fname, strlength-1, POSTIN_SCRIPT);
+        fl_message(gettext("No supported terminal found. Please run \"%s\" "
+                           "in the terminal of your choice to configure "
+                           "your Dr.Web installation."), fname);
+      }
+    }
     sprintf(postin, "POSTIN-MSG");
     if (!stat(postin, &postin_info))
     {

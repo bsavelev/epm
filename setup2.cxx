@@ -1214,7 +1214,7 @@ void update_control(int from) {
         const int strlength=1024;
         char fname[strlength];
         fl_filename_absolute(fname, strlength-1, POSTIN_SCRIPT);
-        fl_message(gettext("No supported terminal found. Please run \"%s\" "
+        fl_message(gettext("No supported terminal found. Please run\n\"%s\"\n"
                            "in the terminal of your choice to configure "
                            "your Dr.Web installation."), fname);
       }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2011-08-01 18:53+0400\n"
+"POT-Creation-Date: 2011-09-20 17:24+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,223 +16,236 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: setup.cxx:1822
+#: setup.cxx:1824
 msgid "Install"
 msgstr ""
 
-#: setup.cxx:1824 uninst.cxx:1798
+#: setup.cxx:1826 uninst.cxx:1798
 msgid "Welcome"
 msgstr ""
 
-#: setup.cxx:1828
+#: setup.cxx:1830
 msgid "Install Type"
 msgstr ""
 
-#: setup.cxx:1833 uninst.cxx:1802
+#: setup.cxx:1835 uninst.cxx:1802
 msgid "Select Software"
 msgstr ""
 
-#: setup.cxx:1838 uninst.cxx:1807
+#: setup.cxx:1840 uninst.cxx:1807
 msgid "Confirm"
 msgstr ""
 
-#: setup.cxx:1843
+#: setup.cxx:1845
 msgid "License"
 msgstr ""
 
-#: setup.cxx:1848
+#: setup.cxx:1850
 msgid "Installing"
 msgstr ""
 
-#: setup.cxx:1853
+#: setup.cxx:1855
 msgid "Finish"
 msgstr ""
 
-#: setup.cxx:1877
+#: setup.cxx:1879
 msgid "Select the installation type:"
 msgstr ""
 
-#: setup.cxx:1931
+#: setup.cxx:1933
 msgid "Select the software you want to install:"
 msgstr ""
 
-#: setup.cxx:1934
+#: setup.cxx:1936
 msgid " Available Software:"
 msgstr ""
 
-#: setup.cxx:1943
+#: setup.cxx:1945
 msgid "0k marked for installation."
 msgstr ""
 
-#: setup.cxx:1946 uninst.cxx:1853
+#: setup.cxx:1948 uninst.cxx:1853
 msgid "Select all"
 msgstr ""
 
-#: setup.cxx:1949 uninst.cxx:1856
+#: setup.cxx:1951 uninst.cxx:1856
 msgid "Select none"
 msgstr ""
 
-#: setup.cxx:1960
+#: setup.cxx:1962
 msgid "Confirm your software selections below:"
 msgstr ""
 
-#: setup.cxx:1963
+#: setup.cxx:1965
 msgid "Selected Software:"
 msgstr ""
 
-#: setup.cxx:1975
+#: setup.cxx:1977
 msgid "Dr.Web License"
 msgstr ""
 
-#: setup.cxx:1980
+#: setup.cxx:1982
 msgid "Copyrights"
 msgstr ""
 
-#: setup.cxx:1989
+#: setup.cxx:1991
 msgid "Accept and install"
 msgstr ""
 
-#: setup.cxx:1995
+#: setup.cxx:1997
 msgid "Cancel installation"
 msgstr ""
 
-#: setup.cxx:2002
+#: setup.cxx:2004
 msgid "Select language:"
 msgstr ""
 
-#: setup.cxx:2006
+#: setup.cxx:2008
 msgid "License Agreement"
 msgstr ""
 
-#: setup.cxx:2017 uninst.cxx:1881
+#: setup.cxx:2019 uninst.cxx:1881
 msgid "Progress Label..."
 msgstr ""
 
-#: setup.cxx:2024
+#: setup.cxx:2026
 msgid "Run interactive postinstall script"
 msgstr ""
 
-#: setup.cxx:2035
+#: setup.cxx:2037
 msgid "Postinstall information:"
 msgstr ""
 
-#: setup.cxx:2047 uninst.cxx:1899
+#: setup.cxx:2049 uninst.cxx:1899
 msgid "@-2< Back"
 msgstr ""
 
-#: setup.cxx:2050 uninst.cxx:1902
+#: setup.cxx:2052 uninst.cxx:1902
 msgid "Next @-2>"
 msgstr ""
 
-#: setup.cxx:2053 setup2.cxx:1042 setup2.cxx:1113 setup2.cxx:1198
+#: setup.cxx:2055 setup2.cxx:1077 setup2.cxx:1148 setup2.cxx:1245
 #: uninst.cxx:1905 uninst2.cxx:418
 msgid "Cancel"
 msgstr ""
 
-#: setup2.cxx:234
+#: setup2.cxx:246
 msgid "You must be logged in as root to run setup!"
 msgstr ""
 
-#: setup2.cxx:404
+#: setup2.cxx:416
 msgid "No software found to install!"
 msgstr ""
 
-#: setup2.cxx:418
+#: setup2.cxx:430
 msgid " (new)"
 msgstr ""
 
-#: setup2.cxx:423
+#: setup2.cxx:435
 msgid " (downgrade)"
 msgstr ""
 
-#: setup2.cxx:428
+#: setup2.cxx:440
 msgid " (installed)"
 msgstr ""
 
-#: setup2.cxx:433
+#: setup2.cxx:445
 msgid " (upgrade)"
 msgstr ""
 
-#: setup2.cxx:480
+#: setup2.cxx:491
 msgid "Failed to execute install script!"
 msgstr ""
 
-#: setup2.cxx:513
+#: setup2.cxx:536
 msgid "Unable to install"
 msgstr ""
 
-#: setup2.cxx:630
+#: setup2.cxx:653
 #, c-format
 msgid ""
 "%s requires %s to be installed, but it is not available for installation."
 msgstr ""
 
-#: setup2.cxx:643
+#: setup2.cxx:666
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please remove it before installing this software."
 msgstr ""
 
-#: setup2.cxx:660
+#: setup2.cxx:683
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please deselect it before installing this "
 "software."
 msgstr ""
 
-#: setup2.cxx:724
+#: setup2.cxx:747
 msgid ""
 "This program allows you to install the following software:\n"
 "<ul>\n"
 msgstr ""
 
-#: setup2.cxx:796
+#: setup2.cxx:819
 msgid "Custom Configuration"
 msgstr ""
 
-#: setup2.cxx:798
+#: setup2.cxx:821
 msgid "Dr.Web for Linux Workstations"
 msgstr ""
 
-#: setup2.cxx:1082
+#: setup2.cxx:908
+msgid "The installation type:"
+msgstr ""
+
+#: setup2.cxx:1117
 #, c-format
 msgid "License is not accepted!"
 msgstr ""
 
-#: setup2.cxx:1101
+#: setup2.cxx:1136
 msgid "Installation canceled!"
 msgstr ""
 
-#: setup2.cxx:1103 setup2.cxx:1139 setup2.cxx:1163 uninst2.cxx:432
+#: setup2.cxx:1138 setup2.cxx:1174 setup2.cxx:1198 uninst2.cxx:432
 msgid "Close"
 msgstr ""
 
-#: setup2.cxx:1123
+#: setup2.cxx:1158
 #, c-format
 msgid "Installing %s v%s..."
 msgstr ""
 
-#: setup2.cxx:1138
+#: setup2.cxx:1173
 msgid "Installation failed"
 msgstr ""
 
-#: setup2.cxx:1143
+#: setup2.cxx:1178
 msgid "Installation complete"
 msgstr ""
 
-#: setup2.cxx:1166
+#: setup2.cxx:1201
 msgid "<span>Installation failed. See install.log for details.</span>"
 msgstr ""
 
-#: setup2.cxx:1187
+#: setup2.cxx:1217
+#, c-format
+msgid ""
+"No installed terminal emulator found.\n"
+"Interactive postinstall script could not be launched.\n"
+"Please run \"%s\"\n"
+"in the terminal of your choice to configure your Dr.Web installation."
+msgstr ""
+
+#: setup2.cxx:1234
 msgid "<span>Installation complete.</span>"
 msgstr ""
 
-#: setup2.cxx:1408
+#: setup2.cxx:1455
 msgid "English"
 msgstr ""
 
-#: setup2.cxx:1415
+#: setup2.cxx:1462
 msgid "Russian"
 msgstr ""
 
@@ -287,11 +300,11 @@ msgstr ""
 msgid "Removal Complete"
 msgstr ""
 
-#: uninst2.cxx:559
+#: uninst2.cxx:571
 msgid "Unable to remove"
 msgstr ""
 
-#: uninst2.cxx:634
+#: uninst2.cxx:646
 msgid "No software found to remove!"
 msgstr ""
 

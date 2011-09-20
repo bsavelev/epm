@@ -2,161 +2,161 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 4.2\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2011-08-01 18:53+0400\n"
-"PO-Revision-Date: 2011-08-01 18:56+0400\n"
+"POT-Creation-Date: 2011-09-20 17:24+0400\n"
+"PO-Revision-Date: 2011-09-20 17:32+0400\n"
 "Last-Translator: Natalia Zdanova <n.zdanova@drweb.com>\n"
 "Language-Team: Natalia Zdanova <n.zdanova@drweb.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: setup.cxx:1822
+#: setup.cxx:1824
 msgid "Install"
 msgstr "Установка компонентов"
 
-#: setup.cxx:1824 uninst.cxx:1798
+#: setup.cxx:1826 uninst.cxx:1798
 msgid "Welcome"
 msgstr "Начало"
 
-#: setup.cxx:1828
+#: setup.cxx:1830
 msgid "Install Type"
 msgstr "Тип установки"
 
-#: setup.cxx:1833 uninst.cxx:1802
+#: setup.cxx:1835 uninst.cxx:1802
 msgid "Select Software"
 msgstr "Выбор пакетов"
 
-#: setup.cxx:1838 uninst.cxx:1807
+#: setup.cxx:1840 uninst.cxx:1807
 msgid "Confirm"
 msgstr "Подтверждениe"
 
-#: setup.cxx:1843
+#: setup.cxx:1845
 msgid "License"
 msgstr "Лицензия"
 
-#: setup.cxx:1848
+#: setup.cxx:1850
 msgid "Installing"
 msgstr "Установка"
 
-#: setup.cxx:1853
+#: setup.cxx:1855
 msgid "Finish"
 msgstr "Завершение"
 
-#: setup.cxx:1877
+#: setup.cxx:1879
 msgid "Select the installation type:"
 msgstr "Выберите тип установки:"
 
-#: setup.cxx:1931
+#: setup.cxx:1933
 msgid "Select the software you want to install:"
 msgstr "Выберите компоненты, которые вы хотите установить:"
 
-#: setup.cxx:1934
+#: setup.cxx:1936
 msgid " Available Software:"
 msgstr "Доступные компоненты:"
 
-#: setup.cxx:1943
+#: setup.cxx:1945
 msgid "0k marked for installation."
 msgstr "0k отмечено для установки."
 
-#: setup.cxx:1946 uninst.cxx:1853
+#: setup.cxx:1948 uninst.cxx:1853
 msgid "Select all"
 msgstr "Выделить все"
 
-#: setup.cxx:1949 uninst.cxx:1856
+#: setup.cxx:1951 uninst.cxx:1856
 msgid "Select none"
 msgstr "Отменить выделение"
 
-#: setup.cxx:1960
+#: setup.cxx:1962
 msgid "Confirm your software selections below:"
 msgstr "Подтвердите ваш выбор:"
 
-#: setup.cxx:1963
+#: setup.cxx:1965
 msgid "Selected Software:"
 msgstr "Выбранные компоненты:"
 
-#: setup.cxx:1975
+#: setup.cxx:1977
 msgid "Dr.Web License"
 msgstr "Лицензия Dr.Web"
 
-#: setup.cxx:1980
+#: setup.cxx:1982
 msgid "Copyrights"
 msgstr "Авторское право"
 
-#: setup.cxx:1989
+#: setup.cxx:1991
 msgid "Accept and install"
 msgstr "Принять лицензионное соглашение и установить программу"
 
-#: setup.cxx:1995
+#: setup.cxx:1997
 msgid "Cancel installation"
 msgstr "Прекратить установку"
 
-#: setup.cxx:2002
+#: setup.cxx:2004
 msgid "Select language:"
 msgstr "Выбрать язык:"
 
-#: setup.cxx:2006
+#: setup.cxx:2008
 msgid "License Agreement"
 msgstr "Лицензионное соглашение"
 
-#: setup.cxx:2017 uninst.cxx:1881
+#: setup.cxx:2019 uninst.cxx:1881
 msgid "Progress Label..."
 msgstr "Индикатор выполнения..."
 
-#: setup.cxx:2024
+#: setup.cxx:2026
 msgid "Run interactive postinstall script"
 msgstr "Запустить интерактивный установочный скрипт"
 
-#: setup.cxx:2035
+#: setup.cxx:2037
 msgid "Postinstall information:"
 msgstr "Заключительный этап:"
 
-#: setup.cxx:2047 uninst.cxx:1899
+#: setup.cxx:2049 uninst.cxx:1899
 msgid "@-2< Back"
 msgstr "@-2< Назад"
 
-#: setup.cxx:2050 uninst.cxx:1902
+#: setup.cxx:2052 uninst.cxx:1902
 msgid "Next @-2>"
 msgstr "Вперед @-2>"
 
-#: setup.cxx:2053 setup2.cxx:1042 setup2.cxx:1113 setup2.cxx:1198
+#: setup.cxx:2055 setup2.cxx:1077 setup2.cxx:1148 setup2.cxx:1245
 #: uninst.cxx:1905 uninst2.cxx:418
 msgid "Cancel"
 msgstr "Отменить"
 
-#: setup2.cxx:234
+#: setup2.cxx:246
 msgid "You must be logged in as root to run setup!"
 msgstr ""
 "Вы должны иметь привилегии администратора для запуска процесса установки!"
 
-#: setup2.cxx:404
+#: setup2.cxx:416
 msgid "No software found to install!"
 msgstr "Не обнаружено компонентов для установки!"
 
-#: setup2.cxx:418
+#: setup2.cxx:430
 msgid " (new)"
 msgstr "(новый)"
 
-#: setup2.cxx:423
+#: setup2.cxx:435
 msgid " (downgrade)"
 msgstr " (downgrade)"
 
-#: setup2.cxx:428
+#: setup2.cxx:440
 msgid " (installed)"
 msgstr " (установлен)"
 
-#: setup2.cxx:433
+#: setup2.cxx:445
 msgid " (upgrade)"
 msgstr " (обновление)"
 
-#: setup2.cxx:480
+#: setup2.cxx:491
 msgid "Failed to execute install script!"
 msgstr "Не удалось запустить установочный скрипт!"
 
-#: setup2.cxx:513
+#: setup2.cxx:536
 msgid "Unable to install"
 msgstr "Невозможно установить"
 
-#: setup2.cxx:630
+#: setup2.cxx:653
 #, c-format
 msgid ""
 "%s requires %s to be installed, but it is not available for installation."
@@ -164,7 +164,7 @@ msgstr ""
 "Для установки %s должен быть предварительно установлен %s, однако он "
 "недоступен для установки."
 
-#: setup2.cxx:643
+#: setup2.cxx:666
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please remove it before installing this software."
@@ -172,7 +172,7 @@ msgstr ""
 "%s несовместим с %s. Пожалуйста, удалите его перед установкой данного "
 "компонента."
 
-#: setup2.cxx:660
+#: setup2.cxx:683
 #, c-format
 msgid ""
 "%s is incompatible with %s. Please deselect it before installing this "
@@ -181,7 +181,7 @@ msgstr ""
 "%s несовместим с %s. Пожалуйста, снимите соответствующее выделение перед "
 "установкой данного компонента."
 
-#: setup2.cxx:724
+#: setup2.cxx:747
 msgid ""
 "This program allows you to install the following software:\n"
 "<ul>\n"
@@ -189,55 +189,73 @@ msgstr ""
 "Данная программа позволит вам установить следующие компоненты:\n"
 "<ul>\n"
 
-#: setup2.cxx:796
+#: setup2.cxx:819
 msgid "Custom Configuration"
 msgstr "Выборочная установка"
 
-#: setup2.cxx:798
+#: setup2.cxx:821
 msgid "Dr.Web for Linux Workstations"
 msgstr "Антивирус Dr.Web для рабочих станций Linux"
 
-#: setup2.cxx:1082
+#: setup2.cxx:908
+msgid "The installation type:"
+msgstr "Тип установки:"
+
+#: setup2.cxx:1117
 #, c-format
 msgid "License is not accepted!"
 msgstr "Условия Лицензионного соглашения не приняты!"
 
-#: setup2.cxx:1101
+#: setup2.cxx:1136
 msgid "Installation canceled!"
 msgstr "Установка прекращена!"
 
-#: setup2.cxx:1103 setup2.cxx:1139 setup2.cxx:1163 uninst2.cxx:432
+#: setup2.cxx:1138 setup2.cxx:1174 setup2.cxx:1198 uninst2.cxx:432
 msgid "Close"
 msgstr "Закрыть"
 
-#: setup2.cxx:1123
+#: setup2.cxx:1158
 #, c-format
 msgid "Installing %s v%s..."
 msgstr "Устанавливается %s v%s..."
 
-#: setup2.cxx:1138
+#: setup2.cxx:1173
 msgid "Installation failed"
 msgstr "Не удалось произвести установку!"
 
-#: setup2.cxx:1143
+#: setup2.cxx:1178
 msgid "Installation complete"
 msgstr "Установка завершена"
 
-#: setup2.cxx:1166
+#: setup2.cxx:1201
 msgid "<span>Installation failed. See install.log for details.</span>"
 msgstr ""
 "<span>Не удалось установить программу. Обратитесь к install.log для "
 "получения более подробной информации о возникшей ошибке.</span>"
 
-#: setup2.cxx:1187
+#: setup2.cxx:1217
+#, c-format
+msgid ""
+"No installed terminal emulator found.\n"
+"Interactive postinstall script could not be launched.\n"
+"Please run \"%s\"\n"
+"in the terminal of your choice to configure your Dr.Web installation."
+msgstr ""
+"В системе не обнаружено эмулятора терминала.\n"
+"Интерактивный установочный скрипт не может быть запущен.\n"
+"Для настройки базовой функциональности данной установки\n"
+"Dr.Web, пожалуйста, запустите \"%s\"\n"
+"в терминале на ваш выбор."
+
+#: setup2.cxx:1234
 msgid "<span>Installation complete.</span>"
 msgstr "<span>Установка успешно завершена.</span>"
 
-#: setup2.cxx:1408
+#: setup2.cxx:1455
 msgid "English"
 msgstr "Английский"
 
-#: setup2.cxx:1415
+#: setup2.cxx:1462
 msgid "Russian"
 msgstr "Русский"
 
@@ -296,11 +314,11 @@ msgstr "Не удалось произвести удаление!"
 msgid "Removal Complete"
 msgstr "Удаление завершено"
 
-#: uninst2.cxx:559
+#: uninst2.cxx:571
 msgid "Unable to remove"
 msgstr "Невозможно удалить"
 
-#: uninst2.cxx:634
+#: uninst2.cxx:646
 msgid "No software found to remove!"
 msgstr "Не обнаружено компонентов для удаления!"
 

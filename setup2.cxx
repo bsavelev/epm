@@ -1216,7 +1216,7 @@ void update_control(int from) {
         fl_filename_absolute(fname, strlength-1, POSTIN_SCRIPT);
         fl_message(gettext("No installed terminal emulator found.\n"
                            "Interactive postinstall script could not be "
-                           "launched.\nPlease run \"%s\"\nin the terminal "
+                           "launched.\nPlease run\n\"%s\"\nin the terminal "
                            "of your choice to configure your Dr.Web "
                            "installation."), fname);
       }

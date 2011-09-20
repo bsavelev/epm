@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 4.2\n"
 "Report-Msgid-Bugs-To: n.zdanova@drweb.com\n"
-"POT-Creation-Date: 2011-09-20 17:24+0400\n"
-"PO-Revision-Date: 2011-09-20 17:32+0400\n"
+"POT-Creation-Date: 2011-09-20 18:09+0400\n"
+"PO-Revision-Date: 2011-09-20 18:10+0400\n"
 "Last-Translator: Natalia Zdanova <n.zdanova@drweb.com>\n"
 "Language-Team: Natalia Zdanova <n.zdanova@drweb.com>\n"
 "MIME-Version: 1.0\n"
@@ -234,17 +234,19 @@ msgstr ""
 "получения более подробной информации о возникшей ошибке.</span>"
 
 #: setup2.cxx:1217
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "No installed terminal emulator found.\n"
 "Interactive postinstall script could not be launched.\n"
-"Please run \"%s\"\n"
+"Please run\n"
+"\"%s\"\n"
 "in the terminal of your choice to configure your Dr.Web installation."
 msgstr ""
 "В системе не обнаружено эмулятора терминала.\n"
 "Интерактивный установочный скрипт не может быть запущен.\n"
 "Для настройки базовой функциональности данной установки\n"
-"Dr.Web, пожалуйста, запустите \"%s\"\n"
+"Dr.Web, пожалуйста, запустите\n"
+"\"%s\"\n"
 "в терминале на ваш выбор."
 
 #: setup2.cxx:1234

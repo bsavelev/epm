@@ -1,163 +1,97 @@
-/* config.h.in.  Generated from configure.in by autoheader.  */
+/* config.h.in.  Generated automatically from configure.in by autoheader 2.13.  */
 
-/* Define to 1 if translation of program messages to the user's native
-   language is requested. */
-#undef ENABLE_NLS
+/* Define if type char is unsigned and you are not using gcc.  */
+#ifndef __CHAR_UNSIGNED__
+#undef __CHAR_UNSIGNED__
+#endif
 
-/* Flag for compress */
-#undef EPM_COMPRESS
+/* Define to empty if the keyword does not work.  */
+#undef const
 
-/* Path to datadir */
-#undef EPM_DATADIR
+/* Define if you have the ANSI C header files.  */
+#undef STDC_HEADERS
 
-/* Path to gzip */
-#undef EPM_GZIP
-
-/* Path to libdir */
-#undef EPM_LIBDIR
-
-/* Path to objcopy */
-#undef EPM_OBJCOPY
-
-/* rpm arch arg */
-#undef EPM_RPMARCH
-
-/* rpmbuild path */
-#undef EPM_RPMBUILD
-
-/* RPM topdir */
-#undef EPM_RPMTOPDIR
-
-/* SoftwareDir path */
-#undef EPM_SOFTWARE
-
-/* Path to strip */
-#undef EPM_STRIP
-
-/* Version of software */
-#undef EPM_VERSION
-
-/* Define to 1 if you have the MacOS X function CFLocaleCopyCurrent in the
-   CoreFoundation framework. */
-#undef HAVE_CFLOCALECOPYCURRENT
-
-/* Define to 1 if you have the MacOS X function CFPreferencesCopyAppValue in
-   the CoreFoundation framework. */
-#undef HAVE_CFPREFERENCESCOPYAPPVALUE
-
-/* Define if the GNU dcgettext() function is already present or preinstalled.
-   */
-#undef HAVE_DCGETTEXT
-
-/* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
-   */
-#undef HAVE_DIRENT_H
-
-/* Define if the GNU gettext() function is already present or preinstalled. */
-#undef HAVE_GETTEXT
-
-/* Define if you have the iconv() function. */
-#undef HAVE_ICONV
-
-/* Define to 1 if you have the <inttypes.h> header file. */
-#undef HAVE_INTTYPES_H
-
-/* Define to 1 if you have the <memory.h> header file. */
-#undef HAVE_MEMORY_H
-
-/* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
-#undef HAVE_NDIR_H
-
-/* Define to 1 if you have the `snprintf' function. */
+/* Define if you have the snprintf function.  */
 #undef HAVE_SNPRINTF
 
-/* Define to 1 if you have the <stdint.h> header file. */
-#undef HAVE_STDINT_H
-
-/* Define to 1 if you have the <stdlib.h> header file. */
-#undef HAVE_STDLIB_H
-
-/* Define to 1 if you have the `strcasecmp' function. */
+/* Define if you have the strcasecmp function.  */
 #undef HAVE_STRCASECMP
 
-/* Define to 1 if you have the `strdup' function. */
+/* Define if you have the strdup function.  */
 #undef HAVE_STRDUP
+
+/* Define if you have the strlcat function.  */
+#undef HAVE_STRLCAT
+
+/* Define if you have the strlcpy function.  */
+#undef HAVE_STRLCPY
+
+/* Define if you have the strncasecmp function.  */
+#undef HAVE_STRNCASECMP
+
+/* Define if you have the vsnprintf function.  */
+#undef HAVE_VSNPRINTF
+
+/* Define if you have the <dirent.h> header file.  */
+#undef HAVE_DIRENT_H
+
+/* Define if you have the <ndir.h> header file.  */
+#undef HAVE_NDIR_H
+
+/* Define if you have the <sys/dir.h> header file.  */
+#undef HAVE_SYS_DIR_H
+
+/* Define if you have the <sys/ndir.h> header file.  */
+#undef HAVE_SYS_NDIR_H
 
 /* Have strings.h */
 #undef HAVE_STRINGS_H
 
-/* Define to 1 if you have the <string.h> header file. */
-#undef HAVE_STRING_H
-
-/* Define to 1 if you have the `strlcat' function. */
-#undef HAVE_STRLCAT
-
-/* Define to 1 if you have the `strlcpy' function. */
-#undef HAVE_STRLCPY
-
-/* Define to 1 if you have the `strncasecmp' function. */
-#undef HAVE_STRNCASECMP
-
-/* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
-   */
-#undef HAVE_SYS_DIR_H
+/* Have sys/param.h */
+#undef HAVE_SYS_PARAM_H
 
 /* Have sys/mount.h */
 #undef HAVE_SYS_MOUNT_H
 
-/* Define to 1 if you have the <sys/ndir.h> header file, and it defines `DIR'.
-   */
-#undef HAVE_SYS_NDIR_H
-
-/* Have sys/param.h */
-#undef HAVE_SYS_PARAM_H
-
 /* Have sys/statfs.h */
 #undef HAVE_SYS_STATFS_H
-
-/* Define to 1 if you have the <sys/stat.h> header file. */
-#undef HAVE_SYS_STAT_H
-
-/* Define to 1 if you have the <sys/types.h> header file. */
-#undef HAVE_SYS_TYPES_H
 
 /* Have sys/vfs.h */
 #undef HAVE_SYS_VFS_H
 
-/* Define to 1 if you have the <unistd.h> header file. */
-#undef HAVE_UNISTD_H
+/* Path to gzip */
+#undef EPM_GZIP
 
-/* Define to 1 if you have the `vsnprintf' function. */
-#undef HAVE_VSNPRINTF
+/* Path to strip */
+#undef EPM_STRIP
+
+/* Path to objcopy */
+#undef EPM_OBJCOPY
+
+/* Path to datadir */
+#undef EPM_DATADIR
+
+/* Path to libdir */
+#undef EPM_LIBDIR
 
 /* Path to localedir */
 #undef LOCALEDIR
 
-/* Define to the address where bug reports for this package should be sent. */
-#undef PACKAGE_BUGREPORT
+/* Version of software */
+#undef EPM_VERSION
 
-/* Define to the full name of this package. */
-#undef PACKAGE_NAME
+/* SoftwareDir path */
+#undef EPM_SOFTWARE
 
-/* Define to the full name and version of this package. */
-#undef PACKAGE_STRING
+/* RPM topdir */
+#undef EPM_RPMTOPDIR
 
-/* Define to the one symbol short name of this package. */
-#undef PACKAGE_TARNAME
+/* rpmbuild path */
+#undef EPM_RPMBUILD
 
-/* Define to the home page for this package. */
-#undef PACKAGE_URL
+/* rpm arch arg */
+#undef EPM_RPMARCH
 
-/* Define to the version of this package. */
-#undef PACKAGE_VERSION
+/* Flag for compress */
+#undef EPM_COMPRESS
 
-/* Define to 1 if you have the ANSI C header files. */
-#undef STDC_HEADERS
-
-/* Define to 1 if type `char' is unsigned and you are not using gcc.  */
-#ifndef __CHAR_UNSIGNED__
-# undef __CHAR_UNSIGNED__
-#endif
-
-/* Define to empty if `const' does not conform to ANSI C. */
-#undef const

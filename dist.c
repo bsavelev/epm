@@ -538,8 +538,11 @@ add_license(dist_t     *dist,		/* I - Distribution */
   const char *legaldir=get_legal_dir(subpkg);
 
   if (!legaldir) {
-    fprintf(stderr, "epm: Adding license '%s' before %%legaldir, "
-            "in subpackage '%s'.\n", license, subpkg);
+    fprintf(stderr, "epm: Adding license '%s' before %%legaldir ", license);
+    if (subpkg)
+      fprintf(stderr, "in subpackage '%s'.\n", subpkg);
+    else
+      fprintf(stderr, "in main subpackage.\n");
     return (NULL);
   }
 
@@ -1005,8 +1008,12 @@ set_file_license(file_t *file, const char *licsrc, const char *subpkg)
   const char *legaldir=get_legal_dir(subpkg);
   if (!legaldir) {
     fprintf(stderr,
-            "epm: Adding license '%s' to the file '%s' before %%legaldir, "
-            "in subpackage '%s'.\n", (char *)licsrc, file->src, subpkg);
+            "epm: Adding license '%s' to the file '%s' before %%legaldir, ",
+            (char *)licsrc, file->src);
+    if (subpkg)
+      fprintf(stderr, "in subpackage '%s'.\n", subpkg);
+    else
+      fprintf(stderr, "in main subpackage.\n");
     return (0);
   }
 
@@ -1090,8 +1097,11 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
 
   const char *legaldir=get_legal_dir(subpkg);
   if (!legaldir) {
-    fprintf(stderr, "epm: Adding copyright before %%legaldir, "
-            "in subpackage '%s'.\n", subpkg);
+    fprintf(stderr, "epm: Adding copyright before %%legaldir, ");
+    if (subpkg)
+      fprintf(stderr, "in subpackage '%s'.\n", subpkg);
+    else
+      fprintf(stderr, "in main subpackage.\n");
     return (0);
   }
 

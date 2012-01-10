@@ -1102,7 +1102,7 @@ write_copyright_file(dist_t	*dist,		/* I - Distribution data */
       fprintf(stderr, "in subpackage '%s'.\n", subpkg);
     else
       fprintf(stderr, "in main subpackage.\n");
-    return (0);
+    return (1);
   }
 
   char filename[512];
@@ -1774,7 +1774,9 @@ read_dist(const char     *prodname,	/* I - Product name */
 
   sort_dist_files(dist);
 
-  add_copyright_files(dist, directory);
+  if (add_copyright_files(dist, directory) != 0)
+    return 0;
+
   add_license_files(dist);
 
   free_legal_dir_hash();

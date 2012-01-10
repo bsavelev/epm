@@ -38,6 +38,7 @@ $srcdir=.
 
 # Product information
 %product ESP Package Manager
+%legaldir /tmp/epm.test
 %copyright 1999-2007 by Easy Software Products, All Rights Reserved.
 %copyright 2009-2011 by Dr.Web.
 %vendor Easy Software Products
@@ -79,6 +80,7 @@ EOF
 
 # Documentation
 %subpackage documentation
+%legaldir /tmp/epm.test/documentation
 %description Documentation
 f 0444 root sys ${docdir}/README $srcdir/README
 f 0444 root sys ${docdir}/COPYING $srcdir/COPYING
@@ -86,6 +88,7 @@ f 0444 root sys ${docdir}/epm-book.html $srcdir/doc/epm-book.html
 
 # Man pages
 %subpackage man
+%legaldir /tmp/epm.test/man
 %description Man pages
 f 0444 root sys ${mandir}/man1/epm.1 $srcdir/doc/epm.man
 f 0444 root sys ${mandir}/man1/epminstall.1 $srcdir/doc/epminstall.man

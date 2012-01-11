@@ -104,9 +104,12 @@ make_rpm(int            format,		/* I - Subformat */
     return (1);
   }
 
-  if (dist->release[0])
-    strlcpy(release, dist->release, sizeof(release));
-  else
+  if (dist->release[0]) {
+    int i=0, j=0;
+    for (; i<strlen(dist->release); ++i)
+      if (isalnum(dist->release[i]))
+        release[j++]=dist->release[i];
+  } else
     strlcpy(release, "0", sizeof(release));
 
 //for Debian RPM skip perl req:

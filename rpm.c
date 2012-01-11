@@ -109,6 +109,7 @@ make_rpm(int            format,		/* I - Subformat */
     for (; i<strlen(dist->release); ++i)
       if (isalnum(dist->release[i]))
         release[j++]=dist->release[i];
+    release[j]=0;
   } else
     strlcpy(release, "0", sizeof(release));
 

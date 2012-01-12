@@ -30,6 +30,10 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 
+void mycpy(char *dest, const char *src) {
+  size_t l = strlen(src);
+  memmove(dest, src, l+1);
+}
 
 /*
  * 'run_command()' - Run an external program.
@@ -90,10 +94,10 @@ run_command(const char *directory,	/* I - Directory for command or NULL */
 
       for (argptr ++; *argptr && *argptr != '\''; argptr ++)
         if (*argptr == '\\' && argptr[1])
-	  strcpy(argptr, argptr + 1);
+	  mycpy(argptr, argptr + 1);
 
       if (*argptr == '\'')
-        strcpy(argptr, argptr + 1);
+        mycpy(argptr, argptr + 1);
 
       argptr --;
     }
@@ -104,10 +108,10 @@ run_command(const char *directory,	/* I - Directory for command or NULL */
 
       for (argptr ++; *argptr && *argptr != '\"'; argptr ++)
         if (*argptr == '\\' && argptr[1])
-	  strcpy(argptr, argptr + 1);
+	  mycpy(argptr, argptr + 1);
 
       if (*argptr == '\"')
-        strcpy(argptr, argptr + 1);
+        mycpy(argptr, argptr + 1);
 
       argptr --;
     }

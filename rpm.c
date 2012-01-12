@@ -263,7 +263,7 @@ make_rpm(int            format,		/* I - Subformat */
   /* Create file with macros for rpmbuild. */
   char macfname[1024];
   sprintf(macfname, "%s/.rpmmacros", absdir);
-  FILE *fp=fopen(macfname, "w");
+  fp=fopen(macfname, "w");
   fprintf(fp, "%buildroot %s/buildroot\n", absdir);
 #ifdef EPM_RPMTOPDIR
   fprintf(fp, "%_topdir %s\n", absdir);

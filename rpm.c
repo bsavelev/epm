@@ -260,32 +260,28 @@ make_rpm(int            format,		/* I - Subformat */
   else
     build_option = "";
 
-  /* Create file with macros for rpmbuild. */
-  char macfname[1024];
-  sprintf(macfname, "%s/.rpmmacros", absdir);
-  fp=fopen(macfname, "w");
-  fprintf(fp, "%buildroot %s/buildroot\n", absdir);
-#ifdef EPM_RPMTOPDIR
-  fprintf(fp, "%_topdir %s\n", absdir);
-#endif
-  fclose(fp);
+  /* Prepare --define arguments. */
+  char def1[1024];
+  sprintf(def1, "--define='%%buildroot %s/buildroot'", absdir);
+  char def2[1024];
+  sprintf(def2, "--define='%%_topdir %s'", absdir);
 
-  char macros[1024];
-  sprintf(macros, "--macros=%s", macfname);
   if (!strcmp(platform->machine, "intel"))
   {
-    if (run_command(NULL, EPM_RPMBUILD " %s -bb "
-                    EPM_RPMARCH "i386 %s%s", macros, build_option, specname))
+    if (run_command(NULL, EPM_RPMBUILD " %s %s -bb "
+                    EPM_RPMARCH "i386 %s%s", def1, def2,
+                    build_option, specname))
       return (1);
   }
   else if (!strcmp(platform->machine, "ppc"))
   {
-    if (run_command(NULL, EPM_RPMBUILD " %s -bb "
-                    EPM_RPMARCH "powerpc %s%s", macros, build_option, specname))
+    if (run_command(NULL, EPM_RPMBUILD " %s %s -bb "
+                    EPM_RPMARCH "powerpc %s%s", def1, def2,
+                    build_option, specname))
       return (1);
   }
-  else if (run_command(NULL, EPM_RPMBUILD " %s -bb "
-                       EPM_RPMARCH "%s %s%s", macros, platform->machine,
+  else if (run_command(NULL, EPM_RPMBUILD " %s %s -bb "
+                       EPM_RPMARCH "%s %s%s", def1, def2, platform->machine,
                        build_option, specname))
     return (1);
 

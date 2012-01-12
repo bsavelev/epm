@@ -262,9 +262,9 @@ make_rpm(int            format,		/* I - Subformat */
 
   /* Prepare --define arguments. */
   char def1[1024];
-  sprintf(def1, "--define='%%buildroot %s/buildroot'", absdir);
+  sprintf(def1, "\"--define=%%buildroot %s/buildroot\"", absdir);
   char def2[1024];
-  sprintf(def2, "--define='%%_topdir %s'", absdir);
+  sprintf(def2, "\"--define=%%_topdir %s\"", absdir);
 
   if (!strcmp(platform->machine, "intel"))
   {

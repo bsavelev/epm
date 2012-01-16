@@ -70,6 +70,7 @@ AM_CXXFLAGS = $(ARCHFLAGS) $(OPTIM) $(EPM_CXXFLAGS)
 
 dummy: all epm.test.list
 	rm -rf dummy
+	mkdir dummy
 	./epm$(EXEEXT) -m dummy -a i386 epm epm.test.list
 	cd dummy && gzip -dc *.tar.gz | tar -xpPF - || true
 	cd dummy && mv -f epm.install epm.install.sh && \

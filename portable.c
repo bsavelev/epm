@@ -3414,6 +3414,7 @@ write_remove(dist_t     *dist,		/* I - Software distribution */
   write_commands(dist, scriptfile, COMMAND_POST_REMOVE, subpackage);
 
   fprintf(scriptfile, "rm -f %s/%s.remove\n", SoftwareDir, prodfull);
+  fprintf(scriptfile, "cd /tmp\n"); // Solaris won't remove the current dir.
   fprintf(scriptfile, "if ( rmdir -p %s 2>/dev/null ) ; then true ; else true ; fi\n", SoftwareDir);
 
   fputs("printf \"`eval_gettext \\\"Removal of %s is complete.\\\"`\\n\" \"$PACKAGE_NAME\"\n", scriptfile);

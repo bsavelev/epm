@@ -2,7 +2,7 @@ Source: epm
 Section: devel
 Priority: optional
 Maintainer: Jeff Licquia <licquia@debian.org>
-Homepage: http://epmhome.org/
+Homepage: https://michaelrsweet.github.io/epm/
 Vcs-Bzr: http://bzr.licquia.org/epm/debian/
 Vcs-Browser: http://bzr.licquia.org/loggerhead/epm/debian/
 Build-Depends: libfltk1.1-dev, libpng12-dev | libpng-dev, zlib1g-dev | libz-dev, libjpeg62-dev | libjpeg-dev, libxft-dev, libx11-dev, libxext-dev, rpm, htmldoc, debhelper (>= 4), fluid
